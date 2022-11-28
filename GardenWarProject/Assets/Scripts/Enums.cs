@@ -18,6 +18,11 @@ public class Enums
 
     public enum CapacityShootType
     {
-        Skillshot, targetPosition, targetEntity
-    } 
+        Skillshot, TargetPosition, TargetEntity
+    }
+
+    public enum ChampionRole
+    {
+        Fighter,Scavenger
+    }
 }

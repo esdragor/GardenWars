@@ -15,8 +15,12 @@ namespace Entities
 
         protected override void OnStart()
         {
-            base.OnStart();
             currentHealth = maxHealth;
+        }
+
+        public override void OnInstantiated()
+        {
+            
         }
     }
 }

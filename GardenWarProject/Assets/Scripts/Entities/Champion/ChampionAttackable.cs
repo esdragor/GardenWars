@@ -78,7 +78,7 @@ namespace Entities.Champion
             {
                 if (lastCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
                 {
-                    bool isTargetEntity = lastCapacitySO.shootType == Enums.CapacityShootType.targetEntity;
+                    bool isTargetEntity = lastCapacitySO.shootType == Enums.CapacityShootType.TargetEntity;
                     Vector3 position = isTargetEntity
                         ? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position
                         : targetedPositions[0];

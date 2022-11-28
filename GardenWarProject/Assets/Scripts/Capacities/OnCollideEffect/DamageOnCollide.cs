@@ -34,6 +34,16 @@ namespace Entities.Capacities
                 }
             }
         }
+
+        protected override void OnStart()
+        {
+            
+        }
+
+        public override void OnInstantiated()
+        {
+            
+        }
     }
 }
 

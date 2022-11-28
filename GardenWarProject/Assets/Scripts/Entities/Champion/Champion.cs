@@ -25,7 +25,6 @@ namespace Entities.Champion
         public CollisionBlocker blocker;
         protected override void OnStart()
         {
-            base.OnStart();
             fowm = FogOfWarManager.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
@@ -53,12 +52,12 @@ namespace Entities.Champion
         protected override void OnUpdate()
         {
             if(isBattlerite && GameStateMachine.Instance.GetPlayerChampion() == this)
-            RotateMath();
+                RotateMath();
             else
             {
-            if (isFollowing) FollowEntity(); // Lol
-            if (!photonView.IsMine) return;
-            CheckMoveDistance();
+                if (isFollowing) FollowEntity(); // Lol
+                if (!photonView.IsMine) return;
+                    CheckMoveDistance();
             }
         }
 
@@ -71,7 +70,7 @@ namespace Entities.Champion
 
         public override void OnInstantiated()
         {
-            base.OnInstantiated();
+            
         }
 
         public override void OnInstantiatedFeedback()
@@ -136,7 +135,7 @@ namespace Entities.Champion
                     break;
             }
 
-            if (GameStates.GameStateMachine.Instance.GetPlayerTeam() != team)
+            if (GameStateMachine.Instance.GetPlayerTeam() != team)
             {
                 championMesh.SetActive(false);
             }
