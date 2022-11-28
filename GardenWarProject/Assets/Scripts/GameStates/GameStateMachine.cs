@@ -8,6 +8,7 @@ using Entities.Inventory;
 using Photon.Pun;
 using GameStates.States;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 namespace GameStates
@@ -509,6 +510,16 @@ namespace GameStates
         private void SyncWinnerRPC(byte team)
         {
             winner = (Enums.Team)team;
+        }
+
+        public static Vector3 GetClosestValidPoint(Vector3 position)
+        {
+            if (NavMesh.SamplePosition(position, out var hit, 5, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+            position.y = 0;
+            return position;
         }
     }
 }

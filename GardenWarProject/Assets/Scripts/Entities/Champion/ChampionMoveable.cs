@@ -153,7 +153,6 @@ namespace Entities.Champion
 
         private void Rotate()
         {
-    
             rotateParent.transform.rotation = Quaternion.Lerp(rotateParent.transform.rotation,
                 Quaternion.LookRotation(rotateDirection),
                 Time.deltaTime * currentRotateSpeed);
