@@ -29,12 +29,14 @@ public class LobbyUIManager : MonoBehaviourPun
     [SerializeField] private Color secondTeamColor;
     [SerializeField] private Image teamColorImage;
     [SerializeField] private TextMeshProUGUI teamColorText;
+    [SerializeField] private TextMeshProUGUI roleText;
     private bool isFirstTeam = true;
 
     [Header("Network")] [SerializeField] private ClientInformation[] allClientsInformation;
 
     [Header("Data")] private byte currentChampion;
     private Enums.Team currentTeam;
+    private Enums.ChampionRole currentRole;
     private bool isReady;
 
     [Header("Debug")] public Button debugButton;
@@ -156,6 +158,25 @@ public class LobbyUIManager : MonoBehaviourPun
         // Send information to other players
         RequestShow();
     }
+    public void OnRoleClick()
+    {
+        if (isReady) return;
+
+        // We switch team
+        var roleIndex = (int) currentRole;
+        roleIndex++;
+        if (roleIndex >= Enum.GetValues(typeof(Enums.ChampionRole)).Length) roleIndex = 0;
+        currentRole = (Enums.ChampionRole)roleIndex;
+
+        roleText.text = $"{currentRole}";
+
+        // We send request to Master
+        sm.RequestSetRole((byte)currentRole);
+
+        // Send information to other players
+        RequestShow();
+    }
+    
 
     public void SendStartGame()
     {

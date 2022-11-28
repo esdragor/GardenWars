@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 namespace GameStates.States
@@ -6,30 +7,30 @@ namespace GameStates.States
     {
         public InGameState(GameStateMachine sm) : base(sm) { }
 
+        private double lastTickTime;
         private double timer;
 
         public override void StartState()
         {
             InputManager.EnablePlayerMap(true);
+            lastTickTime = PhotonNetwork.Time;
         }
 
         public override void UpdateState()
         {
-            if (!sm.IsMaster) return;
-
-            if (IsWinConditionChecked())
+            if (IsWinConditionChecked() && PhotonNetwork.IsMasterClient)
             {
                 sm.SendWinner(sm.winner);
                 sm.SwitchState(3);
                 return;
             }
-
+            
             if (timer >= 1.0 / sm.tickRate)
             {
-                timer -= 1.0 / sm.tickRate;
-                sm.Tick();
+                if (PhotonNetwork.IsMasterClient) sm.Tick();
+                sm.TickFeedback();
             }
-            else timer += Time.deltaTime;
+            else timer = PhotonNetwork.Time - lastTickTime;
         }
 
         public override void ExitState() { }

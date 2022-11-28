@@ -59,6 +59,7 @@ namespace GameStates
         {
             public Enums.Team team;
             public byte championSOIndex;
+            public Enums.ChampionRole role;
             public bool playerReady;
             public int championPhotonViewId;
             public Champion champion;
@@ -107,7 +108,6 @@ namespace GameStates
         private void Update()
         {
             currentState?.UpdateState();
-            //Debug.Log(currentState);
         }
 
         private void InitState()
@@ -165,11 +165,9 @@ namespace GameStates
         public void Tick()
         {
             OnTick?.Invoke();
-            photonView.RPC("TickRPC", RpcTarget.All);
         }
-
-        [PunRPC]
-        private void TickRPC()
+        
+        public void TickFeedback()
         {
             OnTickFeedback?.Invoke();
         }
@@ -261,11 +259,9 @@ namespace GameStates
         [PunRPC]
         private void SyncRemovePlayerRPC(int photonID)
         {
-            if (playersReadyDict.ContainsKey(photonID))
-            {
-                playersReadyDict.Remove(photonID);
-                allPlayersIDs.Remove(photonID);
-            }
+            if (!playersReadyDict.ContainsKey(photonID)) return;
+            playersReadyDict.Remove(photonID);
+            allPlayersIDs.Remove(photonID);
         }
 
         public void RequestSetTeam(byte team)
@@ -310,6 +306,26 @@ namespace GameStates
 
             playersReadyDict[photonID].championSOIndex = champion;
             debugList[photonID].championSOIndex = champion;
+        }
+        
+        public void RequestSetRole(byte role)
+        {
+            photonView.RPC("SetChampionRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, role);
+        }
+
+        [PunRPC]
+        private void SetRoleRPC(int photonID, byte role)
+        {
+            photonView.RPC("SyncSetChampionRPC", RpcTarget.All, photonID, role);
+        }
+
+        [PunRPC]
+        private void SyncSetRoleRPC(int photonID, byte role)
+        {
+            if (!playersReadyDict.ContainsKey(photonID)) return;
+
+            playersReadyDict[photonID].role = (Enums.ChampionRole)role;
+            debugList[photonID].role = (Enums.ChampionRole)role;
         }
 
         public void RequestSendDataDictionary()
