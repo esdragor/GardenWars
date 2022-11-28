@@ -16,7 +16,7 @@ public class GoToTarget : Node
 
         float TEST = Vector3.Distance(MyTransform.position, target.position);
         
-        if (Vector3.Distance(MyTransform.position, target.position) > 1f)
+        if (Vector3.Distance(MyTransform.position, target.position) > 2f)
         {
             MyTransform.position =
                 Vector3.MoveTowards(MyTransform.position, target.position, MyAIBT.speed * Time.deltaTime);
