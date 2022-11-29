@@ -7,6 +7,7 @@ namespace Entities.Champion
     public class ChampionSO : ScriptableObject
     {
         [Header("Visual")]
+        public Sprite portrait;
         public GameObject championMeshPrefab;
         public int canvasIndex;
         

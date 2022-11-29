@@ -1,5 +1,4 @@
 using System;
-using Entities.Champion;
 using GameStates;
 using Photon.Pun;
 using TMPro;
@@ -9,7 +8,7 @@ using UnityEngine.UI;
 public class LobbyUIManager : MonoBehaviourPun
 {
     public static LobbyUIManager Instance;
-    private GameStateMachine sm;
+    private GameStateMachine sm; 
 
     [Header("Connection Part")] [SerializeField]
     private GameObject connectionPart;
@@ -100,7 +99,7 @@ public class LobbyUIManager : MonoBehaviourPun
         readyButtonText.text = isReady ? "Cancel" : "Validate";
 
         // We send request to Master
-        sm.SendSetToggleReady(isReady);
+        sm.RequestSetReady(isReady);
         
         // Send information to other players
         RequestShow();
@@ -131,7 +130,7 @@ public class LobbyUIManager : MonoBehaviourPun
         readyButton.interactable = true;
 
         // We send request to Master
-        sm.RequestSetChampion(currentChampion);
+        sm.RequestSetChampionSOIndex(currentChampion);
 
         // Send information to other players
         RequestShow();
@@ -252,6 +251,7 @@ public class LobbyUIManager : MonoBehaviourPun
 
     public void OnDebugClick()
     {
-        sm.StartCoroutine(sm.StartingGame());
+        sm.isInDebugMode = true;
+        sm.StartLoadingMap();
     }
 }

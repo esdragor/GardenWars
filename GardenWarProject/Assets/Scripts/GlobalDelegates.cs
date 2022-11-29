@@ -1,4 +1,5 @@
 using Entities.Capacities;
+using GameStates;
 using UnityEngine;
 
 public  class GlobalDelegates : MonoBehaviour
@@ -17,5 +18,6 @@ public  class GlobalDelegates : MonoBehaviour
     public delegate void ByteIntArrayVector3ArrayDelegate(byte b, int[] uintArray, Vector3[] vector3s);
     public delegate void ByteIntArrayVector3ArrayCapacityDelegate(byte b, int[] uintArray, Vector3[] vector3s, ActiveCapacity capacity);
     public delegate void ByteIntArrayVector3ArrayBoolArrayDelegate(byte b, int[] uintArray, Vector3[] vector3s, bool[] bools);
+    public delegate void IntPlayerDataDelegate(int key, GameStateMachine.PlayerData data);
     
 }
