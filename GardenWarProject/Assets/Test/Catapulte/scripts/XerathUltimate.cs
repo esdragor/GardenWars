@@ -31,7 +31,7 @@ public class XerathUltimate : ActiveCapacity
 
     public void MoveBag()
     {
-        Animation += Time.deltaTime * activeCapa.SpeedOnAir;
+        Animation += Time.deltaTime * activeCapa.ReduceSpeed;
         
         //Animation = Animation %activeCapa.ReduceSpeed;
 

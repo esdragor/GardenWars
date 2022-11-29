@@ -37,7 +37,7 @@ public class ParabolaLaunch : MonoBehaviour
     {
         dir = (EndPoint.position - StartPoint.position).normalized;
         height = capacitySo.height;
-        ReduceSpeed = 10.1f - capacitySo.SpeedOnAir;
+        ReduceSpeed = capacitySo.ReduceSpeed;
         nbBounce = capacitySo.nbBounce;
         radiusRandom = capacitySo.RandomizeZoneRadius;
         if (capacitySo.RandomizeZone)
