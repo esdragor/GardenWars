@@ -9,8 +9,6 @@ namespace Entities.Capacities
 //[CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO", fileName = "new ActiveCapacitySO")]
     public abstract class ActiveCapacitySO : ScriptableObject
     {
-        [Tooltip("GP Name")] public string referenceName;
-  
         [Tooltip("GD Name")] public string descriptionName;
 
         [Tooltip("Capacity Icon")] public Sprite icon;

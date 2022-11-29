@@ -125,7 +125,7 @@ public class ChampionHUD : MonoBehaviour
             spellCooldown = spellUltimateCooldown
         };
         spellHolderDict.Add(so.activeCapacitiesIndexes[0], spellOneHolder);
-        spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
+        //spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
         if(!spellHolderDict.ContainsKey(so.ultimateAbilityIndex))spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
         else Debug.Log("A FIXE, CA BUG ");
         
@@ -138,7 +138,7 @@ public class ChampionHUD : MonoBehaviour
 
     private void UpdateCooldown(byte capacityIndex, int[] intArray, Vector3[] vectors, ActiveCapacity capacity)
     {
-        spellHolderDict[capacityIndex].StartTimer(CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex).cooldown) ;
+        //spellHolderDict[capacityIndex].StartTimer(CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex).cooldown) ;
     }
     
     private void UpdateFillPercentByPercentHealth(float value)
