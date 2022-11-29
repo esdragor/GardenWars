@@ -196,7 +196,8 @@ namespace GameStates
                     role = Enums.ChampionRole.Fighter,
                     championSOIndex = 255,
                     championPhotonViewId = -1,
-                    champion = null
+                    champion = null,
+                    name = $"Player {actorNumber}"
                 };
                 playerDataDict.Add(actorNumber, playerData);
                 allPlayersIDs.Add(actorNumber);
@@ -211,6 +212,7 @@ namespace GameStates
         [PunRPC]
         private void RemovePlayerRPC(int actorNumber)
         {
+            Debug.Log($"Trying to remove actor {actorNumber}");
             photonView.RPC("SyncRemovePlayerRPC", RpcTarget.All, actorNumber);
         }
 
@@ -298,6 +300,7 @@ namespace GameStates
             }
 
             playerDataDict[actorNumber].isReady = ready;
+            OnDataDictUpdated?.Invoke(actorNumber,playerDataDict[actorNumber]);
             if (!IsMaster) return;
             if (!playerDataDict[actorNumber].isReady) return;
             OnPlayerSetReady();
@@ -322,8 +325,8 @@ namespace GameStates
                 Debug.LogWarning($"This player is not added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
                 return;
             }
-
             playerDataDict[actorNumber].team = (Enums.Team)team;
+            OnDataDictUpdated?.Invoke(actorNumber,playerDataDict[actorNumber]);
         }
 
         public void RequestSetRole(byte role)
@@ -343,6 +346,7 @@ namespace GameStates
             if (!playerDataDict.ContainsKey(actorNumber)) return;
 
             playerDataDict[actorNumber].role = (Enums.ChampionRole)role;
+            OnDataDictUpdated?.Invoke(actorNumber,playerDataDict[actorNumber]);
         }
 
         public void RequestSetChampionSOIndex(byte index)
@@ -363,6 +367,7 @@ namespace GameStates
             if (!playerDataDict.ContainsKey(actorNumber)) return;
 
             playerDataDict[actorNumber].championSOIndex = index;
+            OnDataDictUpdated?.Invoke(actorNumber,playerDataDict[actorNumber]);
         }
 
         #endregion
@@ -377,9 +382,10 @@ namespace GameStates
         {
             foreach (var kvp in playerDataDict)
             {
-                photonView.RPC("SyncDataDictionaryRPC", RpcTarget.Others, kvp.Key, kvp.Value.isReady,
-                    (byte)kvp.Value.team,
-                    (byte)kvp.Value.role, kvp.Value.championSOIndex);
+                var values = kvp.Value;
+                photonView.RPC("SyncDataDictionaryRPC", RpcTarget.Others, kvp.Key,values.name ,values.isReady,
+                    (byte)values.team,
+                    (byte)values.role, values.championSOIndex);
             }
         }
 
@@ -394,14 +400,15 @@ namespace GameStates
         {
             if(!playerDataDict.ContainsKey(actorNumber)) return;
             var data = playerDataDict[actorNumber];
-            photonView.RPC("SyncDataDictionaryRPC",RpcTarget.All,actorNumber,data.isReady,(byte)data.team,(byte)data.role,data.championSOIndex);
+            photonView.RPC("SyncDataDictionaryRPC",RpcTarget.All,actorNumber,data.name,data.isReady,(byte)data.team,(byte)data.role,data.championSOIndex);
         }
 
         [PunRPC]
-        private void SyncDataDictionaryRPC(int actorNumber, bool isReady, byte team, byte role, byte championSOindex)
+        private void SyncDataDictionaryRPC(int actorNumber, string playerName, bool isReady, byte team, byte role, byte championSOindex)
         {
             var data = new PlayerData
             {
+                name = playerName,
                 isReady = isReady,
                 team = (Enums.Team)team,
                 role = (Enums.ChampionRole)role,

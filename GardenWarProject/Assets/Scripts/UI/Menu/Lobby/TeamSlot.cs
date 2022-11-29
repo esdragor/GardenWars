@@ -12,6 +12,8 @@ namespace UIComponents.Lobby
         [SerializeField] private GameObject showWhenSelectedObj;
         [SerializeField] private RectTransform championNameTransform;
         [SerializeField] private RectTransform playerNameTransform;
+        [SerializeField] private RectTransform roleImageTransform;
+        [SerializeField] private RectTransform championImageTransform;
         [Header("Components")]
         [SerializeField] private Button joinButton;
         [SerializeField] private Image championImage;
@@ -25,16 +27,18 @@ namespace UIComponents.Lobby
 
         private Enums.Team assignedTeam;
 
-        public void SetupSlot(Color color, int side, byte team)
+        public void SetupSlot(Color color, byte team)
         {
             assignedTeam = (Enums.Team)team;
             joinButton.onClick.RemoveAllListeners();
-            side = side < 0 ? -1 : 1;
+            var side = team == 2 ? -1 : 1;
+            joinButtonObj.transform.localScale = new Vector3(side, 1, 1);
             transform.localScale = new Vector3(side, 1, 1);
+            roleImageTransform.localScale = new Vector3(side, 1, 1);
+            championImageTransform.localScale = new Vector3(side, 1, 1);
             championNameTransform.localScale = new Vector3(side, 1, 1);
             championNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
-            playerNameTransform.localScale = new Vector3(side, 1, 1);
-            playerNameTransform.localPosition = new Vector3(side*4, 1, 1);
+            playerNameTransform.localPosition = new Vector3(side*4, -25, 1);
             playerNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
             GetComponent<Image>().color = color;
             UpdateSlot(null);
@@ -46,8 +50,20 @@ namespace UIComponents.Lobby
             joinButtonObj.SetActive(data == null);
             showWhenSelectedObj.SetActive(data != null);
             if (data == null) return;
-            championImage.sprite = GameStateMachine.Instance.allChampionsSo[data.championSOIndex].portrait;
-            championNameText.text = $"{GameStateMachine.Instance.allChampionsSo[data.championSOIndex]}";
+            if (data.championSOIndex < GameStateMachine.Instance.allChampionsSo.Length)
+            {
+                var championSo = GameStateMachine.Instance.allChampionsSo[data.championSOIndex];
+                if (championSo != null)
+                {
+                    championImage.sprite = championSo.portrait;
+                    championNameText.text = $"{championSo}";
+                }
+            }
+            else
+            {
+                championImage.sprite = null;
+                championNameText.text = string.Empty;
+            }
             playerNameText.text = $"{data.name}";
             roleImage.sprite = data.role == Enums.ChampionRole.Fighter ? fighterSprite : scavengerSprite;
 
