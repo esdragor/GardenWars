@@ -7,9 +7,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/UltiXerath", fileName = "Ulti Xerath")]
 public class XerathUltimateSO : ActiveCapacitySO
 {
-    public int nbBounce = 5;
     public GameObject prefab = null;
-    [Range(0.2f, 20f)] public float ReduceSpeed = 1.0f;
+    public int nbBounce = 5;
+    [Range(0.1f, 10f)] public float SpeedOnAir = 1.0f;
     public float height = 5.0f;
     public bool RandomizeZone = false;
     public float RandomizeZoneRadius = 5.0f;
