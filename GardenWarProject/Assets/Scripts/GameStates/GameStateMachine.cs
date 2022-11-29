@@ -511,15 +511,5 @@ namespace GameStates
         {
             winner = (Enums.Team)team;
         }
-
-        public static Vector3 GetClosestValidPoint(Vector3 position)
-        {
-            if (NavMesh.SamplePosition(position, out var hit, 5, NavMesh.AllAreas))
-            {
-                return hit.position;
-            }
-            position.y = 0;
-            return position;
-        }
     }
 }
