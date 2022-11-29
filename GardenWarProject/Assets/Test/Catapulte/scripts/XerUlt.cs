@@ -7,6 +7,7 @@ public class XerUlt : MonoBehaviour
 {
     public Transform StartPoint;
     public Transform EndPoint;
+    public GameObject Plane;
     public TMP_Text jaugeText;
 
     public XerathUltimateSO capacitySo;
@@ -21,7 +22,7 @@ public class XerUlt : MonoBehaviour
     private float hextechDistance = 0.0f;
     private bool isHextech = false;
     private bool PositiveJaugeHextech = true;
-
+    
     private Plane plane = new Plane(Vector3.up, 0);
     private float distance = 0.0f;
     private Ray ray = new Ray();
@@ -142,7 +143,7 @@ public class XerUlt : MonoBehaviour
                         else
                             PositiveJaugeHextech = true;
                     }
-
+                   
                     float distance;
 
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -158,29 +159,7 @@ public class XerUlt : MonoBehaviour
                         EndPoint.position = StartPoint.position + dir * hextechDistance;
                         isHextech = false;
                     }
-
                     jaugeText.text = "Jauge : " + hextechDistance.ToString("F2");
-                    return;
-                
-                case HextechMode.mouseDistance:
-                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    
-                    if (plane.Raycast(ray, out distance))
-                    {
-                        Vector3 worldPosition = ray.GetPoint(distance);
-                        dir = new Vector3(worldPosition.x, 0, worldPosition.z);
-                        EndPoint.position = StartPoint.position + dir.normalized;
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.A))
-                    {
-                        float mouseDist = Vector3.Distance(StartPoint.position, dir);
-                        if (capacitySo.RatioMouseDistance != 0)
-                            mouseDist /= capacitySo.RatioMouseDistance;
-                        
-                        EndPoint.position = StartPoint.position + dir.normalized * mouseDist;
-                        isHextech = false;
-                    }
                     return;
             }
         }
