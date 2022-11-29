@@ -3,22 +3,20 @@ using UnityEngine;
 
 public class CheckEnemyInPOVRange : Node
 {
-    private static int EnemyLayerMask = 1 << 6;
     private static int EnemyLayerMaskF = 1 << 6;
     
 
 
-    private Transform trans;
+    private Transform MyTransform;
 
     private float rangeFOV = 5f;
     //private Animator animator;
 
     public CheckEnemyInPOVRange(Transform trans, LayerMask enemyMaskBySerialize, int enemyMaskByFunct, float _rangeFOV = 5f)
     {
-        trans = trans;
+        MyTransform = trans;
         //animator = getComponent<Animator>();
         rangeFOV = _rangeFOV;
-        EnemyLayerMask = 1 << enemyMaskBySerialize;
         EnemyLayerMaskF =  enemyMaskByFunct;
     }
 
@@ -27,13 +25,13 @@ public class CheckEnemyInPOVRange : Node
         object t = GetData("target");
         if (t == null)
         {
-            Collider[] colliders = Physics.OverlapSphere(trans.position, rangeFOV, EnemyLayerMaskF);
+            Collider[] colliders = Physics.OverlapSphere(MyTransform.position, rangeFOV, EnemyLayerMaskF);
 
             if (colliders.Length > 1)
             {
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].gameObject != trans.gameObject && colliders[i].gameObject != trans.GetChild(0).gameObject)
+                    if (colliders[i].gameObject != MyTransform.gameObject && colliders[i].gameObject != MyTransform.GetChild(0).gameObject)
                     {
                         Parent.SetDataInBlackboard("target", colliders[i].transform);
                         //animator.SetBool("Walking", true);
