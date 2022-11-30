@@ -1,3 +1,4 @@
+using GameStates;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,5 +51,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Joined Room");
         PhotonNetwork.LoadLevel("LobbyScene");
+    }
+
+    public override void OnLeftRoom()
+    {
+        var sm = GameStateMachine.Instance;
+        if(sm == null) return;
+        sm.RequestRemovePlayer();
     }
 }

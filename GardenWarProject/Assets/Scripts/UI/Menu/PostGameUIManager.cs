@@ -38,6 +38,6 @@ public class PostGameUIManager : MonoBehaviour
         Debug.Log("Does not work yet");
         return;
         rematchButton.interactable = false;
-        GameStateMachine.Instance.SendSetToggleReady(true);
+        GameStateMachine.Instance.RequestSetReady(true);
     }
 }
