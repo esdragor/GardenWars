@@ -21,6 +21,8 @@ public class XerUlt : MonoBehaviour
     private float hextechDistance = 0.0f;
     private bool isHextech = false;
     private bool PositiveJaugeHextech = true;
+    
+    private bool launchXerathUlt = false;
 
     private Plane plane = new Plane(Vector3.up, 0);
     private float distance = 0.0f;
@@ -57,10 +59,13 @@ public class XerUlt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.A))
+            launchXerathUlt = true;
         #region SimpleXerath
 
-        if (!isHextech)
+        if (!isHextech && launchXerathUlt)
         {
+            
             if (finish) return;
             if (Vector3.Distance(gameObject.transform.position, EndPoint.position) < 0.3f)
             {
@@ -163,6 +168,7 @@ public class XerUlt : MonoBehaviour
                     return;
                 
                 case HextechMode.mouseDistance:
+                    
                     ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     
                     if (plane.Raycast(ray, out distance))
