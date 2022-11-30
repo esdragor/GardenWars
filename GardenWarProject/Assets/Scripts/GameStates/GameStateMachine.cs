@@ -34,13 +34,20 @@ namespace GameStates
 
         public uint expectedPlayerCount = 4;
 
+        [Header("Collections")]
         public ChampionSO[] allChampionsSo;
-        public Enums.Team[] allTeams;
-
         public TeamColor[] teamColors;
-
+        public Role[] roles;
+        
         public bool isInDebugMode = false;
 
+        [Serializable]
+        public struct Role
+        {
+            public Enums.ChampionRole role;
+            public Sprite sprite;
+        }
+        
         [Serializable]
         public struct TeamColor
         {
@@ -508,7 +515,7 @@ namespace GameStates
 
         public void StartLoadingMap()
         {
-            LobbyUIManager.Instance.SendStartGame();
+            if(LobbyUIManager.Instance != null) LobbyUIManager.Instance.SendStartGame();
             SwitchState(1);
         }
 

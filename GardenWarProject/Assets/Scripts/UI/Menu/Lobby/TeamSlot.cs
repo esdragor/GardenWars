@@ -21,16 +21,19 @@ namespace UIComponents.Lobby
         [SerializeField] private TextMeshProUGUI playerNameText;
         [SerializeField] private Image roleImage;
 
-        [Header("Placeholder")]
-        [SerializeField] private Sprite fighterSprite;
-        [SerializeField] private Sprite scavengerSprite;
-
+        private GameStateMachine gameStateMachine;
         private Enums.Team assignedTeam;
+        private LobbyUI assignedLobby;
 
-        public void SetupSlot(Color color, byte team)
+        public void InitSlot(Color color, byte team,LobbyUI lobby)
         {
+            assignedLobby = lobby;
+            gameStateMachine = GameStateMachine.Instance;
+            
             assignedTeam = (Enums.Team)team;
+            
             joinButton.onClick.RemoveAllListeners();
+            
             var side = team == 2 ? -1 : 1;
             joinButtonObj.transform.localScale = new Vector3(side, 1, 1);
             transform.localScale = new Vector3(side, 1, 1);
@@ -40,9 +43,12 @@ namespace UIComponents.Lobby
             championNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
             playerNameTransform.localPosition = new Vector3(side*4, -25, 1);
             playerNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
+            
             GetComponent<Image>().color = color;
+            
             UpdateSlot(null);
-            joinButton.onClick.AddListener(()=>{GameStateMachine.Instance.RequestSetTeam(team);});
+            
+            joinButton.onClick.AddListener(OnButtonClick);
         }
 
         public void UpdateSlot(GameStateMachine.PlayerData data)
@@ -50,13 +56,13 @@ namespace UIComponents.Lobby
             joinButtonObj.SetActive(data == null);
             showWhenSelectedObj.SetActive(data != null);
             if (data == null) return;
-            if (data.championSOIndex < GameStateMachine.Instance.allChampionsSo.Length)
+            if (data.championSOIndex < gameStateMachine.allChampionsSo.Length)
             {
-                var championSo = GameStateMachine.Instance.allChampionsSo[data.championSOIndex];
+                var championSo = gameStateMachine.allChampionsSo[data.championSOIndex];
                 if (championSo != null)
                 {
                     championImage.sprite = championSo.portrait;
-                    championNameText.text = $"{championSo}";
+                    championNameText.text = $"{championSo.name}";
                 }
             }
             else
@@ -65,13 +71,18 @@ namespace UIComponents.Lobby
                 championNameText.text = string.Empty;
             }
             playerNameText.text = $"{data.name}";
-            roleImage.sprite = data.role == Enums.ChampionRole.Fighter ? fighterSprite : scavengerSprite;
+            roleImage.sprite = gameStateMachine.roles[(byte)data.role].sprite;
 
         }
 
         public Enums.Team GetTeam()
         {
             return assignedTeam;
+        }
+        
+        private void OnButtonClick()
+        {
+            assignedLobby.SetTeam(assignedTeam);
         }
     }
 }
