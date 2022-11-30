@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEditor;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class XerUlt : MonoBehaviour
@@ -21,12 +22,11 @@ public class XerUlt : MonoBehaviour
     private float hextechDistance = 0.0f;
     private bool isHextech = false;
     private bool PositiveJaugeHextech = true;
-    
+
     private bool launchXerathUlt = false;
 
     private Plane plane = new Plane(Vector3.up, 0);
     private float distance = 0.0f;
-    private Ray ray = new Ray();
 
     public class ParabolaClass
     {
@@ -38,6 +38,19 @@ public class XerUlt : MonoBehaviour
 
             return new Vector3(mid.x, f(t) + Mathf.Lerp(start.y, end.y, t), mid.z);
         }
+    }
+
+    public Vector3 getDirByMousePosition()
+    {
+        float dist;
+        Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray2, out dist))
+        {
+            Vector3 worldPosition = ray2.GetPoint(dist);
+            return (new Vector3(worldPosition.x, 0, worldPosition.z) - StartPoint.position);
+        }
+
+        return Vector3.zero;
     }
 
 
@@ -61,11 +74,11 @@ public class XerUlt : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
             launchXerathUlt = true;
+
         #region SimpleXerath
 
         if (!isHextech && launchXerathUlt)
         {
-            
             if (finish) return;
             if (Vector3.Distance(gameObject.transform.position, EndPoint.position) < 0.3f)
             {
@@ -114,19 +127,12 @@ public class XerUlt : MonoBehaviour
 
                         jaugeText.text = "Jauge : " + hextechDistance.ToString("F2");
 
-                        float dist;
-                        Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
-                        if (plane.Raycast(ray2, out dist))
-                        {
-                            Vector3 worldPosition = ray2.GetPoint(dist);
-                            dir = (new Vector3(worldPosition.x, 0, worldPosition.z) - StartPoint.position).normalized;
-                            EndPoint.position = StartPoint.position + dir;
-                        }
+                        EndPoint.position = StartPoint.position + getDirByMousePosition().normalized;
                     }
 
                     if (Input.GetKeyUp(KeyCode.A))
                     {
-                        EndPoint.position = StartPoint.position + dir * hextechDistance;
+                        EndPoint.position = StartPoint.position + getDirByMousePosition().normalized * hextechDistance;
                         isHextech = false;
                     }
 
@@ -148,47 +154,32 @@ public class XerUlt : MonoBehaviour
                             PositiveJaugeHextech = true;
                     }
 
-                    float distance;
-
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (plane.Raycast(ray, out distance))
-                    {
-                        Vector3 worldPosition = ray.GetPoint(distance);
-                        dir = (new Vector3(worldPosition.x, 0, worldPosition.z) - StartPoint.position).normalized;
-                        EndPoint.position = StartPoint.position + dir;
-                    }
+                    EndPoint.position = StartPoint.position + getDirByMousePosition().normalized;
 
                     if (Input.GetKeyDown(KeyCode.A))
                     {
-                        EndPoint.position = StartPoint.position + dir * hextechDistance;
+                        EndPoint.position = StartPoint.position + getDirByMousePosition().normalized * hextechDistance;
                         isHextech = false;
                     }
 
                     jaugeText.text = "Jauge : " + hextechDistance.ToString("F2");
                     return;
-                
+
                 case HextechMode.mouseDistance:
-                    
-                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Vector3 worldPosition2 = Vector3.zero;
-                    
-                    if (plane.Raycast(ray, out distance))
-                    {
-                        worldPosition2 = ray.GetPoint(distance);
-                        worldPosition2 = new Vector3(worldPosition2.x, 0, worldPosition2.z);
-                        dir = (worldPosition2 - StartPoint.position);
-                        EndPoint.position = StartPoint.position + dir.normalized;
-                    }
-                    float mouseDist = Vector3.Distance(StartPoint.position, worldPosition2);
+
+                    EndPoint.position = StartPoint.position + getDirByMousePosition().normalized;
+
+                    float mouseDist = Vector3.Distance(StartPoint.position, getDirByMousePosition());
 
                     if (Input.GetKeyDown(KeyCode.A))
                     {
                         if (capacitySo.RatioMouseDistance != 0)
                             mouseDist /= capacitySo.RatioMouseDistance;
-                        
-                        EndPoint.position = StartPoint.position + dir.normalized * mouseDist;
+
+                        EndPoint.position = StartPoint.position + getDirByMousePosition().normalized * mouseDist;
                         isHextech = false;
                     }
+
                     return;
             }
         }
