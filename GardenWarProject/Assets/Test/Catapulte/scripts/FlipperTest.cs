@@ -47,9 +47,5 @@ public class FlipperTest : MonoBehaviour
             rb.AddForce(dir * flipperSO.CandyBagSpeed, ForceMode.Impulse);
             LaunchFlipper = true;
         }
-
-        if (!LaunchFlipper) return;
-        if (flipperSO.decreaseSpeed)
-            rb.AddForce((rb.velocity * -1).normalized * flipperSO.ForceDecelerate, ForceMode.Force);
     }
 }

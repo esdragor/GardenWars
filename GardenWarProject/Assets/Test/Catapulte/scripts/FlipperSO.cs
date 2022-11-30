@@ -9,12 +9,13 @@ public class FlipperSO : ActiveCapacitySO
 {
     public GameObject CandyBagPrefab;
     public float CandyBagSpeed;
-    public bool decreaseSpeed = false;
+    public bool decreaseSpeedDuring = false;
     [Range(0, 1)] public float ForceDecelerate = 0.03f;
     public bool StopByTimer;
     public float MaxTimer;
     public bool StopByRebound;
     public int MaxRebound;
+    public bool StopBagWithoutDelay = false;
 
 
     public override Type AssociatedType()
