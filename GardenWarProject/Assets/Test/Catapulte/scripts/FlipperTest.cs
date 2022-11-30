@@ -32,9 +32,7 @@ public class FlipperTest : MonoBehaviour
         return Vector3.zero;
     }
 
-    
-    
-    
+
     private void Update()
     {
         dir = getDirByMousePosition().normalized;
@@ -42,14 +40,16 @@ public class FlipperTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            candyBag = Instantiate(flipperSO.CandyBagPrefab, StartPoint.position, Quaternion.identity);
+            candyBag = Instantiate(flipperSO.CandyBagPrefab, StartPoint.position + Vector3.up, Quaternion.identity);
             rb = candyBag.GetComponent<Rigidbody>();
-
+            candyBag.GetComponent<CandyScript>().Init(flipperSO, rb);
 
             rb.AddForce(dir * flipperSO.CandyBagSpeed, ForceMode.Impulse);
             LaunchFlipper = true;
         }
 
         if (!LaunchFlipper) return;
+        if (flipperSO.decreaseSpeed)
+            rb.AddForce((rb.velocity * -1).normalized * flipperSO.ForceDecelerate, ForceMode.Force);
     }
 }
