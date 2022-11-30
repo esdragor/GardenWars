@@ -24,7 +24,14 @@ MonoBehaviour:
   feedbackDuration: 0
   feedbackPrefab: {fileID: 0}
   CandyBagPrefab: {fileID: 4226030178508569970, guid: f40a6a4ca676cc041b1b33260b86b37b, type: 3}
-  StopByTimer: 0
-  Timer: 0
+  CandyBagSpeed: 2
+  decreaseSpeedDuring: 0
+  ForceDecelerate: 0.058
+  StopByTimer: 1
+  MaxTimer: 3
   StopByRebound: 0
-  MaxRebound: 0
+  MaxRebound: 1
+  StopBagWithoutDelay: 0
+  nbCandy: 1
+  speedByCandy: 0
+  ScaleBagByCandy: 0
