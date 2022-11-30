@@ -170,17 +170,19 @@ public class XerUlt : MonoBehaviour
                 case HextechMode.mouseDistance:
                     
                     ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    Vector3 worldPosition2 = Vector3.zero;
                     
                     if (plane.Raycast(ray, out distance))
                     {
-                        Vector3 worldPosition = ray.GetPoint(distance);
-                        dir = new Vector3(worldPosition.x, 0, worldPosition.z);
+                        worldPosition2 = ray.GetPoint(distance);
+                        worldPosition2 = new Vector3(worldPosition2.x, 0, worldPosition2.z);
+                        dir = (worldPosition2 - StartPoint.position);
                         EndPoint.position = StartPoint.position + dir.normalized;
                     }
+                    float mouseDist = Vector3.Distance(StartPoint.position, worldPosition2);
 
                     if (Input.GetKeyDown(KeyCode.A))
                     {
-                        float mouseDist = Vector3.Distance(StartPoint.position, dir);
                         if (capacitySo.RatioMouseDistance != 0)
                             mouseDist /= capacitySo.RatioMouseDistance;
                         
