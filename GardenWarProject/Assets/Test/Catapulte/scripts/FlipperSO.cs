@@ -12,7 +12,7 @@ public class FlipperSO : ActiveCapacitySO
     public bool decreaseSpeed = false;
     [Range(0, 1)] public float ForceDecelerate = 0.03f;
     public bool StopByTimer;
-    public float Timer;
+    public float MaxTimer;
     public bool StopByRebound;
     public int MaxRebound;
 
