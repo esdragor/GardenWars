@@ -444,6 +444,12 @@ namespace GameStates
 
         private bool CanChangeState()
         {
+            if (isInDebugMode)
+            {
+                Debug.Log("In debug mode, skipping some steps");
+                return true;
+            }
+            
             if (playerDataDict.Count < expectedPlayerCount)
             {
                 Debug.Log($"Not enough players expected at least {expectedPlayerCount}, found {playerDataDict.Count}");
@@ -467,13 +473,7 @@ namespace GameStates
                     return false; // valid championSOIndex ? 
                 }
             }
-
-            if (isInDebugMode)
-            {
-                Debug.Log("In debug mode, skipping some steps");
-                return true;
-            }
-
+            
             if (team1.Count != 2)
             {
                 Debug.Log($"Team1 doesn't have 2 players ({team1.Count})");
@@ -515,7 +515,6 @@ namespace GameStates
 
         public void StartLoadingMap()
         {
-            if(LobbyUIManager.Instance != null) LobbyUIManager.Instance.SendStartGame();
             SwitchState(1);
         }
 

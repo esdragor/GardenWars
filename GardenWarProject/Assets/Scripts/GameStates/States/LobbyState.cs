@@ -9,9 +9,6 @@ namespace GameStates.States
 
         public override void StartState()
         {
-            
-            if(LobbyUIManager.Instance != null) LobbyUIManager.Instance.Initialization();
-
             InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(true);
         }

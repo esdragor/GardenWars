@@ -1,4 +1,6 @@
+using System;
 using GameStates;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +12,14 @@ namespace UIComponents.Lobby
         [Header("GameObjects & Transforms")]
         [SerializeField] private GameObject joinButtonObj;
         [SerializeField] private GameObject showWhenSelectedObj;
+        [SerializeField] private GameObject showWhenReady;
         [SerializeField] private RectTransform championNameTransform;
         [SerializeField] private RectTransform playerNameTransform;
         [SerializeField] private RectTransform roleImageTransform;
         [SerializeField] private RectTransform championImageTransform;
+
         [Header("Components")]
+        [SerializeField] private Image backgroundImage;
         [SerializeField] private Button joinButton;
         [SerializeField] private Image championImage;
         [SerializeField] private TextMeshProUGUI championNameText;
@@ -44,18 +49,23 @@ namespace UIComponents.Lobby
             playerNameTransform.localPosition = new Vector3(side*4, -25, 1);
             playerNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
             
-            GetComponent<Image>().color = color;
+            backgroundImage.color = color;
             
-            UpdateSlot(null);
+            UpdateSlot(null,false);
             
             joinButton.onClick.AddListener(OnButtonClick);
         }
 
-        public void UpdateSlot(GameStateMachine.PlayerData data)
+        public void UpdateSlot(GameStateMachine.PlayerData data,bool local)
         {
             joinButtonObj.SetActive(data == null);
             showWhenSelectedObj.SetActive(data != null);
+            showWhenReady.SetActive(false);
+            
             if (data == null) return;
+            
+            showWhenReady.SetActive(data.isReady);
+            
             if (data.championSOIndex < gameStateMachine.allChampionsSo.Length)
             {
                 var championSo = gameStateMachine.allChampionsSo[data.championSOIndex];
@@ -71,6 +81,7 @@ namespace UIComponents.Lobby
                 championNameText.text = string.Empty;
             }
             playerNameText.text = $"{data.name}";
+            playerNameText.color = local ? Color.yellow : Color.black;
             roleImage.sprite = gameStateMachine.roles[(byte)data.role].sprite;
 
         }

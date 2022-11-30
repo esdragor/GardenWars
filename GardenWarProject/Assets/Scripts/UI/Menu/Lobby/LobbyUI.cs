@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GameStates;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,12 +30,16 @@ namespace UIComponents
 
         [SerializeField] private Transform roleButtonParent;
 
-        [Header("Ready Button")] [SerializeField]
-        private Button readyButton;
-
+        [Header("Ready Button")]
+        [SerializeField] private Button readyButton;
         [SerializeField] private TextMeshProUGUI readyButtonText;
 
-        private bool isReady;
+        [Header("Debug")]
+        [SerializeField] private Button forceStartButton;
+        [SerializeField] private TextMeshProUGUI forceStartText;
+        private bool forceStart = false;
+
+        private bool isReady = false;
         private GameStateMachine gameStateMachine;
 
         private void Start()
@@ -48,12 +53,19 @@ namespace UIComponents
             InitializeRoleButtons();
 
             SetupReadyButton();
+            
+            SetupForceStartButton();
 
             gameStateMachine.RequestAddPlayer();
 
             gameStateMachine.RequestSendDataDictionary();
 
             gameStateMachine.OnDataDictUpdated += OnPlayerDataUpdated;
+        }
+        
+        private void OnDisable()
+        {
+            gameStateMachine.OnDataDictUpdated -= OnPlayerDataUpdated;
         }
 
         private void InitializeTeamSlots()
@@ -87,73 +99,45 @@ namespace UIComponents
 
         private void OnPlayerDataUpdated(int actorNumber, GameStateMachine.PlayerData data)
         {
-            Debug.Log("Data Updated");
+            var local = actorNumber == PhotonNetwork.LocalPlayer.ActorNumber;
+
             if (!slotsDict.ContainsKey(actorNumber)) slotsDict.Add(actorNumber, null);
-
-            Debug.Log($"Is Data null ? : {data == null}");
+            
             var slot = slotsDict[actorNumber];
-            Debug.Log($"Is slot null ? : {slot == null}");
-
-
+            
             if (slot != null)
             {
-                Debug.Log($"Player {actorNumber} already has a slot");
                 if (data != null)
                 {
-                    Debug.Log($"Data is not null");
                     if (data.team == slot.GetTeam())
                     {
-                        Debug.Log($"Player didn't change teams");
-                        slot.UpdateSlot(data);
+                        slot.UpdateSlot(data,local);
                         return;
                     }
-                    else
-                    {
-                        Debug.Log($"Player changed teams");
-                        //clear current slot
-                        slot.UpdateSlot(null);
-                        //Enqueue slot
-                        teamSlotsQueues[slot.GetTeam()].Push(slot);
-                        //assign new slot
-                        slot = teamSlotsQueues[data.team].Pop();
-                        slotsDict[actorNumber] = slot;
-                        slot.UpdateSlot(data);
-                        return;
-                    }
-                }
-                else
-                {
-                    Debug.Log($"Data is null");
                     //clear current slot
-                    slot.UpdateSlot(null);
+                    slot.UpdateSlot(null,local);
                     //Enqueue slot
                     teamSlotsQueues[slot.GetTeam()].Push(slot);
-                    return;
-                }
-
-            }
-            else
-            {
-                Debug.Log($"Player {actorNumber} doesn't have a slot");
-                if (data != null)
-                {
-                    Debug.Log($"Data is not null (team is {data.team})");
                     //assign new slot
-                    if (data.team != Enums.Team.Neutral)
-                    {
-                        slot = teamSlotsQueues[data.team].Pop();
-                        slotsDict[actorNumber] = slot;
-                        slot.UpdateSlot(data);
-                        return;
-                    }
-                }
-                else
-                {
-                    Debug.Log($"Data is null");
+                    slot = teamSlotsQueues[data.team].Pop();
+                    slotsDict[actorNumber] = slot;
+                    slot.UpdateSlot(data,local);
                     return;
                 }
+                //clear current slot
+                slot.UpdateSlot(null,local);
+                //Enqueue slot
+                teamSlotsQueues[slot.GetTeam()].Push(slot);
+                return;
 
             }
+            
+            if (data == null) return;
+            //assign new slot
+            if (data.team == Enums.Team.Neutral) return;
+            slot = teamSlotsQueues[data.team].Pop();
+            slotsDict[actorNumber] = slot;
+            slot.UpdateSlot(data,local);
         }
 
         private void InitializeChampionButtons()
@@ -187,6 +171,10 @@ namespace UIComponents
         {
             isReady = !isReady;
             readyButtonText.text = isReady ? "Unlock" : "Lock";
+            
+            championButtonParent.gameObject.SetActive(!isReady);
+            roleButtonParent.gameObject.SetActive(!isReady);
+            
             gameStateMachine.RequestSetReady(isReady);
         }
 
@@ -206,6 +194,18 @@ namespace UIComponents
         {
             if(isReady) return;
             gameStateMachine.RequestSetTeam((byte)team);
+        }
+
+        private void SetupForceStartButton()
+        {
+            forceStartButton.onClick.AddListener(ToggleForceStart);
+        }
+
+        private void ToggleForceStart()
+        {
+            forceStart = !forceStart;
+            forceStartText.text = forceStart ? "force start is ON" : "force start is OFF";
+            gameStateMachine.isInDebugMode = forceStart;
         }
     }
 }
