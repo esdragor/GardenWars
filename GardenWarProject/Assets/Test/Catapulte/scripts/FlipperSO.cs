@@ -8,6 +8,11 @@ using UnityEngine;
 public class FlipperSO : ActiveCapacitySO
 {
     public GameObject CandyBagPrefab;
+    public float CandyBagSpeed;
+    public bool StopByTimer;
+    public float Timer;
+    public bool StopByRebound;
+    public int MaxRebound;
     
     
     public override Type AssociatedType()
