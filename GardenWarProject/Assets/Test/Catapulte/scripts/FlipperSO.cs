@@ -16,7 +16,9 @@ public class FlipperSO : ActiveCapacitySO
     public bool StopByRebound;
     public int MaxRebound;
     public bool StopBagWithoutDelay = false;
-
+    public int nbCandy = 1;
+    public bool speedByCandy = false;
+    public bool ScaleBagByCandy = false;
 
     public override Type AssociatedType()
     {
