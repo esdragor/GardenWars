@@ -42,7 +42,6 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
 
     protected override void OnStart()
     {
-        base.OnStart();
         myAgent = GetComponent<NavMeshAgent>();
         myController = GetComponent<MinionController>();
         currentHealth = maxHealth;
@@ -224,7 +223,7 @@ public partial class MinionTest : IDeadable
     
     public override void OnInstantiated()
     {
-        base.OnInstantiated();
+        
     }
 
     public override void OnInstantiatedFeedback()

@@ -9,8 +9,6 @@ namespace GameStates.States
 
         public override void StartState()
         {
-            LobbyUIManager.Instance.Initialization();
-
             InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(true);
         }
@@ -19,13 +17,14 @@ namespace GameStates.States
 
         public override void ExitState()
         {
+            sm.ResetPlayerReady();
             InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(false);
         }
 
         public override void OnAllPlayerReady()
         {
-            sm.StartCoroutine(sm.StartingGame());
+            sm.StartLoadingMap();
         }
     }
 }

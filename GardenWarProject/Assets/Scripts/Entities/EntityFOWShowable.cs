@@ -107,7 +107,7 @@ namespace  Entities
             {
                 elementsToShow[i].SetActive(true);
             }
-           // Debug.Log("showelement" + this.gameObject.name);
+            // Debug.Log("showelement" + this.gameObject.name);
             OnShowElementFeedback?.Invoke();
         }
 
@@ -117,7 +117,7 @@ namespace  Entities
         public void TryRemoveFOWViewable(int viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
-          //  Debug.Log("try remove viewable" + gameObject.name);
+            //  Debug.Log("try remove viewable" + gameObject.name);
             if(entity == null) return;
             
             var viewable = entity.GetComponent<IFOWViewable>();

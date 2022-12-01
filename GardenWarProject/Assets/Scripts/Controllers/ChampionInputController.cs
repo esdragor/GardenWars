@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using Entities;
 using Entities.Capacities;
 using Entities.Champion;
+using GameStates;
 using UnityEngine.AI;
 
 namespace Controllers.Inputs
@@ -193,7 +194,14 @@ namespace Controllers.Inputs
             inputs.Inventory.ShowHideInventory.started += context => UIManager.Instance.ShowHideInventory(true);
             inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
             inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
+            inputs.MoveMouse.LeftClick.performed += DebugNavMeshPoint;
 
+        }
+
+        private void DebugNavMeshPoint(InputAction.CallbackContext ctx)
+        {
+            var point = ActiveCapacity.GetClosestValidPoint(cursorWorldPos[0]);
+            Debug.DrawLine(point,point+Vector3.up,Color.yellow,1f);
         }
         
         protected override void Unlink()

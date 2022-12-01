@@ -45,16 +45,14 @@ namespace Entities
         {
             entityIndex = photonView.ViewID;
             EntityCollectionManager.AddEntity(this);
+            //FogOfWarManager.Instance.AddFOWViewable(this);
             OnStart();
         }
 
         /// <summary>
         /// Replaces the Start() method.
         /// </summary>
-        protected virtual void OnStart()
-        {
-            FogOfWarManager.Instance.AddFOWViewable(this);
-        }
+        protected abstract void OnStart();
 
         private void Update()
         {
@@ -81,11 +79,7 @@ namespace Entities
             OnInstantiated();
         }
 
-        public virtual void OnInstantiated()
-        {
-            
-     
-        }
+        public abstract void OnInstantiated();
 
         [PunRPC]
         public void SyncInstantiateRPC(Vector3 position, Quaternion rotation)
