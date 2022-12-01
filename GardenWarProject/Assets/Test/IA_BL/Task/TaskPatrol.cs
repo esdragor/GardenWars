@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BehaviourTree;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TaskPatrol : Node
 {
@@ -13,12 +14,14 @@ public class TaskPatrol : Node
     private float waitTime = 1f;
     private float waitCounter = 0f;
     private bool waiting = false;
+    private NavMeshAgent agent;
     
-    public TaskPatrol(Transform _transform, Transform[] _waypoints, float waitingBetweenTwoPoints = 1f)
+    public TaskPatrol(NavMeshAgent _agent, Transform _transform, Transform[] _waypoints, float waitingBetweenTwoPoints = 1f)
     {
         Mytransform = _transform;
         waypoints = _waypoints;
         waitTime = waitingBetweenTwoPoints;
+        agent = _agent;
         //animator = getComponent<Animator>();
     }
 
@@ -35,10 +38,11 @@ public class TaskPatrol : Node
         }
         else
         {
-            Transform trans = waypoints[CurrentWaypointIndex];
-            if (Vector3.Distance(Mytransform.position, trans.position) < 0.1f)
+            Vector3 pos = waypoints[CurrentWaypointIndex].position;
+            if (Vector3.Distance(Mytransform.position, pos) < 0.1f)
             {
-                Mytransform.position = trans.position;
+                Debug.Log(pos);
+                agent.SetDestination(pos);
                 waitCounter = 0f;
                 waiting = true;
 
@@ -47,9 +51,8 @@ public class TaskPatrol : Node
             }
             else
             {
-                Mytransform.position =
-                    Vector3.MoveTowards(Mytransform.position, trans.position, MyAIBT.speed * Time.deltaTime);
-                Mytransform.LookAt(trans.position);
+                agent.SetDestination(pos);
+                Mytransform.LookAt(pos);
             }
         }
 

@@ -12,11 +12,13 @@ GameObject:
   - component: {fileID: 4498412454335939638}
   - component: {fileID: 4498412454335939639}
   - component: {fileID: 4498412454335939636}
+  - component: {fileID: 2077910377}
   - component: {fileID: 4498412454335939635}
   - component: {fileID: 4498412454335939632}
   - component: {fileID: 4498412454335939637}
-  m_Layer: 10
-  m_Name: Capsule
+  - component: {fileID: 3301582452771090266}
+  m_Layer: 0
+  m_Name: AI_Test_Pref
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,6 +101,28 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!195 &2077910377
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4498412454335939642}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &4498412454335939635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,8 +175,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {fileID: 4371346525425923539, guid: 1fd13c6e1df618f4db2e8bd5e588a86d, type: 3}
-  - {fileID: 1250176890408423898, guid: 8d0627827ad0c3a4ab546f2da92db674, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  agent: {fileID: 2077910377}
   enemyMask:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!114 &3301582452771090266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4498412454335939642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1361b97c7dc1d478016f6251b08591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityIndex: 0
+  canAddPassiveCapacity: 1
+  canRemovePassiveCapacity: 1
+  uiTransform: {fileID: 0}
+  offset: {x: 0, y: 2, z: 0}
+  canShow: 0
+  canHide: 0
+  elementsToShow: []
+  canChangeTeam: 0
+  team: 1
+  baseViewRange: 0
+  viewRange: 0
+  viewAngle: 0
+  canView: 0
+  meshFilterFoV: {fileID: 0}
+  fogOfWarStartDetection: {fileID: 0}
