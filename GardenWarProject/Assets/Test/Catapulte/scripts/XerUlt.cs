@@ -60,15 +60,19 @@ public class XerUlt : MonoBehaviour
         dir = (EndPoint.position - StartPoint.position).normalized;
         height = capacitySo.height;
         ReduceSpeed = 10.1f - capacitySo.SpeedOnAir;
+        if (capacitySo.speedByNbCandy) ReduceSpeed -= capacitySo.nbCandy;
+
         nbBounce = capacitySo.nbBounce;
         radiusRandom = capacitySo.RandomizeZoneRadius;
         isHextech = capacitySo.IsHextechFlash;
         hextechDistance = capacitySo.MinDistanceHFlash;
+        
         if (capacitySo.RandomizeZone)
             EndPoint.position += (UnityEngine.Random.insideUnitSphere * radiusRandom);
         EndPoint.position = new Vector3(EndPoint.position.x, 0, EndPoint.position.z);
     }
 
+    
     // Update is called once per frame
     void Update()
     {
@@ -105,10 +109,14 @@ public class XerUlt : MonoBehaviour
                 return;
             }
 
+
+            if (capacitySo.ScaleBagByNbCandy)
+                transform.localScale = Vector3.one * capacitySo.nbCandy;
             Animation += Time.deltaTime;
             Animation %= ReduceSpeed;
             transform.position =
                 ParabolaClass.Parabola(StartPoint.position, EndPoint.position, height, Animation / ReduceSpeed);
+
         }
 
         #endregion

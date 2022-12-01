@@ -44,7 +44,13 @@ public class FlipperTest : MonoBehaviour
             rb = candyBag.GetComponent<Rigidbody>();
             candyBag.GetComponent<CandyScript>().Init(flipperSO, rb);
 
-            rb.AddForce(dir * flipperSO.CandyBagSpeed, ForceMode.Impulse);
+            float TotalForce = flipperSO.CandyBagSpeed;
+            if (flipperSO.speedByNbCandy) TotalForce -= flipperSO.nbCandy;
+            
+            if (flipperSO.ScaleBagByNbCandy)
+            candyBag.transform.localScale = Vector3.one * flipperSO.nbCandy;
+            
+            rb.AddForce(dir * TotalForce, ForceMode.Impulse);
             LaunchFlipper = true;
         }
     }
