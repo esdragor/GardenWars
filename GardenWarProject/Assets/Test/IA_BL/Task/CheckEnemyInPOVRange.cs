@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CheckEnemyInPOVRange : Node
 {
-    private static int EnemyLayerMask = 1 << 6;
     private static int EnemyLayerMaskF = 1 << 6;
     
 
@@ -18,7 +17,6 @@ public class CheckEnemyInPOVRange : Node
         MyTransform = trans;
         //animator = getComponent<Animator>();
         rangeFOV = _rangeFOV;
-        EnemyLayerMask = 1 << enemyMaskBySerialize;
         EnemyLayerMaskF =  enemyMaskByFunct;
     }
 
@@ -33,7 +31,7 @@ public class CheckEnemyInPOVRange : Node
             {
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].gameObject != MyTransform.gameObject && colliders[i].gameObject != MyTransform.GetChild(0).gameObject)
+                    if (colliders[i].gameObject != MyTransform.gameObject && colliders[i].gameObject != MyTransform.gameObject)
                     {
                         Parent.SetDataInBlackboard("target", colliders[i].transform);
                         //animator.SetBool("Walking", true);
@@ -41,13 +39,10 @@ public class CheckEnemyInPOVRange : Node
                         return state;
                     }
                 }
-
             }
-
             state = NodeState.Failure;
             return state;
         }
-
         state = NodeState.Success;
         return state;
     }

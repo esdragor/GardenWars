@@ -45,7 +45,7 @@ namespace Entities
         {
             entityIndex = photonView.ViewID;
             EntityCollectionManager.AddEntity(this);
-            FogOfWarManager.Instance.AddFOWViewable(this);
+            //FogOfWarManager.Instance.AddFOWViewable(this);
             OnStart();
         }
 

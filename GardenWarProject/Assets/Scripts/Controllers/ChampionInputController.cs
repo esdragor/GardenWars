@@ -200,7 +200,7 @@ namespace Controllers.Inputs
 
         private void DebugNavMeshPoint(InputAction.CallbackContext ctx)
         {
-            var point = GameStateMachine.GetClosestValidPoint(cursorWorldPos[0]);
+            var point = ActiveCapacity.GetClosestValidPoint(cursorWorldPos[0]);
             Debug.DrawLine(point,point+Vector3.up,Color.yellow,1f);
         }
         
