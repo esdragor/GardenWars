@@ -28,8 +28,8 @@ public class XerathUltimateSO : ActiveCapacitySO
     public float MaxDistanceHFlash = 5.0f;
     public float RatioMouseDistance = 10.0f;
     public int nbCandy = 1;
-    public bool speedByCandy = false;
-    public bool ScaleBagByCandy = false;
+    public bool speedByNbCandy = false;
+    public bool ScaleBagByNbCandy = false;
 
     public override Type AssociatedType()
     {
