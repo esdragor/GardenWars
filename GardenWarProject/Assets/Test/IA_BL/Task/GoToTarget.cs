@@ -1,26 +1,33 @@
+using System.Numerics;
 using BehaviourTree;
+using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
+using Vector3 = UnityEngine.Vector3;
 
 public class GoToTarget : Node
 {
     private Transform MyTransform;
+    private NavMeshAgent agent;
 
-    public GoToTarget(Transform trans)
+    public GoToTarget(NavMeshAgent _agent, Transform trans)
     {
         MyTransform = trans;
+        agent = _agent;
     }
 
     public override NodeState Evaluate()
     {
-        Transform target = (Transform)Parent.GetData("target");
+        Vector3 pos = ((Transform)Parent.GetData("target")).position;
+        Vector3 MyPos = MyTransform.position;
 
-        float TEST = Vector3.Distance(MyTransform.position, target.position);
+        float TEST = Vector3.Distance(MyPos, pos);
         
-        if (Vector3.Distance(MyTransform.position, target.position) > 2f)
+        if (Vector3.Distance(MyTransform.position, pos) > 2f)
         {
-            MyTransform.position =
-                Vector3.MoveTowards(MyTransform.position, target.position, MyAIBT.speed * Time.deltaTime);
-            MyTransform.LookAt(target.position);
+            agent.SetDestination(
+                Vector3.MoveTowards(MyPos, pos, MyAIBT.speed * Time.deltaTime));
+            MyTransform.LookAt(pos);
         }
 
         state = NodeState.Running;

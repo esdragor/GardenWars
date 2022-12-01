@@ -10,7 +10,7 @@ namespace Entities.Champion
     [RequireComponent(typeof(NavMeshAgent))]
     public partial class Champion : IMoveable
     {
-        [Header("Movement")] public bool isBattlerite = true;
+        [Header("Movement")] public bool isBattlerite = false;
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
         public float currentRotateSpeed;

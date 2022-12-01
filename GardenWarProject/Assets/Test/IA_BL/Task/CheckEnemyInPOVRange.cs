@@ -31,7 +31,7 @@ public class CheckEnemyInPOVRange : Node
             {
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].gameObject != MyTransform.gameObject && colliders[i].gameObject != MyTransform.GetChild(0).gameObject)
+                    if (colliders[i].gameObject != MyTransform.gameObject && colliders[i].gameObject != MyTransform.gameObject)
                     {
                         Parent.SetDataInBlackboard("target", colliders[i].transform);
                         //animator.SetBool("Walking", true);
@@ -39,13 +39,10 @@ public class CheckEnemyInPOVRange : Node
                         return state;
                     }
                 }
-
             }
-
             state = NodeState.Failure;
             return state;
         }
-
         state = NodeState.Success;
         return state;
     }
