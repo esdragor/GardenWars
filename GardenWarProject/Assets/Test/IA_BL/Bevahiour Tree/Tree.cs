@@ -1,12 +1,22 @@
+using System;
 using UnityEngine;
 
 namespace BehaviourTree
 {
     public abstract class Tree : MonoBehaviour
     {
+        public bool NotInstantiated = false;
+
         private Node origin = null;
 
-        protected void Start()
+
+        private void Start()
+        {
+            if (NotInstantiated)
+                OnStart();
+        }
+
+        public void OnStart()
         {
             origin = InitTree();
         }
@@ -18,6 +28,5 @@ namespace BehaviourTree
         }
 
         protected abstract Node InitTree();
-    }  
+    }
 }
-

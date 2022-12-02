@@ -5,6 +5,8 @@ namespace BehaviourTree
 {
     public class Sequence : Node
     {
+        
+        private bool BoolTrue = true;
         public Sequence() : base()
         {
         }
@@ -16,7 +18,6 @@ namespace BehaviourTree
         public override NodeState Evaluate()
         {
             bool ChildRunning = false;
-
             foreach (Node node in children)
             {
                 switch (node.Evaluate())
