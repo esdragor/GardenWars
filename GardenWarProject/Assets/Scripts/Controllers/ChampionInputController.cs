@@ -139,22 +139,7 @@ namespace Controllers.Inputs
 
             return Vector3.zero;
         }
-
-        /// <summary>
-        /// Actions Performed on Move inputs direction Change
-        /// </summary>
-        /// <param name="ctx"></param>
-        void OnMoveChange(InputAction.CallbackContext ctx)
-        {
-            moveInput = ctx.ReadValue<Vector2>();
-            moveVector = new Vector3(moveInput.x, 0, moveInput.y);
-            champion.SetMoveDirection(moveVector);
-            NavMeshAgent agent;
-      
-
-        }
         
-
         protected override void Link(Entity entity)
         {
             champion = controlledEntity as Champion;
@@ -169,22 +154,12 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity0.performed += OnActivateCapacity0;
             inputs.Capacity.Capacity1.performed += OnActivateCapacity1;
             inputs.Capacity.Capacity2.performed += OnActivateUltimateAbility;
-
-            if (champion.isBattlerite)
-            {
-                inputs.Movement.Move.performed += OnMoveChange; 
-                inputs.Movement.Move.canceled += OnMoveChange;
-                champion.GetComponent<NavMeshAgent>().enabled = false;
-                champion.rb.isKinematic = false;
-            }
-            else
-            {
-                champion.GetComponent<NavMeshAgent>().enabled = true;
-                inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
-                inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
-                inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
-                champion.rb.isKinematic = true;
-            }
+            
+            champion.GetComponent<NavMeshAgent>().enabled = true;
+            inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
+            inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
+            inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
+            champion.rb.isKinematic = true;
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
             
@@ -213,15 +188,7 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
 
-            if (champion.isBattlerite)
-            {
-                inputs.Movement.Move.performed -= OnMoveChange; 
-                inputs.Movement.Move.canceled -= OnMoveChange;
-            }
-            else
-            {
-                inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;
-            }
+            inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;
 
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;
 

@@ -16,7 +16,7 @@ namespace Entities.Champion
         public Transform championMesh;
         private Vector3 respawnPos;
 
-        private FogOfWarManager fowm;
+        private GameStateMachine gsm;
         private CapacitySOCollectionManager capacityCollection;
         private UIManager uiManager;
         public Camera camera;
@@ -25,47 +25,31 @@ namespace Entities.Champion
         public CollisionBlocker blocker;
         protected override void OnStart()
         {
-            fowm = FogOfWarManager.Instance;
+            gsm = GameStateMachine.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
             camera = Camera.main;
             uiManager = UIManager.Instance;
+            
             agent = GetComponent<NavMeshAgent>();
-            NavMeshObstacle obstacle = GetComponent<NavMeshObstacle>();
-            if (isBattlerite)
-            {
-                obstacle.enabled = false;
-                blocker.characterColliderBlocker.enabled = true;
-                blocker.SetUpBlocker();
-                agent.enabled = false;
-            }
-            else
-            {
-                blocker.characterColliderBlocker.enabled = false;
-                obstacle.enabled = true;
-                rb.isKinematic = true;
-                agent.enabled = true;
-            }
+            var obstacle = GetComponent<NavMeshObstacle>();
+            blocker.characterColliderBlocker.enabled = false;
+            obstacle.enabled = true;
+            rb.isKinematic = true;
+            agent.enabled = true;
           
         }
 
         protected override void OnUpdate()
         {
-            if(isBattlerite && GameStateMachine.Instance.GetPlayerChampion() == this)
-                RotateMath();
-            else
-            {
-                if (isFollowing) FollowEntity(); // Lol
-                if (!photonView.IsMine) return;
-                    CheckMoveDistance();
-            }
+            if (isFollowing) FollowEntity(); // Lol
+            if (!photonView.IsMine) return;
+            CheckMoveDistance();
         }
 
         protected override void OnFixedUpdate()
         {
-            if (!isBattlerite || GameStateMachine.Instance.GetPlayerChampion() != this) return;
-            Move();
-            Rotate();
+            
         }
 
         public override void OnInstantiated()
@@ -141,11 +125,8 @@ namespace Entities.Champion
             }
 
             respawnPos = transform.position = pos.position;
-            if (!isBattlerite)
-            {
-                SetupNavMesh();
-            }
-            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
+            SetupNavMesh();
+            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
             elementsToShow.Add(championMesh);
 
             uiManager = UIManager.Instance;
