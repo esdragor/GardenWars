@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class SpawnMinions : MonoBehaviour
 {
+    public int nb = 1;
+    public float delayBetweenSpawn = 0.3f;
+    
     [SerializeField] private Entity minion;
     [SerializeField] private List<Transform> SpawnPoints;
     [SerializeField] private Transform[] waypointsTeamA;
@@ -14,20 +17,32 @@ public class SpawnMinions : MonoBehaviour
 
     private Enums.Team myTeam;
 
+    IEnumerator Spawner()
+    {
+        for (int i = 0; i < nb; i++)
+        {
+            Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[(int)myTeam - 1].position, Quaternion.identity);
+            MyAIBT BT = entity.GetComponent<MyAIBT>();
+            BT.enabled = true;
+            BT.waypoints = (myTeam == Enums.Team.Team1) ? waypointsTeamA : waypointsTeamB;
+            yield return new WaitForSeconds(0.1f);
+            BT.OnStart();
+            yield return new WaitForSeconds(delayBetweenSpawn);
+        }
+    }
+    
+    
     // Start is called before the first frame update
     void Start()
     {
         myTeam = GameStateMachine.Instance.GetPlayerTeam();
-        for (int i = 0; i < 10; i++)
-        {
-            SpawnMinion();
-        }
+        if (!PhotonNetwork.LocalPlayer.IsLocal) return;
+        StartCoroutine(Spawner());
 
     }
 
     void SpawnMinion()
     {
-        Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[(int)myTeam - 1].position, Quaternion.identity);
-        entity.GetComponent<MyAIBT>().waypoints = (myTeam == Enums.Team.Team1) ? waypointsTeamA : waypointsTeamB;
+
     }
 }

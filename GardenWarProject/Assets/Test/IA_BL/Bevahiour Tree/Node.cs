@@ -8,7 +8,7 @@ namespace BehaviourTree
         Success,
         Failure
     }
-    public class Node
+    public abstract class Node
     {
         public Node Parent;
         
@@ -36,7 +36,7 @@ namespace BehaviourTree
             children.Add(node);
         }
 
-        public virtual NodeState Evaluate() => NodeState.Failure;
+        public abstract NodeState Evaluate();
 
         public void SetDataInBlackboard(string key, object value)
         {

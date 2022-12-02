@@ -1,4 +1,6 @@
 using BehaviourTree;
+using Entities;
+using GameStates;
 using UnityEngine;
 
 public class CheckEnemyInPOVRange : Node
@@ -22,7 +24,7 @@ public class CheckEnemyInPOVRange : Node
 
     public override NodeState Evaluate()
     {
-        object t = GetData("target");
+        object t = Parent.GetData("target");
         if (t == null)
         {
             Collider[] colliders = Physics.OverlapSphere(MyTransform.position, rangeFOV, EnemyLayerMaskF);
@@ -31,13 +33,22 @@ public class CheckEnemyInPOVRange : Node
             {
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].gameObject != MyTransform.gameObject && colliders[i].gameObject != MyTransform.gameObject)
-                    {
-                        Parent.SetDataInBlackboard("target", colliders[i].transform);
+                    if (colliders[i].gameObject == MyTransform.gameObject) return NodeState.Failure;
+                    
+                    IAttackable attackable = colliders[i].GetComponent<IAttackable>();
+                    
+                    if (attackable == null) return NodeState.Failure;
+                    
+                    Entity entity = colliders[i].GetComponent<Entity>();
+                    
+                    if (!entity ) return NodeState.Failure;
+                    
+                    if (entity.team == GameStateMachine.Instance.GetPlayerTeam()) return NodeState.Failure;
+                    
+                    Parent.SetDataInBlackboard("target", colliders[i].transform);
                         //animator.SetBool("Walking", true);
                         state = NodeState.Success;
                         return state;
-                    }
                 }
             }
             state = NodeState.Failure;
