@@ -8,15 +8,18 @@ using UnityEngine.AI;
 public class TaskPatrol : Node
 {
     private Transform Mytransform;
+
     private Transform[] waypoints;
+
     //private Animator animator;
     private int CurrentWaypointIndex = 0;
     private float waitTime = 1f;
     private float waitCounter = 0f;
     private bool waiting = false;
     private NavMeshAgent agent;
-    
-    public TaskPatrol(NavMeshAgent _agent, Transform _transform, Transform[] _waypoints, float waitingBetweenTwoPoints = 1f)
+
+    public TaskPatrol(NavMeshAgent _agent, Transform _transform, Transform[] _waypoints,
+        float waitingBetweenTwoPoints = 1f)
     {
         Mytransform = _transform;
         waypoints = _waypoints;
@@ -39,19 +42,21 @@ public class TaskPatrol : Node
         else
         {
             Vector3 pos = waypoints[CurrentWaypointIndex].position;
+            Vector3 MyPos = Mytransform.position;
+
+            Vector3 direction = Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime * 100f);
+
             if (Vector3.Distance(Mytransform.position, pos) < 0.1f)
             {
-                Debug.Log(pos);
-                agent.SetDestination(pos);
+                agent.SetDestination(direction);
                 waitCounter = 0f;
                 waiting = true;
-
                 CurrentWaypointIndex = (CurrentWaypointIndex + 1) % waypoints.Length;
                 //animator.SetBool("Walking", false);
             }
             else
             {
-                agent.SetDestination(pos);
+                agent.SetDestination(direction);
                 Mytransform.LookAt(pos);
             }
         }

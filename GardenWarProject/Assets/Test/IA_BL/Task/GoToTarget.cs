@@ -20,13 +20,11 @@ public class GoToTarget : Node
     {
         Vector3 pos = ((Transform)Parent.GetData("target")).position;
         Vector3 MyPos = MyTransform.position;
-
-        float TEST = Vector3.Distance(MyPos, pos);
         
         if (Vector3.Distance(MyTransform.position, pos) > 2f)
         {
             agent.SetDestination(
-                Vector3.MoveTowards(MyPos, pos, MyAIBT.speed * Time.deltaTime));
+                Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
             MyTransform.LookAt(pos);
         }
 
