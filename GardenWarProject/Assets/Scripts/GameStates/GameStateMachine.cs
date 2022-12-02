@@ -95,7 +95,7 @@ namespace GameStates
 
         private void Start()
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (IsMaster)
             {
                 InitState();
             }
