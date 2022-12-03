@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
 using Entities.Inventory;
-using GameStates;
 using Photon.Pun;
 using UnityEngine;
 

@@ -1,6 +1,3 @@
-using Photon.Pun;
-using UnityEngine;
-
 namespace GameStates.States
 {
     public class LoadingState : GameState

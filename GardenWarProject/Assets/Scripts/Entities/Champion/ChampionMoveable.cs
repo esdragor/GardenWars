@@ -1,16 +1,12 @@
-using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
-
 
 namespace Entities.Champion
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public partial class Champion : IMoveable
     {
-        [Header("Movement")] public bool isBattlerite = false;
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
         public float currentRotateSpeed;
@@ -35,7 +31,7 @@ namespace Entities.Champion
             return canMove;
         }
 
-        void SetupNavMesh()
+        public void SetupNavMesh()
         {
             agent = GetComponent<NavMeshAgent>();
             agent.SetDestination(transform.position);
@@ -131,40 +127,6 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
-        #region Battlerite
-
-        private void Move()
-        {
-       
-            rb.velocity = moveDirection * currentMoveSpeed;
-        }
-
-        private void RotateMath()
-        {
-            if (!photonView.IsMine) return;
-    
-            var ray = camera.ScreenPointToRay(Input.mousePosition);
-
-            if (!Physics.Raycast(ray, out var hit, float.PositiveInfinity)) return;
-
-            rotateDirection = -(transform.position - hit.point);
-            rotateDirection.y = 0;
-        }
-
-        private void Rotate()
-        {
-            rotateParent.transform.rotation = Quaternion.Lerp(rotateParent.transform.rotation,
-                Quaternion.LookRotation(rotateDirection),
-                Time.deltaTime * currentRotateSpeed);
-        }
-
-        public void SetMoveDirection(Vector3 direction)
-        {
-            moveDirection = direction;
-        }
-
-        #endregion
-
         #region League Of Legends
 
         public void MoveToPosition(Vector3 position)
@@ -191,7 +153,7 @@ namespace Entities.Champion
 
         private void FollowEntity()
         {
-            if (isBattlerite || !isFollowing) return;
+            if (!isFollowing) return;
             agent.SetDestination(entityFollow.transform.position);
             if (lastCapacity.isInRange(entityIndex, entityFollow.transform.position))
             {
@@ -203,7 +165,7 @@ namespace Entities.Champion
 
         private void CheckMoveDistance()
         {
-            if (isBattlerite || agent == null) return;
+            if (agent == null) return;
           
             if (Vector3.Distance(transform.position, movePosition) < 0.5 )
             {

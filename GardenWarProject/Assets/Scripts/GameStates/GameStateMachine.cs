@@ -95,7 +95,7 @@ namespace GameStates
 
         private void Start()
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (IsMaster)
             {
                 InitState();
             }
@@ -546,6 +546,13 @@ namespace GameStates
         public void LateLoad()
         {
             LinkLoadChampionData();
+
+            foreach (var champion in playerDataDict.Select(kvp => kvp.Value).Select(value => value.champion))
+            {
+                champion.SetupSpawn();
+                champion.SetupNavMesh();
+                champion.SetupUI();
+            }
 
             SetupUI();
         }

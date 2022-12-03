@@ -25,12 +25,12 @@ namespace GameStates.States
                 return;
             }
             
-            if (timer >= 1.0 / sm.tickRate)
-            {
-                if (PhotonNetwork.IsMasterClient) sm.Tick();
-                sm.TickFeedback();
-            }
-            else timer = PhotonNetwork.Time - lastTickTime;
+            timer = PhotonNetwork.Time - lastTickTime;
+
+            if (!(timer >= 1.0 / sm.tickRate)) return;
+            
+            if (PhotonNetwork.IsMasterClient) sm.Tick();
+            sm.TickFeedback();
         }
 
         public override void ExitState() { }

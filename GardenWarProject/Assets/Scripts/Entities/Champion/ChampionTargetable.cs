@@ -6,12 +6,11 @@ namespace Entities.Champion
     {
         public bool CanBeTargeted()
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public void RequestSetCanBeTargeted(bool value)
         {
-            throw new System.NotImplementedException();
         }
 
         [PunRPC]
