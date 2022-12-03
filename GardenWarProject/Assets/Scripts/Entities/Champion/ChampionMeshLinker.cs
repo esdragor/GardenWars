@@ -1,4 +1,3 @@
-using System;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
@@ -9,15 +8,24 @@ namespace Entities.Champion
     {
         [SerializeField] private MeshRenderer[] teamColorfulParts;
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
+        private GameStateMachine gsm;
+
+        private void Start()
+        {
+            gsm = GameStateMachine.Instance;
+        }
 
         public void LinkTeamColor(Enums.Team team)
         {
             var color = Color.white;
-            foreach (var tc in GameStateMachine.Instance.teamColors)
+            if (gsm != null)
             {
-                if (team != tc.team) continue;
-                color = tc.color;
-                break;
+                foreach (var tc in GameStateMachine.Instance.teamColors)
+                {
+                    if (team != tc.team) continue;
+                    color = tc.color;
+                    break;
+                }
             }
 
             foreach (var rd in teamColorfulParts)

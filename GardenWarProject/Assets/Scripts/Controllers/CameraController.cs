@@ -8,16 +8,17 @@ namespace Controllers
     {
         //Script for the camera to follow the player
         [SerializeField] private Transform player;
+        [SerializeField] private Camera cam;
+        private Transform camTr;
 
         [SerializeField] private float cameraSpeed = 0.1f;
 
         private bool cameraLock = true;
         public static CameraController Instance;
-
-        public bool isBattlerite = true; 
+        
         [SerializeField] private Vector3 offset;
+        [SerializeField] private Vector3 rotation;
         [SerializeField] private float lerpSpeed;
-        [SerializeField] private float rotationY;
         public void Awake()
         {
             if (Instance != null && Instance != this)
@@ -27,6 +28,12 @@ namespace Controllers
             }
 
             Instance = this;
+        }
+
+        private void Start()
+        {
+            if (Camera.allCamerasCount > 1) cam.GetComponent<AudioListener>().enabled = false;
+            camTr = cam.transform;
         }
 
         public void LinkCamera(Transform target)
@@ -54,13 +61,11 @@ namespace Controllers
 
         private void LateUpdate()
         {
-            if(!isBattlerite)
             UpdateCamera(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            if(isBattlerite)
             UpdateCamera(Time.fixedTime);
         }
 
@@ -73,37 +78,36 @@ namespace Controllers
             //if the camera is locked the camera follows the player
             if (cameraLock)
             {
-                nextPos = player.position + offset;
-                transform.position = Vector3.Lerp(transform.position, nextPos, deltaTime * lerpSpeed);
+                camTr.position = player.position + offset;
             }
             else
             {
-                nextPos = transform.position;
+                nextPos = camTr.position;
 
                 if (Input.mousePosition.x >= Screen.width - 1)
                 {
-                    nextPos += transform.right * cameraSpeed;
+                    nextPos += camTr.right * cameraSpeed;
                 }
 
                 if (Input.mousePosition.x <= 0)
                 {
-                    nextPos -= transform.right * cameraSpeed;
+                    nextPos -= camTr.right * cameraSpeed;
                 }
 
                 if (Input.mousePosition.y >= Screen.height - 1)
                 {
-                    nextPos += transform.forward * cameraSpeed;
+                    nextPos += camTr.forward * cameraSpeed;
                 }
 
                 if (Input.mousePosition.y <= 0)
                 {
-                    nextPos -= transform.forward * cameraSpeed;
+                    nextPos -= camTr.forward * cameraSpeed;
                 }
 
-                transform.position = Vector3.Lerp(transform.position, nextPos, deltaTime* lerpSpeed);
+                camTr.position = Vector3.Lerp(camTr.position, nextPos, deltaTime* lerpSpeed);
             }
 
-            transform.rotation = Quaternion.Euler(transform.rotation.x, rotationY, transform.rotation.z);
+            camTr.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
         }
     }
 }

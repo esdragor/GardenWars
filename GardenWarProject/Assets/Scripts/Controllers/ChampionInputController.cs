@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using Entities;
 using Entities.Capacities;
 using Entities.Champion;
-using GameStates;
+using Photon.Pun;
 using UnityEngine.AI;
 
 namespace Controllers.Inputs
@@ -112,12 +112,12 @@ namespace Controllers.Inputs
             }
         }
         
-        void OnMouseClick(InputAction.CallbackContext ctx)
+        private void OnMouseClick(InputAction.CallbackContext ctx)
         {
             champion.MoveToPosition(cursorWorldPos[0]);
             if (selectedEntity[0] != -1)
             {
-                champion.RequestAttack(champion.attackAbilityIndex, selectedEntity, cursorWorldPos);
+                if(PhotonNetwork.IsConnected) champion.RequestAttack(champion.attackAbilityIndex, selectedEntity, cursorWorldPos);
             }
         }
 

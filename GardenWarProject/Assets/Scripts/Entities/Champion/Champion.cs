@@ -1,9 +1,5 @@
-using System;
-using Controllers;
 using Entities.Capacities;
-using Entities.FogOfWar;
 using GameStates;
-using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +7,8 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
+        [SerializeField] private ChampionSO defaultChampionSO;
+        
         public ChampionSO championSo;
         public Transform rotateParent;
         public Transform championMesh;
@@ -30,7 +28,7 @@ namespace Entities.Champion
             uiManager = UIManager.Instance;
             camera = Camera.main;
             uiManager = UIManager.Instance;
-            
+
             agent = GetComponent<NavMeshAgent>();
             var obstacle = GetComponent<NavMeshObstacle>();
             blocker.characterColliderBlocker.enabled = false;
@@ -63,7 +61,7 @@ namespace Entities.Champion
 
         public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
         {
-            var so = GameStateMachine.Instance.allChampionsSo[championSoIndex];
+            var so = (gsm != null) ? gsm.allChampionsSo[championSoIndex] : defaultChampionSO;
             championSo = so;
             maxHp = championSo.maxHp;
             currentHp = maxHp;
@@ -81,18 +79,46 @@ namespace Entities.Champion
             championMesh.transform.localEulerAngles = Vector3.zero;
 
             team = newTeam;
+            
+            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
+            
+            elementsToShow.Add(championMesh);
+            
+            if (gsm != null)
+            {
+                so.SetIndexes();
+                
+                foreach (var index in so.passiveCapacitiesIndexes)
+                {
+                    AddPassiveCapacityRPC(index);
+                }
+                
+                if (gsm.GetPlayerTeam() != team) championMesh.SetActive(false);
+            }
+            
+            canDie = true;
+        }
 
-            Transform pos = transform;
+        public void SetupSpawn()
+        {
+            var pos = transform;
+            var mlm = MapLoaderManager.Instance;
+            if (mlm == null)
+            {
+                respawnPos = transform.position = pos.position;
+                rb.velocity = Vector3.zero;
+                return;
+            }
             switch (team)
             {
                 case Enums.Team.Team1:
                 {
-                    for (int i = 0; i < MapLoaderManager.Instance.firstTeamBasePoint.Length; i++)
+                    for (int i = 0; i < mlm.firstTeamBasePoint.Length; i++)
                     {
-                        if (MapLoaderManager.Instance.firstTeamBasePoint[i].champion == null)
+                        if (mlm.firstTeamBasePoint[i].champion == null)
                         {
-                            pos = MapLoaderManager.Instance.firstTeamBasePoint[i].position;
-                            MapLoaderManager.Instance.firstTeamBasePoint[i].champion = this;
+                            pos = mlm.firstTeamBasePoint[i].position;
+                            mlm.firstTeamBasePoint[i].champion = this;
                             break;
                         }
                     }
@@ -101,12 +127,12 @@ namespace Entities.Champion
                 }
                 case Enums.Team.Team2:
                 {
-                    for (int i = 0; i < MapLoaderManager.Instance.secondTeamBasePoint.Length; i++)
+                    for (int i = 0; i < mlm.secondTeamBasePoint.Length; i++)
                     {
-                        if (MapLoaderManager.Instance.secondTeamBasePoint[i].champion == null)
+                        if (mlm.secondTeamBasePoint[i].champion == null)
                         {
-                            pos = MapLoaderManager.Instance.secondTeamBasePoint[i].position;
-                            MapLoaderManager.Instance.secondTeamBasePoint[i].champion = this;
+                            pos = mlm.secondTeamBasePoint[i].position;
+                            mlm.secondTeamBasePoint[i].champion = this;
                             break;
                         }
                     }
@@ -118,32 +144,16 @@ namespace Entities.Champion
                     pos = transform;
                     break;
             }
-
-            if (GameStateMachine.Instance.GetPlayerTeam() != team)
-            {
-                championMesh.SetActive(false);
-            }
-
+            
             respawnPos = transform.position = pos.position;
-            SetupNavMesh();
-            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
-            elementsToShow.Add(championMesh);
-
-            uiManager = UIManager.Instance;
-
-            if (uiManager != null)
-            {
-                uiManager.InstantiateHealthBarForEntity(entityIndex);
-                uiManager.InstantiateResourceBarForEntity(entityIndex);
-            }
-
-            so.SetIndexes();
-            for (int i = 0; i < so.passiveCapacitiesIndexes.Length; i++)
-            {
-                AddPassiveCapacityRPC(so.passiveCapacitiesIndexes[i]);
-            }
             rb.velocity = Vector3.zero;
-            RequestSetCanDie(true);
+        }
+
+        public void SetupUI()
+        {
+            if (uiManager == null) return;
+            uiManager.InstantiateHealthBarForEntity(entityIndex);
+            uiManager.InstantiateResourceBarForEntity(entityIndex);
         }
     }
 }

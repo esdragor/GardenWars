@@ -31,7 +31,7 @@ namespace Entities.Champion
             return canMove;
         }
 
-        void SetupNavMesh()
+        public void SetupNavMesh()
         {
             agent = GetComponent<NavMeshAgent>();
             agent.SetDestination(transform.position);

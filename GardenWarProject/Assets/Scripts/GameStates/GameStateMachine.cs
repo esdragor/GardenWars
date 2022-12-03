@@ -547,6 +547,13 @@ namespace GameStates
         {
             LinkLoadChampionData();
 
+            foreach (var champion in playerDataDict.Select(kvp => kvp.Value).Select(value => value.champion))
+            {
+                champion.SetupSpawn();
+                champion.SetupNavMesh();
+                champion.SetupUI();
+            }
+
             SetupUI();
         }
 
