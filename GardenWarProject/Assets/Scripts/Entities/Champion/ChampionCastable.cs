@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Entities.Capacities;
 using UnityEngine;
 using Photon.Pun;

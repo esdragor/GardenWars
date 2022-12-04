@@ -26,7 +26,7 @@ namespace Entities
             return team;
         }
 
-        public List<Enums.Team> GetEnemyTeams()
+        public virtual List<Enums.Team> GetEnemyTeams()
         {
             return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team)
                 .ToList(); //returns all teams that are not 'team'

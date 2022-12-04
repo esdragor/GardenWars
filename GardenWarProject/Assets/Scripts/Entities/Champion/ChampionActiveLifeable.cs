@@ -24,15 +24,12 @@ namespace Entities.Champion
 
         public void RequestSetMaxHp(float value)
         {
+            if(isMaster)
+            {
+                SetMaxHpRPC(value);
+                return;
+            }
             photonView.RPC("SetMaxHpRPC", RpcTarget.MasterClient, value);
-        }
-
-        [PunRPC]
-        public void SyncSetMaxHpRPC(float value)
-        {
-            maxHp = value;
-            currentHp = value;
-            OnSetMaxHpFeedback?.Invoke(value);
         }
 
         [PunRPC]
@@ -41,7 +38,20 @@ namespace Entities.Champion
             maxHp = value;
             currentHp = value;
             OnSetMaxHp?.Invoke(value);
+            if (isOffline)
+            {
+                OnSetMaxHpFeedback?.Invoke(value);
+                return;
+            }
             photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
+        }
+        
+        [PunRPC]
+        public void SyncSetMaxHpRPC(float value)
+        {
+            maxHp = value;
+            currentHp = value;
+            OnSetMaxHpFeedback?.Invoke(value);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetMaxHp;
@@ -97,7 +107,11 @@ namespace Entities.Champion
             maxHp -= amount;
             if(currentHp>maxHp) currentHp = maxHp;
             OnDecreaseMaxHp?.Invoke(amount);
-            if (isOffline) return;
+            if (isOffline)
+            {
+                OnDecreaseMaxHpFeedback?.Invoke(amount);
+                return;
+            }
             photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, maxHp);
         }
 
@@ -116,7 +130,25 @@ namespace Entities.Champion
 
         public void RequestSetCurrentHp(float value)
         {
+            if(isMaster)
+            {
+                SetCurrentHpRPC(value);
+                return;
+            }
             photonView.RPC("SetCurrentHpRPC", RpcTarget.MasterClient, value);
+        }
+        
+        [PunRPC]
+        public void SetCurrentHpRPC(float value)
+        {
+            currentHp = value;
+            OnSetCurrentHp?.Invoke(value);
+            if (isOffline)
+            {
+                OnSetCurrentHpFeedback?.Invoke(value);
+                return;
+            }
+            photonView.RPC("SyncSetCurrentHpRPC", RpcTarget.All, value);
         }
 
         [PunRPC]
@@ -126,22 +158,33 @@ namespace Entities.Champion
             OnSetCurrentHpFeedback?.Invoke(value);
         }
 
-        [PunRPC]
-        public void SetCurrentHpRPC(float value)
-        {
-            currentHp = value;
-            OnSetCurrentHp?.Invoke(value);
-            photonView.RPC("SyncSetCurrentHpRPC", RpcTarget.All, value);
-        }
-
         public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpFeedback;
 
         public void RequestSetCurrentHpPercent(float value)
         {
+            if(isMaster)
+            {
+                SetCurrentHpPercentRPC(value);
+                return;
+            }
             photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.MasterClient, value);
         }
 
+        [PunRPC]
+        public void SetCurrentHpPercentRPC(float value)
+        {
+            currentHp = maxHp * value * 0.01f;
+            if (currentHp > maxHp) currentHp = maxHp;
+            OnSetCurrentHpPercent?.Invoke(value);
+            if (isOffline)
+            {
+                OnSetCurrentHpPercentFeedback?.Invoke(value);
+                return;
+            }
+            photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, currentHp);
+        }
+        
         [PunRPC]
         public void SyncSetCurrentHpPercentRPC(float value)
         {
@@ -149,20 +192,31 @@ namespace Entities.Champion
             OnSetCurrentHpPercentFeedback?.Invoke(value);
         }
 
-        [PunRPC]
-        public void SetCurrentHpPercentRPC(float value)
-        {
-            currentHp = (value/100) * maxHp;
-            OnSetCurrentHpPercent?.Invoke(value);
-            photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, currentHp);
-        }
-
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
 
         public void RequestIncreaseCurrentHp(float amount)
         {
+            if(isMaster)
+            {
+                IncreaseCurrentHpRPC(amount);
+                return;
+            }
             photonView.RPC("IncreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+        }
+        
+        [PunRPC]
+        public void IncreaseCurrentHpRPC(float amount)
+        {
+            currentHp += amount;
+            if (currentHp > maxHp) currentHp = maxHp;
+            OnIncreaseCurrentHp?.Invoke(amount);
+            if (isOffline)
+            {
+                OnIncreaseCurrentHpFeedback?.Invoke(amount);
+                return;
+            }
+            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
         }
 
         [PunRPC]
@@ -172,22 +226,30 @@ namespace Entities.Champion
             OnIncreaseCurrentHpFeedback?.Invoke(amount);
         }
 
-        [PunRPC]
-        public void IncreaseCurrentHpRPC(float amount)
-        {
-            currentHp += amount;
-            if (currentHp > maxHp)
-                currentHp = maxHp;
-            OnIncreaseCurrentHp?.Invoke(amount);
-            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
-        }
-
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
 
         public void RequestDecreaseCurrentHp(float amount)
         {
+            if(isMaster)
+            {
+                DecreaseCurrentHpRPC(amount);
+                return;
+            }
             photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+        }
+        
+        [PunRPC]
+        public void DecreaseCurrentHpRPC(float amount)
+        {
+            currentHp -= amount;
+            OnDecreaseCurrentHp?.Invoke(amount);
+            if (isOffline)
+            {
+                OnDecreaseCurrentHpFeedback?.Invoke(amount);
+                return;
+            }
+            photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp);
         }
 
         [PunRPC]
@@ -201,15 +263,7 @@ namespace Entities.Champion
             }
             OnDecreaseCurrentHpFeedback?.Invoke(amount);
         }
-
-        [PunRPC]
-        public void DecreaseCurrentHpRPC(float amount)
-        {
-            currentHp -= amount;
-            OnDecreaseCurrentHp?.Invoke(amount);
-            photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp);
-        }
-
+        
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
     }
