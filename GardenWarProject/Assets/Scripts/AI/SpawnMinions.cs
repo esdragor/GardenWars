@@ -27,6 +27,7 @@ public class SpawnMinions : MonoBehaviourPun
             MyAIBT BT = entity.GetComponent<MyAIBT>();
             BT.enabled = true;
             BT.waypoints = ((Enums.Team)Team == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
+            entity.team = (Enums.Team)Team;
             yield return new WaitForSeconds(0.1f);
             BT.OnStart();
             yield return new WaitForSeconds(delayBetweenSpawn);
@@ -39,6 +40,9 @@ public class SpawnMinions : MonoBehaviourPun
     {
         myTeam = GameStateMachine.Instance.GetPlayerTeam();
         if (!PhotonNetwork.LocalPlayer.IsLocal) return;
+        
+//         Entity entity = PhotonNetwork.Instantiate("Minion", waypointsTeamBlue[1].position + Vector3.left * 10, Quaternion.identity).GetComponent<Entity>();
+// entity.team = myTeam + 1;
         
         photonView.RPC("Spawn", RpcTarget.MasterClient, (int)myTeam);
 
