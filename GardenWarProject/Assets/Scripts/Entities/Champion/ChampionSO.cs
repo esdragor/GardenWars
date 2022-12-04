@@ -27,8 +27,6 @@ namespace Entities.Champion
         [HideInInspector] public byte[] passiveCapacitiesIndexes;
         public ActiveCapacitySO[] activeCapacities; 
         [HideInInspector] public byte[] activeCapacitiesIndexes;
-        public ActiveCapacitySO ultimateAbility;
-        [HideInInspector] public byte ultimateAbilityIndex;
 
         public void SetIndexes()
         {
@@ -51,8 +49,6 @@ namespace Entities.Champion
                 activeCapacitiesIndexes[index] =
                     CapacitySOCollectionManager.GetActiveCapacitySOIndex(activeCapacitySo);
             }
-
-            ultimateAbilityIndex = CapacitySOCollectionManager.GetActiveCapacitySOIndex(ultimateAbility);
         }
     }
 }

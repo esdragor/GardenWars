@@ -40,6 +40,7 @@ namespace Entities.Champion
 
         protected override void OnUpdate()
         {
+            CastHeldCapacities();
             if (isFollowing) FollowEntity(); // Lol
             if (!photonView.IsMine) return;
             CheckMoveDistance();
@@ -73,7 +74,6 @@ namespace Entities.Champion
             attackDamage = championSo.attackDamage;
             attackAbilityIndex = championSo.attackAbilityIndex;
             abilitiesIndexes = championSo.activeCapacitiesIndexes;
-            ultimateAbilityIndex = championSo.ultimateAbilityIndex;
             var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;

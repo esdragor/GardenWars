@@ -1,4 +1,5 @@
 using GameStates;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +7,7 @@ namespace Entities.Capacities
 {
     public abstract class ActiveCapacity
     {
+        private bool isMaster => PhotonNetwork.IsMasterClient;
         public byte indexOfSOInCollection;
         public Entity caster;
         private double cooldownTimer;
@@ -22,31 +24,12 @@ namespace Entities.Capacities
         }
 
         #region Cast
-        
-        /// <summary>
-        /// Check if the target is in range.
-        /// </summary>
-        /// <returns></returns>
-        private bool IsTargetInRange()
-        {
-            Debug.Log(caster);
-            Debug.Log(target);
-            //get the distance between the entity and the target
-            float distance = Vector3.Distance(caster.transform.position, EntityCollectionManager.GetEntityByIndex(target).transform.position);
-            //if the distance is lower than the range, return true
-            if (distance < AssociatedActiveCapacitySO().maxRange)
-            {
-                return true;
-            }
-            return false;
-        }
-        
+
         /// <summary>
         /// Initialize the cooldown of the capacity when used.
         /// </summary>
         protected virtual void InitiateCooldown()
         {
-        
             cooldownTimer = AssociatedActiveCapacitySO().cooldown;
             onCooldown = true;
          
@@ -89,6 +72,38 @@ namespace Entities.Capacities
             }
             else return false;
         }
+
+        public virtual bool CanCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        {
+            //if out of range return false
+            // if on cooldown return false
+            return true;
+        }
+
+        public void OnPress(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        {
+            if(isMaster) Press(casterIndex,targetsEntityIndexes,targetPositions);
+            PressFeedback(casterIndex,targetsEntityIndexes,targetPositions);
+        }
+        protected abstract void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+
+        public void OnHold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        {
+            if(isMaster) Hold(casterIndex,targetsEntityIndexes,targetPositions);
+            HoldFeedback(casterIndex,targetsEntityIndexes,targetPositions);
+        }
+
+        protected abstract void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+        public void OnRelease(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        {
+            if(isMaster) Release(casterIndex,targetsEntityIndexes,targetPositions);
+            ReleaseFeedback(casterIndex,targetsEntityIndexes,targetPositions);
+        }
+
+        protected abstract void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
 
         public virtual bool isInRange(int casterIndex, Vector3 position)
         {

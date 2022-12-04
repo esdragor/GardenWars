@@ -11,14 +11,42 @@ public class ActiveTowerAuto : ActiveCapacity
     
     public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
+        return true;
+    }
+
+    protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
         _tower = caster.GetComponent<Tower>();
         _target = _tower.enemiesInRange[0].GetComponent<Entity>();
         
-        if (Vector3.Distance(_tower.transform.position, _target.transform.position) > _tower.detectionRange){return false;}
+        if (Vector3.Distance(_tower.transform.position, _target.transform.position) > _tower.detectionRange) return;
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
+    }
+
+    protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
         
-        return true;
+    }
+
+    protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
     }
 
     public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
