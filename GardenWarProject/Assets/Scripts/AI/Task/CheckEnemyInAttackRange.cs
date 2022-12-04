@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using BehaviourTree;
+using Entities;
 using UnityEngine;
 
 public class CheckEnemyInAttackRange : Node
@@ -15,12 +16,11 @@ public class CheckEnemyInAttackRange : Node
     }
     public override NodeState Evaluate()
     {
-        object t = Parent.Parent.GetData("target");
+        Entity target = (Entity)Parent.Parent.GetData("target");
         
-        if (t == null) return NodeState.Failure;
-
-       Transform target = (Transform)t;
-       if (Vector3.Distance(trans.position, target.position) < atkRange)
+        if (target == null) return NodeState.Failure;
+        
+       if (Vector3.Distance(trans.position, target.transform.position) < atkRange)
            return NodeState.Success;
 
        return NodeState.Failure;

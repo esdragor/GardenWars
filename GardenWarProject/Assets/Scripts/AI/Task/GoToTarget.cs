@@ -1,5 +1,6 @@
 using System.Numerics;
 using BehaviourTree;
+using Entities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,7 +19,7 @@ public class GoToTarget : Node
 
     public override NodeState Evaluate()
     {
-        Vector3 pos = ((Transform)Parent.Parent.GetData("target")).position;
+        Vector3 pos = ((Entity)Parent.Parent.GetData("target")).transform.position;
         Vector3 MyPos = MyTransform.position;
         
         if (Vector3.Distance(MyTransform.position, pos) > 1f)
