@@ -131,7 +131,7 @@ namespace Entities.Champion
         {
             movePosition = position;
             movePosition.y = transform.position.y;
-            agent.SetDestination(position);
+            agent.SetDestination(movePosition);
         }
 
         private void SendFollowEntity(int entityIndex, float capacityDistance)
