@@ -446,6 +446,19 @@ namespace GameStates
         {
             if (isInDebugMode)
             {
+                foreach (var data in playerDataDict.Select(kvp => kvp.Value))
+                {
+                    if (!data.isReady)
+                    {
+                        Debug.Log($"A player is not ready");
+                        if(currentState != gamesStates[0]) return false; // everyone isReady ?
+                    }
+                    if (data.championSOIndex >= allChampionsSo.Length)
+                    {
+                        Debug.Log($"{data.championSOIndex} is not a valid championSO index");
+                        return false; // valid championSOIndex ? 
+                    }
+                }
                 Debug.Log("In debug mode, skipping some steps");
                 return true;
             }

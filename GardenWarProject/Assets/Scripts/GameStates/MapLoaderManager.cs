@@ -1,5 +1,6 @@
 using System;
 using Entities.Champion;
+using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace GameStates
     public class MapLoaderManager : MonoBehaviourPun
     {
         public static MapLoaderManager Instance;
-        
+
         public ChampionSpawner[] firstTeamBasePoint;
         public ChampionSpawner[] secondTeamBasePoint;
 
@@ -25,8 +26,15 @@ namespace GameStates
 
         private void Start()
         {
-            GameStateMachine.Instance.LoadMap();
-            if (PhotonNetwork.IsMasterClient) PhotonNetwork.IsMessageQueueRunning = true;
+            var gsm = GameStateMachine.Instance;
+            if (gsm != null)
+            {
+                gsm.LoadMap();
+                if (PhotonNetwork.IsMasterClient) PhotonNetwork.IsMessageQueueRunning = true;
+                return;
+            }
+            
+            ItemCollectionManager.Instance.LinkCapacityIndexes();
         }
 
         [Serializable]
