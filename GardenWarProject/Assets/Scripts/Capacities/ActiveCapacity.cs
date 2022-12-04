@@ -7,7 +7,7 @@ namespace Entities.Capacities
 {
     public abstract class ActiveCapacity
     {
-        private bool isMaster => PhotonNetwork.IsMasterClient;
+        private bool isMaster => !PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient;
         public byte indexOfSOInCollection;
         public Entity caster;
         private double cooldownTimer;

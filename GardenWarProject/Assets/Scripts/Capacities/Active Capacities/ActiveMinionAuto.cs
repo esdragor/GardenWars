@@ -6,7 +6,6 @@ using UnityEngine;
 public class ActiveMinionAuto : ActiveCapacity
 {
     private Entity _target;
-    //private MinionTest _minion;
     private double timer;
     
     public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
@@ -16,11 +15,6 @@ public class ActiveMinionAuto : ActiveCapacity
 
     protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        _minion = caster.GetComponent<MinionTest>();
-        _target = _minion.currentAttackTarget.GetComponent<Entity>();
-
-        if (Vector3.Distance(_minion.transform.position, _target.transform.position) > _minion.attackRange) return;
-        
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
     }
 
