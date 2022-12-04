@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Entities;
 using Entities.Capacities;
 using Photon.Pun;
@@ -44,6 +46,17 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         return canMove;
     }
 
+    public Enums.Team GetTeam()
+    {
+        return team;
+    }
+
+    public List<Enums.Team> GetEnemyTeams()
+    {
+        return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team)
+            .ToList(); //returns all teams that are not 'team'
+    }
+    
     public float GetReferenceMoveSpeed()
     {
         return referenceMoveSpeed;
@@ -449,7 +462,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public void SyncDecreaseCurrentHpRPC(float amount)
     {
         CurrentHP = amount;
-        Debug.Log("CurrentHP : " + CurrentHP);
+        //Debug.Log("CurrentHP : " + CurrentHP);
         if (CurrentHP <= 0)
         {
             CurrentHP = 0;

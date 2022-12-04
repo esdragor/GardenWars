@@ -51,7 +51,8 @@ public class TaskPatrol : Node
                 agent.SetDestination(direction);
                 waitCounter = 0f;
                 waiting = true;
-                CurrentWaypointIndex = (CurrentWaypointIndex + 1) % waypoints.Length;
+                if (CurrentWaypointIndex + 1 > waypoints.Length) return NodeState.Failure;
+                CurrentWaypointIndex++;
                 //animator.SetBool("Walking", false);
             }
             else

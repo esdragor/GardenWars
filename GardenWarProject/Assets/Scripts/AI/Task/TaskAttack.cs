@@ -10,14 +10,15 @@ public class TaskAttack : Node
 {
     private IAttackable attack;
     private float attackSpeed;
-    private float CurrentAtkTime = 0f;
+    private double CurrentAtkTime = 0f;
     private Entity PreviousTarget;
     private GameStateMachine sm = null;
-
-    public TaskAttack(Minion entity)
+    private Node Root;
+    public TaskAttack(Node _Root, Minion entity)
     {
         attack = entity.gameObject.GetComponent<IAttackable>();
         attackSpeed = entity.GetAttackSpeed();
+        Root = _Root;
     }
 
     public override NodeState Evaluate()
@@ -26,7 +27,7 @@ public class TaskAttack : Node
 
         if (!attack.CanAttack()) return NodeState.Failure;
 
-        Entity target = (Entity)Parent.Parent.GetData("target");
+        Entity target = (Entity)Root.GetData("target");
 
         if (target == null) return NodeState.Failure;
         
@@ -39,29 +40,15 @@ public class TaskAttack : Node
         if (!sm)
             sm = GameStateMachine.Instance;
         
-        CurrentAtkTime += 1.0f / (float)sm.tickRate;
+        CurrentAtkTime += 1.0f / sm.tickRate;
 
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
         
         attack.RequestAttack(0, new []{ target.entityIndex}, new []{target.transform.position});
-        
-        // Minion minionEntity = target.gameObject.GetComponent<Minion>();
-        //
-        // if (minionEntity)
-        // {
-        //     Debug.Log("Attack Minion");
-        // }
-        //
-        // Champion herosEntity = target.gameObject.GetComponent<Champion>();
-        //
-        // if (herosEntity)
-        // {
-        //     Debug.Log("Attack Hero");
-        // }
 
-        Parent.Parent.ClearData("target");
+        Root.ClearData("target");
 
         return NodeState.Success;
     }

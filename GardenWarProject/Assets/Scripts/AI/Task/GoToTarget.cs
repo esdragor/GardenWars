@@ -1,6 +1,7 @@
 using System.Numerics;
 using BehaviourTree;
 using Entities;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,16 +11,18 @@ public class GoToTarget : Node
 {
     private Transform MyTransform;
     private NavMeshAgent agent;
+    private Node Root;
 
-    public GoToTarget(NavMeshAgent _agent, Transform trans)
+    public GoToTarget(Node _Root, NavMeshAgent _agent, Transform trans)
     {
         MyTransform = trans;
         agent = _agent;
+        Root = _Root;
     }
 
     public override NodeState Evaluate()
     {
-        Vector3 pos = ((Entity)Parent.Parent.GetData("target")).transform.position;
+        Vector3 pos = ((Entity)Root.GetData("target")).transform.position;
         Vector3 MyPos = MyTransform.position;
         
         if (Vector3.Distance(MyTransform.position, pos) > 1f)

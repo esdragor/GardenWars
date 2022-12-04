@@ -16,26 +16,26 @@ public class MyAIBT : Tree
     [SerializeField] private float AtkRange;
     [SerializeField] private float FOVRange;
 
-    
+    private Node origin;
     
     protected override Node InitTree()
     {
-        Node origin = new Selector(new List<Node>
+        origin = new Selector(new List<Node>
         {
             new Sequence(new List<Node>
             {
-                new CheckEnemyInPOVRange(transform,enemyMask, FOVRange),
+                new CheckEnemyInPOVRange(origin, entity,enemyMask, FOVRange),
                 new Selector(new List<Node>
                 {
                     new Sequence(new List<Node>
                     {
-                        new CheckEnemyInAttackRange(transform, AtkRange),
-                        new TaskAttack(entity),
+                        new CheckEnemyInAttackRange(origin, transform, AtkRange),
+                        new TaskAttack(origin, entity),
                     }),
                     new Sequence(new List<Node>
                     {
                         new CheckCanMove(entity),
-                        new GoToTarget(agent,transform)
+                        new GoToTarget(origin, agent, transform)
                     })
                     
                 }),
