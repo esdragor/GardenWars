@@ -1705,11 +1705,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4498412454335939635, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
       propertyPath: sceneViewId
-      value: 35
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4498412454335939635, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4498412454335939642, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
       propertyPath: m_Name
       value: Minion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4498412454335939642, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
@@ -2025,6 +2033,14 @@ PrefabInstance:
     - target: {fileID: 6328455801854436411, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
       propertyPath: m_Name
       value: SpawnerManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6328455801854436411, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7151993561122712228, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
+      propertyPath: sceneViewId
+      value: 27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5b651a90892b6941a58a5452db6a602, type: 3}

@@ -21,7 +21,7 @@ public class CheckEnemyInPOVRange : Node
 
     public override NodeState Evaluate()
     {
-        object t = Parent.Parent.GetData("target");
+        Entity t = (Entity)Parent.Parent.GetData("target");
         if (t == null)
         {
             Collider[] colliders = Physics.OverlapSphere(MyTransform.position, rangeFOV, EnemyLayerMaskF);
@@ -41,7 +41,7 @@ public class CheckEnemyInPOVRange : Node
                     
                     if (entity.team == GameStateMachine.Instance.GetPlayerTeam()) return NodeState.Failure;
                     
-                    Parent.Parent.SetDataInBlackboard("target", colliders[i].transform);
+                    Parent.Parent.SetDataInBlackboard("target", entity);
                         //animator.SetBool("Walking", true);
                         state = NodeState.Success;
                         return state;
@@ -52,7 +52,7 @@ public class CheckEnemyInPOVRange : Node
         }
         else
         {
-            if (Vector3.Distance((t as Transform).position, MyTransform.position) > rangeFOV)
+            if (Vector3.Distance(t.transform.position, MyTransform.position) > rangeFOV)
             {
                 Parent.Parent.ClearData("target");
                 state = NodeState.Failure;

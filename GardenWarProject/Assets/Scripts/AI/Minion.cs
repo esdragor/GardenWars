@@ -18,6 +18,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float CurrentHP = 100f;
 
     private float currentMoveSpeed;
+    private bool isAlive = true;
+    private bool canDie = true;
 
     public float GetAttackSpeed()
     {
@@ -262,7 +264,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        AttackRPC(capacityIndex, targetedEntities, targetedPositions);
+        photonView.RPC("AttackRPC", RpcTarget.MasterClient, capacityIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
@@ -447,6 +449,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public void SyncDecreaseCurrentHpRPC(float amount)
     {
         CurrentHP = amount;
+        Debug.Log("CurrentHP : " + CurrentHP);
         if (CurrentHP <= 0)
         {
             CurrentHP = 0;
@@ -468,27 +471,28 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public bool IsAlive()
     {
-        throw new System.NotImplementedException();
+        return isAlive;
     }
 
     public bool CanDie()
     {
-        throw new System.NotImplementedException();
+        return canDie;
     }
 
     public void RequestSetCanDie(bool value)
     {
-        throw new System.NotImplementedException();
+        photonView.RPC("SetCanDieRPC",RpcTarget.MasterClient,value);
     }
 
     public void SyncSetCanDieRPC(bool value)
     {
-        throw new System.NotImplementedException();
+        canDie = value;
     }
 
     public void SetCanDieRPC(bool value)
     {
-        throw new System.NotImplementedException();
+       canDie = value;
+         photonView.RPC("SyncSetCanDieRPC",RpcTarget.All,value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;
@@ -496,17 +500,20 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestDie()
     {
-        throw new System.NotImplementedException();
+        photonView.RPC("DieRPC", RpcTarget.MasterClient);
     }
 
+    [PunRPC]
     public void SyncDieRPC()
     {
-        throw new System.NotImplementedException();
+        isAlive = false;
+        Destroy(gameObject);
     }
 
+    [PunRPC]
     public void DieRPC()
     {
-        throw new System.NotImplementedException();
+        photonView.RPC("SyncDieRPC", RpcTarget.All);
     }
 
     public event GlobalDelegates.NoParameterDelegate OnDie;
@@ -514,17 +521,17 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestRevive()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void SyncReviveRPC()
     {
-        throw new System.NotImplementedException();
+       
     }
 
     public void ReviveRPC()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public event GlobalDelegates.NoParameterDelegate OnRevive;
