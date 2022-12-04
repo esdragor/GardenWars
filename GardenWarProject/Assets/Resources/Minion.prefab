@@ -213,7 +213,11 @@ MonoBehaviour:
   meshFilterFoV: {fileID: 0}
   fogOfWarStartDetection: {fileID: 0}
   canMove: 1
+  canAttack: 1
+  attackValue: 5
   referenceMoveSpeed: 3.5
   myAIBT: {fileID: 4498412454335939637}
   agent: {fileID: 2077910377}
   attackSpeed: 2
+  MaxHP: 100
+  CurrentHP: 100

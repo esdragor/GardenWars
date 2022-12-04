@@ -42,7 +42,6 @@ public class CheckEnemyInPOVRange : Node
                     if (entity.team == GameStateMachine.Instance.GetPlayerTeam()) return NodeState.Failure;
                     
                     Parent.Parent.SetDataInBlackboard("target", colliders[i].transform);
-                    Debug.Log(colliders[i].name);
                         //animator.SetBool("Walking", true);
                         state = NodeState.Success;
                         return state;
