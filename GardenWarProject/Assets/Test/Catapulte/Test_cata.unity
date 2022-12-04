@@ -344,11 +344,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d0627827ad0c3a4ab546f2da92db674, type: 3}
---- !u!4 &568768509 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1250176890408423898, guid: 8d0627827ad0c3a4ab546f2da92db674, type: 3}
-  m_PrefabInstance: {fileID: 568768508}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &673536454
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +663,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1597805759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1262,7 +1257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1001 &4371346525716197704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1418,7 +1413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a4cd11b2fc635429e1f87f46feb455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartPoint: {fileID: 1815191888}
-  EndPoint: {fileID: 568768509}
+  Caster: {fileID: 1815191888}
   jaugeText: {fileID: 1827764485}
   capacitySo: {fileID: 11400000, guid: d9bc6d2194b87024e929fa26de50a273, type: 2}
+  EndPoint: {x: 0, y: 0, z: 0}
