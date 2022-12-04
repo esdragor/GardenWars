@@ -7,21 +7,25 @@ public class CheckEnemyInPOVRange : Node
 {
     private int EnemyLayerMaskF = 1 << 6;
     private Transform MyTransform;
-
+    private Entity MyEntity;
     private float rangeFOV = 5f;
+
+    private Node Root;
     //private Animator animator;
 
-    public CheckEnemyInPOVRange(Transform trans, int enemyMaskByFunct, float _rangeFOV = 5f)
+    public CheckEnemyInPOVRange(Node _Root, Entity entity, int enemyMaskByFunct, float _rangeFOV = 5f)
     {
-        MyTransform = trans;
+        MyTransform = entity.transform;
         //animator = getComponent<Animator>();
         rangeFOV = _rangeFOV;
-        EnemyLayerMaskF =  enemyMaskByFunct;
+        EnemyLayerMaskF = enemyMaskByFunct;
+        Root = _Root;
+        MyEntity = entity;
     }
 
     public override NodeState Evaluate()
     {
-        Entity t = (Entity)Parent.Parent.GetData("target");
+        Entity t = (Entity)Root.GetData("target");
         if (t == null)
         {
             Collider[] colliders = Physics.OverlapSphere(MyTransform.position, rangeFOV, EnemyLayerMaskF);
@@ -30,36 +34,29 @@ public class CheckEnemyInPOVRange : Node
             {
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].gameObject == MyTransform.gameObject) return NodeState.Failure;
+                    if (colliders[i].gameObject == MyTransform.gameObject) continue;
                     Entity entity = colliders[i].GetComponent<Entity>();
-                    
-                    if (!entity ) return NodeState.Failure;
-                    
+                    if (!entity) continue;
+                    if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
+
                     IAttackable attackable = colliders[i].GetComponent<IAttackable>();
-                    
-                    if (attackable == null) return NodeState.Failure;
-                    
-                    if (entity.team == GameStateMachine.Instance.GetPlayerTeam()) return NodeState.Failure;
-                    
-                    Parent.Parent.SetDataInBlackboard("target", entity);
-                        //animator.SetBool("Walking", true);
-                        state = NodeState.Success;
-                        return state;
+
+                    if (attackable == null) continue;
+                    Root.SetDataInBlackboard("target", entity);
+                    //animator.SetBool("Walking", true);
+                    state = NodeState.Success;
+                    return state;
                 }
-            }
-            state = NodeState.Failure;
-            return state;
-        }
-        else
-        {
-            if (Vector3.Distance(t.transform.position, MyTransform.position) > rangeFOV)
-            {
-                Parent.Parent.ClearData("target");
-                state = NodeState.Failure;
-                return state;
+
+                return NodeState.Failure;
             }
         }
-        state = NodeState.Success;
+
+        if (!t)
+            Root.ClearData("target");
+        if (Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV) return NodeState.Success;
+        Root.ClearData("target");
+        state = NodeState.Failure;
         return state;
     }
 }

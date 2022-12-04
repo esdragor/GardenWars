@@ -17,6 +17,8 @@ public class SpawnMinions : MonoBehaviourPun
 
     private Enums.Team myTeam;
 
+    
+    
     IEnumerator Spawner(byte Team)
     {
         for (int i = 0; i < nb; i++)
@@ -24,11 +26,13 @@ public class SpawnMinions : MonoBehaviourPun
            
             //Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[Team - 1].position, Quaternion.identity);
             Entity entity = PhotonNetwork.Instantiate("Minion", SpawnPoints[Team - 1].position, Quaternion.identity).GetComponent<Entity>();
+            yield return new WaitForSeconds(0.1f);
+            photonView.RPC("SyncDataMinions", RpcTarget.All, Team, entity.photonView.ViewID);
+            yield return new WaitForSeconds(0.1f);
             MyAIBT BT = entity.GetComponent<MyAIBT>();
             BT.enabled = true;
             BT.waypoints = ((Enums.Team)Team == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
             entity.team = (Enums.Team)Team;
-            yield return new WaitForSeconds(0.1f);
             BT.OnStart();
             yield return new WaitForSeconds(delayBetweenSpawn);
         }
@@ -52,5 +56,17 @@ public class SpawnMinions : MonoBehaviourPun
     public void Spawn(int team)
     {
         StartCoroutine(Spawner((byte)team));
+    }
+    
+    [PunRPC]
+    public void SyncDataMinions(byte team, int entityID)
+    {
+        Entity entity = EntityCollectionManager.GetEntityByIndex(entityID);
+        
+        entity.team = (Enums.Team)team;
+        // MyAIBT BT = entity.GetComponent<MyAIBT>();
+        // BT.enabled = true;
+        // BT.waypoints = ((Enums.Team)team == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
+        // BT.OnStart();
     }
 }

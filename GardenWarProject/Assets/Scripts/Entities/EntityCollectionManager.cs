@@ -34,9 +34,6 @@ namespace Entities
         /// <param name="entity">The entity to add</param>
         public static void AddEntity(Entity entity)
         {
-            Debug.Log("Adding entity " + entity.entityIndex);
-            Debug.Log("Adding entity " + entity.name);
-            
             var index = entity.entityIndex;
             if (allEntitiesDict.ContainsKey(index))
             {
