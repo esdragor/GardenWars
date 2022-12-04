@@ -7,29 +7,32 @@ namespace GameStates.States
     {
         public InGameState(GameStateMachine sm) : base(sm) { }
 
+        private double currentTime => GameStateMachine.isOffline ? Time.timeAsDouble : PhotonNetwork.Time;
         private double lastTickTime;
         private double timer;
 
         public override void StartState()
         {
             InputManager.EnablePlayerMap(true);
-            lastTickTime = PhotonNetwork.Time;
+            lastTickTime = currentTime;
         }
 
         public override void UpdateState()
         {
-            if (IsWinConditionChecked() && PhotonNetwork.IsMasterClient)
+            if (IsWinConditionChecked() && GameStateMachine.isMaster)
             {
                 sm.SendWinner(sm.winner);
                 sm.SwitchState(3);
                 return;
             }
             
-            timer = PhotonNetwork.Time - lastTickTime;
+            timer = currentTime - lastTickTime;
+            //Debug.Log(timer);
 
             if (!(timer >= 1.0 / sm.tickRate)) return;
+            lastTickTime = currentTime;
             
-            if (PhotonNetwork.IsMasterClient) sm.Tick();
+            if (GameStateMachine.isMaster) sm.Tick();
             sm.TickFeedback();
         }
 

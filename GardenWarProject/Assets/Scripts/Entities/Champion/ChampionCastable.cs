@@ -83,12 +83,22 @@ namespace Entities.Champion
 
         public void RequestOnCastCapacity(byte capacityIndex)
         {
+            if(isMaster)
+            {
+                OnCastCapacityRPC(capacityIndex,targetedEntities,targetedPositions);
+                return;
+            }
             photonView.RPC("OnCastCapacityRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
 
         [PunRPC]
         private void OnCastCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
+            if (isOffline)
+            {
+                SyncOnCastCapacityRPC(capacityIndex, newTargetedEntities, newTargetedPositions);
+                return;
+            }
             photonView.RPC("SyncOnCastCapacityRPC",RpcTarget.All,capacityIndex,newTargetedEntities,newTargetedPositions);
         }
         
@@ -124,12 +134,22 @@ namespace Entities.Champion
 
         public void RequestOnReleaseCapacity(byte capacityIndex)
         {
+            if(isMaster)
+            {
+                OnReleaseCapacityRPC(capacityIndex,targetedEntities,targetedPositions);
+                return;
+            }
             photonView.RPC("OnReleaseCapacityRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
 
         [PunRPC]
         private void OnReleaseCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
+            if (isOffline)
+            {
+                SyncOnReleaseCapacityRPC(capacityIndex, newTargetedEntities, newTargetedPositions);
+                return;
+            }
             photonView.RPC("SyncOnReleaseCapacityRPC",RpcTarget.All,capacityIndex,newTargetedEntities,newTargetedPositions);
         }
         

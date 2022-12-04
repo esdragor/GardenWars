@@ -7,6 +7,7 @@ namespace FreePlayer
     public class FreePlayerActivator : MonoBehaviour
     {
         [SerializeField] private Champion champion;
+        [SerializeField] private ChampionSO championSo;
         
         private void Start()
         {
@@ -16,7 +17,9 @@ namespace FreePlayer
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
 
-            champion.ApplyChampionSO(1, Enums.Team.Team1);
+            championSo.SetIndexes();
+            
+            champion.ApplyChampionSO(1, Enums.Team.Team1,championSo);
             
             champion.SetupSpawn();
             champion.SetupNavMesh();

@@ -27,7 +27,7 @@ namespace GameStates
         private void Start()
         {
             var gsm = GameStateMachine.Instance;
-            if (gsm != null)
+            if (!GameStateMachine.isOffline)
             {
                 gsm.LoadMap();
                 if (PhotonNetwork.IsMasterClient) PhotonNetwork.IsMessageQueueRunning = true;

@@ -1,5 +1,6 @@
 using Entities.Capacities;
 using GameStates;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,17 +8,15 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
-        [SerializeField] private ChampionSO defaultChampionSO;
-        
+        private static bool isOffline => !PhotonNetwork.IsConnected;
+        private static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
         public ChampionSO championSo;
         public Transform rotateParent;
-        public Transform championMesh;
         private Vector3 respawnPos;
 
         private GameStateMachine gsm;
         private CapacitySOCollectionManager capacityCollection;
         private UIManager uiManager;
-        public Camera camera;
         public Rigidbody rb;
 
         public CollisionBlocker blocker;
@@ -26,7 +25,6 @@ namespace Entities.Champion
             gsm = GameStateMachine.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
-            camera = Camera.main;
             uiManager = UIManager.Instance;
 
             agent = GetComponent<NavMeshAgent>();
@@ -60,9 +58,9 @@ namespace Entities.Champion
         {
         }
 
-        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
+        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam, ChampionSO forcedSo = null)
         {
-            var so = (gsm != null) ? gsm.allChampionsSo[championSoIndex] : defaultChampionSO;
+            var so = (forcedSo == null) ? gsm.allChampionsSo[championSoIndex] : forcedSo;
             championSo = so;
             maxHp = championSo.maxHp;
             currentHp = maxHp;
@@ -84,7 +82,7 @@ namespace Entities.Champion
             
             elementsToShow.Add(championMesh);
             
-            if (gsm != null)
+            if (!GameStateMachine.isOffline)
             {
                 so.SetIndexes();
                 
