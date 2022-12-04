@@ -8,6 +8,7 @@ namespace Controllers
     {
         //Script for the camera to follow the player
         [SerializeField] private Transform player;
+        [SerializeField] private Transform camParentTr;
         [SerializeField] private Camera cam;
         private Transform camTr;
 
@@ -78,33 +79,33 @@ namespace Controllers
             //if the camera is locked the camera follows the player
             if (cameraLock)
             {
-                camTr.position = player.position + offset;
+                camParentTr.position = player.position + offset;
             }
             else
             {
-                nextPos = camTr.position;
+                nextPos = camParentTr.position;
 
                 if (Input.mousePosition.x >= Screen.width - 1)
                 {
-                    nextPos += camTr.right * cameraSpeed;
+                    nextPos += camParentTr.right * cameraSpeed;
                 }
 
                 if (Input.mousePosition.x <= 0)
                 {
-                    nextPos -= camTr.right * cameraSpeed;
+                    nextPos -= camParentTr.right * cameraSpeed;
                 }
 
                 if (Input.mousePosition.y >= Screen.height - 1)
                 {
-                    nextPos += camTr.forward * cameraSpeed;
+                    nextPos += camParentTr.forward * cameraSpeed;
                 }
 
                 if (Input.mousePosition.y <= 0)
                 {
-                    nextPos -= camTr.forward * cameraSpeed;
+                    nextPos -= camParentTr.forward * cameraSpeed;
                 }
 
-                camTr.position = Vector3.Lerp(camTr.position, nextPos, deltaTime* lerpSpeed);
+                camParentTr.position = Vector3.Lerp(camTr.position, nextPos, deltaTime* lerpSpeed);
             }
 
             camTr.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
