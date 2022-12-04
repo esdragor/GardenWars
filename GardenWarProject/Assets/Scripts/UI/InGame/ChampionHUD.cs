@@ -79,7 +79,7 @@ public class ChampionHUD : MonoBehaviour
         spellPassive.sprite = champion.passiveCapacitiesList[0].AssociatedPassiveCapacitySO().icon;
         spellOne.sprite = so.activeCapacities[0].icon;
         spellTwo.sprite = so.activeCapacities[1].icon;
-        spellUltimate.sprite = so.ultimateAbility.icon;
+        spellUltimate.sprite = so.activeCapacities[2].icon;
     }
 
     private void LinkToEvents()
@@ -126,14 +126,14 @@ public class ChampionHUD : MonoBehaviour
         };
         spellHolderDict.Add(so.activeCapacitiesIndexes[0], spellOneHolder);
         //spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
-        if(!spellHolderDict.ContainsKey(so.ultimateAbilityIndex))spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
+        if(!spellHolderDict.ContainsKey(so.activeCapacitiesIndexes[2]))spellHolderDict.Add(so.activeCapacitiesIndexes[2], ultimateHolder);
         else Debug.Log("A FIXE, CA BUG ");
         
         if(so.passiveCapacities.Length != 0)
         passiveHolder.Setup(so.passiveCapacities[0].icon);
         spellOneHolder.Setup(so.activeCapacities[0].icon);
         spellTwoHolder.Setup(so.activeCapacities[1].icon);
-        ultimateHolder.Setup(so.ultimateAbility.icon);
+        ultimateHolder.Setup(so.activeCapacities[2].icon);
     }
 
     private void UpdateCooldown(byte capacityIndex, int[] intArray, Vector3[] vectors, ActiveCapacity capacity)

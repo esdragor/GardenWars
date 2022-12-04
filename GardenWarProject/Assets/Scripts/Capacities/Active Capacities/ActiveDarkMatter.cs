@@ -14,15 +14,42 @@ public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
         base.TryCast(casterIndex, targets, position);
         
         Debug.Log("Performed dark matter at " + Time.time);
-        activeCapacitySo = (ActiveDarkMatterSO)AssociatedActiveCapacitySO();
         
-       // if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
+        return true;
+    }
+
+    protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] position)
+    {
+        activeCapacitySo = (ActiveDarkMatterSO)AssociatedActiveCapacitySO();
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
         
         dir = position;
+    }
 
-        return true;
+    protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
     }
 
     private void ApplyEffect()
@@ -71,12 +98,12 @@ public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
 
     public void EnableDrawing()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void DisableDrawing()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     protected override void InitiateCooldown()

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
@@ -19,7 +20,15 @@ namespace Controllers.Inputs
         private Vector3 moveVector;
         private Camera cam;
         private bool isActivebuttonPress;
-        
+
+        private void Update()
+        {
+            if(champion == null) return;
+            UpdateTargets();
+            champion.targetedEntities = selectedEntity;
+            champion.targetedPositions = cursorWorldPos;
+        }
+
         /// <summary>
         /// Actions Performed on Attack Activation
         /// </summary>
@@ -42,27 +51,46 @@ namespace Controllers.Inputs
         /// Actions Performed on Capacity 0 Activation
         /// </summary>
         /// <param name="ctx"></param>
-        private void OnActivateCapacity0(InputAction.CallbackContext ctx)
+        private void OnPressCapacity0(InputAction.CallbackContext ctx)
         {
-            ActiveCapacitySO capacity0 = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(champion.abilitiesIndexes[0]);
-
-            champion.RequestCast(champion.abilitiesIndexes[0],selectedEntity,cursorWorldPos);
+            champion.RequestOnCastCapacity(champion.abilitiesIndexes[0]);
         }
         /// <summary>
         /// Actions Performed on Capacity 1 Activation
         /// </summary>
         /// <param name="ctx"></param>
-        private void OnActivateCapacity1(InputAction.CallbackContext ctx)
+        private void OnPressCapacity1(InputAction.CallbackContext ctx)
         {
-            champion.RequestCast(champion.abilitiesIndexes[1],selectedEntity,cursorWorldPos);
+            champion.RequestOnCastCapacity(champion.abilitiesIndexes[1]);
         }
         /// <summary>
         /// Actions Performed on Capacity 2 Activation
         /// </summary>
         /// <param name="ctx"></param>
-        private void OnActivateUltimateAbility(InputAction.CallbackContext ctx)
+        private void OnPressCapacity2(InputAction.CallbackContext ctx)
         {
-            champion.RequestCast(champion.ultimateAbilityIndex,selectedEntity,cursorWorldPos);
+            champion.RequestOnCastCapacity(champion.abilitiesIndexes[2]);
+        }
+        
+        private void OnReleaseCapacity0(InputAction.CallbackContext ctx)
+        {
+            champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[0]);
+        }
+        /// <summary>
+        /// Actions Performed on Capacity 1 Activation
+        /// </summary>
+        /// <param name="ctx"></param>
+        private void OnReleaseCapacity1(InputAction.CallbackContext ctx)
+        {
+            champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[1]);
+        }
+        /// <summary>
+        /// Actions Performed on Capacity 2 Activation
+        /// </summary>
+        /// <param name="ctx"></param>
+        private void OnReleaseCapacity2(InputAction.CallbackContext ctx)
+        {
+            champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[2]);
         }
 
         /// <summary>
@@ -94,22 +122,25 @@ namespace Controllers.Inputs
         private void OnMouseMove(InputAction.CallbackContext ctx)
         {
             mousePos = ctx.ReadValue<Vector2>();
+            UpdateTargets();
+
+            if(isActivebuttonPress)
+            {
+                champion.MoveToPosition(GetMouseOverWorldPos());
+            }
+        }
+        
+        private void UpdateTargets()
+        {
             var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
             if (!Physics.Raycast(mouseRay, out var hit)) return;
             cursorWorldPos[0] = hit.point;
             selectedEntity[0] = -1;
             var ent = hit.transform.GetComponent<Entity>();
             if (ent == null && hit.transform.parent != null) hit.transform.parent.GetComponent<Entity>();
-            if(ent != null)
-            { 
-                selectedEntity[0] = ent.entityIndex;
-                cursorWorldPos[0] = ent.transform.position;
-            }
-
-            if(isActivebuttonPress)
-            {
-                champion.MoveToPosition(GetMouseOverWorldPos());
-            }
+            if (ent == null) return;
+            selectedEntity[0] = ent.entityIndex;
+            cursorWorldPos[0] = ent.transform.position;
         }
         
         private void OnMouseClick(InputAction.CallbackContext ctx)
@@ -151,9 +182,12 @@ namespace Controllers.Inputs
             
             inputs.Attack.Attack.performed += OnAttack;
             
-            inputs.Capacity.Capacity0.performed += OnActivateCapacity0;
-            inputs.Capacity.Capacity1.performed += OnActivateCapacity1;
-            inputs.Capacity.Capacity2.performed += OnActivateUltimateAbility;
+            inputs.Capacity.Capacity0.performed += OnPressCapacity0;
+            inputs.Capacity.Capacity1.performed += OnPressCapacity1;
+            inputs.Capacity.Capacity2.performed += OnPressCapacity2;
+            inputs.Capacity.Capacity0.canceled += OnReleaseCapacity0;
+            inputs.Capacity.Capacity1.canceled += OnReleaseCapacity1;
+            inputs.Capacity.Capacity2.canceled += OnReleaseCapacity2;
             
             champion.GetComponent<NavMeshAgent>().enabled = true;
             inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
@@ -183,9 +217,12 @@ namespace Controllers.Inputs
         {
             inputs.Attack.Attack.performed -= OnAttack;
             
-            inputs.Capacity.Capacity0.performed -= OnActivateCapacity0;
-            inputs.Capacity.Capacity1.performed -= OnActivateCapacity1;
-            inputs.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
+            inputs.Capacity.Capacity0.performed -= OnPressCapacity0;
+            inputs.Capacity.Capacity1.performed -= OnPressCapacity1;
+            inputs.Capacity.Capacity2.performed -= OnPressCapacity2;
+            inputs.Capacity.Capacity0.canceled -= OnReleaseCapacity0;
+            inputs.Capacity.Capacity1.canceled -= OnReleaseCapacity1;
+            inputs.Capacity.Capacity2.canceled -= OnReleaseCapacity2;
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
 
             inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;

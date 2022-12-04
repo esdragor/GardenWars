@@ -66,5 +66,34 @@ public class XerathUltimate : ActiveCapacity
 
         return true;
     }
-    
+
+    protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        throw new NotImplementedException();
+    }
 }
