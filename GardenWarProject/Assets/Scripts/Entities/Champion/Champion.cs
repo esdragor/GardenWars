@@ -51,6 +51,7 @@ namespace Entities.Champion
 
         public override void OnInstantiatedFeedback()
         {
+            
         }
 
         public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
