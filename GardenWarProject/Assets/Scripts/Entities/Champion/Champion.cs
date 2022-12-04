@@ -1,4 +1,4 @@
-using Entities.Capacities;
+using Entities.FogOfWar;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
@@ -46,11 +46,12 @@ namespace Entities.Champion
 
         public override void OnInstantiated()
         {
-            
+            FogOfWarManager.Instance.AddFOWViewable(this);
         }
 
         public override void OnInstantiatedFeedback()
         {
+            
         }
 
         public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)

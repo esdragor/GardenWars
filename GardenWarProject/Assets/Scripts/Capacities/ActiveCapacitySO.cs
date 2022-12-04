@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Entities.Capacities
 {
-//Asset Menu Synthax :
+//Asset Menu Syntax :
 //[CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO", fileName = "new ActiveCapacitySO")]
     public abstract class ActiveCapacitySO : ScriptableObject
     {

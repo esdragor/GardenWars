@@ -541,14 +541,13 @@ namespace GameStates
         /// </summary>
         public void LoadMap()
         {
-            // TODO - init pools
-
             LinkChampionSOCapacityIndexes();
 
             ItemCollectionManager.Instance.LinkCapacityIndexes();
 
             InstantiateChampion();
-
+            
+            Debug.Log("Done Loading");
             RequestSetReady(true);
         }
 

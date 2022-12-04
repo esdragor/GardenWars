@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using UnityEngine;
 
@@ -58,12 +59,9 @@ namespace Entities.FogOfWar
 
         private void RenderFOW()
         {
-            foreach (var viewable in allViewables)
+            foreach (var viewable in allViewables.Where(viewable => GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team))
             {
-                if (GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team)
-                {
-                    DrawFieldOfView(viewable);
-                }
+                DrawFieldOfView(viewable);
             }
         }
 

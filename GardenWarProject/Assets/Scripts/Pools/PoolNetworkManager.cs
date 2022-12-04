@@ -19,9 +19,9 @@ public class PoolNetworkManager : MonoBehaviour
 
     public static PoolNetworkManager Instance;
 
-    [SerializeField] private List<ElementData> poolElements;
+    [SerializeField] private List<ElementData> poolElements = new List<ElementData>();
 
-    public static Dictionary<Entity, Queue<Entity>> queuesDictionary;
+    public static Dictionary<Entity, Queue<Entity>> queuesDictionary = new Dictionary<Entity, Queue<Entity>>();
 
     private bool isMaster => !PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient;
 
@@ -68,9 +68,17 @@ public class PoolNetworkManager : MonoBehaviour
     public Entity PoolInstantiate(Entity entityRef, Vector3 position, Quaternion rotation, Transform parent = null)
     {
         if (!isSetup) SetupDictionary();
-        //Debug.Log(entityRef);
+        Debug.Log($"Instantiating {entityRef}");
         Entity entity;
         if (parent == null) parent = transform;
+        if (entityRef == poolElements[0].Element)
+        {
+            entity = PhotonNetwork.Instantiate(entityRef.gameObject.name, position, rotation)
+                .GetComponent<Entity>();
+            entity.OnInstantiated();
+            entity.OnInstantiatedFeedback();
+            return entity;
+        }
         if (queuesDictionary.ContainsKey(entityRef))
         {
             var queue = queuesDictionary[entityRef];

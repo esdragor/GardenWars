@@ -22,7 +22,7 @@ namespace Entities.Champion
         private Vector3 movePosition;
         //NavMesh
 
-        private NavMeshAgent agent;
+        [HideInInspector] public NavMeshAgent agent;
 
         private Vector3 rotateDirection;
 
@@ -34,10 +34,8 @@ namespace Entities.Champion
         public void SetupNavMesh()
         {
             agent = GetComponent<NavMeshAgent>();
-            agent.SetDestination(transform.position);
             if (!photonView.IsMine) agent.enabled = false;
-            //NavMeshBuilder.ClearAllNavMeshes();
-            //NavMeshBuilder.BuildNavMesh();
+            agent.Warp(transform.position);
         }
 
         public float GetReferenceMoveSpeed()
@@ -133,7 +131,7 @@ namespace Entities.Champion
         {
             movePosition = position;
             movePosition.y = transform.position.y;
-            agent.SetDestination(position);
+            agent.SetDestination(movePosition);
         }
 
         private void SendFollowEntity(int entityIndex, float capacityDistance)
