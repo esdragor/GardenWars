@@ -13,6 +13,8 @@ public class MyAIBT : Tree
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private Minion entity;
+    [SerializeField] private float AtkRange;
+    [SerializeField] private float FOVRange;
 
     
     
@@ -22,10 +24,23 @@ public class MyAIBT : Tree
         {
             new Sequence(new List<Node>
             {
-                new CheckCanMove(entity),
-                new CheckEnemyInPOVRange(transform, enemyMask,LayerMask.GetMask("Enemy"), 20f),
-                new GoToTarget(agent,transform)
+                new CheckEnemyInPOVRange(transform,enemyMask, FOVRange),
+                new Selector(new List<Node>
+                {
+                    new Sequence(new List<Node>
+                    {
+                        new CheckEnemyInAttackRange(transform, AtkRange),
+                        new TaskAttack(entity),
+                    }),
+                    new Sequence(new List<Node>
+                    {
+                        new CheckCanMove(entity),
+                        new GoToTarget(agent,transform)
+                    })
+                    
+                }),
             }),
+
             new Sequence(new List<Node>
             {
                 new CheckCanMove(entity),

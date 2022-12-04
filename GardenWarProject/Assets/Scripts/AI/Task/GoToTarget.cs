@@ -18,17 +18,19 @@ public class GoToTarget : Node
 
     public override NodeState Evaluate()
     {
-        Vector3 pos = ((Transform)Parent.GetData("target")).position;
+        Vector3 pos = ((Transform)Parent.Parent.GetData("target")).position;
         Vector3 MyPos = MyTransform.position;
         
-        if (Vector3.Distance(MyTransform.position, pos) > 2f)
+        if (Vector3.Distance(MyTransform.position, pos) > 1f)
         {
             agent.SetDestination(
                 Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
             MyTransform.LookAt(pos);
+            state = NodeState.Running;
+            return state;
         }
-
-        state = NodeState.Running;
+        
+        state = NodeState.Success;
         return state;
     }
 }

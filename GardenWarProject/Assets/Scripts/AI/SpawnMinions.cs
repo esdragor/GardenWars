@@ -12,8 +12,8 @@ public class SpawnMinions : MonoBehaviour
     
     [SerializeField] private Entity minion;
     [SerializeField] private List<Transform> SpawnPoints;
-    [SerializeField] private Transform[] waypointsTeamA;
-    [SerializeField] private Transform[] waypointsTeamB;
+    [SerializeField] private Transform[] waypointsTeamBlue;
+    [SerializeField] private Transform[] waypointsTeamRed;
 
     private Enums.Team myTeam;
 
@@ -24,7 +24,7 @@ public class SpawnMinions : MonoBehaviour
             Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[(int)myTeam - 1].position, Quaternion.identity);
             MyAIBT BT = entity.GetComponent<MyAIBT>();
             BT.enabled = true;
-            BT.waypoints = (myTeam == Enums.Team.Team1) ? waypointsTeamA : waypointsTeamB;
+            BT.waypoints = (myTeam == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
             yield return new WaitForSeconds(0.1f);
             BT.OnStart();
             yield return new WaitForSeconds(delayBetweenSpawn);
