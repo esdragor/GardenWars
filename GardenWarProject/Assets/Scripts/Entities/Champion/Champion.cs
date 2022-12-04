@@ -14,19 +14,14 @@ namespace Entities.Champion
         public Transform rotateParent;
         private Vector3 respawnPos;
 
-        private GameStateMachine gsm;
-        private CapacitySOCollectionManager capacityCollection;
+        private GameStateMachine gsm => GameStateMachine.Instance;
         private UIManager uiManager;
         public Rigidbody rb;
 
         public CollisionBlocker blocker;
         protected override void OnStart()
         {
-            gsm = GameStateMachine.Instance;
-            capacityCollection = CapacitySOCollectionManager.Instance;
-            uiManager = UIManager.Instance;
-            uiManager = UIManager.Instance;
-
+            uiManager = UIManager.Instance; 
             agent = GetComponent<NavMeshAgent>();
             var obstacle = GetComponent<NavMeshObstacle>();
             blocker.characterColliderBlocker.enabled = false;
@@ -58,9 +53,9 @@ namespace Entities.Champion
         {
         }
 
-        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam, ChampionSO forcedSo = null)
+        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
         {
-            var so = (forcedSo == null) ? gsm.allChampionsSo[championSoIndex] : forcedSo;
+            var so = gsm.allChampionsSo[championSoIndex];
             championSo = so;
             maxHp = championSo.maxHp;
             currentHp = maxHp;
