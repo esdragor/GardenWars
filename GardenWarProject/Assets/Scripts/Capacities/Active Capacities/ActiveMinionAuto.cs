@@ -6,15 +6,15 @@ using UnityEngine;
 public class ActiveMinionAuto : ActiveCapacity
 {
     private Entity _target;
-    private MinionTest _minion;
+    //private MinionTest _minion;
     private double timer;
     
     public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        _minion = caster.GetComponent<MinionTest>();
-        _target = _minion.currentAttackTarget.GetComponent<Entity>();
+        // _minion = caster.GetComponent<MinionTest>();
+        //  _target = _minion.currentAttackTarget.GetComponent<Entity>();
         
-        if (Vector3.Distance(_minion.transform.position, _target.transform.position) > _minion.attackRange){return false;}
+        // if (Vector3.Distance(_minion.transform.position, _target.transform.position) > _minion.attackRange){return false;}
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
         
@@ -29,7 +29,7 @@ public class ActiveMinionAuto : ActiveCapacity
     {
         timer += 1 / GameStateMachine.Instance.tickRate;
 
-        if (timer >= _minion.delayBeforeAttack) 
+        //   if (timer >= _minion.delayBeforeAttack) 
         {
             ApplyEffect();
             GameStateMachine.Instance.OnTick -= DelayWaitingTick;
@@ -38,10 +38,10 @@ public class ActiveMinionAuto : ActiveCapacity
 
     private void ApplyEffect()
     {
-        if (Vector3.Distance(_target.transform.position, _minion.transform.position) < _minion.attackRange)
+        //   if (Vector3.Distance(_target.transform.position, _minion.transform.position) < _minion.attackRange)
         {
             IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
-            entityActiveLifeable.DecreaseCurrentHpRPC(_minion.attackDamage);
+            //         entityActiveLifeable.DecreaseCurrentHpRPC(_minion.attackDamage);
         }
     }
 }
