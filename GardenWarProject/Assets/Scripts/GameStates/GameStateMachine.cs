@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controllers.Inputs;
@@ -7,7 +6,6 @@ using Entities.Champion;
 using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace GameStates
 {
@@ -17,14 +15,15 @@ namespace GameStates
     public class GameStateMachine : MonoBehaviourPun
     {
         public static GameStateMachine Instance;
-        public bool IsMaster => PhotonNetwork.IsMasterClient;
-
+        public static bool isOffline => !PhotonNetwork.IsConnected;
+        public static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
         [SerializeField] private string gameSceneName;
 
         private GameState currentState;
         private GameState[] gamesStates;
 
-        [Tooltip("Ticks per second")] public double tickRate = 1;
+        [SerializeField] private double ticksPerSecond = 1;
+        public double tickRate => ticksPerSecond > 0 ? ticksPerSecond : 1;
 
         public Enums.Team winner = Enums.Team.Neutral;
         public List<int> allPlayersIDs = new List<int>();
@@ -78,12 +77,6 @@ namespace GameStates
             Instance = this;
             PhotonNetwork.AutomaticallySyncScene = true;
 
-            if (tickRate <= 0)
-            {
-                Debug.LogWarning("TickRate can't be negative. Set to 1");
-                tickRate = 1;
-            }
-
             gamesStates = new GameState[4];
             gamesStates[0] = new LobbyState(this);
             gamesStates[1] = new LoadingState(this);
@@ -95,7 +88,7 @@ namespace GameStates
 
         private void Start()
         {
-            if (IsMaster)
+            if (isMaster)
             {
                 InitState();
             }
@@ -113,6 +106,7 @@ namespace GameStates
         private void InitState()
         {
             currentState = gamesStates[0];
+            if (isOffline) currentState = gamesStates[2];
             currentState.StartState();
         }
 
@@ -294,6 +288,11 @@ namespace GameStates
 
         public void RequestSetReady(bool ready)
         {
+            if(isMaster)
+            {
+                SetReadyRPC(PhotonNetwork.LocalPlayer.ActorNumber,ready);
+                return;
+            }
             photonView.RPC("SetReadyRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, ready);
         }
 
@@ -308,7 +307,7 @@ namespace GameStates
 
             playerDataDict[actorNumber].isReady = ready;
             OnDataDictUpdated?.Invoke(actorNumber,playerDataDict[actorNumber]);
-            if (!IsMaster) return;
+            if (!isMaster) return;
             if (!playerDataDict[actorNumber].isReady) return;
             OnPlayerSetReady();
         }

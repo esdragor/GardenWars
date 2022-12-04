@@ -49,26 +49,33 @@ namespace Entities.Champion
 
         public void RequestIncreaseMaxHp(float amount)
         {
+            if(isMaster)
+            {
+                IncreaseMaxHpRPC(amount);
+                return;
+            }
             photonView.RPC("IncreaseMaxHpRPC", RpcTarget.MasterClient, amount);
         }
-
-        [PunRPC]
-        public void SyncIncreaseMaxHpRPC(float amount)
-        {
-            maxHp = amount;
-            currentHp = amount;
-            OnIncreaseMaxHpFeedback?.Invoke(amount);
-        }
-
+        
         [PunRPC]
         public void IncreaseMaxHpRPC(float amount)
         {
             maxHp += amount;
-            currentHp = amount;
-            if (maxHp < currentHp)
-                currentHp = maxHp;
+            currentHp += amount;
+            if (currentHp > maxHp) currentHp = maxHp;
             OnIncreaseMaxHp?.Invoke(amount);
+            if (isOffline) return;
             photonView.RPC("SyncIncreaseMaxHpRPC", RpcTarget.All, maxHp);
+        }
+
+        [PunRPC]
+        public void SyncIncreaseMaxHpRPC(float newMaxHp)
+        {
+            var gainedHp = newMaxHp - maxHp;
+            maxHp = newMaxHp;
+            currentHp += gainedHp;
+            if (currentHp > maxHp) currentHp = maxHp;
+            OnIncreaseMaxHpFeedback?.Invoke(gainedHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
@@ -76,27 +83,32 @@ namespace Entities.Champion
 
         public void RequestDecreaseMaxHp(float amount)
         {
-            
+            if(isMaster)
+            {
+                DecreaseMaxHpRPC(amount);
+                return;
+            }
             photonView.RPC("DecreaseMaxHpRPC", RpcTarget.MasterClient, amount);
         }
-
-        [PunRPC]
-        public void SyncDecreaseMaxHpRPC(float amount)
-        {
-            maxHp = amount;
-            if(maxHp<currentHp)
-                currentHp = maxHp;
-            OnDecreaseMaxHpFeedback?.Invoke(amount);
-        }
-
+        
         [PunRPC]
         public void DecreaseMaxHpRPC(float amount)
         {
             maxHp -= amount;
-            if(maxHp<currentHp)
-            currentHp = maxHp;
+            if(currentHp>maxHp) currentHp = maxHp;
             OnDecreaseMaxHp?.Invoke(amount);
+            if (isOffline) return;
             photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, maxHp);
+        }
+
+        [PunRPC]
+        public void SyncDecreaseMaxHpRPC(float newMaxHp)
+        {
+            var lostHp = maxHp - newMaxHp;
+            maxHp = newMaxHp;
+            currentHp -= lostHp;
+            if (currentHp > maxHp) currentHp = maxHp;
+            OnDecreaseMaxHpFeedback?.Invoke(lostHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;

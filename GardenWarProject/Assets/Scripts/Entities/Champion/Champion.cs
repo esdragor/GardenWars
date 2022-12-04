@@ -1,5 +1,6 @@
 using Entities.Capacities;
 using GameStates;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,28 +8,20 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
-        [SerializeField] private ChampionSO defaultChampionSO;
-        
+        private static bool isOffline => !PhotonNetwork.IsConnected;
+        private static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
         public ChampionSO championSo;
         public Transform rotateParent;
-        public Transform championMesh;
         private Vector3 respawnPos;
 
-        private GameStateMachine gsm;
-        private CapacitySOCollectionManager capacityCollection;
+        private GameStateMachine gsm => GameStateMachine.Instance;
         private UIManager uiManager;
-        public Camera camera;
         public Rigidbody rb;
 
         public CollisionBlocker blocker;
         protected override void OnStart()
         {
-            gsm = GameStateMachine.Instance;
-            capacityCollection = CapacitySOCollectionManager.Instance;
-            uiManager = UIManager.Instance;
-            camera = Camera.main;
-            uiManager = UIManager.Instance;
-
+            uiManager = UIManager.Instance; 
             agent = GetComponent<NavMeshAgent>();
             var obstacle = GetComponent<NavMeshObstacle>();
             blocker.characterColliderBlocker.enabled = false;
@@ -62,7 +55,7 @@ namespace Entities.Champion
 
         public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
         {
-            var so = (gsm != null) ? gsm.allChampionsSo[championSoIndex] : defaultChampionSO;
+            var so = gsm.allChampionsSo[championSoIndex];
             championSo = so;
             maxHp = championSo.maxHp;
             currentHp = maxHp;
@@ -84,7 +77,7 @@ namespace Entities.Champion
             
             elementsToShow.Add(championMesh);
             
-            if (gsm != null)
+            if (!GameStateMachine.isOffline)
             {
                 so.SetIndexes();
                 
