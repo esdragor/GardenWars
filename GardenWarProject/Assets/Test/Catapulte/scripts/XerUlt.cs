@@ -76,7 +76,7 @@ public class XerUlt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.C))
             launchXerathUlt = true;
 
         #region SimpleXerath
@@ -126,9 +126,9 @@ public class XerUlt : MonoBehaviour
             switch (capacitySo.hextechMode)
             {
                 case HextechMode.hold:
-                    if (Input.GetKeyDown(KeyCode.A))
+                    if (Input.GetKeyDown(KeyCode.C))
                         hextechDistance = capacitySo.MinDistanceHFlash;
-                    if (Input.GetKey(KeyCode.A))
+                    if (Input.GetKey(KeyCode.C))
                     {
                         if (hextechDistance < capacitySo.MaxDistanceHFlash)
                             hextechDistance += Time.deltaTime * capacitySo.HextechFlashSpeedScale;
@@ -138,7 +138,7 @@ public class XerUlt : MonoBehaviour
                         EndPoint.position = StartPoint.position + getDirByMousePosition().normalized;
                     }
 
-                    if (Input.GetKeyUp(KeyCode.A))
+                    if (Input.GetKeyUp(KeyCode.C))
                     {
                         EndPoint.position = StartPoint.position + getDirByMousePosition().normalized * hextechDistance;
                         isHextech = false;
@@ -164,7 +164,7 @@ public class XerUlt : MonoBehaviour
 
                     EndPoint.position = StartPoint.position + getDirByMousePosition().normalized;
 
-                    if (Input.GetKeyDown(KeyCode.A))
+                    if (Input.GetKeyDown(KeyCode.C))
                     {
                         EndPoint.position = StartPoint.position + getDirByMousePosition().normalized * hextechDistance;
                         isHextech = false;
@@ -179,7 +179,7 @@ public class XerUlt : MonoBehaviour
 
                     float mouseDist = Vector3.Distance(StartPoint.position, getDirByMousePosition());
 
-                    if (Input.GetKeyDown(KeyCode.A))
+                    if (Input.GetKeyDown(KeyCode.C))
                     {
                         if (capacitySo.RatioMouseDistance != 0)
                             mouseDist /= capacitySo.RatioMouseDistance;

@@ -140,9 +140,9 @@ namespace Entities.Champion
         [PunRPC]
         public void SetCurrentHpPercentRPC(float value)
         {
-            currentHp = (value * 100)/maxHp;
+            currentHp = (value/100) * maxHp;
             OnSetCurrentHpPercent?.Invoke(value);
-            photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, value);
+            photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, currentHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
