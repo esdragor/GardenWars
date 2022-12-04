@@ -5,7 +5,7 @@ using GameStates;
 using Photon.Pun;
 using UnityEngine;
 
-public class SpawnMinions : MonoBehaviour
+public class SpawnMinions : MonoBehaviourPun
 {
     public int nb = 1;
     public float delayBetweenSpawn = 0.3f;
@@ -17,14 +17,16 @@ public class SpawnMinions : MonoBehaviour
 
     private Enums.Team myTeam;
 
-    IEnumerator Spawner()
+    IEnumerator Spawner(byte Team)
     {
         for (int i = 0; i < nb; i++)
         {
-            Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[(int)myTeam - 1].position, Quaternion.identity);
+           
+            //Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[Team - 1].position, Quaternion.identity);
+            Entity entity = PhotonNetwork.Instantiate("Minion", SpawnPoints[Team - 1].position, Quaternion.identity).GetComponent<Entity>();
             MyAIBT BT = entity.GetComponent<MyAIBT>();
             BT.enabled = true;
-            BT.waypoints = (myTeam == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
+            BT.waypoints = ((Enums.Team)Team == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
             yield return new WaitForSeconds(0.1f);
             BT.OnStart();
             yield return new WaitForSeconds(delayBetweenSpawn);
@@ -37,12 +39,14 @@ public class SpawnMinions : MonoBehaviour
     {
         myTeam = GameStateMachine.Instance.GetPlayerTeam();
         if (!PhotonNetwork.LocalPlayer.IsLocal) return;
-        StartCoroutine(Spawner());
+        
+        photonView.RPC("Spawn", RpcTarget.MasterClient, (int)myTeam);
 
     }
 
-    void SpawnMinion()
+    [PunRPC]
+    public void Spawn(int team)
     {
-
+        StartCoroutine(Spawner((byte)team));
     }
 }

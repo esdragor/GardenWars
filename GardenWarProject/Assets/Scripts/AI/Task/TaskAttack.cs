@@ -44,19 +44,22 @@ public class TaskAttack : Node
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
-        Minion minionEntity = target.gameObject.GetComponent<Minion>();
-
-        if (minionEntity)
-        {
-            Debug.Log("Attack Minion");
-        }
-
-        Champion herosEntity = target.gameObject.GetComponent<Champion>();
-
-        if (herosEntity)
-        {
-            Debug.Log("Attack Hero");
-        }
+        
+        attack.RequestAttack(0, new []{ target.entityIndex}, new []{target.transform.position});
+        
+        // Minion minionEntity = target.gameObject.GetComponent<Minion>();
+        //
+        // if (minionEntity)
+        // {
+        //     Debug.Log("Attack Minion");
+        // }
+        //
+        // Champion herosEntity = target.gameObject.GetComponent<Champion>();
+        //
+        // if (herosEntity)
+        // {
+        //     Debug.Log("Attack Hero");
+        // }
 
         Parent.Parent.ClearData("target");
 
