@@ -10,45 +10,6 @@ public class ActiveTowerAuto : ActiveCapacity
     private Entity _target;
     private double timer;
     
-    public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        return true;
-    }
-
-    protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        GameStateMachine.Instance.OnTick += DelayWaitingTick;
-    }
-
-    protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        
-    }
-
-    protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        
-    }
-
-    protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        
-    }
-
-    protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        
-    }
-
-    protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        
-    }
-
-    public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-    }
-    
     private void DelayWaitingTick()
     {
         timer += 1 / GameStateMachine.Instance.tickRate;
@@ -56,7 +17,7 @@ public class ActiveTowerAuto : ActiveCapacity
         //   if (timer >= _minion.delayBeforeAttack) 
         {
             ApplyEffect();
-            GameStateMachine.Instance.OnTick -= DelayWaitingTick;
+            gsm.OnTick -= DelayWaitingTick;
         }
     }
 
@@ -67,5 +28,40 @@ public class ActiveTowerAuto : ActiveCapacity
             IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
             //         entityActiveLifeable.DecreaseCurrentHpRPC(_minion.attackDamage);
         }
+    }
+
+    protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        return true;
+    }
+
+    protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        gsm.OnTick += DelayWaitingTick;
+    }
+
+    protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
+    }
+
+    protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        
     }
 }
