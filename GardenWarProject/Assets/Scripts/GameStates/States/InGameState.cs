@@ -26,6 +26,9 @@ namespace GameStates.States
                 return;
             }
             
+            if (GameStateMachine.isMaster) sm.UpdateEvent();
+            sm.UpdateEventFeedback();
+            
             timer = currentTime - lastTickTime;
             //Debug.Log(timer);
 

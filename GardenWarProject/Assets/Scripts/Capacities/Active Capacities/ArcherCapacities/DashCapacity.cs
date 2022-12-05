@@ -1,5 +1,3 @@
-using GameStates;
-using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Capacities
@@ -7,7 +5,9 @@ namespace Entities.Capacities
     public class DashCapacity : ActiveCapacity
     {
         private Champion.Champion champion => caster.GetComponent<Champion.Champion>();
-        private bool isBlink => ((DashCapacitySO) AssociatedActiveCapacitySO()).isBlink;
+        private DashCapacitySO so => (DashCapacitySO)AssociatedActiveCapacitySO();
+        private bool isBlink => so.isBlink;
+        private double dashDuration => so.dashTime;
         
         protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
@@ -36,12 +36,19 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
+            var destination = targetPositions[0];
+            var casterPos = caster.transform.position;
+            if (Vector3.Distance(casterPos, destination) > so.maxRange || so.fixedDistance)
+            {
+                destination = casterPos + (destination - casterPos).normalized * so.maxRange;
+
+            }
             if (isBlink)
             {
-                Blink(targetPositions[0]);
+                Blink(destination);
                 return;
             }
-            champion.agent.enabled = false;
+            StartDash(casterPos,destination);
         }
 
         private void Blink(Vector3 destination)
@@ -50,10 +57,27 @@ namespace Entities.Capacities
             champion.agent.Warp(destination);
         }
 
-        private void DashTowardsDestination()
+        private void StartDash(Vector3 start,Vector3 destination)
         {
+            champion.agent.enabled = false;
+
+            double timeInDash = 0;
+            
+            gsm.OnUpdateFeedback += DashTowardsDestination;
+
+            void DashTowardsDestination()
+            {
+                timeInDash += Time.deltaTime;
+                
+                caster.transform.position = Vector3.Lerp(start,destination,(float)(timeInDash/dashDuration));
+                if(timeInDash < dashDuration) return;
+                champion.agent.enabled = true;
+                champion.agent.Warp(destination);
+                gsm.OnUpdateFeedback -= DashTowardsDestination;
+            }
             
         }
+        
 
         public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {

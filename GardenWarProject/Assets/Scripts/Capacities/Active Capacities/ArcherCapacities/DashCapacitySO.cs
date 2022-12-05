@@ -9,6 +9,7 @@ namespace Entities.Capacities
         [Header("Dash Settings")]
         public bool isBlink;
         [Tooltip("In Seconds")]public double dashTime;
+        public bool fixedDistance;
         
         public override Type AssociatedType()
         {

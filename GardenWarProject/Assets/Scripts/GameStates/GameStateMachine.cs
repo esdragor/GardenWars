@@ -165,6 +165,19 @@ namespace GameStates
             OnTickFeedback?.Invoke();
         }
 
+        public void UpdateEvent()
+        {
+            OnUpdate?.Invoke();
+        }
+
+        public void UpdateEventFeedback()
+        {
+            OnUpdateFeedback?.Invoke();
+        }
+        
+        public event GlobalDelegates.NoParameterDelegate OnUpdate;
+        public event GlobalDelegates.NoParameterDelegate OnUpdateFeedback;
+
         public event GlobalDelegates.NoParameterDelegate OnTick;
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;
 

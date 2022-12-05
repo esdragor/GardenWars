@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb8302b8cf8d7944ba990f0d6c70efdc, type: 3}
-  m_Name: Dash
+  m_Name: FixedDash
   m_EditorClassIdentifier: 
   descriptionName: 
   icon: {fileID: 0}
@@ -20,9 +20,9 @@ MonoBehaviour:
   maxRange: 7.5
   types: 
   shootType: 1
-  indexInCollection: 7
+  indexInCollection: 0
   feedbackDuration: 0
   feedbackPrefab: {fileID: 0}
   isBlink: 0
   dashTime: 1
-  fixedDistance: 0
+  fixedDistance: 1
