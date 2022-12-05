@@ -9,13 +9,13 @@ namespace Entities.Capacities
         public ActiveTormentedShadowSO so;
         public double tickDamageTimer;
         public float durationTimer;
-        
-        public override bool TryCast(int casterIndex, int[] targets, Vector3[] pos)
+
+        protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             return true;
         }
 
-        protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             so = (ActiveTormentedShadowSO)AssociatedActiveCapacitySO();
             if (Vector3.Distance(targetPositions[0], caster.transform.position) > so.maxRange) return;
@@ -29,27 +29,27 @@ namespace Entities.Capacities
             Debug.Log("Pressed");
         }
 
-        protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             Debug.Log("Pressed Feedback");
         }
 
-        protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             Debug.Log("Hold");
         }
 
-        protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             Debug.Log("Hold Feedback");
         }
 
-        protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             Debug.Log("Released");
         }
 
-        protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             Debug.Log("Released Feedback");
         }
@@ -92,12 +92,6 @@ namespace Entities.Capacities
                     }
                 }
             }
-        }
-
-        public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-        {
-            Debug.Log("Cast tormented shadow");
-            
         }
     }
 }

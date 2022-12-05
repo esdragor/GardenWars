@@ -153,7 +153,7 @@ namespace Entities.Champion
         {
             if (!isFollowing) return;
             agent.SetDestination(entityFollow.transform.position);
-            if (lastCapacity.isInRange(entityIndex, entityFollow.transform.position))
+            if (lastCapacity.isInRange(entityFollow.transform.position))
             {
                 agent.SetDestination(transform.position);
                 isFollowing = false;

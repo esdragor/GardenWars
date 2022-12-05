@@ -60,7 +60,7 @@ namespace Entities.Champion
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             
-            if (!activeCapacity.TryCast(entityIndex, targetedEntities, targetedPositions)) return;
+            if (!activeCapacity.CanCast(targetedEntities, targetedPositions)) return;
             
             OnCast?.Invoke(capacityIndex,targetedEntities,targetedPositions);
             photonView.RPC("SyncCastRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
@@ -71,7 +71,7 @@ namespace Entities.Champion
         public void SyncCastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            activeCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
+            activeCapacity.OnRelease(targetedEntities,targetedPositions);
             OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions,activeCapacity);
         }
         
@@ -119,7 +119,7 @@ namespace Entities.Champion
                 };
                 capacityDict.Add(capacityIndex,newCapacity);
             }
-            capacityDict[capacityIndex].capacity.OnPress(entityIndex,targetedEntities,targetedPositions);
+            capacityDict[capacityIndex].capacity.OnPress(targetedEntities,targetedPositions);
 
         }
 
@@ -127,7 +127,7 @@ namespace Entities.Champion
         {
             foreach (var ability in capacityDict.Values.Where(ability => ability.isCasting))
             {
-                ability.capacity.OnHold(entityIndex,targetedEntities,targetedPositions);
+                ability.capacity.OnHold(targetedEntities,targetedPositions);
             }
         }
 
@@ -171,7 +171,7 @@ namespace Entities.Champion
                 capacityDict.Add(capacityIndex,newCapacity);
             }
             
-            capacityDict[capacityIndex].capacity.OnRelease(entityIndex,targetedEntities,targetedPositions);
+            capacityDict[capacityIndex].capacity.OnRelease(targetedEntities,targetedPositions);
         }
     }
 }

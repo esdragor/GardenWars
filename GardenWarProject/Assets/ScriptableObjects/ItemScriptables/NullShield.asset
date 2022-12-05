@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: 
   description: Increases max hp by 15.
-  sprite: {fileID: 21300000, guid: 3dd9bef66145627439322e3f8e33141b, type: 3}
+  sprite: {fileID: 21300000, guid: 9c0d6ec706e01ce448aea81584af092b, type: 3}
   consumable: 0
   activationCooldown: 0
   passiveCapacities: []
   passiveCapacitiesIndexes: 
-  activeCapacities: []
+  activeCapacities:
+  - {fileID: 11400000, guid: 9f3bd6cee36cc9944b0293b32939e45a, type: 2}
   activeCapacitiesIndexes: 
   indexInCollection: 0
   healthMod: 0
