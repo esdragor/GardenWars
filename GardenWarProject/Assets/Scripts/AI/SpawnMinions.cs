@@ -44,10 +44,7 @@ public class SpawnMinions : MonoBehaviourPun
     {
         myTeam = GameStateMachine.Instance.GetPlayerTeam();
         if (!PhotonNetwork.LocalPlayer.IsLocal) return;
-        
-//         Entity entity = PhotonNetwork.Instantiate("Minion", waypointsTeamBlue[1].position + Vector3.left * 10, Quaternion.identity).GetComponent<Entity>();
-// entity.team = myTeam + 1;
-        
+
         photonView.RPC("Spawn", RpcTarget.MasterClient, (int)myTeam);
 
     }
@@ -64,9 +61,5 @@ public class SpawnMinions : MonoBehaviourPun
         Entity entity = EntityCollectionManager.GetEntityByIndex(entityID);
         
         entity.team = (Enums.Team)team;
-        // MyAIBT BT = entity.GetComponent<MyAIBT>();
-        // BT.enabled = true;
-        // BT.waypoints = ((Enums.Team)team == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
-        // BT.OnStart();
     }
 }

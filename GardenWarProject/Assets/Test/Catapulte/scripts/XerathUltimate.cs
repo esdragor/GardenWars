@@ -1,99 +1,152 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
+using Entities;
 using Entities.Capacities;
+using ExitGames.Client.Photon.StructWrapping;
 using GameStates;
 using UnityEngine;
-using Quaternion = UnityEngine.Quaternion;
-using Vector3 = UnityEngine.Vector3;
+using Object = UnityEngine.Object;
 
 public class XerathUltimate : ActiveCapacity
 {
-    private XerathUltimateSO activeCapa;
+    private XerathUltimateSO activeCapa => (XerathUltimateSO)AssociatedActiveCapacitySO();
     private Vector3 startPosition;
     private Vector3 GoalPosition;
 
     private GameObject candyBag = null;
-    private float Animation = 0f;
-    
-    public class ParabolaClass
+    private GameObject HelperDirection = null;
+    private double Animation = 0f;
+    private Plane plane = new Plane(Vector3.up, 0);
+
+    private bool IsHextech = false;
+    private float time_Pressed = 0f;
+    private double hextechDistance;
+    private bool PositiveJaugeHextech = true;
+    private GameStateMachine sm;
+
+    public void Init()
     {
-        public static Vector3 Parabola(Vector3 start, Vector3 end, float height, float t)
+        candyBag = Object.Instantiate(activeCapa.prefab, caster.transform.position + Vector3.up * 1, Quaternion.identity);
+        sm = GameStateMachine.Instance;
+        IsHextech = true;
+        hextechDistance = 0f;
+        if (IsHextech)
+            hextechDistance = activeCapa.MinDistanceHFlash;
+    }
+
+ 
+    public Vector3 getDirByMousePosition()
+    {
+        float dist;
+        Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray2, out dist))
         {
-            Func<float, float> f = x => -4 * height * x * x + 4 * height * x;
-
-            var mid = Vector3.Lerp(start, end, t);
-
-            return new Vector3(mid.x, f(t) + Mathf.Lerp(start.y, end.y, t), mid.z);
+            Vector3 worldPosition = ray2.GetPoint(dist);
+            return (new Vector3(worldPosition.x, 0, worldPosition.z) - startPosition);
         }
+
+        return Vector3.zero;
     }
 
-    public void MoveBag()
-    {
-        Animation += Time.deltaTime * activeCapa.SpeedOnAir;
-        
-        //Animation = Animation %activeCapa.ReduceSpeed;
-
-        candyBag.transform.position = ParabolaClass.Parabola(caster.transform.position + Vector3.up * 4f, GoalPosition,
-            activeCapa.height, Animation);
-        if (Vector3.Distance(candyBag.transform.position, GoalPosition) < 1f)
-            GameStateMachine.Instance.OnTick -= MoveBag;
-    }
 
     public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        activeCapa = (XerathUltimateSO)AssociatedActiveCapacitySO();
-        candyBag = PoolLocalManager.Instance.PoolInstantiate(activeCapa.prefab, caster.transform.position + Vector3.up*2f, Quaternion.identity);
-        Debug.Log("Ulti Xerath launched");
-        
-        if (!candyBag) return;
-        
-        GameStateMachine.Instance.OnTick += MoveBag;
-    }
 
+    }
 
     public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         if (!base.TryCast(casterIndex, targetsEntityIndexes, targetPositions)) return false;
         Debug.Log("Performed Ulti Xerath at " + Time.time);
 
-        //if (Vector3.Distance(targetPositions[0], caster.transform.position) > activeCapa.maxRange){return false;}
-
-        GoalPosition = GetClosestValidPoint(targetPositions[0]);
-        startPosition = caster.transform.position;
-
 
         return true;
     }
 
+    public void Jauge()
+    {
+        if (PositiveJaugeHextech)
+        {
+            if (hextechDistance < activeCapa.MaxDistanceHFlash)
+                hextechDistance += activeCapa.HextechFlashSpeedScale;
+            else
+                PositiveJaugeHextech = false;
+        }
+        else
+        {
+            if (hextechDistance > activeCapa.MinDistanceHFlash)
+                hextechDistance -= activeCapa.HextechFlashSpeedScale;
+            else
+                PositiveJaugeHextech = true;
+        }
+        Debug.Log(hextechDistance);
+    }
+
     protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        throw new NotImplementedException();
+        time_Pressed = Time.time;
+        if (activeCapa.hextechMode == HextechMode.jauge)
+        {
+            PositiveJaugeHextech = true;
+            hextechDistance = activeCapa.MinDistanceHFlash;
+            GameStateMachine.Instance.OnTick += Jauge;
+        }
     }
 
     protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        throw new NotImplementedException();
+        if(HelperDirection) HelperDirection.SetActive(true);
     }
 
     protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        throw new NotImplementedException();
+        
     }
 
     protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        throw new NotImplementedException();
+        if (!HelperDirection) return;
+        if (activeCapa.hextechMode != HextechMode.mouseDistance)
+            HelperDirection.transform.position = startPosition + getDirByMousePosition().normalized;
+        else
+            HelperDirection.transform.position = startPosition + getDirByMousePosition();
+        ;
     }
 
     protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        throw new NotImplementedException();
+        Init();
+        time_Pressed = Time.time - time_Pressed;
+        switch (activeCapa.hextechMode)
+        {
+            case HextechMode.hold:
+                hextechDistance += time_Pressed;
+                if (hextechDistance > activeCapa.MaxDistanceHFlash)
+                    hextechDistance = activeCapa.MaxDistanceHFlash;
+                GoalPosition = GetClosestValidPoint(startPosition + getDirByMousePosition().normalized * (float)hextechDistance);
+                break;
+
+            case HextechMode.jauge:
+                GameStateMachine.Instance.OnTick -= Jauge;
+                GoalPosition = GetClosestValidPoint(startPosition + getDirByMousePosition().normalized * (float)hextechDistance);
+                break;
+
+            case HextechMode.mouseDistance:
+                float mouseDist = Vector3.Distance(startPosition, getDirByMousePosition());
+                
+                if (activeCapa.RatioMouseDistance != 0f)
+                    mouseDist /= activeCapa.RatioMouseDistance;
+                
+                GoalPosition = GetClosestValidPoint(startPosition + getDirByMousePosition().normalized * mouseDist);
+                break;
+        }
+
+        candyBag.GetComponent<CandyBagXerath>().Init(caster, activeCapa, GoalPosition, hextechDistance);
     }
 
     protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        throw new NotImplementedException();
+
+        if (HelperDirection)
+            HelperDirection.SetActive(false);
     }
 }

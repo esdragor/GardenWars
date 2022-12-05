@@ -10,17 +10,11 @@ public class XerUlt : MonoBehaviour
     public XerathUltimateSO capacitySo;
 
     private float Animation;
-    private float height = 5.0f;
     private float ReduceSpeed = 5.0f;
     private int nbBounce = 0;
     private bool finish = false;
-    private float radiusRandom = 0f;
-    private Vector3 dir = Vector3.zero;
     private float hextechDistance = 0.0f;
-    private bool isHextech = false;
     private bool PositiveJaugeHextech = true;
-
-    private bool launchXerathUlt = false;
 
     private Plane plane = new Plane(Vector3.up, 0);
     private float distance = 0.0f;

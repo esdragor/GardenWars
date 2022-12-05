@@ -21,7 +21,6 @@ public class XerathUltimateSO : ActiveCapacitySO
     public float height = 5.0f;
     public bool RandomizeZone = false;
     public float RandomizeZoneRadius = 5.0f;
-    public bool IsHextechFlash = false;
     public HextechMode hextechMode = HextechMode.hold;
     public float HextechFlashSpeedScale = 1f;
     public float MinDistanceHFlash = 5.0f;

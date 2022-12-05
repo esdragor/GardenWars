@@ -8,7 +8,7 @@ using UnityEngine;
 public class FlipperSO : ActiveCapacitySO
 {
     public GameObject CandyBagPrefab;
-    public float CandyBagSpeed;
+    [Range(0.1f, 10f)]public float CandyBagSpeed = 3f;
     public bool decreaseSpeedDuring = false;
     [Range(0, 1)] public float ForceDecelerate = 0.03f;
     public bool StopByTimer;
@@ -22,6 +22,6 @@ public class FlipperSO : ActiveCapacitySO
 
     public override Type AssociatedType()
     {
-        return typeof(ActiveCapacity);
+        return typeof(Flipper);
     }
 }
