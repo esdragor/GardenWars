@@ -47,26 +47,14 @@ namespace Controllers.Inputs
             UIManager.Instance.ShowHideShop();
         }
         
-        /// <summary>
-        /// Actions Performed on Capacity 0 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
         private void OnPressCapacity0(InputAction.CallbackContext ctx)
         {
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[0]);
         }
-        /// <summary>
-        /// Actions Performed on Capacity 1 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
         private void OnPressCapacity1(InputAction.CallbackContext ctx)
         {
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[1]);
         }
-        /// <summary>
-        /// Actions Performed on Capacity 2 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
         private void OnPressCapacity2(InputAction.CallbackContext ctx)
         {
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[2]);
@@ -76,47 +64,40 @@ namespace Controllers.Inputs
         {
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[0]);
         }
-        /// <summary>
-        /// Actions Performed on Capacity 1 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
         private void OnReleaseCapacity1(InputAction.CallbackContext ctx)
         {
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[1]);
         }
-        /// <summary>
-        /// Actions Performed on Capacity 2 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
         private void OnReleaseCapacity2(InputAction.CallbackContext ctx)
         {
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[2]);
         }
-
-        /// <summary>
-        /// Actions Performed on Item 0 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
-        private void OnActivateItem0(InputAction.CallbackContext ctx)
+        
+        
+        private void OnPressItem0(InputAction.CallbackContext ctx)
         {
-            champion.RequestActivateItem(0,selectedEntity,cursorWorldPos);
+            champion.RequestPressItem(0,selectedEntity,cursorWorldPos);
+        }
+        private void OnPressItem1(InputAction.CallbackContext ctx)
+        {
+            champion.RequestPressItem(1,selectedEntity,cursorWorldPos);
+        }
+        private void OnPressItem2(InputAction.CallbackContext ctx)
+        {
+            champion.RequestPressItem(2,selectedEntity,cursorWorldPos);
         }
         
-        /// <summary>
-        /// Actions Performed on Item 1 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
-        private void OnActivateItem1(InputAction.CallbackContext ctx)
+        private void OnReleaseItem0(InputAction.CallbackContext ctx)
         {
-            champion.RequestActivateItem(1,selectedEntity,cursorWorldPos);
+            champion.RequestReleaseItem(0,selectedEntity,cursorWorldPos);
         }
-        /// <summary>
-        /// Actions Performed on Item 2 Activation
-        /// </summary>
-        /// <param name="ctx"></param>
-        private void OnActivateItem2(InputAction.CallbackContext ctx)
+        private void OnReleaseItem1(InputAction.CallbackContext ctx)
         {
-            champion.RequestActivateItem(2,selectedEntity,cursorWorldPos);
+            champion.RequestReleaseItem(1,selectedEntity,cursorWorldPos);
+        }
+        private void OnReleaseItem2(InputAction.CallbackContext ctx)
+        {
+            champion.RequestReleaseItem(2,selectedEntity,cursorWorldPos);
         }
 
         private void OnMouseMove(InputAction.CallbackContext ctx)
@@ -197,9 +178,13 @@ namespace Controllers.Inputs
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
             
-            inputs.Inventory.ActivateItem0.performed += OnActivateItem0;
-            inputs.Inventory.ActivateItem1.performed += OnActivateItem1;
-            inputs.Inventory.ActivateItem2.performed += OnActivateItem2;
+            inputs.Inventory.ActivateItem0.performed += OnPressItem0;
+            inputs.Inventory.ActivateItem1.performed += OnPressItem1;
+            inputs.Inventory.ActivateItem2.performed += OnPressItem2;
+            inputs.Inventory.ActivateItem0.canceled += OnReleaseItem0;
+            inputs.Inventory.ActivateItem1.canceled += OnReleaseItem1;
+            inputs.Inventory.ActivateItem2.canceled += OnReleaseItem2;
+            
             inputs.Inventory.ShowHideInventory.started += context => UIManager.Instance.ShowHideInventory(true);
             inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
             inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
@@ -228,6 +213,13 @@ namespace Controllers.Inputs
             inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;
 
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;
+            
+            inputs.Inventory.ActivateItem0.performed -= OnPressItem0;
+            inputs.Inventory.ActivateItem1.performed -= OnPressItem1;
+            inputs.Inventory.ActivateItem2.performed -= OnPressItem2;
+            inputs.Inventory.ActivateItem0.canceled -= OnReleaseItem0;
+            inputs.Inventory.ActivateItem1.canceled -= OnReleaseItem1;
+            inputs.Inventory.ActivateItem2.canceled -= OnReleaseItem2;
 
             CameraController.Instance.UnLinkCamera();
         }

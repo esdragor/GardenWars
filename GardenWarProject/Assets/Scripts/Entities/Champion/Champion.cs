@@ -34,6 +34,7 @@ namespace Entities.Champion
         protected override void OnUpdate()
         {
             CastHeldCapacities();
+            CastHeldItems();
             if (isFollowing) FollowEntity(); // Lol
             if (!photonView.IsMine) return;
             CheckMoveDistance();

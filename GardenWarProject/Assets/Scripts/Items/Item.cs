@@ -9,11 +9,15 @@ namespace Entities.Inventory
     public abstract class Item
     {
         public bool consumable;
-        
         public int count;
-        public float timer;
+        
         public Entity entityOfInventory;
         public IInventoryable inventory;
+        
+        public double baseCooldown => AssociatedItemSO().activationCooldown;
+        public bool isOnCooldown;
+        private double cooldownTimer;
+        public readonly List<ActiveCapacity> activeCapacities = new List<ActiveCapacity>();
 
         public byte indexOfSOInCollection;
 
@@ -31,6 +35,11 @@ namespace Entities.Inventory
             foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
             {
                 entityOfInventory.AddPassiveCapacityRPC(index);
+            }
+            activeCapacities.Clear();
+            foreach (var index in AssociatedItemSO().activeCapacitiesIndexes)
+            {
+                activeCapacities.Add(CapacitySOCollectionManager.CreateActiveCapacity(index, entityOfInventory));
             }
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
@@ -10,6 +11,7 @@ namespace Entities.Champion
     public partial class Champion : IInventoryable
     {
         [SerializeReference] public List<Item> items = new List<Item>();
+        private readonly List<Item> heldItems = new List<Item>();
 
         public Item[] GetItems()
         {
@@ -29,6 +31,11 @@ namespace Entities.Champion
 
         public void RequestAddItem(byte index)
         {
+            if (isMaster)
+            {
+                AddItemRPC(index);
+                return;
+            }
             photonView.RPC("AddItemRPC",RpcTarget.MasterClient,index);
         }
 
@@ -44,7 +51,17 @@ namespace Entities.Champion
                     contains = true;
                 }
                 if(!contains && items.Count>=3) return;
+                if (isOffline)
+                {
+                    SyncAddItemRPC(index);
+                    return;
+                }
                 photonView.RPC("SyncAddItemRPC",RpcTarget.All, index);
+                return;
+            }
+            if (isOffline)
+            {
+                SyncAddItemRPC(index);
                 return;
             }
             if(items.Count>=3) return;
@@ -56,8 +73,8 @@ namespace Entities.Champion
         {
             var item = ItemCollectionManager.Instance.CreateItem(index, this);
             if(item == null) return;
-            if(!items.Contains(item)) items.Add(item);
-            if (PhotonNetwork.IsMasterClient)
+            if (!items.Contains(item)) items.Add(item);
+            if (isMaster)
             {
                 item.OnItemAddedToInventory(this);
                 OnAddItem?.Invoke(index);
@@ -73,6 +90,11 @@ namespace Entities.Champion
         /// <param name="index">index of Item in this entity's inventory (not in item Collection)</param>
         public void RequestRemoveItem(byte index)
         {
+            if (isMaster)
+            {
+                RemoveItemRPC(index);
+                return;
+            }
             photonView.RPC("RemoveItemRPC",RpcTarget.MasterClient,index);
         }
 
@@ -86,6 +108,11 @@ namespace Entities.Champion
         [PunRPC]
         public void RemoveItemRPC(byte index)
         {
+            if (isOffline)
+            {
+                SyncRemoveItemRPC(index);
+                return;
+            }
             photonView.RPC("SyncRemoveItemRPC",RpcTarget.All,index);
         }
 
@@ -102,64 +129,109 @@ namespace Entities.Champion
             if(index >= items.Count) return;
             var item = items[index];
             items.Remove(item);
+            if(heldItems.Contains(item))heldItems.Remove(item);
             if (PhotonNetwork.IsMasterClient)
             {
                 item.OnItemRemovedFromInventory(this);
                 OnRemoveItem?.Invoke(index);
             }
-            
             item.OnItemRemovedFromInventoryFeedback(this);
             OnRemoveItemFeedback?.Invoke(index);
         }
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
         
-        public void RequestActivateItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void RequestPressItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
             if(itemIndexInInventory >= items.Count) return;
-            photonView.RPC("ActivateItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
+            if (isMaster)
+            {
+                PressItemRPC(itemIndexInInventory,selectedEntities,positions);
+                return;
+            }
+            photonView.RPC("PressItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
         }
 
         [PunRPC]
-        public void ActivateItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void PressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
             if(itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if(item == null) return;
-            
-            var successesActives = new bool[item.AssociatedItemSO().activeCapacitiesIndexes.Length];
-            var bytes = item.AssociatedItemSO().activeCapacitiesIndexes;
-            for (var i = 0; i < bytes.Length; i++)
+            if (isOffline)
             {
-                var capacityIndex = bytes[i];
-                var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
-                successesActives[i] = activeCapacity.CanCast(selectedEntities, positions);
+                SyncPressItemRPC(itemIndexInInventory, selectedEntities, positions);
+                return;
             }
-            items[itemIndexInInventory].OnItemActivated(selectedEntities,positions);
-            OnActivateItem?.Invoke(itemIndexInInventory,selectedEntities,positions);
-            photonView.RPC("SyncActivateItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions,successesActives.ToArray());
-            
-
+            photonView.RPC("SyncPressItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions);
         }
 
         [PunRPC]
-        public void SyncActivateItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions,bool[] castSuccess)
+        public void SyncPressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        {
+            targetedEntities = selectedEntities;
+            targetedPositions = positions;
+            if(itemIndexInInventory >= items.Count) return;
+            var item = items[itemIndexInInventory];
+            if(items[itemIndexInInventory] == null) return;
+            foreach (var activeCapacity in item.activeCapacities)
+            {
+                activeCapacity.OnPress(targetedEntities,targetedPositions);
+            }
+            heldItems.Add(item);
+        }
+        
+        private void CastHeldItems()
+        {
+            foreach (var capacity in heldItems.SelectMany(item => item.activeCapacities))
+            {
+                capacity.OnHold(targetedEntities,targetedPositions);
+            }
+        }
+        
+        public void RequestReleaseItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        {
+            if(itemIndexInInventory >= items.Count) return;
+            if (isMaster)
+            {
+                ReleaseItemRPC(itemIndexInInventory,selectedEntities,positions);
+                return;
+            }
+            photonView.RPC("ReleaseItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
+        }
+
+        [PunRPC]
+        public void ReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        {
+            if(itemIndexInInventory >= items.Count) return;
+            var item = items[itemIndexInInventory];
+            if(item == null) return;
+            items[itemIndexInInventory].OnItemActivated(selectedEntities,positions);
+            OnActivateItem?.Invoke(itemIndexInInventory,selectedEntities,positions);
+            if (isOffline)
+            {
+                SyncReleaseItemRPC(itemIndexInInventory, selectedEntities, positions);
+                return;
+            }
+            photonView.RPC("SyncReleaseItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions);
+        }
+
+        [PunRPC]
+        public void SyncReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
             if(itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if(items[itemIndexInInventory] == null) return;
-            var bytes = item.AssociatedItemSO().activeCapacitiesIndexes;
-            for (var index = 0; index < bytes.Length; index++)
+            heldItems.Remove(item);
+            foreach (var activeCapacity in item.activeCapacities)
             {
-                var capacityIndex = bytes[index];
-                var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
-                if(castSuccess[index]) activeCapacity.OnRelease(selectedEntities,positions);
+                activeCapacity.OnRelease(selectedEntities,positions);
             }
             items[itemIndexInInventory].OnItemActivatedFeedback(selectedEntities,positions);
-            OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions,castSuccess);
+            OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions);
         }
-
+        
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;
-        public event GlobalDelegates.ByteIntArrayVector3ArrayBoolArrayDelegate OnActivateItemFeedback;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
     }
 }
