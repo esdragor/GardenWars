@@ -9,6 +9,8 @@ using UnityEngine.AI;
 
 public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 {
+    public ActiveMinionAutoSO activeMinionAutoSO;
+    
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 5f;
