@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameStates;
 using UnityEngine;
 
 public class CandyScript : MonoBehaviour
@@ -13,16 +14,24 @@ public class CandyScript : MonoBehaviour
     private bool DecelerateDuring = false;
     private bool NoDeceleration = false;
     
-    public void Init(FlipperSO flipperSO, Rigidbody _rb)
+    public void Init(FlipperSO flipperSO, Vector3 dir)
     {
         if (flipperSO.StopByRebound)
             nbRebound = flipperSO.MaxRebound;
         if (flipperSO.StopByTimer)
             timer = flipperSO.MaxTimer;
-        rb = _rb;
+        rb = GetComponent<Rigidbody>();;
         Deceleration = flipperSO.ForceDecelerate;
         DecelerateDuring = flipperSO.decreaseSpeedDuring;
         NoDeceleration = flipperSO.StopBagWithoutDelay;
+        
+        float TotalForce = flipperSO.CandyBagSpeed;
+        if (flipperSO.speedByNbCandy) TotalForce -= flipperSO.nbCandy;
+            
+        if (flipperSO.ScaleBagByNbCandy) transform.localScale = Vector3.one * flipperSO.nbCandy;
+            
+        rb.AddForce(dir * TotalForce, ForceMode.Impulse);
+        GameStateMachine.Instance.OnTick += MoveCandy;
     }
 
     public void DecelerateCandy()
@@ -30,12 +39,18 @@ public class CandyScript : MonoBehaviour
         if (NoDeceleration)
         {
             rb.velocity = Vector3.zero;
+            GameStateMachine.Instance.OnTick -= MoveCandy;
             return;
         }
         rb.AddForce((rb.velocity * -1).normalized * Deceleration, ForceMode.Force);
+        if (rb.velocity.magnitude < 0.1f)
+        {
+            rb.velocity = Vector3.zero;
+            GameStateMachine.Instance.OnTick -= MoveCandy;
+        }
     }
     
-    private void Update()
+    private void MoveCandy()
     {
         if (Decelerate && rb.velocity != Vector3.zero)      
             DecelerateCandy();
