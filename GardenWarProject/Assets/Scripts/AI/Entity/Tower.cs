@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 {
+    public ActiveTowerAutoSO activeTowerAutoSO;
     
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 5f;
