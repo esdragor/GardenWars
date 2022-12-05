@@ -245,10 +245,12 @@ MonoBehaviour:
   canAddPassiveCapacity: 1
   canRemovePassiveCapacity: 1
   uiTransform: {fileID: 3480681342087303708}
-  offset: {x: 0, y: 2, z: 0}
+  uiOffset: {x: 0, y: 2, z: 0}
   canShow: 0
   canHide: 0
-  elementsToShow: []
+  elementsToShow:
+  - {fileID: 3480681341152264626}
+  - {fileID: 3480681342087303709}
   canChangeTeam: 0
   team: 0
   baseViewRange: 10

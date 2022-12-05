@@ -117,7 +117,6 @@ namespace Entities.Champion
         {
             if(!canMove) return;
             position = ActiveCapacity.GetClosestValidPoint(position);
-            Debug.Log($"Destination set to {position}");
             agent.SetDestination(position);
         }
         

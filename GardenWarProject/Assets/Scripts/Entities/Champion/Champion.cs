@@ -15,13 +15,12 @@ namespace Entities.Champion
         private Vector3 respawnPos;
 
         private GameStateMachine gsm => GameStateMachine.Instance;
-        private UIManager uiManager;
+        private UIManager uiManager => UIManager.Instance;
         public Rigidbody rb;
 
         public CollisionBlocker blocker;
         protected override void OnStart()
         {
-            uiManager = UIManager.Instance; 
             agent = GetComponent<NavMeshAgent>();
             var obstacle = GetComponent<NavMeshObstacle>();
             blocker.characterColliderBlocker.enabled = false;
@@ -147,9 +146,10 @@ namespace Entities.Champion
 
         public void SetupUI()
         {
+            Debug.Log($"Setting up Ui for {gameObject.name}, uiManager : {uiManager}");
             if (uiManager == null) return;
-            uiManager.InstantiateHealthBarForEntity(entityIndex);
-            uiManager.InstantiateResourceBarForEntity(entityIndex);
+            uiManager.InstantiateHealthBarForEntity(this);
+            uiManager.InstantiateResourceBarForEntity(this);
         }
     }
 }
