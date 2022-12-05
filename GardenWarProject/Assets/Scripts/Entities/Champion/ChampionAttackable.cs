@@ -73,7 +73,7 @@ namespace Entities.Champion
             lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
             var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
-            if (lastCapacity.CanCast(entityIndex, targetedEntities, targetedPositions))
+            if (lastCapacity.CanCast(targetedEntities, targetedPositions))
             {
                 if (lastCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
                 {
@@ -82,7 +82,7 @@ namespace Entities.Champion
                         ? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position
                         : targetedPositions[0];
 
-                    if (!lastCapacity.isInRange(entityIndex, position))
+                    if (!lastCapacity.isInRange(position))
                     {
                         Debug.Log("Not in range");
                         if (isTargetEntity) SendFollowEntity(targetedEntities[0], lastCapacitySO.maxRange);
@@ -120,7 +120,7 @@ namespace Entities.Champion
         public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            attackCapacity.OnRelease(capacityIndex,targetedEntities,targetedPositions);
+            attackCapacity.OnRelease(targetedEntities,targetedPositions);
             OnAttackFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
 

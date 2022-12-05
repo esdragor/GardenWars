@@ -9,37 +9,37 @@ namespace Entities.Capacities
         private bool isBlink => so.isBlink;
         private double dashDuration => so.dashTime;
 
-        protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             return true;
         }
 
-        protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             
         }
 
-        protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             
         }
 
-        protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             
         }
 
-        protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             
         }
 
-        protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             
         }
 
-        protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             var destination = targetPositions[0];
             var casterPos = caster.transform.position;

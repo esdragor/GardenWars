@@ -1,7 +1,4 @@
-using System;
-using Entities;
 using Entities.Capacities;
-using ExitGames.Client.Photon.StructWrapping;
 using GameStates;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -66,12 +63,12 @@ public class XerathUltimate : ActiveCapacity
         Debug.Log(hextechDistance);
     }
 
-    protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         return true;
     }
 
-    protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         time_Pressed = Time.time;
         if (activeCapa.hextechMode == HextechMode.jauge)
@@ -82,17 +79,17 @@ public class XerathUltimate : ActiveCapacity
         }
     }
 
-    protected override void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         if(HelperDirection) HelperDirection.SetActive(true);
     }
 
-    protected override void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         
     }
 
-    protected override void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         if (!HelperDirection) return;
         if (activeCapa.hextechMode != HextechMode.mouseDistance)
@@ -102,7 +99,7 @@ public class XerathUltimate : ActiveCapacity
         ;
     }
 
-    protected override void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         Init();
         time_Pressed = Time.time - time_Pressed;
@@ -133,7 +130,7 @@ public class XerathUltimate : ActiveCapacity
         candyBag.GetComponent<CandyBagXerath>().Init(caster, activeCapa, GoalPosition, hextechDistance);
     }
 
-    protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
 
         if (HelperDirection)

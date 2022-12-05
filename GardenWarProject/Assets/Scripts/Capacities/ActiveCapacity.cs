@@ -1,4 +1,3 @@
-using System;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
@@ -26,7 +25,7 @@ namespace Entities.Capacities
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }
 
-        public bool CanCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        public bool CanCast(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             if (isOnCooldown)
             {
@@ -56,37 +55,37 @@ namespace Entities.Capacities
                     break;
             }
 
-            return AdditionalCastConditions(casterIndex, targetsEntityIndexes, targetPositions);
+            return AdditionalCastConditions(targetsEntityIndexes, targetPositions);
         }
 
-        protected abstract bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions);
         
-        public void OnPress(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        public void OnPress(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            if(isMaster) Press(casterIndex,targetsEntityIndexes,targetPositions);
-            PressFeedback(casterIndex,targetsEntityIndexes,targetPositions);
+            if(isMaster) Press(targetsEntityIndexes,targetPositions);
+            PressFeedback(targetsEntityIndexes,targetPositions);
         }
-        protected abstract void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
-        protected abstract void PressFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void Press(int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions);
 
-        public void OnHold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        public void OnHold(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            if(isMaster) Hold(casterIndex,targetsEntityIndexes,targetPositions);
-            HoldFeedback(casterIndex,targetsEntityIndexes,targetPositions);
+            if(isMaster) Hold(targetsEntityIndexes,targetPositions);
+            HoldFeedback(targetsEntityIndexes,targetPositions);
         }
 
-        protected abstract void Hold(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
-        protected abstract void HoldFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
-        public void OnRelease(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected abstract void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions);
+        public void OnRelease(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            if(!CanCast(casterIndex,targetsEntityIndexes,targetPositions)) return;
-            if(isMaster) Release(casterIndex,targetsEntityIndexes,targetPositions);
-            ReleaseFeedback(casterIndex,targetsEntityIndexes,targetPositions);
+            if(!CanCast(targetsEntityIndexes,targetPositions)) return;
+            if(isMaster) Release(targetsEntityIndexes,targetPositions);
+            ReleaseFeedback(targetsEntityIndexes,targetPositions);
             if(baseCooldown > 0) EnterCooldown(baseCooldown);
         }
 
-        protected abstract void Release(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
-        protected abstract void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void Release(int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions);
 
         private void EnterCooldown(double timeOnCooldown)
         {
@@ -106,9 +105,9 @@ namespace Entities.Capacities
             }
         }
 
-        public bool isInRange(int casterIndex, Vector3 position)
+        public bool isInRange(Vector3 position)
         {
-            float distance = Vector3.Distance(EntityCollectionManager.GetEntityByIndex(casterIndex).transform.position, position);
+            float distance = Vector3.Distance(caster.transform.position, position);
             if ( distance > AssociatedActiveCapacitySO().maxRange) return false;
             
             return true;
