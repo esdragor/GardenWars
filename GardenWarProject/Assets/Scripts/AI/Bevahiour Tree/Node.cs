@@ -36,7 +36,7 @@ namespace BehaviourTree
             children.Add(node);
         }
 
-        public abstract NodeState Evaluate();
+        public abstract NodeState Evaluate(Node root);
 
         public void SetDataInBlackboard(string key, object value)
         {

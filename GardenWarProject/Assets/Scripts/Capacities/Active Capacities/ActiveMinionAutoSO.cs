@@ -7,6 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Auto Attack Minion", fileName = "AI Auto Attack for Minion")]
 public class ActiveMinionAutoSO : ActiveCapacitySO
 {
+    public int AtkValue;
+    
     public override Type AssociatedType()
     {
         return typeof(ActiveMinionAuto);

@@ -9,10 +9,10 @@ namespace BehaviourTree
         private Node origin = null;
 
 
-        private void Start()
-        {
-            OnStart();
-        }
+        // private void Start()
+        // {
+        //     OnStart();
+        // }
 
         public void OnStart()
         {
@@ -22,7 +22,7 @@ namespace BehaviourTree
         private void Update()
         {
             if (origin != null)
-                origin.Evaluate();
+                origin.Evaluate(origin);
         }
 
         protected abstract Node InitTree();

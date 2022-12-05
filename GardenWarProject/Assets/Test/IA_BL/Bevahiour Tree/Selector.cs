@@ -11,11 +11,11 @@ namespace BehaviourTree
         {
         }
 
-        public override NodeState Evaluate()
+        public override NodeState Evaluate(Node Root)
         {
             foreach (Node node in children)
             {
-                switch (node.Evaluate())
+                switch (node.Evaluate(Root))
                 {
                     case NodeState.Failure:
                         continue;

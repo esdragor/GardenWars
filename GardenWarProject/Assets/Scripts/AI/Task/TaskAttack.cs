@@ -27,7 +27,7 @@ public class TaskAttack : Node
         capacityIndex = capaIndex;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(Node Root)
     {
         if (attack == null) return NodeState.Failure;
 
@@ -46,12 +46,14 @@ public class TaskAttack : Node
         if (!sm)
             sm = GameStateMachine.Instance;
 
-        CurrentAtkTime += 1.0f / sm.tickRate;
+       //CurrentAtkTime += 1.0f / sm.tickRate;
+       CurrentAtkTime += Time.deltaTime;
 
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
 
+        Debug.Log(capacityIndex);
         attack.RequestAttack(capacityIndex, new[] { target.entityIndex }, new[] { target.transform.position });
 
         Root.ClearData("target");

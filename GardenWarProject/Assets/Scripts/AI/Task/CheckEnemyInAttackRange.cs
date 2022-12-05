@@ -16,8 +16,9 @@ public class CheckEnemyInAttackRange : Node
         atkRange = AttackRange;
         Root = _Root;
     }
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(Node _Root)
     {
+        if (Root == null) Root = _Root;
         Entity target = (Entity)Root.GetData("target");
         
         if (target == null) return NodeState.Failure;

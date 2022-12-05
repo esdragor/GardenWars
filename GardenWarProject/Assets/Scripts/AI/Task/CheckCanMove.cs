@@ -11,7 +11,7 @@ namespace Test.IA_BL.Task
         {
             entity = _entity;
         }
-        public override NodeState Evaluate()
+        public override NodeState Evaluate(Node Root)
         {
             return (entity.CanMove()) ? NodeState.Success : NodeState.Failure;
         }

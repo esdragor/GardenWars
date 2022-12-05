@@ -20,7 +20,7 @@ public class GoToTarget : Node
         Root = _Root;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(Node Root)
     {
         Vector3 pos = ((Entity)Root.GetData("target")).transform.position;
         Vector3 MyPos = MyTransform.position;

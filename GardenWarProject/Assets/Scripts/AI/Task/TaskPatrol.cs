@@ -28,7 +28,7 @@ public class TaskPatrol : Node
         //animator = getComponent<Animator>();
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(Node Root)
     {
         if (waiting)
         {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Entities;
+using Entities.Capacities;
 using Photon.Pun;
 using UnityEngine;
 
@@ -112,7 +113,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        //attackValue = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex).AtkValue;
+        attackValue = ((ActiveTowerAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex)).AtkValue;
         for (int i = 0; i < targetedEntities.Length; i++)
         {
             Entity entity = EntityCollectionManager.GetEntityByIndex(targetedEntities[i]);

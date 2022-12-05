@@ -245,7 +245,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6842547410459670536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a9fc3ecb9ab95b44ac5e46e8a96105a, type: 3}
+  m_Script: {fileID: 11500000, guid: f5bc664da88a83d4aad6c638a36e07f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   entityIndex: 0
@@ -257,16 +257,17 @@ MonoBehaviour:
   canHide: 0
   elementsToShow: []
   canChangeTeam: 0
-  team: 2
+  team: 0
   baseViewRange: 0
   viewRange: 0
   viewAngle: 0
   canView: 0
   meshFilterFoV: {fileID: 0}
   fogOfWarStartDetection: {fileID: 0}
+  activeTowerAutoSO: {fileID: 11400000, guid: 6b714a45301f2ea43b462e9929de7924, type: 2}
   canAttack: 1
-  attackValue: 50
-  attackSpeed: 10
+  attackValue: 5
+  attackSpeed: 0
   MaxHP: 100
   CurrentHP: 100
 --- !u!114 &882163327203539182
@@ -286,8 +287,7 @@ MonoBehaviour:
     m_Bits: 1024
   entity: {fileID: 4276747418117844860}
   AtkRange: 10
-  FOVRange: 15
-  atkDelay: 10
+  atkDelay: 2.5
 --- !u!208 &4588594471920152093
 NavMeshObstacle:
   m_ObjectHideFlags: 0

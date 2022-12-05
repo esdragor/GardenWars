@@ -15,12 +15,12 @@ namespace BehaviourTree
         {
         }
 
-        public override NodeState Evaluate()
+        public override NodeState Evaluate(Node Root)
         {
             bool ChildRunning = false;
             foreach (Node node in children)
             {
-                switch (node.Evaluate())
+                switch (node.Evaluate(Root))
                 {
                     case NodeState.Failure:
                         state = NodeState.Failure;

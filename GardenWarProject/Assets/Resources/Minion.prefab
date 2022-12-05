@@ -184,7 +184,7 @@ MonoBehaviour:
   entity: {fileID: 3301582452771090266}
   AtkRange: 4
   FOVRange: 20
-  atkDelay: 15
+  atkDelay: 1.5
 --- !u!114 &3301582452771090266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +213,7 @@ MonoBehaviour:
   canView: 0
   meshFilterFoV: {fileID: 0}
   fogOfWarStartDetection: {fileID: 0}
+  activeMinionAutoSO: {fileID: 11400000, guid: 56200ad2b07b5ff43a416c1a288af400, type: 2}
   canMove: 1
   canAttack: 1
   attackValue: 5

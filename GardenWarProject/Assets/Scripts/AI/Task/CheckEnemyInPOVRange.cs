@@ -23,9 +23,9 @@ public class CheckEnemyInPOVRange : Node
         MyEntity = entity;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(Node root)
     {
-        if (Root == null) return NodeState.Failure;
+        if (Root == null) Root = root;
         Entity t = (Entity)Root.GetData("target");
         if (t == null)
         {
