@@ -46,7 +46,7 @@ namespace Entities.Champion
 
         public override void OnInstantiated()
         {
-            FogOfWarManager.Instance.AddFOWViewable(this);
+            
         }
 
         public override void OnInstantiatedFeedback()
@@ -62,7 +62,8 @@ namespace Entities.Champion
             currentHp = maxHp;
             maxResource = championSo.maxRessource;
             currentResource = championSo.maxRessource;
-            viewRange = championSo.viewRange;
+            baseViewRange = 12.5f;
+            viewRange = baseViewRange;
             referenceMoveSpeed = championSo.referenceMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = championSo.attackDamage;

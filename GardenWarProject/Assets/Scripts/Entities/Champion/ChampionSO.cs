@@ -14,7 +14,6 @@ namespace Entities.Champion
         [Header("Stats")]
         public float maxHp;
         public float maxRessource;
-        public float viewRange;
         public float referenceMoveSpeed;
         
         [Header("Attack")]

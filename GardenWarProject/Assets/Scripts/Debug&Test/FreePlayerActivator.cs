@@ -11,8 +11,6 @@ namespace FreePlayer
 
         private void Start()
         {
-            if(Camera.allCamerasCount > 1) Debug.LogWarning($"MORE THAN 1 CAMERA ON SCENE, ONLY USE CAMERA FROM CAMERA MANAGER");
-            
             var controller = champion.GetComponent<PlayerInputController>();
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
