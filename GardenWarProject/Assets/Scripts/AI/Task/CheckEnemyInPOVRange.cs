@@ -52,10 +52,9 @@ public class CheckEnemyInPOVRange : Node
             }
         }
 
-        if (!t)
-            Root.ClearData("target");
+
         if (Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV) return NodeState.Success;
-        Root.ClearData("target");
+        if (!t) Root.ClearData("target");
         state = NodeState.Failure;
         return state;
     }
