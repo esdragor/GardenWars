@@ -20,11 +20,11 @@ MonoBehaviour:
   maxRange: 0
   types: 
   shootType: 0
-  indexInCollection: 0
+  indexInCollection: 7
   feedbackDuration: 0
   feedbackPrefab: {fileID: 0}
   CandyBagPrefab: {fileID: 4226030178508569970, guid: f40a6a4ca676cc041b1b33260b86b37b, type: 3}
-  CandyBagSpeed: 2
+  CandyBagSpeed: 4
   decreaseSpeedDuring: 0
   ForceDecelerate: 0.058
   StopByTimer: 1
@@ -33,5 +33,5 @@ MonoBehaviour:
   MaxRebound: 1
   StopBagWithoutDelay: 0
   nbCandy: 1
-  speedByCandy: 0
-  ScaleBagByCandy: 0
+  speedByNbCandy: 0
+  ScaleBagByNbCandy: 0

@@ -25,6 +25,7 @@ public class CheckEnemyInPOVRange : Node
 
     public override NodeState Evaluate()
     {
+        if (Root == null) return NodeState.Failure;
         Entity t = (Entity)Root.GetData("target");
         if (t == null)
         {
@@ -40,7 +41,6 @@ public class CheckEnemyInPOVRange : Node
                     if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
 
                     IAttackable attackable = colliders[i].GetComponent<IAttackable>();
-
                     if (attackable == null) continue;
                     Root.SetDataInBlackboard("target", entity);
                     //animator.SetBool("Walking", true);
@@ -51,10 +51,10 @@ public class CheckEnemyInPOVRange : Node
                 return NodeState.Failure;
             }
         }
-
-
-        if (Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV) return NodeState.Success;
-        if (!t) Root.ClearData("target");
+        
+        if (t != null && Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV)
+            return NodeState.Success;
+        if (t != null) Root.ClearData("target");
         state = NodeState.Failure;
         return state;
     }

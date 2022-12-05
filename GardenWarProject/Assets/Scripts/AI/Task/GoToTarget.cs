@@ -25,6 +25,8 @@ public class GoToTarget : Node
         Vector3 pos = ((Entity)Root.GetData("target")).transform.position;
         Vector3 MyPos = MyTransform.position;
         
+        pos.y = 1.5f;
+        
         if (Vector3.Distance(MyTransform.position, pos) > 1f)
         {
             agent.SetDestination(

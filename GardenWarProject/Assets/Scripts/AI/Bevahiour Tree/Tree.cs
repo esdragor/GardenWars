@@ -5,15 +5,13 @@ namespace BehaviourTree
 {
     public abstract class Tree : MonoBehaviour
     {
-        public bool NotInstantiated = false;
 
         private Node origin = null;
 
 
         private void Start()
         {
-            if (NotInstantiated)
-                OnStart();
+            OnStart();
         }
 
         public void OnStart()

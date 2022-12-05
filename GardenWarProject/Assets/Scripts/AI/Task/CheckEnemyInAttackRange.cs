@@ -21,8 +21,10 @@ public class CheckEnemyInAttackRange : Node
         Entity target = (Entity)Root.GetData("target");
         
         if (target == null) return NodeState.Failure;
-        
-       if (Vector3.Distance(trans.position, target.transform.position) < atkRange)
+
+        float Debug = Vector3.Distance(trans.position,
+            new Vector3(target.transform.position.x, trans.position.y, target.transform.position.z));
+       if (Vector3.Distance(trans.position, new Vector3(target.transform.position.x, trans.position.y, target.transform.position.z)) < atkRange)
            return NodeState.Success;
 
        return NodeState.Failure;

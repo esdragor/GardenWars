@@ -14,11 +14,14 @@ public class TaskAttack : Node
     private Entity PreviousTarget;
     private GameStateMachine sm = null;
     private Node Root;
-    public TaskAttack(Node _Root, Minion entity)
+    private bool IsTower = false;
+    
+    public TaskAttack(Node _Root, Entity entity, float _attackSpeed, bool _IsTower = false)
     {
-        attack = entity.gameObject.GetComponent<IAttackable>();
-        attackSpeed = entity.GetAttackSpeed();
         Root = _Root;
+        attack = entity.GetComponent<IAttackable>();
+        attackSpeed = _attackSpeed;
+        IsTower = _IsTower;
     }
 
     public override NodeState Evaluate()
@@ -45,6 +48,13 @@ public class TaskAttack : Node
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
+        
+        if (IsTower)
+            Debug.Log("Tower Attack");
+        else
+        {
+            Debug.Log("Minion Attack");
+        }
         
         attack.RequestAttack(0, new []{ target.entityIndex}, new []{target.transform.position});
 
