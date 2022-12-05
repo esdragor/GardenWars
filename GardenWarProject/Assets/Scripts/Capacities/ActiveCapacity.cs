@@ -13,10 +13,9 @@ namespace Entities.Capacities
         private double cooldownTimer;
         public bool onCooldown;
         private double feedbackTimer;
+        protected GameStateMachine gsm => GameStateMachine.Instance;
         
         public GameObject instantiateFeedbackObj;
-
-        protected int target;
 
         protected ActiveCapacitySO AssociatedActiveCapacitySO()
         {

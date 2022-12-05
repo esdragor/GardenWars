@@ -105,14 +105,4 @@ public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
     {
         
     }
-
-    protected override void InitiateCooldown()
-    {
-        base.InitiateCooldown();
-    }
-
-    protected override void CooldownTimer()
-    {
-        base.CooldownTimer();
-    }
 }

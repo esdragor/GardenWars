@@ -164,6 +164,8 @@ namespace Entities.Champion
         private void CheckMoveDistance()
         {
             if (agent == null) return;
+            
+            if(!agent.enabled) return;
           
             if (Vector3.Distance(transform.position, movePosition) < 0.5 )
             {
