@@ -133,7 +133,7 @@ namespace Entities.Champion
             {
                 var capacityIndex = bytes[i];
                 var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
-                successesActives[i] = activeCapacity.TryCast(entityIndex, selectedEntities, positions);
+                successesActives[i] = activeCapacity.CanCast(entityIndex, selectedEntities, positions);
             }
             items[itemIndexInInventory].OnItemActivated(selectedEntities,positions);
             OnActivateItem?.Invoke(itemIndexInInventory,selectedEntities,positions);
@@ -153,7 +153,7 @@ namespace Entities.Champion
             {
                 var capacityIndex = bytes[index];
                 var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
-                if(castSuccess[index]) activeCapacity.PlayFeedback(entityIndex,selectedEntities,positions);
+                if(castSuccess[index]) activeCapacity.OnRelease(entityIndex,selectedEntities,positions);
             }
             items[itemIndexInInventory].OnItemActivatedFeedback(selectedEntities,positions);
             OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions,castSuccess);

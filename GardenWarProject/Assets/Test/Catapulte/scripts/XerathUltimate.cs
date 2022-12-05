@@ -47,21 +47,6 @@ public class XerathUltimate : ActiveCapacity
         return Vector3.zero;
     }
 
-
-    public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-
-    }
-
-    public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        if (!base.TryCast(casterIndex, targetsEntityIndexes, targetPositions)) return false;
-        Debug.Log("Performed Ulti Xerath at " + Time.time);
-
-
-        return true;
-    }
-
     public void Jauge()
     {
         if (PositiveJaugeHextech)
@@ -79,6 +64,11 @@ public class XerathUltimate : ActiveCapacity
                 PositiveJaugeHextech = true;
         }
         Debug.Log(hextechDistance);
+    }
+
+    protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        return true;
     }
 
     protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)

@@ -73,7 +73,7 @@ namespace Entities.Champion
             lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
             var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
-            if (lastCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
+            if (lastCapacity.CanCast(entityIndex, targetedEntities, targetedPositions))
             {
                 if (lastCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
                 {
@@ -120,7 +120,7 @@ namespace Entities.Champion
         public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            attackCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
+            attackCapacity.OnRelease(capacityIndex,targetedEntities,targetedPositions);
             OnAttackFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
 

@@ -3,18 +3,14 @@ using Entities.Capacities;
 using GameStates;
 using UnityEngine;
 
-public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
+public class ActiveDarkMatter : ActiveCapacity
 {
     private double timer;
     private ActiveDarkMatterSO activeCapacitySo;
     private Vector3[] dir;
 
-    public override bool TryCast(int casterIndex, int[] targets, Vector3[] position)
+    protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        base.TryCast(casterIndex, targets, position);
-        
-        Debug.Log("Performed dark matter at " + Time.time);
-        
         return true;
     }
 
@@ -89,20 +85,5 @@ public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
             GameStateMachine.Instance.OnTick -= DelayWaitingTick;
             timer = 0;
         }
-    }
-    
-    public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
-    {
-        Debug.Log("Test");
-    }
-
-    public void EnableDrawing()
-    {
-        
-    }
-
-    public void DisableDrawing()
-    {
-        
     }
 }

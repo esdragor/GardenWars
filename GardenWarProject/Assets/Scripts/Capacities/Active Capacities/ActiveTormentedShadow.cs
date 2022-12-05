@@ -9,8 +9,8 @@ namespace Entities.Capacities
         public ActiveTormentedShadowSO so;
         public double tickDamageTimer;
         public float durationTimer;
-        
-        public override bool TryCast(int casterIndex, int[] targets, Vector3[] pos)
+
+        protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             return true;
         }
@@ -92,12 +92,6 @@ namespace Entities.Capacities
                     }
                 }
             }
-        }
-
-        public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-        {
-            Debug.Log("Cast tormented shadow");
-            
         }
     }
 }

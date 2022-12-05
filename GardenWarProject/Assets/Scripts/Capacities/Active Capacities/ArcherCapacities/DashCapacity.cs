@@ -8,7 +8,12 @@ namespace Entities.Capacities
         private DashCapacitySO so => (DashCapacitySO)AssociatedActiveCapacitySO();
         private bool isBlink => so.isBlink;
         private double dashDuration => so.dashTime;
-        
+
+        protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+        {
+            return true;
+        }
+
         protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             
@@ -75,12 +80,6 @@ namespace Entities.Capacities
                 champion.agent.Warp(destination);
                 gsm.OnUpdateFeedback -= DashTowardsDestination;
             }
-            
-        }
-        
-
-        public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-        {
             
         }
     }

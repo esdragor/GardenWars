@@ -7,8 +7,8 @@ public class ActiveMinionAuto : ActiveCapacity
 {
     private Entity _target;
     private double timer;
-    
-    public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+
+    protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         return true;
     }
@@ -43,10 +43,6 @@ public class ActiveMinionAuto : ActiveCapacity
         
     }
 
-    public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-    }
-    
     private void DelayWaitingTick()
     {
         timer += 1 / GameStateMachine.Instance.tickRate;

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Flipper : ActiveCapacity
 {
-
     private Transform HelperDirection;
     
     private FlipperSO flipperSO => (FlipperSO)AssociatedActiveCapacitySO();
@@ -16,6 +15,11 @@ public class Flipper : ActiveCapacity
     private float distance = 0.0f;
     private Vector3 dir;
     private Rigidbody rb;
+
+    protected override bool AdditionalCastConditions(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
+    {
+        return true;
+    }
 
     protected override void Press(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
@@ -58,11 +62,6 @@ public class Flipper : ActiveCapacity
     }
 
     protected override void ReleaseFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
-    {
-        
-    }
-
-    public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         
     }

@@ -60,7 +60,7 @@ namespace Entities.Champion
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             
-            if (!activeCapacity.TryCast(entityIndex, targetedEntities, targetedPositions)) return;
+            if (!activeCapacity.CanCast(entityIndex, targetedEntities, targetedPositions)) return;
             
             OnCast?.Invoke(capacityIndex,targetedEntities,targetedPositions);
             photonView.RPC("SyncCastRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
@@ -71,7 +71,7 @@ namespace Entities.Champion
         public void SyncCastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            activeCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
+            activeCapacity.OnRelease(capacityIndex,targetedEntities,targetedPositions);
             OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions,activeCapacity);
         }
         
