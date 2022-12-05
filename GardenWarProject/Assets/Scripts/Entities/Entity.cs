@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
@@ -45,7 +44,7 @@ namespace Entities
         {
             entityIndex = photonView.ViewID;
             EntityCollectionManager.AddEntity(this);
-            //FogOfWarManager.Instance.AddFOWViewable(this);
+            FogOfWarManager.Instance.AddFOWViewable(this);
             OnStart();
         }
 
