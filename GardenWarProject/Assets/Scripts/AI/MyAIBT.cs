@@ -31,7 +31,7 @@ public class MyAIBT : Tree
                     new Sequence(new List<Node>
                     {
                         new CheckEnemyInAttackRange(origin, transform, AtkRange),
-                        new TaskAttack(origin, entity, atkDelay),
+                        new TaskAttack(origin, entity, entity.activeMinionAutoSO.indexInCollection, atkDelay),
                     }),
                     new Sequence(new List<Node>
                     {

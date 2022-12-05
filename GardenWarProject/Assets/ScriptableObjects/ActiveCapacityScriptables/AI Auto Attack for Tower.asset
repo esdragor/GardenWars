@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c7024a4b0ef7b4ca5875b3c8a7a719, type: 3}
-  m_Name: AI Auto Attack for Towers
+  m_Name: AI Auto Attack for Tower
   m_EditorClassIdentifier: 
-  referenceName: AAT
   descriptionName: 
+  icon: {fileID: 0}
   description: 
   cooldown: 0
+  isTargeting: 0
   maxRange: 0
-  types: 04000000
+  types: 
+  shootType: 0
   indexInCollection: 0
-  damage: 0
+  feedbackDuration: 0
+  feedbackPrefab: {fileID: 0}

@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using BehaviourTree;
 using Entities;
+using Entities.Capacities;
 using Entities.Champion;
 using GameStates;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class TaskAttack : Node
@@ -14,18 +16,19 @@ public class TaskAttack : Node
     private Entity PreviousTarget;
     private GameStateMachine sm = null;
     private Node Root;
-    private bool IsTower = false;
-    
-    public TaskAttack(Node _Root, Entity entity, float _attackSpeed, bool _IsTower = false)
+    private byte capacityIndex = 0;
+
+
+    public TaskAttack(Node _Root, Entity entity, byte capaIndex, float _attackSpeed)
     {
         Root = _Root;
         attack = entity.GetComponent<IAttackable>();
         attackSpeed = _attackSpeed;
-        IsTower = _IsTower;
+        capacityIndex = capaIndex;
     }
 
     public override NodeState Evaluate()
-    {        
+    {
         if (attack == null) return NodeState.Failure;
 
         if (!attack.CanAttack()) return NodeState.Failure;
@@ -33,7 +36,7 @@ public class TaskAttack : Node
         Entity target = (Entity)Root.GetData("target");
 
         if (target == null) return NodeState.Failure;
-        
+
         if (PreviousTarget != target)
         {
             PreviousTarget = target;
@@ -42,21 +45,14 @@ public class TaskAttack : Node
 
         if (!sm)
             sm = GameStateMachine.Instance;
-        
+
         CurrentAtkTime += 1.0f / sm.tickRate;
 
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
-        
-        if (IsTower)
-            Debug.Log("Tower Attack");
-        else
-        {
-            Debug.Log("Minion Attack");
-        }
-        
-        attack.RequestAttack(0, new []{ target.entityIndex}, new []{target.transform.position});
+
+        attack.RequestAttack(capacityIndex, new[] { target.entityIndex }, new[] { target.transform.position });
 
         Root.ClearData("target");
 
