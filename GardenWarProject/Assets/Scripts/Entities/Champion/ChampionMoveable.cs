@@ -1,3 +1,4 @@
+using Entities.Capacities;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
@@ -9,23 +10,10 @@ namespace Entities.Champion
     {
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
-        public float currentRotateSpeed;
         public bool canMove;
-        private Vector3 moveDirection;
-
-        // === League Of Legends
-        private int mouseTargetIndex;
-        private bool isFollowing;
-        private Entity entityFollow;
-        private float attackRange;
-
-        private Vector3 movePosition;
-        //NavMesh
-
+        
         [HideInInspector] public NavMeshAgent agent;
-
-        private Vector3 rotateDirection;
-
+        
         public bool CanMove()
         {
             return canMove;
@@ -124,61 +112,15 @@ namespace Entities.Champion
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
-
-        #region League Of Legends
-
+        
         public void MoveToPosition(Vector3 position)
         {
-            movePosition = position;
-            movePosition.y = transform.position.y;
-            agent.SetDestination(movePosition);
+            if(!canMove) return;
+            position = ActiveCapacity.GetClosestValidPoint(position);
+            Debug.Log($"Destination set to {position}");
+            agent.SetDestination(position);
         }
-
-        private void SendFollowEntity(int entityIndex, float capacityDistance)
-        {
-            photonView.RPC("StartFollowEntityRPC", RpcTarget.All, entityIndex, capacityDistance);
-        }
-
-        [PunRPC]
-        public void StartFollowEntityRPC(int entityIndex, float capacityDistance)
-        {
-            Debug.Log("Start Follow Entity");
-            if (!photonView.IsMine) return;
-            isFollowing = true;
-            entityFollow = EntityCollectionManager.GetEntityByIndex(entityIndex);
-            attackRange = capacityDistance;
-        }
-
-        private void FollowEntity()
-        {
-            if (!isFollowing) return;
-            agent.SetDestination(entityFollow.transform.position);
-            if (lastCapacity.isInRange(entityFollow.transform.position))
-            {
-                agent.SetDestination(transform.position);
-                isFollowing = false;
-                RequestAttack(lastCapacityIndex, lastTargetedEntities, lastTargetedPositions);
-            }
-        }
-
-        private void CheckMoveDistance()
-        {
-            if (agent == null) return;
-            
-            if(!agent.enabled) return;
-          
-            if (Vector3.Distance(transform.position, movePosition) < 0.5 )
-            {
-                agent.SetDestination(transform.position);
-            }
-            else if(agent.velocity != Vector3.zero)
-            {
-                rotateParent.forward = agent.velocity.normalized;
-            }
-        }
-
-        #endregion
-
+        
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
     }

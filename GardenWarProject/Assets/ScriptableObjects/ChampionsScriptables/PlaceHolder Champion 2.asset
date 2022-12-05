@@ -16,16 +16,22 @@ MonoBehaviour:
   championMeshPrefab: {fileID: 2666811144942490280, guid: 443dda2055ec6f74d8b2fa990e732106, type: 3}
   canvasIndex: 0
   maxHp: 10
-  maxRessource: 10
-  referenceMoveSpeed: 10
-  attackAbility: {fileID: 0}
-  attackAbilityIndex: 3
+  maxMana: 0
+  baseDefense: 0
+  baseMoveSpeed: 0
+  hpRegen: 0
+  manaRegen: 0
+  attackSpeed: 0.1
   attackDamage: 0
+  baseArmorPenetration: 0
+  baseLifesteal: 0
+  attackAbility: {fileID: 11400000, guid: 35efd2713517ad74ca47f2ef61b7ba14, type: 2}
+  attackAbilityIndex: 9
   passiveCapacities:
   - {fileID: 11400000, guid: 4892e9fd3d893d04b8b520812f3c9710, type: 2}
-  passiveCapacitiesIndexes: ff
+  passiveCapacitiesIndexes: 00
   activeCapacities:
   - {fileID: 11400000, guid: 9f3bd6cee36cc9944b0293b32939e45a, type: 2}
   - {fileID: 11400000, guid: d9bc6d2194b87024e929fa26de50a273, type: 2}
   - {fileID: 11400000, guid: ad6ce39da44285c4bada8fbc39dda8cf, type: 2}
-  activeCapacitiesIndexes: 060807
+  activeCapacitiesIndexes: 08ff06

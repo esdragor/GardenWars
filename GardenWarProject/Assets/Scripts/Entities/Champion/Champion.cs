@@ -28,16 +28,12 @@ namespace Entities.Champion
             obstacle.enabled = true;
             rb.isKinematic = true;
             agent.enabled = true;
-          
         }
 
         protected override void OnUpdate()
         {
             CastHeldCapacities();
             CastHeldItems();
-            if (isFollowing) FollowEntity(); // Lol
-            if (!photonView.IsMine) return;
-            CheckMoveDistance();
         }
 
         protected override void OnFixedUpdate()
@@ -61,13 +57,14 @@ namespace Entities.Champion
             championSo = so;
             maxHp = championSo.maxHp;
             currentHp = maxHp;
-            maxResource = championSo.maxRessource;
-            currentResource = championSo.maxRessource;
+            maxResource = championSo.maxMana;
+            currentResource = championSo.maxMana;
             baseViewRange = 12.5f;
             viewRange = baseViewRange;
-            referenceMoveSpeed = championSo.referenceMoveSpeed;
+            referenceMoveSpeed = championSo.baseMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = championSo.attackDamage;
+            attackSpeed = championSo.attackSpeed;
             attackAbilityIndex = championSo.attackAbilityIndex;
             abilitiesIndexes = championSo.activeCapacitiesIndexes;
             var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
@@ -93,6 +90,9 @@ namespace Entities.Champion
             }
             
             canDie = true;
+            canMove = true;
+            canAttack = true;
+            canCast = true;
         }
 
         public void SetupSpawn()
