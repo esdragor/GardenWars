@@ -58,6 +58,7 @@ namespace Entities.Champion
         [PunRPC]
         public void CastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
+            if(!canCast) return;
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             
             if (!activeCapacity.CanCast(targetedEntities, targetedPositions)) return;
@@ -93,6 +94,7 @@ namespace Entities.Champion
         [PunRPC]
         private void OnCastCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
+            if(!canCast) return;
             if (isOffline)
             {
                 SyncOnCastCapacityRPC(capacityIndex, newTargetedEntities, newTargetedPositions);
@@ -124,6 +126,7 @@ namespace Entities.Champion
 
         private void CastHeldCapacities()
         {
+            if(!canCast) return;
             foreach (var ability in capacityDict.Values.Where(ability => ability.isCasting))
             {
                 ability.capacity.OnHold(targetedEntities,targetedPositions);
@@ -143,6 +146,7 @@ namespace Entities.Champion
         [PunRPC]
         private void OnReleaseCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
+            if(!canCast) return;
             if (isOffline)
             {
                 SyncOnReleaseCapacityRPC(capacityIndex, newTargetedEntities, newTargetedPositions);

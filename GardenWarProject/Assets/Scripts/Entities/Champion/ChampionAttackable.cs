@@ -79,6 +79,7 @@ namespace Entities.Champion
         [PunRPC]
         public void AttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
+            if(!canAttack) return;
             if (isOffline)
             {
                 SyncAttackRPC(attackIndex, newTargetedEntities, newTargetedPositions);
