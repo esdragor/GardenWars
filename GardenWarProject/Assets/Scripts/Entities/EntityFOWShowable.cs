@@ -7,6 +7,7 @@ namespace  Entities
 {
     public abstract partial class Entity : IFOWShowable
     {
+        [Header("Showable")]
         public List<IFOWViewable> enemiesThatCanSeeMe = new List<IFOWViewable>();
         public bool canShow;
         public bool canHide;

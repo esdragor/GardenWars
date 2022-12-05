@@ -197,9 +197,9 @@ NavMeshAgent:
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 0
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -245,10 +245,12 @@ MonoBehaviour:
   canAddPassiveCapacity: 1
   canRemovePassiveCapacity: 1
   uiTransform: {fileID: 3480681342087303708}
-  offset: {x: 0, y: 2, z: 0}
+  uiOffset: {x: 0, y: 2, z: 0}
   canShow: 0
   canHide: 0
-  elementsToShow: []
+  elementsToShow:
+  - {fileID: 3480681341152264626}
+  - {fileID: 3480681342087303709}
   canChangeTeam: 0
   team: 0
   baseViewRange: 10
@@ -266,6 +268,7 @@ MonoBehaviour:
   attackAbilityIndex: 0
   canAttack: 0
   attackDamage: 0
+  attackSpeed: 0
   abilitiesIndexes: 00
   targetedEntities: 
   targetedPositions: []
@@ -277,7 +280,6 @@ MonoBehaviour:
   items: []
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
-  currentRotateSpeed: 10
   canMove: 0
   agent: {fileID: 0}
   maxResource: 0

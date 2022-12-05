@@ -277,9 +277,9 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
     public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
 
-    public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void RequestAttack(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        photonView.RPC("AttackRPC", RpcTarget.MasterClient, capacityIndex, targetedEntities, targetedPositions);
+        photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
@@ -288,15 +288,15 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
-    public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void AttackRPC(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        attackValue = ((ActiveMinionAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex)).AtkValue;
+        attackValue = ((ActiveMinionAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex)).AtkValue;
         for (int i = 0; i < targetedEntities.Length; i++)
         {
             Entity entity = EntityCollectionManager.GetEntityByIndex(targetedEntities[i]);
             entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue);
         }
-        photonView.RPC("SyncAttackRPC", RpcTarget.All, capacityIndex, targetedEntities, targetedPositions);
+        photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
     }
 
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;

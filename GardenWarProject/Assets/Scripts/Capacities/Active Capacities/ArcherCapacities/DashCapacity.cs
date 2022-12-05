@@ -41,6 +41,7 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
+            if (champion != null)  champion.canMove = false;
             var destination = targetPositions[0];
             var casterPos = caster.transform.position;
             if (Vector3.Distance(casterPos, destination) > so.maxRange || so.fixedDistance)
@@ -48,6 +49,7 @@ namespace Entities.Capacities
                 destination = casterPos + (destination - casterPos).normalized * so.maxRange;
 
             }
+            destination = GetClosestValidPoint(destination);
             if (isBlink)
             {
                 Blink(destination);
@@ -60,6 +62,7 @@ namespace Entities.Capacities
         {
             if (champion == null) return;
             champion.agent.Warp(destination);
+            champion.canMove = true;
         }
 
         private void StartDash(Vector3 start,Vector3 destination)
@@ -77,7 +80,7 @@ namespace Entities.Capacities
                 caster.transform.position = Vector3.Lerp(start,destination,(float)(timeInDash/dashDuration));
                 if(timeInDash < dashDuration) return;
                 champion.agent.enabled = true;
-                champion.agent.Warp(destination);
+                Blink(destination);
                 gsm.OnUpdateFeedback -= DashTowardsDestination;
             }
             

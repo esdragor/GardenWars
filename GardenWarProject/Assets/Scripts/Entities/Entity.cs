@@ -33,12 +33,12 @@ namespace Entities
         /// <summary>
         /// The transform of the UI of the entity.
         /// </summary>
-        public Transform uiTransform;
+        [Header("UI")] public Transform uiTransform;
 
         /// <summary>
         /// The offset of the UI of the entity.
         /// </summary>
-        public Vector3 offset = new Vector3(0, 2f, 0);
+        public Vector3 uiOffset = new Vector3(0, 2f, 0);
 
         private void Start()
         {

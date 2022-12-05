@@ -44,10 +44,10 @@ namespace Entities
         /// <summary>
         /// Sends an RPC to the master to Attack.
         /// </summary>
-        /// <param name="capacityIndex">the index on the CapacitySOCollectionManager of the activeCapacitySO to Attack</param>
+        /// <param name="attackIndex">the index on the CapacitySOCollectionManager of the activeCapacitySO to Attack</param>
         /// <param name="targetedEntities">the entities targeted by the activeCapacity</param>
         /// <param name="targetedPositions">the positions targeted by  the activeCapacities</param>
-        public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions);
+        public void RequestAttack(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions);
         /// <summary>
         /// Sends an RPC to all clients to Attack an ActiveCapacity.
         /// </summary>
@@ -58,10 +58,10 @@ namespace Entities
         /// <summary>
         /// Attacks an ActiveCapacity.
         /// </summary>
-        /// <param name="capacityIndex">the index on the CapacitySOCollectionManager of the activeCapacitySO to Attack</param>
+        /// <param name="attackIndex">the index on the CapacitySOCollectionManager of the activeCapacitySO to Attack</param>
         /// <param name="targetedEntities">the entities targeted by the activeCapacity</param>
         /// <param name="targetedPositions">the positions targeted by  the activeCapacities</param>
-        public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions);
+        public void AttackRPC(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions);
 
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;

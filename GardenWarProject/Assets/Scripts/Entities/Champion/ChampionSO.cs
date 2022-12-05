@@ -13,14 +13,20 @@ namespace Entities.Champion
         
         [Header("Stats")]
         public float maxHp;
-        public float maxRessource;
-        public float referenceMoveSpeed;
+        public float maxMana;
+        public float baseDefense;
+        public float baseMoveSpeed;
+        [Tooltip("Mana per tick")] public float hpRegen;
+        [Tooltip("Mana per tick")] public float manaRegen;
+        [Tooltip("Time between attacks")] public double attackSpeed;
+        public float attackDamage;
+        public float baseArmorPenetration;
+        public float baseLifesteal;
         
         [Header("Attack")]
         public ActiveCapacitySO attackAbility;
         [HideInInspector] public byte attackAbilityIndex;
-        public float attackDamage;
-        
+
         [Header("Abilities")]
         public PassiveCapacitySO[] passiveCapacities;
         [HideInInspector] public byte[] passiveCapacitiesIndexes;

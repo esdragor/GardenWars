@@ -52,12 +52,13 @@ namespace Entities.Champion
 
         public void RequestCast(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
-            photonView.RPC("CastRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
+            RequestOnReleaseCapacity(capacityIndex);
         }
         
         [PunRPC]
         public void CastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
+            if(!canCast) return;
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             
             if (!activeCapacity.CanCast(targetedEntities, targetedPositions)) return;
@@ -72,11 +73,11 @@ namespace Entities.Champion
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             activeCapacity.OnRelease(targetedEntities,targetedPositions);
-            OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions,activeCapacity);
+            OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
         
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCast;
-        public event GlobalDelegates.ByteIntArrayVector3ArrayCapacityDelegate OnCastFeedback;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCastFeedback;
         
         
 
@@ -93,6 +94,7 @@ namespace Entities.Champion
         [PunRPC]
         private void OnCastCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
+            if(!canCast) return;
             if (isOffline)
             {
                 SyncOnCastCapacityRPC(capacityIndex, newTargetedEntities, newTargetedPositions);
@@ -120,11 +122,11 @@ namespace Entities.Champion
                 capacityDict.Add(capacityIndex,newCapacity);
             }
             capacityDict[capacityIndex].capacity.OnPress(targetedEntities,targetedPositions);
-
         }
 
         private void CastHeldCapacities()
         {
+            if(!canCast) return;
             foreach (var ability in capacityDict.Values.Where(ability => ability.isCasting))
             {
                 ability.capacity.OnHold(targetedEntities,targetedPositions);
@@ -144,6 +146,7 @@ namespace Entities.Champion
         [PunRPC]
         private void OnReleaseCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
+            if(!canCast) return;
             if (isOffline)
             {
                 SyncOnReleaseCapacityRPC(capacityIndex, newTargetedEntities, newTargetedPositions);
@@ -172,6 +175,8 @@ namespace Entities.Champion
             }
             
             capacityDict[capacityIndex].capacity.OnRelease(targetedEntities,targetedPositions);
+            if(isMaster) OnCast?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+            OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
     }
 }

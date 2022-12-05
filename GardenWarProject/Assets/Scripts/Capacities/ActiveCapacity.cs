@@ -8,13 +8,14 @@ namespace Entities.Capacities
     public abstract class ActiveCapacity
     {
         private bool isMaster => !PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient;
-        
         public byte indexOfSOInCollection;
         
         public Entity caster;
+        
+        public bool isBasicAttack;
         protected Vector3 casterPos => caster.transform.position;
 
-        public double baseCooldown => AssociatedActiveCapacitySO().cooldown;
+        public double baseCooldown => isBasicAttack ? ((Champion.Champion)caster).attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
         private double cooldownTimer;
         

@@ -11,11 +11,12 @@ namespace Entities.Champion
         private ActiveCapacitySO lastCapacitySO;
         public bool canAttack;
         public float attackDamage;
+        public double attackSpeed;
 
         private byte lastCapacityIndex;
         private int[] lastTargetedEntities;
         private Vector3[] lastTargetedPositions;
-        
+
         public bool CanAttack()
         {
             return canAttack;
@@ -35,6 +36,11 @@ namespace Entities.Champion
 
         public void RequestSetAttackDamage(float value)
         {
+            if (isMaster)
+            {
+                SetAttackDamageRPC(value);
+                return;
+            }
             photonView.RPC("SetAttackDamageRPC",RpcTarget.MasterClient,value);
         }
 
@@ -42,6 +48,11 @@ namespace Entities.Champion
         {
             attackDamage = value;
             OnSetAttackDamage?.Invoke(value);
+            if (isOffline)
+            {
+                SyncSetAttackDamageRPC(value);
+                return;
+            }
             photonView.RPC("SyncSetAttackDamageRPC",RpcTarget.All,attackDamage);
         }
         
@@ -53,24 +64,38 @@ namespace Entities.Champion
         
         public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
         public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
-        
-        
 
-        public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+
+        public void RequestAttack(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
-            photonView.RPC("AttackRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
+            if(isMaster)
+            {
+                AttackRPC(attackIndex,targetedEntities,targetedPositions);
+                return;
+            }
+            photonView.RPC("AttackRPC",RpcTarget.MasterClient,attackIndex,targetedEntities,targetedPositions);
         }
 
         [PunRPC]
-        public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+        public void AttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
-            lastCapacityIndex = capacityIndex;
+            if(!canAttack) return;
+            if (isOffline)
+            {
+                SyncAttackRPC(attackIndex, newTargetedEntities, newTargetedPositions);
+                return;
+            }
+            photonView.RPC("SyncAttackRPC",RpcTarget.All,attackIndex,newTargetedEntities,newTargetedPositions);
+            return;
+
+            /*
+            lastCapacityIndex = attackIndex;
             lastTargetedEntities = targetedEntities;
             lastTargetedPositions = targetedPositions;
             
             
-            lastCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
+            lastCapacity = CapacitySOCollectionManager.CreateActiveCapacity(attackIndex,this);
+            lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex);
             var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
             if (lastCapacity.CanCast(targetedEntities, targetedPositions))
@@ -92,8 +117,8 @@ namespace Entities.Champion
                     {
                         Debug.Log("Attack in Range");
                         agent.SetDestination(transform.position);
-                        OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
-                        photonView.RPC("SyncAttackRPC", RpcTarget.All, capacityIndex, targetedEntities,
+                        OnAttack?.Invoke(attackIndex, targetedEntities, targetedPositions);
+                        photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities,
                             targetedPositions);
 
                     }
@@ -101,27 +126,40 @@ namespace Entities.Champion
                 else
                 {
                     agent.SetDestination(transform.position);
-                    OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
-                    photonView.RPC("SyncAttackRPC", RpcTarget.All, capacityIndex, targetedEntities, targetedPositions);
+                    OnAttack?.Invoke(attackIndex, targetedEntities, targetedPositions);
+                    photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
                 }
             }
             else
             {
                 //Cant Attack FeedBack
             }
+            */
         }
 
-        void LaunchAttack()
-        {
-            
-        }
-        
         [PunRPC]
-        public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+        public void SyncAttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
-            var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            attackCapacity.OnRelease(targetedEntities,targetedPositions);
-            OnAttackFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+            targetedEntities = newTargetedEntities;
+            targetedPositions = newTargetedPositions;
+            if (capacityDict.ContainsKey(attackIndex))
+            {
+                capacityDict[attackIndex].isCasting = false;
+            }
+            else
+            {
+                var newCapacity = new CastingAbility
+                {
+                    isCasting = false,
+                    capacity = CapacitySOCollectionManager.CreateActiveCapacity(attackIndex,this)
+                };
+                newCapacity.capacity.isBasicAttack = true;
+                capacityDict.Add(attackIndex,newCapacity);
+            }
+            
+            capacityDict[attackIndex].capacity.OnRelease(targetedEntities,targetedPositions);
+            if(isMaster) OnAttack?.Invoke(attackIndex,targetedEntities,targetedPositions);
+            OnAttackFeedback?.Invoke(attackIndex,targetedEntities,targetedPositions);
         }
 
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
