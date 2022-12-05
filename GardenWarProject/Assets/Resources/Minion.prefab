@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 84f6411ae1edc124ca8aed00947bcb96, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -175,7 +175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d19629eab53d8e47a1f0916c15dff6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NotInstantiated: 1
   waypoints:
   - {fileID: 0}
   agent: {fileID: 2077910377}
@@ -183,8 +182,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   entity: {fileID: 3301582452771090266}
-  AtkRange: 2
-  FOVRange: 150
+  AtkRange: 4
+  FOVRange: 20
+  atkSpeed: 10
 --- !u!114 &3301582452771090266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +219,7 @@ MonoBehaviour:
   referenceMoveSpeed: 3.5
   myAIBT: {fileID: 4498412454335939637}
   agent: {fileID: 2077910377}
-  attackSpeed: 15
+  attackSpeed: 10
   MaxHP: 100
   CurrentHP: 100
 --- !u!208 &8682732196991000772

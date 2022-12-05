@@ -15,6 +15,7 @@ public class MyAIBT : Tree
     [SerializeField] private Minion entity;
     [SerializeField] private float AtkRange;
     [SerializeField] private float FOVRange;
+    [SerializeField] private float atkDelay = 15;
 
     private Node origin;
     
@@ -30,7 +31,7 @@ public class MyAIBT : Tree
                     new Sequence(new List<Node>
                     {
                         new CheckEnemyInAttackRange(origin, transform, AtkRange),
-                        new TaskAttack(origin, entity),
+                        new TaskAttack(origin, entity, atkDelay),
                     }),
                     new Sequence(new List<Node>
                     {

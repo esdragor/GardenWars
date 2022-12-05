@@ -43,6 +43,8 @@ public class TaskPatrol : Node
         {
             Vector3 pos = waypoints[CurrentWaypointIndex].position;
             Vector3 MyPos = Mytransform.position;
+            
+            pos.y = 1.5f;
 
             Vector3 direction = Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime);
 

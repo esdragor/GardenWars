@@ -282,13 +282,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        //int atkValue = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex).AtkValue;
-        for (int i = 0; i < targetedEntities.Length; i++)
-        {
-            Entity entity = EntityCollectionManager.GetEntityByIndex(targetedEntities[i]);
-            entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue);
-        }
-
         OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }
