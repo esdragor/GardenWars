@@ -27,10 +27,10 @@ public class GoToTarget : Node
         
         pos.y = 1.5f;
         
-        if (Vector3.Distance(MyTransform.position, pos) > 1f)
+        if (Vector3.Distance(MyPos, pos) > 1f)
         {
-            agent.SetDestination(
-                Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
+            agent.SetDestination(pos);
+                //Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
             MyTransform.LookAt(pos);
             state = NodeState.Running;
             return state;

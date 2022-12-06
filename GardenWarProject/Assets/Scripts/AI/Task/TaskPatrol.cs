@@ -48,12 +48,10 @@ public class TaskPatrol : Node
             Vector3 MyPos = Mytransform.position;
             
             pos.y = 1.5f;
-
-            Vector3 direction = Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime);
-
-            if (Vector3.Distance(Mytransform.position, pos) < 0.3f)
+            
+            if (Vector3.Distance(MyPos, pos) < 0.3f)
             {
-                agent.SetDestination(direction);
+                agent.SetDestination(pos);
                 waitCounter = 0f;
                 waiting = true;
                 if (CurrentWaypointIndex + 1 >= waypoints.Length)// agent has reached the last waypoint
@@ -66,7 +64,7 @@ public class TaskPatrol : Node
             }
             else
             {
-                agent.SetDestination(direction);
+                agent.SetDestination(pos);
                 Mytransform.LookAt(pos);
             }
         }
