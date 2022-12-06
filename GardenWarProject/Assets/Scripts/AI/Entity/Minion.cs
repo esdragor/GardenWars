@@ -20,11 +20,17 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float CurrentHP = 100f;
+    [SerializeField] private Transform FalseFX;
 
     private float currentMoveSpeed;
     private bool isAlive = true;
     private bool canDie = true;
 
+    public void ReachEnemyCamp()
+    {
+        Destroy(gameObject);
+    }
+    
     public float GetAttackSpeed()
     {
         return attackSpeed;
@@ -284,6 +290,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
+        FalseFX.gameObject.SetActive(true);
         OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }

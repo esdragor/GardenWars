@@ -4,6 +4,7 @@ using BehaviourTree;
 using Test.IA_BL.Task;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 using Tree = BehaviourTree.Tree;
 
 public class MyAIBT : Tree
@@ -45,7 +46,7 @@ public class MyAIBT : Tree
             new Sequence(new List<Node>
             {
                 new CheckCanMove(entity),
-                new TaskPatrol(agent, transform, waypoints, 5f)
+                new TaskPatrol(agent, entity, transform, waypoints, 5f)
             }),
 
 

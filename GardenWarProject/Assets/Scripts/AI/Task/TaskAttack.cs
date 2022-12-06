@@ -11,6 +11,7 @@ using UnityEngine;
 public class TaskAttack : Node
 {
     private IAttackable attack;
+    private Entity MyEntity;
     private float attackSpeed;
     private double CurrentAtkTime = 0f;
     private Entity PreviousTarget;
@@ -22,6 +23,7 @@ public class TaskAttack : Node
     public TaskAttack(Node _Root, Entity entity, byte capaIndex, float _attackSpeed)
     {
         Root = _Root;
+        MyEntity = entity;
         attack = entity.GetComponent<IAttackable>();
         attackSpeed = _attackSpeed;
         capacityIndex = capaIndex;
@@ -52,10 +54,9 @@ public class TaskAttack : Node
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
-
-        Debug.Log(capacityIndex);
+        
         attack.RequestAttack(capacityIndex, new[] { target.entityIndex }, new[] { target.transform.position });
-
+        MyEntity.transform.LookAt(target.transform.position);
         Root.ClearData("target");
 
         return NodeState.Success;
