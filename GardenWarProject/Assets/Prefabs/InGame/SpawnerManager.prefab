@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 53936281}
   - component: {fileID: 53936280}
   m_Layer: 0
-  m_Name: WayPointCampRed
+  m_Name: WayPointCampBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 1404884800}
   - component: {fileID: 1404884799}
   m_Layer: 0
-  m_Name: WayPointCampBlue
+  m_Name: WayPointCampRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,13 +435,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   waypointsTeamBlue:
-  - {fileID: 7320831846170834896}
-  - {fileID: 2757688150166552352}
-  - {fileID: 53936279}
-  waypointsTeamRed:
   - {fileID: 2757688150166552352}
   - {fileID: 7320831846170834896}
   - {fileID: 1404884798}
+  waypointsTeamRed:
+  - {fileID: 7320831846170834896}
+  - {fileID: 2757688150166552352}
+  - {fileID: 53936279}
   SpawnerTower:
   - {fileID: 0}
   - {fileID: 0}
