@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Entities;
 using Entities.Capacities;
+using Entities.FogOfWar;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,7 +29,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void ReachEnemyCamp()
     {
-        Destroy(gameObject);
+        DieRPC();
     }
     
     public float GetAttackSpeed()
@@ -517,18 +518,19 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("DieRPC", RpcTarget.MasterClient);
     }
-
-    [PunRPC]
-    public void SyncDieRPC()
-    {
-        isAlive = false;
-        Destroy(gameObject);
-    }
-
+    
     [PunRPC]
     public void DieRPC()
     {
         photonView.RPC("SyncDieRPC", RpcTarget.All);
+    }
+    
+    [PunRPC]
+    public void SyncDieRPC()
+    {
+        isAlive = false;
+        FogOfWarManager.Instance.RemoveFOWViewable(this);
+        gameObject.SetActive(false);
     }
 
     public event GlobalDelegates.NoParameterDelegate OnDie;

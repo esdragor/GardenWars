@@ -53,7 +53,7 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            
+            Debug.Log($"{caster} is attacking {target}");
         }
     }
 }
