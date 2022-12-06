@@ -48,16 +48,16 @@ public class PoolLocalManager : MonoBehaviour
         }
     }
 
-    public void EnqueuePool(GameObject objectPrefab, GameObject go)
+    public static void EnqueuePool(GameObject objectPrefab, GameObject go)
     {
         queuesDictionary[objectPrefab].Enqueue(go);
         go.SetActive(false);
     }
 
-    public GameObject PoolInstantiate(GameObject GORef, Vector3 position, Quaternion rotation, Transform parent = null)
+    public static GameObject PoolInstantiate(GameObject GORef, Vector3 position, Quaternion rotation, Transform parent = null)
     {
         GameObject returnGO;
-        if (parent == null) parent = transform;
+        if (parent == null) parent = Instance.transform;
         if (queuesDictionary.ContainsKey(GORef))
         {
             var queue = queuesDictionary[GORef];

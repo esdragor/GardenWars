@@ -83,12 +83,7 @@ namespace  Entities
             var show = enemiesThatCanSeeMe.Count == 0;
             
             enemiesThatCanSeeMe.Add(viewable);
-            Debug.Log("try add viewable" + gameObject.name);
             if (show) ShowElements();
-            
-            //if (!PhotonNetwork.IsMasterClient) return;
-            //if(show) OnShowElement?.Invoke();
-            //photonView.RPC("SyncTryAddViewableRPC",RpcTarget.All,((Entity)viewable).entityIndex,show);
         }
         
         [PunRPC]
@@ -153,7 +148,6 @@ namespace  Entities
 
         public void HideElements()
         {
-            Debug.Log("hidelement" + this.gameObject.name);
             for (int i = 0; i < elementsToShow.Count; i++)
             {
                 elementsToShow[i].SetActive(false);

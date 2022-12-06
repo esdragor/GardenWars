@@ -16,7 +16,7 @@ public class EnqueuePoolLocal : MonoBehaviour
     IEnumerator WaitforEnqueued()
     {
         yield return new WaitForSeconds(duration);
-        PoolLocalManager.Instance.EnqueuePool(prefab, this.gameObject);
+        PoolLocalManager.EnqueuePool(prefab, this.gameObject);
     }
 
 }

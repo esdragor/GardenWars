@@ -5,6 +5,7 @@ namespace Entities.Capacities
     public class RangedAACapacity : ActiveCapacity
     {
         private Entity target;
+        private RangedAACapacitySO so => (RangedAACapacitySO) AssociatedActiveCapacitySO();
         
         protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
@@ -53,7 +54,20 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            Debug.Log($"{caster} is attacking {target}");
+            var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
+            projectile.Init(caster);
+            var projectileTr = projectile.transform;
+            var champion = caster.GetComponent<Champion.Champion>();
+
+            projectile.OnEntityCollide += (entity) => entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(champion.attackDamage);
+            projectile.OnEntityCollideFeedback += (entity) => gsm.OnUpdateFeedback -= MoveProjectile;
+
+            gsm.OnUpdateFeedback += MoveProjectile;
+            
+            void MoveProjectile()
+            {
+                projectileTr.position = Vector3.MoveTowards(projectileTr.position, target.transform.position, 0.1f);
+            }
         }
     }
 }
