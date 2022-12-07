@@ -36,7 +36,6 @@ public class CandyBagXerath : MonoBehaviour
         sm = GameStateMachine.Instance;
         IsHextech = true;
         startPosition = caster.transform.position;
-        Debug.Log("init " + startPosition);
         nbBounce = activeCapa.nbBounce;
         height = activeCapa.height;
         radiusRandom = activeCapa.RandomizeZoneRadius;
@@ -63,7 +62,7 @@ public class CandyBagXerath : MonoBehaviour
 
     public void MoveBag()
     {
-        if (Animation > 0.9f)
+        if (Animation > 0.99f)
         {
             if (nbBounce > 0)
             {
