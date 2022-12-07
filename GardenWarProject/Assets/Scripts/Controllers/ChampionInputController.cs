@@ -17,7 +17,6 @@ namespace Controllers.Inputs
         private Vector2 moveInput;
         private Vector3 moveVector;
         private Camera cam;
-        private bool isActivebuttonPress;
 
         private void Update()
         {
@@ -102,17 +101,12 @@ namespace Controllers.Inputs
         {
             mousePos = ctx.ReadValue<Vector2>();
             UpdateTargets();
-
-            if(isActivebuttonPress)
-            {
-                champion.MoveToPosition(GetMouseOverWorldPos());
-            }
         }
         
         private void UpdateTargets()
         {
             var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(mouseRay, out var hit)) return;
+            if (!Physics.Raycast(mouseRay, out var hit, Mathf.Infinity, layersToHit)) return;
             cursorWorldPos[0] = hit.point;
             selectedEntity[0] = -1;
             var ent = hit.transform.GetComponent<Entity>();
@@ -130,28 +124,8 @@ namespace Controllers.Inputs
                 return;
             }
             champion.MoveToPosition(cursorWorldPos[0]);
-            
         }
 
-        
-        
-        /// <summary>
-        /// Get World Position of mouse
-        /// </summary>
-        /// <param name="mousePos"></param>
-        /// <returns></returns>
-        public Vector3 GetMouseOverWorldPos()
-        {
-            Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(mouseRay, out RaycastHit hit))
-            {
-                return hit.point;
-            }
-
-            return Vector3.zero;
-        }
-        
         protected override void Link(Entity entity)
         {
             champion = controlledEntity as Champion;
@@ -172,8 +146,6 @@ namespace Controllers.Inputs
             
             champion.GetComponent<NavMeshAgent>().enabled = true;
             inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
-            inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
-            inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
             champion.rb.isKinematic = true;
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;

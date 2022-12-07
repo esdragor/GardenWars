@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 36660066}
   - component: {fileID: 36660065}
   - component: {fileID: 36660064}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: PointD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,6 +352,10 @@ PrefabInstance:
     - target: {fileID: 3940727462931963627, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475987759303325513, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 4475987759303325514, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: championSo
@@ -894,7 +898,7 @@ GameObject:
   - component: {fileID: 2059599125}
   - component: {fileID: 2059599124}
   - component: {fileID: 2059599123}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -934,7 +938,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5d0150d12d233104196ad334cda917f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1074,7 +1078,7 @@ GameObject:
   - component: {fileID: 1250176890533239763}
   - component: {fileID: 1250176890533239764}
   - component: {fileID: 1250176890533239765}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: PointB (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1093,7 +1097,7 @@ GameObject:
   - component: {fileID: 1250176891467941068}
   - component: {fileID: 1250176891467941067}
   - component: {fileID: 1250176891467941066}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: PointB (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1261,7 +1265,7 @@ GameObject:
   - component: {fileID: 3082078788629695084}
   - component: {fileID: 3082078788629695083}
   - component: {fileID: 3082078788629695082}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: PointC
   m_TagString: Untagged
   m_Icon: {fileID: 0}

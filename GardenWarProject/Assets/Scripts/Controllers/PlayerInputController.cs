@@ -1,11 +1,17 @@
-using Photon.Pun;
+using UnityEngine;
 
 namespace Controllers.Inputs
 {
     public abstract class PlayerInputController : Controller
     {
         protected PlayerInputs inputs;
-        
+        protected LayerMask layersToHit;
+
+        protected override void OnAwake()
+        {
+            layersToHit = 1 << 9 | 1 << 29;
+        }
+
         /// <summary>
         /// Setup the InputMap of The Player inputs
         /// </summary>
@@ -27,12 +33,6 @@ namespace Controllers.Inputs
         {
             if(!controlledEntity.photonView.IsMine) return;
             CameraController.Instance.LinkCamera(controlledEntity.transform);
-        }
-
-        public void TransferOwnerShipToMaster()
-        {
-            if(!controlledEntity.photonView.IsMine) return;
-            photonView.TransferOwnership(PhotonNetwork.MasterClient.ActorNumber);
         }
     }
 }
