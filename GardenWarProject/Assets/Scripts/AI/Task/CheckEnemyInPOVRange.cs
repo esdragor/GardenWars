@@ -34,15 +34,14 @@ public class CheckEnemyInPOVRange : Node
 
             if (colliders.Length > 1)
             {
-                for (int i = 0; i < colliders.Length; i++)
+                foreach (var coll in colliders)
                 {
-                    if (colliders[i].gameObject == MyTransform.gameObject) continue;
-                    Entity entity = colliders[i].GetComponent<Entity>();
+                    if (coll.gameObject == MyTransform.gameObject) continue;
+                    Entity entity = coll.GetComponent<Entity>();
                     if (!entity) continue;
                     if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
-                    Debug.Log(MyEntity.name + " found " + entity.name);
 
-                    IAttackable attackable = colliders[i].GetComponent<IAttackable>();
+                    IAttackable attackable = coll.GetComponent<IAttackable>();
                     if (attackable == null) continue;
                     Root.SetDataInBlackboard("target", entity);
                     //animator.SetBool("Walking", true);

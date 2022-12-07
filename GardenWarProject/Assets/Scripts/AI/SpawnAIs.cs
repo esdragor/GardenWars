@@ -62,7 +62,7 @@ public class SpawnAIs : MonoBehaviourPun
             .GetComponent<Entity>();
         BlueTower.team = Enums.Team.Team1;
         RedTower.team = Enums.Team.Team2;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         RedTower.GetComponent<TowerBT>().OnStart();
         BlueTower.GetComponent<TowerBT>().OnStart();
         photonView.RPC("SyncDataTower", RpcTarget.All,
@@ -92,11 +92,6 @@ public class SpawnAIs : MonoBehaviourPun
         StartCoroutine(SpawnerTowers());
     }
 
-    public void SwitchColor(Renderer render, Color c)
-    {
-        render.material.color = c;
-    }
-
 
     [PunRPC]
     public void SyncDataMinions(int entityIDBlue, int entityIDRed)
@@ -106,8 +101,8 @@ public class SpawnAIs : MonoBehaviourPun
 
         BlueEntity.team = Enums.Team.Team1;
         RedEntity.team = Enums.Team.Team2;
-        SwitchColor(BlueEntity.GetComponent<Renderer>(), ColorTeam[1]);
-        SwitchColor(RedEntity.GetComponent<Renderer>(), ColorTeam[0]);
+        BlueEntity.ChangeColor();
+        RedEntity.ChangeColor();
     }
 
     [PunRPC]
@@ -115,10 +110,10 @@ public class SpawnAIs : MonoBehaviourPun
     {
         Entity entity = EntityCollectionManager.GetEntityByIndex(IDS[0]);
         entity.team = Enums.Team.Team2;
-        SwitchColor(entity.GetComponent<Renderer>(), ColorTeam[0]);
+        entity.ChangeColor();
 
         entity = EntityCollectionManager.GetEntityByIndex(IDS[1]);
         entity.team = Enums.Team.Team1;
-        SwitchColor(entity.GetComponent<Renderer>(), ColorTeam[1]);
+        entity.ChangeColor();
     }
 }

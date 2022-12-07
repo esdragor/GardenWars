@@ -361,7 +361,7 @@ MonoBehaviour:
     m_Bits: 536870912
   entity: {fileID: 3301582452771090266}
   AtkRange: 4
-  FOVRange: 20
+  FOVRange: 10
   atkDelay: 1.5
 --- !u!114 &3301582452771090266
 MonoBehaviour:
@@ -380,6 +380,8 @@ MonoBehaviour:
   canRemovePassiveCapacity: 1
   uiTransform: {fileID: 0}
   uiOffset: {x: 0, y: 2, z: 0}
+  renderers:
+  - {fileID: 4498412454335939639}
   canShow: 0
   canHide: 0
   elementsToShow: []

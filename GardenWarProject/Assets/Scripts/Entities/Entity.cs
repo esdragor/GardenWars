@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
@@ -39,6 +40,8 @@ namespace Entities
         /// The offset of the UI of the entity.
         /// </summary>
         public Vector3 uiOffset = new Vector3(0, 2f, 0);
+
+        [SerializeField] private List<Renderer> renderers = new List<Renderer>();
 
         private void Start()
         {
@@ -200,6 +203,19 @@ namespace Entities
         public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemovedFeedback;
 
         #endregion
-        
+
+        public void ChangeColor()
+        {
+            foreach (var material in renderers.Select(xd => xd.material))
+            {
+                material.color = team switch
+                {
+                    Enums.Team.Neutral => Color.white,
+                    Enums.Team.Team1 => Color.blue,
+                    Enums.Team.Team2 => Color.red,
+                    _ => material.color
+                };
+            }
+        }
     }
 }
