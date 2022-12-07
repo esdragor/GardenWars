@@ -25,10 +25,6 @@ public class XerathUltimate : ActiveCapacity
         candyBag = Object.Instantiate(activeCapa.prefab, caster.transform.position + Vector3.up * 1,
             Quaternion.identity);
         sm = GameStateMachine.Instance;
-        IsHextech = true;
-        hextechDistance = 0f;
-        if (IsHextech)
-            hextechDistance = activeCapa.MinDistanceHFlash;
     }
 
 
@@ -105,7 +101,7 @@ public class XerathUltimate : ActiveCapacity
             if (activeCapa.hextechMode == HextechMode.jauge)
                 UIJauge.UpdateJaugeSlider(activeCapa.MinDistanceHFlash, activeCapa.MaxDistanceHFlash,  hextechDistance);
             else
-                UIJauge.UpdateJaugeSlider(activeCapa.MinDistanceHFlash, activeCapa.MaxDistanceHFlash, hextechDistance + Time.time * activeCapa.HextechFlashSpeedScale - time_Pressed);
+                UIJauge.UpdateJaugeSlider(activeCapa.MinDistanceHFlash, activeCapa.MaxDistanceHFlash, hextechDistance + (Time.time - time_Pressed ) * activeCapa.HextechFlashSpeedScale );
         }
         else
             HelperDirection.transform.position = casterPos + getDirByMousePosition() + Vector3.up;
@@ -114,7 +110,7 @@ public class XerathUltimate : ActiveCapacity
     protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         Init();
-        time_Pressed =  Time.time * activeCapa.HextechFlashSpeedScale - time_Pressed;
+        time_Pressed =  (Time.time - time_Pressed ) * activeCapa.HextechFlashSpeedScale;
         switch (activeCapa.hextechMode)
         {
             case HextechMode.hold:
@@ -143,6 +139,7 @@ public class XerathUltimate : ActiveCapacity
 
         GoalPosition.y = 1;
         candyBag.GetComponent<CandyBagXerath>().Init(caster, activeCapa, GoalPosition, hextechDistance);
+        if (UIJauge) UIJauge.gameObject.SetActive(false);
     }
 
     protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
