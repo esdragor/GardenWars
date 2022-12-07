@@ -6,7 +6,6 @@ using Object = UnityEngine.Object;
 public class XerathUltimate : ActiveCapacity
 {
     private XerathUltimateSO activeCapa => (XerathUltimateSO)AssociatedActiveCapacitySO();
-    private Vector3 startPosition;
     private Vector3 GoalPosition;
 
     private GameObject candyBag = null;
@@ -39,7 +38,7 @@ public class XerathUltimate : ActiveCapacity
         if (plane.Raycast(ray2, out dist))
         {
             Vector3 worldPosition = ray2.GetPoint(dist);
-            return (new Vector3(worldPosition.x, 0, worldPosition.z) - startPosition);
+            return (new Vector3(worldPosition.x, 0, worldPosition.z) - casterPos);
         }
 
         return Vector3.zero;
@@ -82,6 +81,8 @@ public class XerathUltimate : ActiveCapacity
     protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         if (HelperDirection) HelperDirection.SetActive(true);
+        else
+            HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
     }
 
     protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
@@ -92,9 +93,9 @@ public class XerathUltimate : ActiveCapacity
     {
         if (!HelperDirection) return;
         if (activeCapa.hextechMode != HextechMode.mouseDistance)
-            HelperDirection.transform.position = startPosition + getDirByMousePosition().normalized;
+            HelperDirection.transform.position = casterPos + getDirByMousePosition().normalized + Vector3.up;
         else
-            HelperDirection.transform.position = startPosition + getDirByMousePosition();
+            HelperDirection.transform.position = casterPos + getDirByMousePosition() + Vector3.up;
         ;
     }
 
@@ -109,22 +110,22 @@ public class XerathUltimate : ActiveCapacity
                 if (hextechDistance > activeCapa.MaxDistanceHFlash)
                     hextechDistance = activeCapa.MaxDistanceHFlash;
                 GoalPosition =
-                    GetClosestValidPoint(startPosition + getDirByMousePosition().normalized * (float)hextechDistance);
+                    GetClosestValidPoint(casterPos + getDirByMousePosition().normalized * (float)hextechDistance);
                 break;
 
             case HextechMode.jauge:
                 GameStateMachine.Instance.OnUpdate -= Jauge;
                 GoalPosition =
-                    GetClosestValidPoint(startPosition + getDirByMousePosition().normalized * (float)hextechDistance);
+                    GetClosestValidPoint(casterPos + getDirByMousePosition().normalized * (float)hextechDistance);
                 break;
 
             case HextechMode.mouseDistance:
-                float mouseDist = Vector3.Distance(startPosition, getDirByMousePosition());
+                float mouseDist = Vector3.Distance(casterPos, getDirByMousePosition());
 
                 if (activeCapa.RatioMouseDistance != 0f)
                     mouseDist /= activeCapa.RatioMouseDistance;
 
-                GoalPosition = GetClosestValidPoint(startPosition + getDirByMousePosition().normalized * mouseDist);
+                GoalPosition = GetClosestValidPoint(casterPos + getDirByMousePosition().normalized * mouseDist);
                 break;
         }
         GoalPosition.y = 1;
