@@ -47,7 +47,7 @@ public class CandyBagXerath : MonoBehaviour
             hextechDistance = dist;
         RandomizeZone = activeCapa.RandomizeZone;
         
-        GameStateMachine.Instance.OnTick += MoveBag;
+        GameStateMachine.Instance.OnUpdate += MoveBag;
     }
     public class ParabolaClass
     {
@@ -83,7 +83,7 @@ public class CandyBagXerath : MonoBehaviour
             }
             else
             {
-                GameStateMachine.Instance.OnTick -= MoveBag;
+                GameStateMachine.Instance.OnUpdate -= MoveBag;
             }
         }
         Animation += (1 - sm.tickRate / 100) * ReduceSpeed;

@@ -75,7 +75,7 @@ public class XerathUltimate : ActiveCapacity
         {
             PositiveJaugeHextech = true;
             hextechDistance = activeCapa.MinDistanceHFlash;
-            GameStateMachine.Instance.OnTick += Jauge;
+            GameStateMachine.Instance.OnUpdate += Jauge;
         }
     }
 
@@ -113,7 +113,7 @@ public class XerathUltimate : ActiveCapacity
                 break;
 
             case HextechMode.jauge:
-                GameStateMachine.Instance.OnTick -= Jauge;
+                GameStateMachine.Instance.OnUpdate -= Jauge;
                 GoalPosition = GetClosestValidPoint(startPosition + getDirByMousePosition().normalized * (float)hextechDistance);
                 break;
 
