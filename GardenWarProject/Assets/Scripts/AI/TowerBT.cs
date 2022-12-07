@@ -14,7 +14,11 @@ namespace BehaviourTree
         
         protected override Node InitTree()
         {
-            origin = new Sequence(new List<Node> { new CheckEnemyInPOVRange(origin, entity,enemyMask, AtkRange), new TaskAttack(origin, entity, entity.activeTowerAutoSO.indexInCollection, atkDelay) });
+            origin = new Sequence(new List<Node>
+            {
+                new CheckEnemyInPOVRange(origin, entity,enemyMask, AtkRange), 
+                new TaskAttack(origin, entity, entity.activeTowerAutoSO.indexInCollection, atkDelay)
+            });
             return origin;
         }
     }

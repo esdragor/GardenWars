@@ -95,6 +95,10 @@ MonoBehaviour:
   canRemovePassiveCapacity: 1
   uiTransform: {fileID: 0}
   uiOffset: {x: 0, y: 2, z: 0}
+  renderers:
+  - {fileID: 7850692270483217831}
+  - {fileID: 3999552676209230262}
+  - {fileID: 1103628644831062343}
   canShow: 0
   canHide: 0
   elementsToShow: []
@@ -108,8 +112,8 @@ MonoBehaviour:
   fogOfWarStartDetection: {fileID: 2465843384666126295}
   activeTowerAutoSO: {fileID: 11400000, guid: 6b714a45301f2ea43b462e9929de7924, type: 2}
   canAttack: 1
-  attackValue: 5
-  attackSpeed: 0
+  attackValue: 50
+  attackSpeed: 2
   MaxHP: 100
   CurrentHP: 100
 --- !u!114 &605525518
@@ -127,7 +131,7 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 536870912
-  entity: {fileID: 0}
+  entity: {fileID: 605525519}
   AtkRange: 10
   atkDelay: 2.5
 --- !u!208 &605525517
@@ -339,6 +343,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86be728ff49415945be75480443ea98a, type: 3}
+--- !u!23 &1103628644831062343 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 944156830481604366, guid: 86be728ff49415945be75480443ea98a, type: 3}
+  m_PrefabInstance: {fileID: 165139796925396553}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2322287295388343535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -421,6 +430,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6665894965741566503, guid: 09d69b122146f134eaa49de094ce6883, type: 3}
   m_PrefabInstance: {fileID: 2322287295388343535}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &7850692270483217831 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5532998679109615944, guid: 09d69b122146f134eaa49de094ce6883, type: 3}
+  m_PrefabInstance: {fileID: 2322287295388343535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6088387981664979387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -490,3 +504,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19a95e9cd1f33d743ac74dc0a47de443, type: 3}
+--- !u!23 &3999552676209230262 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7205494883066054669, guid: 19a95e9cd1f33d743ac74dc0a47de443, type: 3}
+  m_PrefabInstance: {fileID: 6088387981664979387}
+  m_PrefabAsset: {fileID: 0}

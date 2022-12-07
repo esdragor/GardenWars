@@ -40,7 +40,6 @@ public class CheckEnemyInPOVRange : Node
                     Entity entity = colliders[i].GetComponent<Entity>();
                     if (!entity) continue;
                     if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
-                    Debug.Log(MyEntity.name + " found " + entity.name);
 
                     IAttackable attackable = colliders[i].GetComponent<IAttackable>();
                     if (attackable == null) continue;
