@@ -39,7 +39,7 @@ public class CheckEnemyInPOVRange : Node
                     if (coll.gameObject == MyTransform.gameObject) continue;
                     Entity entity = coll.GetComponent<Entity>();
                     if (!entity) continue;
-                    if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
+                    if (!MyEntity.GetEnemyTeams().Contains(entity.team) || entity.team == Enums.Team.NotAssigned) continue;
 
                     IAttackable attackable = coll.GetComponent<IAttackable>();
                     if (attackable == null) continue;
