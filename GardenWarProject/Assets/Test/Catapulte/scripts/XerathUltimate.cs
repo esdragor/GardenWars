@@ -10,6 +10,7 @@ public class XerathUltimate : ActiveCapacity
 
     private GameObject candyBag = null;
     private GameObject HelperDirection = null;
+    private UIJauge UIJauge = null;
     private double Animation = 0f;
     private Plane plane = new Plane(Vector3.up, 0);
 
@@ -70,10 +71,11 @@ public class XerathUltimate : ActiveCapacity
     protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         time_Pressed = Time.time;
+        hextechDistance = activeCapa.MinDistanceHFlash;
         if (activeCapa.hextechMode == HextechMode.jauge)
         {
             PositiveJaugeHextech = true;
-            hextechDistance = activeCapa.MinDistanceHFlash;
+            
             GameStateMachine.Instance.OnUpdate += Jauge;
         }
     }
@@ -83,6 +85,10 @@ public class XerathUltimate : ActiveCapacity
         if (HelperDirection) HelperDirection.SetActive(true);
         else
             HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        if (activeCapa.hextechMode == HextechMode.mouseDistance) return;
+        if (UIJauge) UIJauge.gameObject.SetActive(true);
+        else
+            UIJauge = GameObject.Instantiate(activeCapa.prefabJauge).GetComponent<UIJauge>();
     }
 
     protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
@@ -93,16 +99,22 @@ public class XerathUltimate : ActiveCapacity
     {
         if (!HelperDirection) return;
         if (activeCapa.hextechMode != HextechMode.mouseDistance)
+        {
             HelperDirection.transform.position = casterPos + getDirByMousePosition().normalized + Vector3.up;
+            if (!UIJauge) return;
+            if (activeCapa.hextechMode == HextechMode.jauge)
+                UIJauge.UpdateJaugeSlider(activeCapa.MinDistanceHFlash, activeCapa.MaxDistanceHFlash,  hextechDistance);
+            else
+                UIJauge.UpdateJaugeSlider(activeCapa.MinDistanceHFlash, activeCapa.MaxDistanceHFlash, hextechDistance + Time.time * activeCapa.HextechFlashSpeedScale - time_Pressed);
+        }
         else
             HelperDirection.transform.position = casterPos + getDirByMousePosition() + Vector3.up;
-        ;
     }
 
     protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
         Init();
-        time_Pressed = Time.time - time_Pressed;
+        time_Pressed =  Time.time * activeCapa.HextechFlashSpeedScale - time_Pressed;
         switch (activeCapa.hextechMode)
         {
             case HextechMode.hold:
@@ -128,13 +140,14 @@ public class XerathUltimate : ActiveCapacity
                 GoalPosition = GetClosestValidPoint(casterPos + getDirByMousePosition().normalized * mouseDist);
                 break;
         }
+
         GoalPosition.y = 1;
         candyBag.GetComponent<CandyBagXerath>().Init(caster, activeCapa, GoalPosition, hextechDistance);
     }
 
     protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        if (HelperDirection)
-            HelperDirection.SetActive(false);
+        if (HelperDirection) HelperDirection.SetActive(false);
+        if (UIJauge) UIJauge.gameObject.SetActive(false);
     }
 }
