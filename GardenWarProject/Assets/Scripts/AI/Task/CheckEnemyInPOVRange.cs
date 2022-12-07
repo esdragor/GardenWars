@@ -15,6 +15,7 @@ public class CheckEnemyInPOVRange : Node
 
     public CheckEnemyInPOVRange(Node _Root, Entity entity, int enemyMaskByFunct, float _rangeFOV = 5f)
     {
+        if (entity == null) return;
         MyTransform = entity.transform;
         //animator = getComponent<Animator>();
         rangeFOV = _rangeFOV;
@@ -39,6 +40,7 @@ public class CheckEnemyInPOVRange : Node
                     Entity entity = colliders[i].GetComponent<Entity>();
                     if (!entity) continue;
                     if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
+                    Debug.Log(MyEntity.name + " found " + entity.name);
 
                     IAttackable attackable = colliders[i].GetComponent<IAttackable>();
                     if (attackable == null) continue;

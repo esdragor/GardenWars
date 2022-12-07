@@ -17,34 +17,48 @@ public class SpawnAIs : MonoBehaviourPun
     [SerializeField] private Transform[] waypointsTeamRed;
     [SerializeField] private Transform[] SpawnerTower;
     [SerializeField] private Color[] ColorTeam;
+    [SerializeField] private float DelayBetweenWaves = 30f;
 
-    private Enums.Team myTeam;
+    private bool StopSpawn = false;
 
 
-    IEnumerator SpawnerMinions(byte Team)
+    IEnumerator SpawnerMinions()
     {
-        for (int i = 0; i < nb; i++)
+        while (!StopSpawn)
         {
-            //Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[Team - 1].position, Quaternion.identity);
-            Entity entity = PhotonNetwork.Instantiate("Minion", SpawnPoints[Team - 1].position, Quaternion.identity)
-                .GetComponent<Entity>();
-            yield return new WaitForSeconds(0.1f);
-            photonView.RPC("SyncDataMinions", RpcTarget.All, Team, entity.photonView.ViewID);
-            yield return new WaitForSeconds(0.1f);
-            MyAIBT BT = entity.GetComponent<MyAIBT>();
-            BT.enabled = true;
-            BT.waypoints = ((Enums.Team)Team == Enums.Team.Team1) ? waypointsTeamBlue : waypointsTeamRed;
-            entity.team = (Enums.Team)Team;
-            BT.OnStart();
-            yield return new WaitForSeconds(delayBetweenSpawn);
+            for (int i = 0; i < nb; i++)
+            {
+                //Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[Team - 1].position, Quaternion.identity);
+                Entity BlueEntity = PhotonNetwork.Instantiate("Minion", SpawnPoints[0].position, Quaternion.identity)
+                    .GetComponent<Entity>();
+                Entity RedEntity = PhotonNetwork.Instantiate("Minion", SpawnPoints[1].position, Quaternion.identity)
+                    .GetComponent<Entity>();
+                yield return new WaitForSeconds(0.1f);
+                photonView.RPC("SyncDataMinions", RpcTarget.All, BlueEntity.photonView.ViewID,
+                    RedEntity.photonView.ViewID);
+                yield return new WaitForSeconds(0.1f);
+                BlueEntity.team = Enums.Team.Team1;
+                RedEntity.team = Enums.Team.Team2;
+                MyAIBT BlueBT = BlueEntity.GetComponent<MyAIBT>();
+                MyAIBT RedBT = RedEntity.GetComponent<MyAIBT>();
+                BlueBT.enabled = true;
+                RedBT.enabled = true;
+                BlueBT.waypoints = waypointsTeamBlue;
+                RedBT.waypoints = waypointsTeamRed;
+                BlueBT.OnStart();
+                RedBT.OnStart();
+                yield return new WaitForSeconds(delayBetweenSpawn);
+            }
+
+            yield return new WaitForSeconds(DelayBetweenWaves);
         }
     }
 
     IEnumerator SpawnerTowers()
     {
-        Entity RedTower = PhotonNetwork.Instantiate("Tower", SpawnerTower[0].position, Quaternion.identity)
+        Entity RedTower = PhotonNetwork.Instantiate("NewTower", SpawnerTower[0].position, Quaternion.identity)
             .GetComponent<Entity>();
-        Entity BlueTower = PhotonNetwork.Instantiate("Tower", SpawnerTower[1].position, Quaternion.identity)
+        Entity BlueTower = PhotonNetwork.Instantiate("NewTower", SpawnerTower[1].position, Quaternion.identity)
             .GetComponent<Entity>();
         yield return new WaitForSeconds(0.1f);
         RedTower.GetComponent<TowerBT>().OnStart();
@@ -57,21 +71,21 @@ public class SpawnAIs : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        myTeam = GameStateMachine.Instance.GetPlayerTeam();
-        if (!PhotonNetwork.LocalPlayer.IsLocal) return;
         if (PhotonNetwork.IsMasterClient)
-            photonView.RPC("SpawnTowers", RpcTarget.MasterClient, (int)myTeam);
-        photonView.RPC("SpawnMinions", RpcTarget.MasterClient, (int)myTeam);
+        {
+            photonView.RPC("SpawnTowers", RpcTarget.MasterClient);
+            photonView.RPC("SpawnMinions", RpcTarget.MasterClient);
+        }
     }
 
     [PunRPC]
-    public void SpawnMinions(int team)
+    public void SpawnMinions()
     {
-        StartCoroutine(SpawnerMinions((byte)team));
+        StartCoroutine(SpawnerMinions());
     }
 
     [PunRPC]
-    public void SpawnTowers(int team)
+    public void SpawnTowers()
     {
         StartCoroutine(SpawnerTowers());
     }
@@ -80,15 +94,18 @@ public class SpawnAIs : MonoBehaviourPun
     {
         render.material.color = c;
     }
-    
-    
-    [PunRPC]
-    public void SyncDataMinions(byte team, int entityID)
-    {
-        Entity entity = EntityCollectionManager.GetEntityByIndex(entityID);
 
-        entity.team = (Enums.Team)team;
-        SwitchColor(entity.GetComponent<Renderer>(), (entity.team == Enums.Team.Team2) ? ColorTeam[0] : ColorTeam[1]);
+
+    [PunRPC]
+    public void SyncDataMinions(int entityIDBlue, int entityIDRed)
+    {
+        Entity BlueEntity = EntityCollectionManager.GetEntityByIndex(entityIDBlue);
+        Entity RedEntity = EntityCollectionManager.GetEntityByIndex(entityIDRed);
+
+        BlueEntity.team = Enums.Team.Team1;
+        RedEntity.team = Enums.Team.Team2;
+        SwitchColor(BlueEntity.GetComponent<Renderer>(), ColorTeam[1]);
+        SwitchColor(RedEntity.GetComponent<Renderer>(), ColorTeam[0]);
     }
 
     [PunRPC]
@@ -97,7 +114,7 @@ public class SpawnAIs : MonoBehaviourPun
         Entity entity = EntityCollectionManager.GetEntityByIndex(IDS[0]);
         entity.team = Enums.Team.Team2;
         SwitchColor(entity.GetComponent<Renderer>(), ColorTeam[0]);
-        
+
         entity = EntityCollectionManager.GetEntityByIndex(IDS[1]);
         entity.team = Enums.Team.Team1;
         SwitchColor(entity.GetComponent<Renderer>(), ColorTeam[1]);
