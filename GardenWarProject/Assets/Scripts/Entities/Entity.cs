@@ -80,6 +80,8 @@ namespace Entities
             photonView.RPC("SyncInstantiateRPC", RpcTarget.All, position, rotation);
             OnInstantiated();
         }
+        
+        
 
         public abstract void OnInstantiated();
 

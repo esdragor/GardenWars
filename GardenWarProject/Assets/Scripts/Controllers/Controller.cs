@@ -9,13 +9,11 @@ namespace Controllers
 
         private void Awake()
         {
+            controlledEntity = GetComponent<Entity>();
             OnAwake();
         }
 
-         protected virtual void OnAwake()
-         {
-             controlledEntity = GetComponent<Entity>();
-         }
+        protected virtual void OnAwake() { }
          
          /// <summary>
          /// Link Inputs to CallBacks Actions and entity
