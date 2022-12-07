@@ -60,6 +60,8 @@ public class SpawnAIs : MonoBehaviourPun
             .GetComponent<Entity>();
         Entity BlueTower = PhotonNetwork.Instantiate("NewTower", SpawnerTower[1].position, Quaternion.identity)
             .GetComponent<Entity>();
+        BlueTower.team = Enums.Team.Team1;
+        RedTower.team = Enums.Team.Team2;
         yield return new WaitForSeconds(0.1f);
         RedTower.GetComponent<TowerBT>().OnStart();
         BlueTower.GetComponent<TowerBT>().OnStart();
