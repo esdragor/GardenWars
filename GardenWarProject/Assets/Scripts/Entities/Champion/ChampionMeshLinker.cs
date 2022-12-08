@@ -28,6 +28,7 @@ namespace Entities.Champion
                 }
             }
 
+            if (teamColorfulParts.Length <= 0) return;
             foreach (var rd in teamColorfulParts)
             {
                 rd.material.SetColor(EmissionColor, color * 1f);
