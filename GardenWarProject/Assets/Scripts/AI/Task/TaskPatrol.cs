@@ -50,6 +50,18 @@ public class TaskPatrol : Node
             Vector3 MyPos = Mytransform.position;
             
             pos.y = 1.5f;
+
+            if (CurrentWaypointIndex + 1 < waypoints.Length)
+            {
+                if(MyPos.x > waypoints[CurrentWaypointIndex].position.x && MyPos.x < waypoints[CurrentWaypointIndex + 1].position.x)
+                {
+                    CurrentWaypointIndex++;
+                }
+                else if(MyPos.x < waypoints[CurrentWaypointIndex].position.x && MyPos.x > waypoints[CurrentWaypointIndex + 1].position.x)
+                {
+                    CurrentWaypointIndex++;
+                }
+            }
             
             if (Vector3.Distance(MyPos, pos) < 0.3f)
             {
