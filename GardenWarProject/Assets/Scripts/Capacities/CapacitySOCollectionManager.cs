@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Entities.Capacities
@@ -8,15 +7,12 @@ namespace Entities.Capacities
     public class CapacitySOCollectionManager : MonoBehaviour
     {
         public static CapacitySOCollectionManager Instance;
-        
-        /// <summary>
-        /// Reference of All Active Capacities 
-        /// </summary>
+
+        [SerializeField] private ActiveCapacitySO scavengerThrowCapacitySo;
+        [SerializeField] private ActiveCapacitySO fighterThrowCapacitySo;
+
         [SerializeField] private List<ActiveCapacitySO> allActiveCapacities = new List<ActiveCapacitySO>();
         
-        /// <summary>
-        /// Reference of All Passive Capacities 
-        /// </summary>
         [SerializeField] private List<PassiveCapacitySO> allPassiveCapacitiesSo = new List<PassiveCapacitySO>();
 
         private void Awake()
@@ -106,6 +102,11 @@ namespace Entities.Capacities
         public PassiveCapacitySO GetPassiveCapacitySOByIndex(byte index)
         {
             return allPassiveCapacitiesSo[index];
+        }
+
+        public static byte GetThrowAbilityIndex(Enums.ChampionRole role)
+        {
+            return role == Enums.ChampionRole.Fighter ?  Instance.fighterThrowCapacitySo.indexInCollection : Instance.scavengerThrowCapacitySo.indexInCollection;
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Entities.Champion
             
             elementsToShow.Add(championMesh);
             
-            if (!GameStateMachine.isOffline)
+            if (!isOffline)
             {
                 so.SetIndexes();
                 

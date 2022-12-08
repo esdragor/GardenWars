@@ -326,7 +326,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public void SyncDieRPC()
     {
         isAlive = false;
-        Destroy(gameObject);
+        canView = false;
+        gameObject.SetActive(false);
     }
 
     [PunRPC]

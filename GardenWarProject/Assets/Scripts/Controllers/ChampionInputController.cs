@@ -71,6 +71,19 @@ namespace Controllers.Inputs
         }
         
         
+        private void OnPressThrowCapacity(InputAction.CallbackContext ctx)
+        {
+            champion.RequestOnCastCapacity(CapacitySOCollectionManager.GetThrowAbilityIndex(champion.role));
+        }
+        
+        private void OnReleaseThrowCapacity(InputAction.CallbackContext ctx)
+        {
+            champion.RequestOnReleaseCapacity(CapacitySOCollectionManager.GetThrowAbilityIndex(champion.role));
+        }
+
+
+
+
         private void OnPressItem0(InputAction.CallbackContext ctx)
         {
             champion.RequestPressItem(0,selectedEntity,cursorWorldPos);
@@ -144,6 +157,9 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity1.canceled += OnReleaseCapacity1;
             inputs.Capacity.Capacity2.canceled += OnReleaseCapacity2;
             
+            inputs.Capacity.ThrowCapacity.performed += OnPressThrowCapacity;
+            inputs.Capacity.ThrowCapacity.canceled += OnReleaseThrowCapacity;
+            
             champion.GetComponent<NavMeshAgent>().enabled = true;
             inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
             champion.rb.isKinematic = true;
@@ -180,6 +196,10 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity0.canceled -= OnReleaseCapacity0;
             inputs.Capacity.Capacity1.canceled -= OnReleaseCapacity1;
             inputs.Capacity.Capacity2.canceled -= OnReleaseCapacity2;
+            
+            inputs.Capacity.ThrowCapacity.performed += OnPressThrowCapacity;
+            inputs.Capacity.ThrowCapacity.canceled += OnReleaseThrowCapacity;
+            
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
 
             inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;
