@@ -74,6 +74,7 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
+            champion.PlayThrowAnimation();
             if (HelperDirection) HelperDirection.SetActive(false);
             if (UIJauge) UIJauge.gameObject.SetActive(false);
         }

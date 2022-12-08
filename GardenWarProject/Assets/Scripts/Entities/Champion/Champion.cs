@@ -12,6 +12,7 @@ namespace Entities.Champion
         public Transform rotateParent;
         private Vector3 respawnPos;
         public Rigidbody rb;
+        private Animator animator;
 
         public CollisionBlocker blocker;
         protected override void OnStart()
@@ -69,6 +70,7 @@ namespace Entities.Champion
             role = newRole;
             
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
+            animator = championMesh.GetComponent<Animator>();
             
             elementsToShow.Add(championMesh);
             
@@ -145,6 +147,11 @@ namespace Entities.Champion
             if (uiManager == null) return;
             uiManager.InstantiateHealthBarForEntity(this);
             uiManager.InstantiateResourceBarForEntity(this);
+        }
+
+        public void PlayThrowAnimation()
+        {
+            animator.SetTrigger("Throw");
         }
     }
 }
