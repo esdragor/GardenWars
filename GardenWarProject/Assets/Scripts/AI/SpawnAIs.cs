@@ -63,8 +63,7 @@ public class SpawnAIs : MonoBehaviourPun
         {
             tower.GetComponent<TowerBT>().OnStart();
         }
-
-        Debug.Log("Starting Spawning Waves");
+        
         timer = timeBetweenWaves-timeBeforeFirstWave;
         gsm.OnTick += SpawnWaves;
 

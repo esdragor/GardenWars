@@ -90,6 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bc664da88a83d4aad6c638a36e07f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canChangeTeam: 0
+  team: 0
   canAddPassiveCapacity: 1
   canRemovePassiveCapacity: 1
   uiTransform: {fileID: 0}
@@ -100,9 +102,8 @@ MonoBehaviour:
   - {fileID: 1103628644831062343}
   canShow: 0
   canHide: 0
+  showMe: 0
   elementsToShow: []
-  canChangeTeam: 0
-  team: 0
   baseViewRange: 5
   viewRange: 5
   viewAngle: 360

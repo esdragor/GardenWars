@@ -4,15 +4,11 @@ using Entities.FogOfWar;
 using System.Linq;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Entities
 {
     public abstract partial class Entity : IFOWViewable
     {
-        public bool canChangeTeam;
-        public Enums.Team team;
-
         [Header("Viewable")] public float baseViewRange;
         public float viewRange;
         [Range(0, 360)] public float viewAngle;
@@ -167,19 +163,10 @@ namespace Entities
         public void AddShowable(IFOWShowable showable)
         {
             if (seenShowables.Contains(showable)) return;
-
             seenShowables.Add(showable);
-            //Debug.Log("seen Showable Add");
             showable.TryAddFOWViewable(this);
-            //Debug.Log("Try add This FowViewable");
             var seenEntityIndex = ((Entity)showable).entityIndex;
-            //Debug.Log("Entity index : " + seenEntityIndex);
             OnAddShowableFeedback?.Invoke(seenEntityIndex);
-
-            
-         //   if (!PhotonNetwork.IsMasterClient) return;
-           // OnAddShowable?.Invoke(seenEntityIndex);
-            //photonView.RPC("SyncAddShowableRPC", RpcTarget.All, seenEntityIndex);
         }
 
         [PunRPC]

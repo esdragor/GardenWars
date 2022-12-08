@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using UnityEngine;
 
@@ -9,6 +9,8 @@ namespace Entities
     {
         private static readonly Dictionary<int, Entity> allEntitiesDict = new Dictionary<int, Entity>();
 
+        [Header("Show Dict")]
+        [SerializeField] private bool showDebugList;
         [SerializeField] private List<Entity> debugEntityList = new List<Entity>();
 
         private static PhotonView view;
@@ -25,11 +27,13 @@ namespace Entities
 
         private void Update()
         {
-            debugEntityList.Clear();
-            foreach (var e in allEntitiesDict.Values)
-            {
-                debugEntityList.Add(e);
-            }
+            UpdateDebugList();
+        }
+
+        private void UpdateDebugList()
+        {
+            if(!showDebugList) return;
+            debugEntityList = allEntitiesDict.Values.ToList();
         }
 
 
@@ -40,7 +44,6 @@ namespace Entities
         /// <returns>The entity which corresponds to the index, or null if the index is invalid</returns>
         public static Entity GetEntityByIndex(int index)
         {
-            Debug.Log($"Trying to get Entity at {index}");
             return !allEntitiesDict.ContainsKey(index) ? null : allEntitiesDict[index];
         }
 
@@ -57,7 +60,6 @@ namespace Entities
                 return;
             }
             
-            Debug.Log($"Adding entity {entity.gameObject.name} at index {entity.entityIndex}");
             allEntitiesDict.Add(index, entity);
         }
 

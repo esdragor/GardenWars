@@ -8,9 +8,10 @@ namespace  Entities
     public abstract partial class Entity : IFOWShowable
     {
         [Header("Showable")]
-        public List<IFOWViewable> enemiesThatCanSeeMe = new List<IFOWViewable>();
         public bool canShow;
         public bool canHide;
+        public bool showMe;
+        private List<IFOWViewable> enemiesThatCanSeeMe = new List<IFOWViewable>();
         public List<GameObject> elementsToShow = new List<GameObject>();
         public bool CanShow() 
         {
@@ -78,12 +79,7 @@ namespace  Entities
 
         public void TryAddFOWViewable(Entity viewable)
         {
-            if (!GetEnemyTeams().Contains(viewable.GetTeam()) || enemiesThatCanSeeMe.Contains(viewable)) return;
-
-            var show = enemiesThatCanSeeMe.Count == 0;
-            
-            enemiesThatCanSeeMe.Add(viewable);
-            if (show) ShowElements();
+            if (GetEnemyTeams().Contains(viewable.GetTeam()) && !enemiesThatCanSeeMe.Contains(viewable)) enemiesThatCanSeeMe.Add(viewable);
         }
         
         [PunRPC]
@@ -99,11 +95,12 @@ namespace  Entities
 
         public void ShowElements()
         {
-            for (int i = 0; i < elementsToShow.Count; i++)
+            if(showMe) return;
+            showMe = true;
+            foreach (var go in elementsToShow)
             {
-                elementsToShow[i].SetActive(true);
+                go.SetActive(true);
             }
-            // Debug.Log("showelement" + this.gameObject.name);
             OnShowElementFeedback?.Invoke();
         }
 
@@ -113,7 +110,6 @@ namespace  Entities
         public void TryRemoveFOWViewable(int viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
-            //  Debug.Log("try remove viewable" + gameObject.name);
             if(entity == null) return;
             
             var viewable = entity.GetComponent<IFOWViewable>();
@@ -124,16 +120,7 @@ namespace  Entities
 
         public void TryRemoveFOWViewable(IFOWViewable viewable)
         {
-            if (!enemiesThatCanSeeMe.Contains(viewable)) return;
-
-            var hide = enemiesThatCanSeeMe.Count == 1;
-            
-            enemiesThatCanSeeMe.Remove(viewable);
-            if (hide) HideElements();
-            
-            //if (!PhotonNetwork.IsMasterClient) return;
-            //if (hide) OnHideElement?.Invoke();
-            //photonView.RPC("SyncTryRemoveViewableRPC",RpcTarget.All,((Entity)viewable).entityIndex,hide);
+            if (enemiesThatCanSeeMe.Contains(viewable)) enemiesThatCanSeeMe.Remove(viewable);
         }
 
         [PunRPC]
@@ -146,11 +133,26 @@ namespace  Entities
             if(hide) HideElements();
         }
 
+        public void UpdateShow()
+        {
+            if (enemiesThatCanSeeMe.Count > 0 || team == gsm.GetPlayerTeam())
+            {
+                ShowElements();
+            }
+            else
+            {
+                HideElements();
+            }
+            enemiesThatCanSeeMe.Clear();
+        }
+
         public void HideElements()
         {
-            for (int i = 0; i < elementsToShow.Count; i++)
+            if(!showMe) return;
+            showMe = false;
+            foreach (var go in elementsToShow)
             {
-                elementsToShow[i].SetActive(false);
+                go.SetActive(false);
             }
             OnHideElementFeedback?.Invoke();
         }

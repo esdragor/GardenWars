@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
 using Entities.FogOfWar;
+using GameStates;
 using Photon.Pun;
 using UnityEngine;
 
@@ -13,11 +13,20 @@ namespace Entities
     {
         protected static bool isOffline => !PhotonNetwork.IsConnected;
         protected static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
+        
+        protected GameStateMachine gsm => GameStateMachine.Instance;
+        protected UIManager uiManager => UIManager.Instance;
         public int entityIndex => photonView.ViewID;
-
+        
+        [Header("Team")]
+        public bool canChangeTeam;
+        public Enums.Team team;
+        public bool isEnemy => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
+        
         /// <summary>
         /// True if passiveCapacities can be added to the entity's passiveCapacitiesList. False if not.
         /// </summary>
+        [Header("Passive Capacities")]
         [SerializeField] private bool canAddPassiveCapacity = true;
 
         /// <summary>
@@ -33,7 +42,8 @@ namespace Entities
         /// <summary>
         /// The transform of the UI of the entity.
         /// </summary>
-        [Header("UI")] public Transform uiTransform;
+        [Header("UI")]
+        public Transform uiTransform;
 
         /// <summary>
         /// The offset of the UI of the entity.
@@ -94,7 +104,10 @@ namespace Entities
         {
             EntityCollectionManager.AddEntity(this);
             FogOfWarManager.Instance.AddFOWViewable(this);
+            FogOfWarManager.Instance.AddFOWShowable(this);
+            showMe = isEnemy;
             team = newTeam;
+            UpdateShow();
             ChangeColor();
         }
 

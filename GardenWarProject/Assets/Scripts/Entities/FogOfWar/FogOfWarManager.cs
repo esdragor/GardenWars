@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameStates;
 using Photon.Pun;
 using UnityEngine;
 
@@ -8,7 +8,6 @@ namespace Entities.FogOfWar
 {
     public class FogOfWarManager : MonoBehaviourPun
     {
-        //Instance => talk to the group to see if that possible
         private static FogOfWarManager _instance;
 
         public static FogOfWarManager Instance
@@ -28,16 +27,12 @@ namespace Entities.FogOfWar
                 _instance = this;
             }
         }
-
-        /// <summary>
-        /// List Of all IFogOfWarViewable for Fog of War render
-        /// </summary>
-        /// <param name="IFogOfWarViewable"> Interface for Entity </param>
-        private List<Entity> allViewables = new List<Entity>();
-        private Dictionary<Entity, List<Entity>> currentViewablesWithEntitiesShowables =
-            new Dictionary<Entity, List<Entity>>();
-
-
+        
+        [SerializeField] private List<Entity> allViewables = new List<Entity>();
+        [SerializeField] private List<Entity> allShowables = new List<Entity>();
+        private IEnumerable<Entity> allyViewables => allViewables.Where(viewable => GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team);
+        private IEnumerable<Entity> enemyShowables => allShowables.Where(showable => showable.isEnemy);
+        
         [Header("Camera and Scene Setup")] public Camera cameraFog;
         public List<string> sceneToRenderFog;
 
@@ -56,82 +51,85 @@ namespace Entities.FogOfWar
 
         //Parameter For Creating Field Of View Mesh
         public FOVSettings settingsFOV;
+        
+        public void AddFOWViewable(Entity viewable)
+        {
+            if (allViewables.Contains(viewable)) return;
+            allViewables.Add(viewable);
+            viewable.meshFilterFoV.gameObject.SetActive(true);
+        }
+        
+        public void RemoveFOWViewable(Entity viewable)
+        {
+            if (!allViewables.Contains(viewable)) return;
+            allViewables.Remove(viewable);
+            viewable.meshFilterFoV.gameObject.SetActive(false);
+        }
+        
+        public void AddFOWShowable(Entity viewable)
+        {
+            if (!allShowables.Contains(viewable)) allShowables.Add(viewable);
+        }
+        
+        public void RemoveFOWShowable(Entity viewable)
+        {
+            if (allShowables.Contains(viewable)) allShowables.Remove(viewable);
+        }
 
+
+        private void Update()
+        {
+            TrySeeEnemies();
+            RenderFOW();
+            UpdateShowableElements();
+        }
+
+        private void TrySeeEnemies()
+        {
+            foreach (var viewable in allyViewables)
+            {
+                viewable.seenShowables.Clear();
+                var fromPosition = viewable.fogOfWarStartDetection.position;
+                foreach (var enemy in enemyShowables.Where(enemy => Vector3.Distance(fromPosition,enemy.transform.position) <= viewable.viewRange))
+                {
+                    var toPosition = enemy.transform.position;
+                    var direction = toPosition - fromPosition;
+                    var hitwall = false;
+                    if (Physics.Raycast(fromPosition, direction, out var hit, viewable.viewRange,
+                        layerTargetFogOfWar))
+                    {
+                        if(hit.collider.gameObject.layer != 29) hitwall = true;
+                    }
+                    if(!hitwall) viewable.AddShowable(enemy);
+                }
+            }
+        }
+        
         private void RenderFOW()
         {
-            foreach (var viewable in allViewables.Where(viewable => GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team))
+            foreach (var viewable in allyViewables)
             {
                 DrawFieldOfView(viewable);
             }
         }
 
-
-        /// <summary>
-        /// Add Entity To the Fog Of War render
-        /// </summary>
-        /// <param name="viewable"></param>
-        public void AddFOWViewable(Entity viewable)
+        private void UpdateShowableElements()
         {
-            if(allViewables.Contains(viewable)) return;
-            allViewables.Add(viewable);
-            currentViewablesWithEntitiesShowables.Add(viewable, new List<Entity>());
-            viewable.meshFilterFoV.gameObject.SetActive(true);
-        }
-
-        /// <summary>
-        /// Remove Entity To the Fog Of War render
-        /// </summary>
-        /// <param name="viewable"></param>
-        public void RemoveFOWViewable(Entity viewable)
-        {
-            allViewables.Remove(viewable);
-            currentViewablesWithEntitiesShowables.Remove(viewable);
-            viewable.meshFilterFoV.gameObject.SetActive(false);
-        }
-
-
-        void SetUpCurrentViewablesWithEntitiesShowables()
-        {
-            foreach (var viewable in currentViewablesWithEntitiesShowables)
+            foreach (var showable in enemyShowables)
             {
-               viewable.Value.Clear();
+                showable.UpdateShow();
             }
         }
 
-        private void Update()
+        private void InitMesh(MeshFilter viewMeshFilter)
         {
-            SetUpCurrentViewablesWithEntitiesShowables();
-            RenderFOW();
-            RemoveShowablesOutOfViewables();
-        }
-
-        private void RemoveShowablesOutOfViewables()
-        {
-            foreach (var viewable in allViewables)
-            {
-                var seenShowables = viewable.seenShowables;
-                for (int i = seenShowables.Count-1; i >= 0; i--)
-                {
-                    if (!currentViewablesWithEntitiesShowables[viewable].Contains((Entity)seenShowables[i]))
-                    {
-                        viewable.RemoveShowable(seenShowables[i]);
-                        //Debug.Log("Remove Elements from list");
-                    }
-                    
-                }
-                
-            }
-        }
-
-        public void InitMesh(MeshFilter viewMeshFilter)
-        {
-            Mesh viewMesh = new Mesh();
+            var viewMesh = new Mesh();
             viewMeshFilter.name = "View Mesh";
             viewMeshFilter.mesh = viewMesh;
         }
 
         //Draw the Field of View for the Player.
-        public void DrawFieldOfView(Entity entity)
+        private void DrawFieldOfView(Entity entity)
         {
             int stepCount = Mathf.RoundToInt(entity.viewAngle * settingsFOV.meshResolution / 5);
             float stepAngleSize = entity.viewAngle / stepCount;
@@ -198,7 +196,7 @@ namespace Entities.FogOfWar
             viewMesh.RecalculateNormals();
         }
 
-        EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast, Entity entity)
+        private EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast, Entity entity)
         {
             float minAngle = minViewCast.angle;
             float maxAngle = maxViewCast.angle;
@@ -223,32 +221,22 @@ namespace Entities.FogOfWar
                     maxPoint = newViewCast.point;
                 }
             }
+
             return new EdgeInfo(minPoint, maxPoint);
         }
 
-        ViewCastInfo ViewCast(float globalAngle, Entity entity)
+        private ViewCastInfo ViewCast(float globalAngle, Entity entity)
         {
             Vector3 dir = DirFromAngle(globalAngle, true, entity);
             RaycastHit hit;
-            if (Physics.Raycast(entity.fogOfWarStartDetection.position, dir, out hit, entity.viewRange, layerTargetFogOfWar))
-            {
-     //           Debug.DrawRay(entity.transform.position, dir * entity.viewRange, Color.green, 1);
-                Entity candidateEntity = hit.collider.gameObject.GetComponent<Entity>();
-       //         Debug.Log(hit.collider.gameObject.name);
-                if (candidateEntity != null)
-                {
-                    entity.AddShowable(candidateEntity);
-                    currentViewablesWithEntitiesShowables[entity].Add(candidateEntity);
-                    return new ViewCastInfo(false, entity.transform.position + dir * entity.viewRange, entity.viewRange,
-                        globalAngle);
-                }
-                return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
-            }
-            else
-            {
+            if (!Physics.Raycast(entity.fogOfWarStartDetection.position, dir, out hit, entity.viewRange,
+                layerTargetFogOfWar))
                 return new ViewCastInfo(false, entity.transform.position + dir * entity.viewRange, entity.viewRange,
                     globalAngle);
-            }
+            var candidateEntity = hit.collider.gameObject.GetComponent<Entity>();
+            if (candidateEntity == null) return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
+            return new ViewCastInfo(false, entity.transform.position + dir * entity.viewRange, entity.viewRange,
+                globalAngle);
         }
 
         private Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal, Entity entity)

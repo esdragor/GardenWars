@@ -586,7 +586,7 @@ namespace GameStates
 
         public static void SetupChampion(Champion champion)
         {
-            champion.SyncInstantiateRPC(champion.transform.position,champion.transform.rotation,(byte)champion.team);
+            if (isMaster) champion.SyncInstantiate(champion.team);
             champion.SetupSpawn();
             champion.SetupNavMesh();
             champion.SetupUI();

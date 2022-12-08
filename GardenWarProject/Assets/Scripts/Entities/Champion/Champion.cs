@@ -1,6 +1,4 @@
-using Entities.FogOfWar;
 using GameStates;
-using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,9 +9,6 @@ namespace Entities.Champion
         public ChampionSO championSo;
         public Transform rotateParent;
         private Vector3 respawnPos;
-
-        private GameStateMachine gsm => GameStateMachine.Instance;
-        private UIManager uiManager => UIManager.Instance;
         public Rigidbody rb;
 
         public CollisionBlocker blocker;
