@@ -9,6 +9,8 @@ namespace Entities.Capacities
         private bool isBlink => so.isBlink;
         private double dashDuration => so.dashTime;
 
+        private LayerMask collisionLayers;
+
         protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             return true;
@@ -42,19 +44,34 @@ namespace Entities.Capacities
         protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             if (champion != null)  champion.canMove = false;
+            
+            collisionLayers = 1 << 9 | 1 << 22 | 1 << 30;
+            
             var destination = targetPositions[0];
             var casterPos = caster.transform.position;
-            if (Vector3.Distance(casterPos, destination) > so.maxRange || so.fixedDistance)
+            destination.y = casterPos.y;
+            
+            var direction = (destination - casterPos).normalized;
+            var distance = Vector3.Distance(casterPos, destination);
+            
+            if (distance > so.maxRange || so.fixedDistance) distance = so.maxRange;
+            
+            destination = casterPos + direction * distance;
+            
+            
+            if (Physics.Raycast(casterPos, direction, out var hit, distance, collisionLayers) && !so.canPassWalls && !isBlink)
             {
-                destination = casterPos + (destination - casterPos).normalized * so.maxRange;
-
+                destination = hit.point;
             }
+            
             destination = GetClosestValidPoint(destination);
+            
             if (isBlink)
             {
                 Blink(destination);
                 return;
             }
+            
             StartDash(casterPos,destination);
         }
 

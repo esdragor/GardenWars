@@ -10,6 +10,7 @@ namespace Entities.Capacities
         public bool isBlink;
         [Tooltip("In Seconds")]public double dashTime;
         public bool fixedDistance;
+        public bool canPassWalls;
         
         public override Type AssociatedType()
         {
