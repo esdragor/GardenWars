@@ -260,7 +260,8 @@ MonoBehaviour:
   canView: 1
   meshFilterFoV: {fileID: 3480681341397647661}
   fogOfWarStartDetection: {fileID: 1225001110951397080}
-  championSo: {fileID: 0}
+  currentSo: {fileID: 0}
+  role: 0
   rotateParent: {fileID: 3480681341152264625}
   rb: {fileID: 6530865356692434526}
   blocker: {fileID: 3711244289653556686}
@@ -279,6 +280,7 @@ MonoBehaviour:
   respawnDuration: 3
   canBeDisplaced: 0
   items: []
+  selectedItemIndex: 0
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
   canMove: 0

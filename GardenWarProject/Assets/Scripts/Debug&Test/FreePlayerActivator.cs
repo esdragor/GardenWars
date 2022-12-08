@@ -20,9 +20,11 @@ namespace FreePlayer
                 championSo.SetIndexes();
             }
             
-            champion.ApplyChampionSO(1, Enums.Team.Team1);
+            champion.ApplyChampionSO(1, Enums.Team.Team1,Enums.ChampionRole.Scavenger);
             
             GameStateMachine.SetupChampion(champion);
+            
+            UIManager.Instance.AssignInventory(0);
         }
         
         

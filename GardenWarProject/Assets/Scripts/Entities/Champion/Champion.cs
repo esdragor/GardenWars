@@ -6,7 +6,9 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
-        public ChampionSO championSo;
+        [HideInInspector] public ChampionSO currentSo;
+        public Enums.ChampionRole  role;
+        public bool isFighter => role == Enums.ChampionRole.Fighter;
         public Transform rotateParent;
         private Vector3 respawnPos;
         public Rigidbody rb;
@@ -43,27 +45,28 @@ namespace Entities.Champion
             
         }
 
-        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
+        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam, Enums.ChampionRole newRole)
         {
             var so = gsm.allChampionsSo[championSoIndex];
-            championSo = so;
-            maxHp = championSo.maxHp;
+            currentSo = so;
+            maxHp = currentSo.maxHp;
             currentHp = maxHp;
-            maxResource = championSo.maxMana;
-            currentResource = championSo.maxMana;
+            maxResource = currentSo.maxMana;
+            currentResource = currentSo.maxMana;
             baseViewRange = 12.5f;
             viewRange = baseViewRange;
-            referenceMoveSpeed = championSo.baseMoveSpeed;
+            referenceMoveSpeed = currentSo.baseMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
-            attackDamage = championSo.attackDamage;
-            attackSpeed = championSo.attackSpeed;
-            attackAbilityIndex = championSo.attackAbilityIndex;
-            abilitiesIndexes = championSo.activeCapacitiesIndexes;
-            var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
+            attackDamage = currentSo.attackDamage;
+            attackSpeed = currentSo.attackSpeed;
+            attackAbilityIndex = currentSo.attackAbilityIndex;
+            abilitiesIndexes = currentSo.activeCapacitiesIndexes;
+            var championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;
 
             team = newTeam;
+            role = newRole;
             
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
             

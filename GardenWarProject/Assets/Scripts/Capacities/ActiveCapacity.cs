@@ -63,6 +63,7 @@ namespace Entities.Capacities
         
         public void OnPress(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
+            if(!CanCast(targetsEntityIndexes,targetPositions)) return;
             if(isMaster) Press(targetsEntityIndexes,targetPositions);
             PressFeedback(targetsEntityIndexes,targetPositions);
         }

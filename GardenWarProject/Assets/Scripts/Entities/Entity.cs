@@ -176,6 +176,11 @@ namespace Entities
         public void AddPassiveCapacityRPC(byte index)
         {
             if (!canAddPassiveCapacity) return;
+            if (isOffline)
+            {
+                SyncAddPassiveCapacityRPC(index);
+                return;
+            }
             photonView.RPC("SyncAddPassiveCapacityRPC",RpcTarget.All, index);
         }
         /// <summary>
@@ -206,6 +211,11 @@ namespace Entities
         /// <param name="index">The index in the passiveCapacityList of the PassiveCapacity to remove</param>
         public void RemovePassiveCapacityByIndex(byte index)
         {
+            if(isOffline)
+            {
+                SyncRemovePassiveCapacityRPC(index);
+                return;
+            }
             photonView.RPC("SyncRemovePassiveCapacityRPC",RpcTarget.All,index);
         }
         

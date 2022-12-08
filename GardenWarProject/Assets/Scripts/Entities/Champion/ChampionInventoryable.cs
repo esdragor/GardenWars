@@ -13,6 +13,8 @@ namespace Entities.Champion
         [SerializeReference] public List<Item> items = new List<Item>();
         private readonly List<Item> heldItems = new List<Item>();
 
+        public int selectedItemIndex = 0;
+
         public Item[] GetItems()
         {
             return items.ToArray();
@@ -20,7 +22,7 @@ namespace Entities.Champion
 
         public Item GetItem(int index)
         {
-            if (index < 0 || index >= 3) return null;
+            if (index < 0 || index >= items.Count) return null;
             return items[index];
         }
 
@@ -28,6 +30,19 @@ namespace Entities.Champion
         {
             return items.FirstOrDefault(item => item.indexOfSOInCollection == soIndex);
         }
+
+        public bool CanAddItem(byte soIndex)
+        {
+            var itemSo = ItemCollectionManager.Instance.GetItemSObyIndex(soIndex);
+            if (items.Count < 3) return true;
+            var contains = false;
+            foreach (var item in items.Where(item => item.indexOfSOInCollection == soIndex))
+            {
+                contains = true;
+            }
+            return (itemSo.consumable && contains);
+        }
+        
 
         public void RequestAddItem(byte index)
         {
@@ -51,6 +66,7 @@ namespace Entities.Champion
                     contains = true;
                 }
                 if(!contains && items.Count>=3) return;
+                
                 if (isOffline)
                 {
                     SyncAddItemRPC(index);
@@ -59,6 +75,7 @@ namespace Entities.Champion
                 photonView.RPC("SyncAddItemRPC",RpcTarget.All, index);
                 return;
             }
+            
             if (isOffline)
             {
                 SyncAddItemRPC(index);
@@ -83,7 +100,7 @@ namespace Entities.Champion
             item.OnItemAddedToInventoryFeedback(this);
             OnAddItemFeedback?.Invoke(index);
         }
-        
+
         public event GlobalDelegates.ByteDelegate OnAddItem;
         public event GlobalDelegates.ByteDelegate OnAddItemFeedback;
         
@@ -143,18 +160,24 @@ namespace Entities.Champion
         
         public void RequestPressItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
-            if(itemIndexInInventory >= items.Count) return;
+            selectedItemIndex = itemIndexInInventory;
+            if (!isFighter) return;
+            if (itemIndexInInventory >= items.Count) return;
             if (isMaster)
             {
-                PressItemRPC(itemIndexInInventory,selectedEntities,positions);
+                PressItemRPC(itemIndexInInventory, selectedEntities, positions);
                 return;
             }
-            photonView.RPC("PressItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
+
+            photonView.RPC("PressItemRPC", RpcTarget.MasterClient, itemIndexInInventory, selectedEntities,
+                positions);
         }
 
         [PunRPC]
         public void PressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
+            selectedItemIndex = itemIndexInInventory;
+            if (!isFighter) return;
             if(itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if(item == null) return;
@@ -169,6 +192,8 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncPressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
+            selectedItemIndex = itemIndexInInventory;
+            if (!isFighter) return;
             targetedEntities = selectedEntities;
             targetedPositions = positions;
             if(itemIndexInInventory >= items.Count) return;
@@ -183,6 +208,7 @@ namespace Entities.Champion
         
         private void CastHeldItems()
         {
+            if (!isFighter) return;
             foreach (var capacity in heldItems.SelectMany(item => item.activeCapacities))
             {
                 capacity.OnHold(targetedEntities,targetedPositions);
@@ -191,7 +217,6 @@ namespace Entities.Champion
         
         public void RequestReleaseItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
-            if(itemIndexInInventory >= items.Count) return;
             if (isMaster)
             {
                 ReleaseItemRPC(itemIndexInInventory,selectedEntities,positions);
@@ -203,22 +228,35 @@ namespace Entities.Champion
         [PunRPC]
         public void ReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
-            if(itemIndexInInventory >= items.Count) return;
-            var item = items[itemIndexInInventory];
-            if(item == null) return;
-            items[itemIndexInInventory].OnItemActivated(selectedEntities,positions);
-            OnActivateItem?.Invoke(itemIndexInInventory,selectedEntities,positions);
+            Debug.Log($"Released item {itemIndexInInventory}");
+            if (isFighter)
+            {
+                if (itemIndexInInventory >= items.Count) return;
+                var item = items[itemIndexInInventory];
+                if (item == null) return;
+                items[itemIndexInInventory].OnItemActivated(selectedEntities, positions);
+                OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
+            }
+            else
+            {
+                OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
+            }
             if (isOffline)
             {
                 SyncReleaseItemRPC(itemIndexInInventory, selectedEntities, positions);
                 return;
             }
-            photonView.RPC("SyncReleaseItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions);
+            photonView.RPC("SyncReleaseItemRPC", RpcTarget.All, itemIndexInInventory, selectedEntities, positions);
         }
 
         [PunRPC]
         public void SyncReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
+            if (!isFighter)
+            {
+                OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions);
+                return;
+            }
             if(itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if(items[itemIndexInInventory] == null) return;
@@ -233,5 +271,12 @@ namespace Entities.Champion
         
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
+        
+        public Item PopSelectedItem()
+        {
+            var item = GetItem(selectedItemIndex);
+            if(item != null) RemoveItemRPC(item);
+            return item;
+        }
     }
 }

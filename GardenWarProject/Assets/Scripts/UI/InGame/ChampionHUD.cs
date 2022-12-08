@@ -75,7 +75,7 @@ public class ChampionHUD : MonoBehaviour
 
     private void InitHolders()
     {
-        var so = champion.championSo;
+        var so = champion.currentSo;
         spellPassive.sprite = champion.passiveCapacitiesList[0].AssociatedPassiveCapacitySO().icon;
         spellOne.sprite = so.activeCapacities[0].icon;
         spellTwo.sprite = so.activeCapacities[1].icon;
@@ -103,7 +103,7 @@ public class ChampionHUD : MonoBehaviour
 
     private void UpdateIcons(Champion champion)
     {
-        var so = champion.championSo;
+        var so = champion.currentSo;
         passiveHolder = new SpellHolder
         {
             spellIcon = spellPassive,

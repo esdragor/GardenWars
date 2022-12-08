@@ -119,6 +119,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ThrowCapacity",
+                    "type": "Button",
+                    "id": "7c5a1cf3-1914-46b2-adff-2076fd1d6558",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RecalCapacity",
+                    "type": "Button",
+                    "id": "c127f5b8-4e5b-495a-a883-273461b1f71c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -136,7 +154,7 @@
                 {
                     "name": "",
                     "id": "c0c5895f-7a86-4ec0-a37d-36df2dd2f8cd",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -147,11 +165,33 @@
                 {
                     "name": "",
                     "id": "9023c4ba-5907-4e90-8ea0-9568be0c0c2b",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Capacity2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db69bc68-247f-481c-b069-1922a634307e",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrowCapacity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "116dcc0c-0c51-42d8-824b-ffd1e02e4325",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RecalCapacity",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -661,7 +661,7 @@ namespace GameStates
             playerData.champion.name += $" / {championSo.name}";
 
             // We sync data and champion mesh
-            playerData.champion.ApplyChampionSO(playerData.championSOIndex, playerData.team);
+            playerData.champion.ApplyChampionSO(playerData.championSOIndex, playerData.team,playerData.role);
         }
 
         private void SetupUI()

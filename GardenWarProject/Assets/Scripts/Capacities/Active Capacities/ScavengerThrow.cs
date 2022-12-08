@@ -1,4 +1,5 @@
 using Entities.Inventory;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Capacities
@@ -6,23 +7,24 @@ namespace Entities.Capacities
     public class ScavengerThrow : ActiveCapacity
     {
         private ScavengerThrowSO so => (ScavengerThrowSO)AssociatedActiveCapacitySO();
-        private Camera cam;
-        private LayerMask layersToHit;
-        
+        private Champion.Champion champion;
+
         private Vector3 targetPosition;
-        
+
         private GameObject HelperDirection = null;
         private UIJauge UIJauge = null;
-        private double Animation = 0f;
 
-        private bool IsHextech = false;
         private float time_Pressed = 0f;
         private double hextechDistance;
-        private bool PositiveJaugeHextech = true;
+
+        private Item itemToThrow;
         
         protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            return true;
+            champion = caster.GetComponent<Champion.Champion>();
+            if (champion == null) return false;
+            if (champion.isFighter) return false;
+            return champion.GetItem(champion.selectedItemIndex) != null;
         }
 
         protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
@@ -33,9 +35,6 @@ namespace Entities.Capacities
 
         protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            cam = Camera.main;
-            layersToHit = 1 << 9 | 1 << 29;
-            
             if (HelperDirection) HelperDirection.SetActive(true);
             else HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
             if (UIJauge) UIJauge.gameObject.SetActive(true);
@@ -50,7 +49,7 @@ namespace Entities.Capacities
         protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             if (!HelperDirection) return;
-            HelperDirection.transform.position = casterPos + targetPositions[0].normalized + Vector3.up;
+            HelperDirection.transform.position = casterPos + (targetPositions[0] - casterPos).normalized + Vector3.up;
             if (UIJauge) UIJauge.UpdateJaugeSlider(so.MinDistanceHFlash, so.MaxDistanceHFlash,
                 hextechDistance + (Time.time - time_Pressed) * so.HextechFlashSpeedScale);
         }
@@ -60,16 +59,17 @@ namespace Entities.Capacities
             time_Pressed =  (Time.time - time_Pressed ) * so.HextechFlashSpeedScale;
             hextechDistance += time_Pressed;
             if (hextechDistance > so.MaxDistanceHFlash) hextechDistance = so.MaxDistanceHFlash;
-            targetPosition = GetClosestValidPoint(casterPos + targetPositions[0].normalized * (float)hextechDistance);
+            targetPosition = GetClosestValidPoint(casterPos + (targetPositions[0] - casterPos).normalized * (float)hextechDistance);
             targetPosition.y = 1;
-            
-            InitItemBag().ThrowBag(targetPosition,so.nbBounce,so.height,so.SpeedOnAir * 0.02f,new HealthModItem()); //TODO - Select Item
+
+            itemToThrow = champion.PopSelectedItem();
+            InitItemBag().ThrowBag(targetPosition,so.nbBounce,so.height,so.SpeedOnAir * 0.02f,(byte)caster.team,itemToThrow.indexOfSOInCollection);
             if (UIJauge) UIJauge.gameObject.SetActive(false);
         }
 
         private ItemBag InitItemBag()
         {
-            return Object.Instantiate(so.itemBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>();
+            return !PhotonNetwork.IsConnected ? Object.Instantiate(so.itemBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>() : PhotonNetwork.Instantiate(so.itemBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>();
         }
 
         protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)

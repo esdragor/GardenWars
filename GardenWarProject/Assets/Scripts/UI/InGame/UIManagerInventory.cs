@@ -108,13 +108,28 @@ public partial class UIManager
             break;
         }
 
-        if ((Champion)champion == GameStateMachine.Instance.GetPlayerChampion())
+        if ((Champion) champion != GameStateMachine.Instance.GetPlayerChampion()) return;
+        
+        localInventory = new LocalInventory
         {
-            localInventory = new LocalInventory
-            {
-                slots = slots
-            };
-            localInventory.LinkWithInventory(champion);
+            slots = slots
+        };
+        localInventory.LinkWithInventory(champion);
+        
+        if (((Champion) champion).isFighter) return;
+        
+        SelectItem(0,null,null);
+        champion.OnActivateItemFeedback += SelectItem;
+
+    }
+
+    private void SelectItem(byte index,int[] selectedEntities,Vector3[] positions)
+    {
+        
+        for (byte i = 0; i < localInventory.slots.Count; i++)
+        {
+            var image = localInventory.slots[i].slotImages;
+            image.color = i == index ? Color.grey : Color.white;
         }
     }
 }

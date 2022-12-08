@@ -23,6 +23,7 @@ namespace Controllers.Inputs
             UpdateTargets();
             champion.targetedEntities = selectedEntity;
             champion.targetedPositions = cursorWorldPos;
+            Debug.DrawLine(cursorWorldPos[0],cursorWorldPos[0]+Vector3.up,Color.yellow);
         }
 
         /// <summary>
