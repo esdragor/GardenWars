@@ -54,25 +54,6 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void SyncDieRPC()
-        {
-            if (photonView.IsMine)
-            {
-                InputManager.PlayerMap.Movement.Disable();
-                InputManager.PlayerMap.Attack.Disable();
-                InputManager.PlayerMap.Capacity.Disable();
-                InputManager.PlayerMap.Inventory.Disable();
-            agent.isStopped = true;
-            }
-
-            rotateParent.gameObject.SetActive(false); 
-            uiTransform.gameObject.SetActive(false);
-            FogOfWarManager.Instance.RemoveFOWViewable(this);
-
-            OnDieFeedback?.Invoke();
-        }
-
-        [PunRPC]
         public void DieRPC()
         {
             if (!canDie)
@@ -82,12 +63,33 @@ namespace Entities.Champion
             }
 
             isAlive = false;
+            canDie = false;
             
             // TODO - Disable collision, etc...
 
             OnDie?.Invoke();
             GameStateMachine.Instance.OnTick += Revive;
             photonView.RPC("SyncDieRPC", RpcTarget.All);
+        }
+        
+        
+        [PunRPC]
+        public void SyncDieRPC()
+        {
+            if (photonView.IsMine)
+            {
+                InputManager.PlayerMap.Movement.Disable();
+                InputManager.PlayerMap.Attack.Disable();
+                InputManager.PlayerMap.Capacity.Disable();
+                InputManager.PlayerMap.Inventory.Disable();
+                agent.isStopped = true;
+            }
+
+            rotateParent.gameObject.SetActive(false); 
+            uiTransform.gameObject.SetActive(false);
+            FogOfWarManager.Instance.RemoveFOWViewable(this);
+
+            OnDieFeedback?.Invoke();
         }
 
         public event GlobalDelegates.NoParameterDelegate OnDie;
@@ -97,7 +99,21 @@ namespace Entities.Champion
         {
             photonView.RPC("ReviveRPC", RpcTarget.MasterClient);
         }
+        
+        [PunRPC]
+        public void ReviveRPC()
+        {
+            if (isAlive) return;
+            isAlive = true;
+            canDie = true;
+            
+            SetCurrentHpRPC(maxHp);
+            SetCurrentResourceRPC(maxResource);
+            OnRevive?.Invoke();
+            photonView.RPC("SyncReviveRPC", RpcTarget.All);
 
+        }
+        
         [PunRPC]
         public void SyncReviveRPC()
         {
@@ -108,25 +124,13 @@ namespace Entities.Champion
                 InputManager.PlayerMap.Attack.Enable();
                 InputManager.PlayerMap.Capacity.Enable();
                 InputManager.PlayerMap.Inventory.Enable();
-            agent.isStopped = false;
-            agent.destination = transform.position;
+                agent.isStopped = false;
+                agent.destination = transform.position;
             }
             FogOfWarManager.Instance.AddFOWViewable(this);
             rotateParent.gameObject.SetActive(true);
             uiTransform.gameObject.SetActive(true);
             OnReviveFeedback?.Invoke();
-        }
-
-        [PunRPC]
-        public void ReviveRPC()
-        {
-            isAlive = true;
-            
-            SetCurrentHpRPC(maxHp);
-            SetCurrentResourceRPC(maxResource);
-            OnRevive?.Invoke();
-            photonView.RPC("SyncReviveRPC", RpcTarget.All);
-
         }
 
         private void Revive()

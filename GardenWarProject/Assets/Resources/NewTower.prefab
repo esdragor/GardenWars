@@ -110,7 +110,8 @@ MonoBehaviour:
   canView: 0
   meshFilterFoV: {fileID: 7922557302693259589}
   fogOfWarStartDetection: {fileID: 2465843384666126295}
-  activeTowerAutoSO: {fileID: 11400000, guid: 6b714a45301f2ea43b462e9929de7924, type: 2}
+  activeTowerAutoSO: {fileID: 11400000, guid: 65d4cdd449524ee4aa3e08f0371616ba, type: 2}
+  damage: 50
   canAttack: 1
   attackValue: 50
   attackSpeed: 2
@@ -132,7 +133,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   entity: {fileID: 605525519}
-  AtkRange: 10
+  AtkRange: 15
   atkDelay: 2.5
 --- !u!208 &605525517
 NavMeshObstacle:

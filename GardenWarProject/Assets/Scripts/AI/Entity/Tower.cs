@@ -9,8 +9,10 @@ using UnityEngine;
 
 public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 {
-    public ActiveTowerAutoSO activeTowerAutoSO;
-    
+    public ActiveCapacitySO activeTowerAutoSO;
+    private ActiveCapacity capacity;
+
+    public float damage = 50;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 5f;
     [SerializeField] private float attackSpeed;
@@ -95,19 +97,16 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+        capacity ??= CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
+        
+        capacity.OnRelease(targetedEntities,targetedPositions);
+        
+        if(isMaster) OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
     public void AttackRPC(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        attackValue = ((ActiveTowerAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex)).AtkValue;
-        for (int i = 0; i < targetedEntities.Length; i++)
-        {
-            Entity entity = EntityCollectionManager.GetEntityByIndex(targetedEntities[i]);
-            Debug.Log("Attack " + entity.name + " for " + attackValue + " damage");
-            entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue);
-        }
         photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
     }
 

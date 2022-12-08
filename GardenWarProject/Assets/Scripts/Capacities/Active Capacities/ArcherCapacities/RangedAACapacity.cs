@@ -58,8 +58,20 @@ namespace Entities.Capacities
             projectile.Init(caster);
             var projectileTr = projectile.transform;
             var champion = caster.GetComponent<Champion.Champion>();
+            float damage = 0;
+            if (champion != null)
+            {
+                damage = champion.attackDamage;
+            }
+            else
+            {
+                var tower = caster.GetComponent<Tower>();
+                if (tower != null) damage = tower.damage;
+            }
 
-            projectile.OnEntityCollide += (entity) => entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(champion.attackDamage);
+            if (damage == 0) return;
+                
+            projectile.OnEntityCollide += (entity) => entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(damage);
             projectile.OnEntityCollideFeedback += (entity) => gsm.OnUpdateFeedback -= MoveProjectile;
 
             gsm.OnUpdateFeedback += MoveProjectile;
