@@ -363,6 +363,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HoldRightClick",
+                    "type": "Button",
+                    "id": "7980cbac-c2d4-4a49-b223-eb0e8cc708ec",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -396,6 +405,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c74056ef-652c-4147-970e-358f50315a12",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HoldRightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

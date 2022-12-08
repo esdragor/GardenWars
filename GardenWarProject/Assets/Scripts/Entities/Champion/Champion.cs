@@ -153,5 +153,18 @@ namespace Entities.Champion
         {
             animator.SetTrigger("Throw");
         }
+
+        public void MouseOnDirection()
+        {
+            float dist;
+            Plane plane = new Plane(Vector3.up, 0);
+            Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (plane.Raycast(ray2, out dist))
+            {
+                Vector3 worldPosition = ray2.GetPoint(dist);
+                MoveToPosition((new Vector3(worldPosition.x, 0, worldPosition.z) - transform.position).normalized + transform.position);
+            }
+            //MoveToPosition(cursorWorldPos[0]);
+        }
     }
 }

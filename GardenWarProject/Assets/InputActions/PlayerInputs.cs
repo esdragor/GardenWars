@@ -385,6 +385,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoldRightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""7980cbac-c2d4-4a49-b223-eb0e8cc708ec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -418,6 +427,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c74056ef-652c-4147-970e-358f50315a12"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldRightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -454,6 +474,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_MoveMouse_MousePos = m_MoveMouse.FindAction("MousePos", throwIfNotFound: true);
         m_MoveMouse_ActiveButton = m_MoveMouse.FindAction("ActiveButton", throwIfNotFound: true);
         m_MoveMouse_LeftClick = m_MoveMouse.FindAction("LeftClick", throwIfNotFound: true);
+        m_MoveMouse_HoldRightClick = m_MoveMouse.FindAction("HoldRightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -745,6 +766,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_MoveMouse_MousePos;
     private readonly InputAction m_MoveMouse_ActiveButton;
     private readonly InputAction m_MoveMouse_LeftClick;
+    private readonly InputAction m_MoveMouse_HoldRightClick;
     public struct MoveMouseActions
     {
         private @PlayerInputs m_Wrapper;
@@ -752,6 +774,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @MousePos => m_Wrapper.m_MoveMouse_MousePos;
         public InputAction @ActiveButton => m_Wrapper.m_MoveMouse_ActiveButton;
         public InputAction @LeftClick => m_Wrapper.m_MoveMouse_LeftClick;
+        public InputAction @HoldRightClick => m_Wrapper.m_MoveMouse_HoldRightClick;
         public InputActionMap Get() { return m_Wrapper.m_MoveMouse; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -770,6 +793,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @LeftClick.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnLeftClick;
                 @LeftClick.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnLeftClick;
                 @LeftClick.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnLeftClick;
+                @HoldRightClick.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnHoldRightClick;
+                @HoldRightClick.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnHoldRightClick;
+                @HoldRightClick.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnHoldRightClick;
             }
             m_Wrapper.m_MoveMouseActionsCallbackInterface = instance;
             if (instance != null)
@@ -783,6 +809,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @LeftClick.started += instance.OnLeftClick;
                 @LeftClick.performed += instance.OnLeftClick;
                 @LeftClick.canceled += instance.OnLeftClick;
+                @HoldRightClick.started += instance.OnHoldRightClick;
+                @HoldRightClick.performed += instance.OnHoldRightClick;
+                @HoldRightClick.canceled += instance.OnHoldRightClick;
             }
         }
     }
@@ -820,5 +849,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnMousePos(InputAction.CallbackContext context);
         void OnActiveButton(InputAction.CallbackContext context);
         void OnLeftClick(InputAction.CallbackContext context);
+        void OnHoldRightClick(InputAction.CallbackContext context);
     }
 }

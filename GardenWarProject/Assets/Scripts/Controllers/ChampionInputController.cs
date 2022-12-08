@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using Entities;
 using Entities.Capacities;
 using Entities.Champion;
+using GameStates;
 using UnityEngine.AI;
 
 namespace Controllers.Inputs
@@ -138,6 +139,18 @@ namespace Controllers.Inputs
             }
             champion.MoveToPosition(cursorWorldPos[0]);
         }
+        
+        private void OnHoldRightClick(InputAction.CallbackContext ctx)
+        {
+            GameStateMachine.Instance.OnUpdate += champion.MouseOnDirection;
+            //champion.MoveToPosition(cursorWorldPos[0]);
+        }
+        
+        private void OnReleaseRightClick(InputAction.CallbackContext ctx)
+        {
+            GameStateMachine.Instance.OnUpdate -= champion.MouseOnDirection;
+            //champion.MoveToPosition(cursorWorldPos[0]);
+        }
 
         protected override void Link(Entity entity)
         {
@@ -177,6 +190,10 @@ namespace Controllers.Inputs
             inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
             inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
             inputs.MoveMouse.LeftClick.performed += DebugNavMeshPoint;
+            
+            inputs.MoveMouse.HoldRightClick.performed += OnHoldRightClick;
+            inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
+
 
         }
 
@@ -212,6 +229,8 @@ namespace Controllers.Inputs
             inputs.Inventory.ActivateItem0.canceled -= OnReleaseItem0;
             inputs.Inventory.ActivateItem1.canceled -= OnReleaseItem1;
             inputs.Inventory.ActivateItem2.canceled -= OnReleaseItem2;
+            
+            inputs.MoveMouse.HoldRightClick.performed -= OnHoldRightClick;
 
             CameraController.Instance.UnLinkCamera();
         }
