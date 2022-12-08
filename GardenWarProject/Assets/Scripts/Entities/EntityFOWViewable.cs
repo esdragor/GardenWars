@@ -162,6 +162,7 @@ namespace Entities
 
         public void AddShowable(IFOWShowable showable)
         {
+            if(!canView) return;
             if (seenShowables.Contains(showable)) return;
             seenShowables.Add(showable);
             showable.TryAddFOWViewable(this);

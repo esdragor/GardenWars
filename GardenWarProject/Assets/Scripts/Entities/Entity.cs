@@ -105,8 +105,14 @@ namespace Entities
             EntityCollectionManager.AddEntity(this);
             FogOfWarManager.Instance.AddFOWViewable(this);
             FogOfWarManager.Instance.AddFOWShowable(this);
+            
             showMe = isEnemy;
             team = newTeam;
+
+            canShow = true;
+            canHide = true;
+            canView = true;
+
             UpdateShow();
             ChangeColor();
         }

@@ -586,10 +586,10 @@ namespace GameStates
 
         public static void SetupChampion(Champion champion)
         {
-            if (isMaster) champion.SyncInstantiate(champion.team);
             champion.SetupSpawn();
             champion.SetupNavMesh();
             champion.SetupUI();
+            if (isMaster) champion.SyncInstantiate(champion.team);
         }
 
         private void LinkChampionSOCapacityIndexes()

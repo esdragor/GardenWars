@@ -95,7 +95,7 @@ namespace  Entities
 
         public void ShowElements()
         {
-            if(showMe) return;
+            if(showMe || !canShow) return;
             showMe = true;
             foreach (var go in elementsToShow)
             {
@@ -148,7 +148,7 @@ namespace  Entities
 
         public void HideElements()
         {
-            if(!showMe) return;
+            if(!showMe || !canHide) return;
             showMe = false;
             foreach (var go in elementsToShow)
             {
