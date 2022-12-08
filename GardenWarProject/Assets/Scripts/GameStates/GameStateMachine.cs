@@ -293,7 +293,7 @@ namespace GameStates
 
         public Champion GetPlayerChampion()
         {
-            return playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
+            return isOffline ? playerDataDict[0].champion : playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
         }
 
         #endregion
@@ -586,6 +586,15 @@ namespace GameStates
 
         public static void SetupChampion(Champion champion)
         {
+            if (Instance.playerDataDict.Count == 0)
+            {
+                Instance.playerDataDict.Add(0,new PlayerData()
+                {
+                    champion = champion,
+                    championPhotonViewId = champion.entityIndex,
+                    team = champion.team,
+                });
+            }
             champion.SetupSpawn();
             champion.SetupNavMesh();
             champion.SetupUI();
@@ -669,19 +678,19 @@ namespace GameStates
 
         private void InitEntitySpawner()
         {
-            if(!isMaster) return;
+            if(!isMaster || isOffline) return;
             SpawnAIs.Instance.Init();
         }
 
         private void SyncEntitySpawner()
         {
-            if(!isMaster) return;
+            if(!isMaster || isOffline) return;
             SpawnAIs.Instance.Sync();
         }
 
         public void StartEntitySpawner()
         {
-            if(!isMaster) return;
+            if(!isMaster || isOffline) return;
             SpawnAIs.Instance.StartSpawns();
         }
         

@@ -18,13 +18,11 @@ public class XerathUltimate : ActiveCapacity
     private float time_Pressed = 0f;
     private double hextechDistance;
     private bool PositiveJaugeHextech = true;
-    private GameStateMachine sm;
 
     public void Init()
     {
         candyBag = Object.Instantiate(activeCapa.prefab, caster.transform.position + Vector3.up * 1,
             Quaternion.identity);
-        sm = GameStateMachine.Instance;
     }
 
 

@@ -80,7 +80,7 @@ namespace Entities
             OnInstantiated();
             if (isOffline)
             {
-                SyncInstantiateRPC(transform.position,transform.rotation,(byte)team);
+                OnInstantiatedFeedback();
                 return;
             }
             photonView.RPC("SyncInstantiateRPC", RpcTarget.All, transform.position, transform.rotation,(byte)team);

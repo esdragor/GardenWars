@@ -11,7 +11,6 @@ namespace Controllers.Inputs
     {
         private Champion champion;
         private int[] selectedEntity;
-        private Vector3[] cursorWorldPos;
         private bool isMoving;
         private Vector2 mousePos;
         private Vector2 moveInput;

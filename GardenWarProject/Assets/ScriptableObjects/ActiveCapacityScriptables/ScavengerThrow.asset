@@ -9,29 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43cd292fdb39e3540b59609cb6bfd425, type: 3}
-  m_Name: Ulti Xerath
+  m_Script: {fileID: 11500000, guid: 6a79ae4977bfcec458765e960be01835, type: 3}
+  m_Name: ScavengerThrow
   m_EditorClassIdentifier: 
-  descriptionName: Ulti Xerath
-  icon: {fileID: 21300000, guid: 70632ddfe8e71b04b8f90ef7e29a9e98, type: 3}
-  description: Ulti
+  descriptionName: Item Throw
+  icon: {fileID: 0}
+  description: 
   cooldown: 1
   maxRange: 20
   types: 
   shootType: 0
-  indexInCollection: 10
-  prefab: {fileID: 4226030178508569970, guid: 836c0b573cac0444e9f7eae156e8b35d, type: 3}
+  indexInCollection: 0
+  itemBagPrefab: {fileID: 302393227357116420, guid: f79802c43b3c38742ae23400332292d7, type: 3}
   prefabJauge: {fileID: 6645909902074301461, guid: bbb99d4f72a480e46af474515bfba2c7, type: 3}
   nbBounce: 0
   SpeedOnAir: 0.5
-  height: 1
-  RandomizeZone: 0
-  RandomizeZoneRadius: 3.1
-  hextechMode: 0
+  height: 5
   HextechFlashSpeedScale: 4
   MinDistanceHFlash: 1
   MaxDistanceHFlash: 20
   RatioMouseDistance: 1
-  nbCandy: 26
-  speedByNbCandy: 0
-  ScaleBagByNbCandy: 1

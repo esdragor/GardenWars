@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
 using GameStates;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class CandyBagXerath : MonoBehaviour
 {
