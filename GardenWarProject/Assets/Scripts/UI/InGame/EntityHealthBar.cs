@@ -8,10 +8,7 @@ namespace UIComponents
     {
         [SerializeField] private Image healthBar;
         private IActiveLifeable lifeable;
-
-
         
-
         public void InitHealthBar(Entity entity)
         {
             lifeable = (IActiveLifeable)entity;

@@ -42,9 +42,10 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public override void OnInstantiated()
     {
         gameObject.SetActive(true);
-        //myAIBT.enabled = true;
         currentMoveSpeed = referenceMoveSpeed;
         agent.speed = referenceMoveSpeed;
+
+        UIManager.Instance.InstantiateHealthBarForEntity(this);
     }
 
     public bool CanMove()

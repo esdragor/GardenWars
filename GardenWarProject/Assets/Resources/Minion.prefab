@@ -295,6 +295,7 @@ Transform:
   - {fileID: 8169573448744608822}
   - {fileID: 8048183381747634080}
   - {fileID: 8138424874688979662}
+  - {fileID: 7009118326852518727}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -419,7 +420,7 @@ MonoBehaviour:
   team: 3
   canAddPassiveCapacity: 1
   canRemovePassiveCapacity: 1
-  uiTransform: {fileID: 0}
+  uiTransform: {fileID: 7009118326852518727}
   uiOffset: {x: 0, y: 2, z: 0}
   renderers:
   - {fileID: 1450586060795467360}
@@ -428,6 +429,7 @@ MonoBehaviour:
   showMe: 0
   elementsToShow:
   - {fileID: 4879887528482904230}
+  - {fileID: 7646918434674508994}
   baseViewRange: 5
   viewRange: 5
   viewAngle: 360
@@ -491,6 +493,36 @@ Transform:
   - {fileID: 7841390942540875946}
   m_Father: {fileID: 4498412454335939633}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7646918434674508994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7009118326852518727}
+  m_Layer: 29
+  m_Name: UITransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7009118326852518727
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646918434674508994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4498412454335939633}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7881102068338133647
 GameObject:
