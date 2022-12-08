@@ -18,15 +18,17 @@ public class TaskAttack : Node
     private GameStateMachine sm = null;
     private Node Root;
     private byte capacityIndex = 0;
+    private Transform _model;
 
 
-    public TaskAttack(Node _Root, Entity entity, byte capaIndex, float _attackSpeed)
+    public TaskAttack(Node _Root, Entity entity, Transform model, byte capaIndex, float _attackSpeed)
     {
         Root = _Root;
         MyEntity = entity;
         attack = entity.GetComponent<IAttackable>();
         attackSpeed = _attackSpeed;
         capacityIndex = capaIndex;
+        _model = model;
     }
 
     public override NodeState Evaluate(Node Root)
@@ -56,7 +58,7 @@ public class TaskAttack : Node
         CurrentAtkTime = 0f;
         
         attack.RequestAttack(capacityIndex, new[] { target.entityIndex }, new[] { target.transform.position });
-        MyEntity.transform.LookAt(target.transform.position);
+        _model.LookAt(target.transform.position);
         Root.ClearData("target");
 
         return NodeState.Success;

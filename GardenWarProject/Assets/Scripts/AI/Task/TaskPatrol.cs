@@ -9,6 +9,7 @@ using UnityEngine.AI;
 public class TaskPatrol : Node
 {
     private Transform Mytransform;
+    private Transform model;
 
     private Transform[] waypoints;
 
@@ -20,7 +21,7 @@ public class TaskPatrol : Node
     private NavMeshAgent agent;
     private Minion minion;
 
-    public TaskPatrol(NavMeshAgent _agent, Minion _minion, Transform _transform, Transform[] _waypoints,
+    public TaskPatrol(NavMeshAgent _agent, Minion _minion, Transform _transform, Transform _model, Transform[] _waypoints,
         float waitingBetweenTwoPoints = 1f)
     {
         Mytransform = _transform;
@@ -29,6 +30,7 @@ public class TaskPatrol : Node
         agent = _agent;
         minion = _minion;
         //animator = getComponent<Animator>();
+        model = _model;
     }
 
     public override NodeState Evaluate(Node Root)
@@ -65,7 +67,7 @@ public class TaskPatrol : Node
             else
             {
                 agent.SetDestination(pos);
-                Mytransform.LookAt(pos);
+                Mytransform.LookAt(model);
             }
         }
 

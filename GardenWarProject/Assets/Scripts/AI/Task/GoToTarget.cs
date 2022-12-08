@@ -10,14 +10,16 @@ using Vector3 = UnityEngine.Vector3;
 public class GoToTarget : Node
 {
     private Transform MyTransform;
+    private Transform model;
     private NavMeshAgent agent;
     private Node Root;
 
-    public GoToTarget(Node _Root, NavMeshAgent _agent, Transform trans)
+    public GoToTarget(Node _Root, NavMeshAgent _agent, Transform trans, Transform _model)
     {
         MyTransform = trans;
         agent = _agent;
         Root = _Root;
+        model = _model;
     }
 
     public override NodeState Evaluate(Node Root)
@@ -31,7 +33,7 @@ public class GoToTarget : Node
         {
             agent.SetDestination(pos);
                 //Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
-            MyTransform.LookAt(pos);
+            MyTransform.LookAt(model);
             state = NodeState.Running;
             return state;
         }

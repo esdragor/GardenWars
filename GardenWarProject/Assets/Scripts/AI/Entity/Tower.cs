@@ -105,6 +105,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         for (int i = 0; i < targetedEntities.Length; i++)
         {
             Entity entity = EntityCollectionManager.GetEntityByIndex(targetedEntities[i]);
+            Debug.Log("Attack " + entity.name + " for " + attackValue + " damage");
             entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue);
         }
         photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
