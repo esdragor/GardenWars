@@ -10,7 +10,6 @@ public partial class UIManager
 
     public void InstantiateHealthBarForEntity(Entity entity)
     {
-        Debug.Log(entity);
         if (entity == null) return;
         if (entity.GetComponent<IActiveLifeable>() == null) return;
         var canvasHealth = Instantiate(healthBarPrefab, entity.uiTransform.position + entity.uiOffset, Quaternion.identity, entity.uiTransform);

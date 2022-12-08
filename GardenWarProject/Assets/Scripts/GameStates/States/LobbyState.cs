@@ -1,3 +1,5 @@
+using Entities;
+
 namespace GameStates.States
 {
     public class LobbyState : GameState
@@ -6,6 +8,8 @@ namespace GameStates.States
 
         public override void StartState()
         {
+            EntityCollectionManager.ClearDict();
+
             InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(true);
         }

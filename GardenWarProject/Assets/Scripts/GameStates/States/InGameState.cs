@@ -14,7 +14,10 @@ namespace GameStates.States
         public override void StartState()
         {
             InputManager.EnablePlayerMap(true);
+            
             lastTickTime = currentTime;
+            
+            sm.StartEntitySpawner();
         }
 
         public override void UpdateState()
@@ -30,7 +33,6 @@ namespace GameStates.States
             sm.UpdateEventFeedback();
             
             timer = currentTime - lastTickTime;
-            //Debug.Log(timer);
 
             if (!(timer >= 1.0 / sm.tickRate)) return;
             lastTickTime = currentTime;

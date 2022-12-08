@@ -9,15 +9,30 @@ namespace Entities
     {
         private static readonly Dictionary<int, Entity> allEntitiesDict = new Dictionary<int, Entity>();
 
+        [SerializeField] private List<Entity> debugEntityList = new List<Entity>();
+
         private static PhotonView view;
 
         private void Start()
         {
             view = GetComponent<PhotonView>();
+        }
+
+        public static void ClearDict()
+        {
             allEntitiesDict.Clear();
         }
 
-        
+        private void Update()
+        {
+            debugEntityList.Clear();
+            foreach (var e in allEntitiesDict.Values)
+            {
+                debugEntityList.Add(e);
+            }
+        }
+
+
         /// <summary>
         /// Returns the entity corresponding to the index.
         /// </summary>
@@ -25,6 +40,7 @@ namespace Entities
         /// <returns>The entity which corresponds to the index, or null if the index is invalid</returns>
         public static Entity GetEntityByIndex(int index)
         {
+            Debug.Log($"Trying to get Entity at {index}");
             return !allEntitiesDict.ContainsKey(index) ? null : allEntitiesDict[index];
         }
 
@@ -34,7 +50,6 @@ namespace Entities
         /// <param name="entity">The entity to add</param>
         public static void AddEntity(Entity entity)
         {
-            Debug.Log($"Adding entity {entity} at index {entity.entityIndex}");
             var index = entity.entityIndex;
             if (allEntitiesDict.ContainsKey(index))
             {
@@ -42,6 +57,7 @@ namespace Entities
                 return;
             }
             
+            Debug.Log($"Adding entity {entity.gameObject.name} at index {entity.entityIndex}");
             allEntitiesDict.Add(index, entity);
         }
 

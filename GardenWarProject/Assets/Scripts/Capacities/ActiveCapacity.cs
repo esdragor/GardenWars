@@ -98,7 +98,7 @@ namespace Entities.Capacities
 
             void DecreaseCooldown()
             {
-                cooldownTimer -= 1/gsm.tickRate;
+                cooldownTimer -= gsm.increasePerTick;
                 
                 if(cooldownTimer > 0) return;
                 isOnCooldown = false;

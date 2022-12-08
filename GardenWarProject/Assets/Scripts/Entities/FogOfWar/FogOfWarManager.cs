@@ -72,6 +72,7 @@ namespace Entities.FogOfWar
         /// <param name="viewable"></param>
         public void AddFOWViewable(Entity viewable)
         {
+            if(allViewables.Contains(viewable)) return;
             allViewables.Add(viewable);
             currentViewablesWithEntitiesShowables.Add(viewable, new List<Entity>());
             viewable.meshFilterFoV.gameObject.SetActive(true);

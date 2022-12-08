@@ -93,7 +93,7 @@ public class PoolNetworkManager : MonoBehaviour
             {
                 entity = queue.Dequeue();
                 entity.OnInstantiated();
-                entity.SendSyncInstantiate(position, rotation);
+                entity.SyncInstantiate(Enums.Team.Neutral); // TODO - Add Team;
             }
         }
         else

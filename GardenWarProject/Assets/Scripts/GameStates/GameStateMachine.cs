@@ -24,6 +24,7 @@ namespace GameStates
 
         [SerializeField] private double ticksPerSecond = 1;
         public double tickRate => ticksPerSecond > 0 ? ticksPerSecond : 1;
+        public double increasePerTick => 1 / tickRate;
 
         public Enums.Team winner = Enums.Team.Neutral;
         public List<int> allPlayersIDs = new List<int>();
@@ -559,6 +560,8 @@ namespace GameStates
             ItemCollectionManager.Instance.LinkCapacityIndexes();
 
             InstantiateChampion();
+
+            InitEntitySpawner();
             
             Debug.Log("Done Loading");
             RequestSetReady(true);
@@ -569,16 +572,24 @@ namespace GameStates
         /// </summary>
         public void LateLoad()
         {
+            SyncEntitySpawner();
+            
             LinkLoadChampionData();
 
             foreach (var champion in playerDataDict.Select(kvp => kvp.Value).Select(value => value.champion))
             {
-                champion.SetupSpawn();
-                champion.SetupNavMesh();
-                champion.SetupUI();
+                SetupChampion(champion);
             }
 
             SetupUI();
+        }
+
+        public static void SetupChampion(Champion champion)
+        {
+            champion.SyncInstantiateRPC(champion.transform.position,champion.transform.rotation,(byte)champion.team);
+            champion.SetupSpawn();
+            champion.SetupNavMesh();
+            champion.SetupUI();
         }
 
         private void LinkChampionSOCapacityIndexes()
@@ -655,6 +666,25 @@ namespace GameStates
                 UIManager.Instance.AssignInventory(actorNumber.Key);
             }
         }
+
+        private void InitEntitySpawner()
+        {
+            if(!isMaster) return;
+            SpawnAIs.Instance.Init();
+        }
+
+        private void SyncEntitySpawner()
+        {
+            if(!isMaster) return;
+            SpawnAIs.Instance.Sync();
+        }
+
+        public void StartEntitySpawner()
+        {
+            if(!isMaster) return;
+            SpawnAIs.Instance.StartSpawns();
+        }
+        
 
         public void SendWinner(Enums.Team team)
         {

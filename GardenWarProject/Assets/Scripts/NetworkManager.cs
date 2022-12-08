@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public static NetworkManager Instance;
+    public string currentRoomName;
 
     private void Awake()
     {
@@ -22,7 +23,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        //PhotonNetwork.SerializationRate = 60;
     }
 
     public override void OnConnectedToMaster()
@@ -37,19 +37,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom(string roomName)
     {
-        Debug.Log("Create Room");
+        Debug.Log($"Creating Room {roomName}");
         PhotonNetwork.CreateRoom(roomName);
     }
 
     public void JoinRoom(string roomName)
     {
-        Debug.Log("Join Room");
+        Debug.Log($"Joining Room {roomName}");
         PhotonNetwork.JoinRoom(roomName);
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined Room");
+        currentRoomName = PhotonNetwork.CurrentRoom.Name;
+        Debug.Log($"Joined Room {currentRoomName}");
         PhotonNetwork.LoadLevel("LobbyScene");
     }
 

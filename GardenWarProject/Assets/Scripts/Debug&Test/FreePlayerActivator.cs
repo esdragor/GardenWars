@@ -22,9 +22,7 @@ namespace FreePlayer
             
             champion.ApplyChampionSO(1, Enums.Team.Team1);
             
-            champion.SetupSpawn();
-            champion.SetupNavMesh();
-            champion.SetupUI();
+            GameStateMachine.SetupChampion(champion);
         }
         
         

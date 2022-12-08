@@ -37,6 +37,7 @@ namespace UIComponents
         [Header("Debug")]
         [SerializeField] private Button forceStartButton;
         [SerializeField] private TextMeshProUGUI forceStartText;
+        [SerializeField] private TextMeshProUGUI roomNameText;
         private bool forceStart = false;
 
         private bool isReady = false;
@@ -61,6 +62,8 @@ namespace UIComponents
             gameStateMachine.RequestSendDataDictionary();
 
             gameStateMachine.OnDataDictUpdated += OnPlayerDataUpdated;
+
+            roomNameText.text = $"Room : {NetworkManager.Instance.currentRoomName}";
         }
         
         private void OnDisable()

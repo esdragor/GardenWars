@@ -11,10 +11,9 @@ namespace Entities
     [RequireComponent(typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
     public abstract partial class Entity : MonoBehaviourPun, ITeamable
     {
-        /// <summary>
-        /// The viewID of the photonView of the entity.
-        /// </summary>
-        public int entityIndex;
+        protected static bool isOffline => !PhotonNetwork.IsConnected;
+        protected static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
+        public int entityIndex => photonView.ViewID;
 
         /// <summary>
         /// True if passiveCapacities can be added to the entity's passiveCapacitiesList. False if not.
@@ -45,15 +44,10 @@ namespace Entities
 
         private void Start()
         {
-            entityIndex = photonView.ViewID;
             EntityCollectionManager.AddEntity(this);
-            FogOfWarManager.Instance.AddFOWViewable(this);
             OnStart();
         }
-
-        /// <summary>
-        /// Replaces the Start() method.
-        /// </summary>
+        
         protected abstract void OnStart();
 
         private void Update()
@@ -65,33 +59,48 @@ namespace Entities
         {
             OnFixedUpdate();
         }
-
-        /// <summary>
-        /// Replaces the Update() method.
-        /// </summary>
+        
         protected virtual void OnUpdate() { }
 
         protected virtual void OnFixedUpdate() { }
-
-        #region MasterMethods
-
-        public void SendSyncInstantiate(Vector3 position, Quaternion rotation)
+        
+        public void SyncInstantiate(Enums.Team newTeam)
         {
-            photonView.RPC("SyncInstantiateRPC", RpcTarget.All, position, rotation);
+            InitEntity(newTeam);
             OnInstantiated();
+            if (isOffline)
+            {
+                SyncInstantiateRPC(transform.position,transform.rotation,(byte)team);
+                return;
+            }
+            photonView.RPC("SyncInstantiateRPC", RpcTarget.All, transform.position, transform.rotation,(byte)team);
+            
         }
         
-        
-
-        public abstract void OnInstantiated();
-
         [PunRPC]
-        public void SyncInstantiateRPC(Vector3 position, Quaternion rotation)
+        public void SyncInstantiateRPC(Vector3 position, Quaternion rotation,byte newTeam)
         {
             transform.position = position;
             transform.rotation = rotation;
+            if (!isMaster)
+            {
+                InitEntity((Enums.Team)newTeam);
+                OnInstantiated();
+            }
             OnInstantiatedFeedback();
         }
+
+        public void InitEntity(Enums.Team newTeam)
+        {
+            EntityCollectionManager.AddEntity(this);
+            FogOfWarManager.Instance.AddFOWViewable(this);
+            team = newTeam;
+            ChangeColor();
+        }
+
+        public abstract void OnInstantiated();
+
+        
 
         public PassiveCapacity GetPassiveCapacityBySOIndex(byte soIndex)
         {
@@ -203,8 +212,7 @@ namespace Entities
         
         public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemoved;
         public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemovedFeedback;
-
-        #endregion
+        
 
         public void ChangeColor()
         {

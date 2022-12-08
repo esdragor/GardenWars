@@ -36,18 +36,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         //myAIBT.enabled = true;
     }
 
-    public Enums.Team GetTeam()
-    {
-        return team;
-    }
-
-    public List<Enums.Team> GetEnemyTeams()
-    {
-        return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team)
-            .ToList(); //returns all teams that are not 'team'
-    }
-    
-
     public bool CanAttack()
     {
         return canAttack;

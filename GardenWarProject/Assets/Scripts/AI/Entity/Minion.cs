@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Entities;
 using Entities.Capacities;
 using Entities.FogOfWar;
@@ -55,17 +52,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         return canMove;
     }
 
-    public Enums.Team GetTeam()
-    {
-        return team;
-    }
-
-    public List<Enums.Team> GetEnemyTeams()
-    {
-        return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team)
-            .ToList(); //returns all teams that are not 'team'
-    }
-    
     public float GetReferenceMoveSpeed()
     {
         return referenceMoveSpeed;

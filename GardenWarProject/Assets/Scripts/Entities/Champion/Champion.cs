@@ -8,8 +8,6 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
-        private static bool isOffline => !PhotonNetwork.IsConnected;
-        private static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
         public ChampionSO championSo;
         public Transform rotateParent;
         private Vector3 respawnPos;
@@ -146,7 +144,6 @@ namespace Entities.Champion
 
         public void SetupUI()
         {
-            Debug.Log($"Setting up Ui for {gameObject.name}, uiManager : {uiManager}");
             if (uiManager == null) return;
             uiManager.InstantiateHealthBarForEntity(this);
             uiManager.InstantiateResourceBarForEntity(this);

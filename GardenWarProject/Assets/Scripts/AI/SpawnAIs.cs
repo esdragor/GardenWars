@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using BehaviourTree;
 using Entities;
 using GameStates;
@@ -8,107 +9,150 @@ using UnityEngine;
 
 public class SpawnAIs : MonoBehaviourPun
 {
-    public int nb = 1;
-    public float delayBetweenSpawn = 0.3f;
-
-    [SerializeField] private Entity minion;
+    [Header("Wave Management")]
+    public int minionsPerWave = 1;
+    public double timeBetweenMinionSpawn = 0.3;
+    public double timeBetweenWaves = 30;
+    [SerializeField] private double timeBeforeFirstWave = 5;
     [SerializeField] private List<Transform> SpawnPoints;
     [SerializeField] private Transform[] waypointsTeamBlue;
     [SerializeField] private Transform[] waypointsTeamRed;
-    [SerializeField] private Transform[] SpawnerTower;
-    [SerializeField] private Color[] ColorTeam;
-    [SerializeField] private float DelayBetweenWaves = 30f;
+    [SerializeField] private Entity minion;
+    [SerializeField] private double timer;
 
-    private bool StopSpawn = false;
+    [Header("Towers")]
+    [SerializeField] private Transform[] towerSpawnPoints;
 
+    private GameStateMachine gsm => GameStateMachine.Instance;
+    
+    private readonly List<Entity> towers = new List<Entity>();
 
-    IEnumerator SpawnerMinions()
+    public static SpawnAIs Instance;
+
+    private void Awake()
     {
-        for (int i = 0; i < nb; i++)
+        if (Instance != null && Instance != this)
         {
-            //Entity entity = PoolNetworkManager.Instance.PoolInstantiate(minion, SpawnPoints[Team - 1].position, Quaternion.identity);
-            Entity BlueEntity = PhotonNetwork.Instantiate("Minion", SpawnPoints[0].position, Quaternion.identity)
-                .GetComponent<Entity>();
-            Entity RedEntity = PhotonNetwork.Instantiate("Minion", SpawnPoints[1].position, Quaternion.identity)
-                .GetComponent<Entity>();
-            yield return new WaitForSeconds(0.1f);
-            photonView.RPC("SyncDataMinions", RpcTarget.All, BlueEntity.photonView.ViewID,
-                RedEntity.photonView.ViewID);
-            yield return new WaitForSeconds(0.1f);
-            BlueEntity.team = Enums.Team.Team1;
-            RedEntity.team = Enums.Team.Team2;
-            MyAIBT BlueBT = BlueEntity.GetComponent<MyAIBT>();
-            MyAIBT RedBT = RedEntity.GetComponent<MyAIBT>();
-            BlueBT.enabled = true;
-            RedBT.enabled = true;
-            BlueBT.waypoints = waypointsTeamBlue;
-            RedBT.waypoints = waypointsTeamRed;
-            BlueBT.OnStart();
-            RedBT.OnStart();
-            yield return new WaitForSeconds(delayBetweenSpawn);
+            DestroyImmediate(gameObject);
+            return;
         }
-        yield return new WaitForSeconds(DelayBetweenWaves);
-        StartCoroutine(SpawnerMinions());
+
+        Instance = this;
     }
 
-    [PunRPC]
-    public void SyncDataMinions(int entityIDBlue, int entityIDRed)
+    private void Start()
     {
-        Entity BlueEntity = EntityCollectionManager.GetEntityByIndex(entityIDBlue);
-        Entity RedEntity = EntityCollectionManager.GetEntityByIndex(entityIDRed);
-
-        BlueEntity.team = Enums.Team.Team1;
-        RedEntity.team = Enums.Team.Team2;
-        BlueEntity.ChangeColor();
-        RedEntity.ChangeColor();
+        timer = 0;
+        gsm.OnTick += OnTick;
+    }
+    
+    public void Init()
+    {
+        towers.Clear();
+        if(PhotonNetwork.IsMasterClient) InitTowers();
     }
 
-    IEnumerator SpawnerTowers()
+    public void Sync()
     {
-        Entity RedTower = PhotonNetwork.Instantiate("NewTower", SpawnerTower[0].position, Quaternion.identity)
-            .GetComponent<Entity>();
-        Entity BlueTower = PhotonNetwork.Instantiate("NewTower", SpawnerTower[1].position, Quaternion.identity)
-            .GetComponent<Entity>();
-
-        BlueTower.team = Enums.Team.Team1;
-        RedTower.team = Enums.Team.Team2;
-        yield return new WaitForSeconds(0.5f);
-        RedTower.GetComponent<TowerBT>().OnStart();
-        BlueTower.GetComponent<TowerBT>().OnStart();
-        photonView.RPC("SyncDataTower", RpcTarget.All,
-            new int[] { RedTower.photonView.ViewID, BlueTower.photonView.ViewID });
+        SyncTowerData();
     }
-
-    [PunRPC]
-    public void SyncDataTower(int[] IDS)
+    
+    public void StartSpawns()
     {
-        Entity entity = EntityCollectionManager.GetEntityByIndex(IDS[0]);
-        entity.team = Enums.Team.Team2;
-        entity.ChangeColor();
-
-        entity = EntityCollectionManager.GetEntityByIndex(IDS[1]);
-        entity.team = Enums.Team.Team1;
-        entity.ChangeColor();
-    }
-
-    [PunRPC]
-    public void SpawnMinions()
-    {
-        StartCoroutine(SpawnerMinions());
-    }
-
-    [PunRPC]
-    public void SpawnTowers()
-    {
-        StartCoroutine(SpawnerTowers());
-    }
-
-    void Start()
-    {
-        if (PhotonNetwork.IsMasterClient)
+        foreach (var tower in towers)
         {
-            photonView.RPC("SpawnTowers", RpcTarget.MasterClient);
-            photonView.RPC("SpawnMinions", RpcTarget.MasterClient);
+            tower.GetComponent<TowerBT>().OnStart();
+        }
+
+        Debug.Log("Starting Spawning Waves");
+        timer = timeBetweenWaves-timeBeforeFirstWave;
+        gsm.OnTick += SpawnWaves;
+
+    }
+
+    private void OnTick()
+    {
+        timer += gsm.increasePerTick;
+    }
+
+    #region Towers
+
+    private void InitTowers()
+    {
+        var redTower = PhotonNetwork.Instantiate("NewTower", towerSpawnPoints[0].position, Quaternion.identity)
+            .GetComponent<Entity>();
+        var blueTower = PhotonNetwork.Instantiate("NewTower", towerSpawnPoints[1].position, Quaternion.identity)
+            .GetComponent<Entity>();
+        
+        blueTower.SyncInstantiate(Enums.Team.Team1);
+        redTower.SyncInstantiate(Enums.Team.Team2);
+        
+        towers.Add(blueTower);
+        towers.Add(redTower);
+    }
+    
+    private void SyncTowerData()
+    {
+        var towerIds = towers.Select(tower => tower.entityIndex).ToArray();
+        var towerTeams = towers.Select(tower => (byte)tower.team).ToArray();
+        photonView.RPC("SyncDataTowerRPC", RpcTarget.All,towerIds,towerTeams);
+    }
+    
+    [PunRPC]
+    public void SyncDataTowerRPC(int[] towerIndexes,byte[] teams)
+    {
+        for (var i = 0; i < towerIndexes.Length; i++)
+        {
+            var index = towerIndexes[i];
+            var entity = EntityCollectionManager.GetEntityByIndex(index);
+            //entity.InitEntity((Enums.Team) teams[i]);
+            if (!towers.Contains(entity))
+            {
+                towers.Add(entity);
+            }
         }
     }
+
+    #endregion
+
+    #region Minions
+    
+    private void SpawnWaves()
+    {
+        if(timer<timeBetweenWaves) return;
+        timer = 0;
+        for (var i = 0; i < minionsPerWave; i++)
+        {
+            var spawnTimer = i * timeBetweenMinionSpawn;
+
+            gsm.OnTick += TrySpawnMinion;
+            
+            void TrySpawnMinion()
+            {
+                if(timer<spawnTimer) return;
+                SpawnMinion();
+                gsm.OnTick -= TrySpawnMinion;
+            }
+        }
+    }
+
+    private void SpawnMinion()
+    {
+        var blueMinion = PhotonNetwork.Instantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
+            .GetComponent<Entity>();
+        var redMinion = PhotonNetwork.Instantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
+            .GetComponent<Entity>();
+        blueMinion.SyncInstantiate(Enums.Team.Team1);
+        redMinion.SyncInstantiate(Enums.Team.Team2);
+        var blueBt = blueMinion.GetComponent<MyAIBT>();
+        var redBt = redMinion.GetComponent<MyAIBT>();
+        blueBt.enabled = true;
+        redBt.enabled = true;
+        blueBt.waypoints = waypointsTeamBlue;
+        redBt.waypoints = waypointsTeamRed;
+        blueBt.OnStart();
+        redBt.OnStart();
+    }
+
+    #endregion
 }
