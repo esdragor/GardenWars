@@ -43,6 +43,10 @@ public class CheckEnemyInPOVRange : Node
 
                     IAttackable attackable = coll.GetComponent<IAttackable>();
                     if (attackable == null) continue;
+                    
+                    if (MyEntity.seenShowables.Count == 0) continue;
+                    if (!MyEntity.seenShowables.Contains(entity)) continue;
+
                     Root.SetDataInBlackboard("target", entity);
                     //animator.SetBool("Walking", true);
                     state = NodeState.Success;

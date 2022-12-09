@@ -13,12 +13,13 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 5f;
     [SerializeField] private float referenceMoveSpeed;
-    [SerializeField] private MyAIBT myAIBT;
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float CurrentHP = 100f;
     [SerializeField] private Transform FalseFX;
+    [SerializeField] private ParticleSystem HitFX;
+    [SerializeField] private GameObject MinionDieFX;
 
     private float currentMoveSpeed;
     private bool isAlive = true;
@@ -455,8 +456,13 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         //Debug.Log("CurrentHP : " + CurrentHP);
         if (CurrentHP <= 0)
         {
+            GameObject.Instantiate(MinionDieFX, transform.position, Quaternion.identity);
             CurrentHP = 0;
             RequestDie();
+        }
+        else
+        {
+                HitFX.Play();
         }
         OnDecreaseCurrentHpFeedback?.Invoke(amount);
     }
