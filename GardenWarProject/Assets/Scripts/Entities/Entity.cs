@@ -22,7 +22,7 @@ namespace Entities
         public bool canChangeTeam;
         public Enums.Team team;
         public bool isEnemy => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
-        
+
         /// <summary>
         /// True if passiveCapacities can be added to the entity's passiveCapacitiesList. False if not.
         /// </summary>

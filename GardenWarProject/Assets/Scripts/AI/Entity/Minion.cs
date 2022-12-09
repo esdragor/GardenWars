@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
 using Entities.FogOfWar;
@@ -49,6 +50,13 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         UIManager.Instance.InstantiateHealthBarForEntity(this);
     }
 
+    public override List<Enums.Team> GetEnemyTeams()
+    {
+        var enemyTeams = base.GetEnemyTeams();
+        if (enemyTeams.Contains(Enums.Team.Neutral)) enemyTeams.Remove(Enums.Team.Neutral);
+        return enemyTeams;
+    }
+    
     public bool CanMove()
     {
         return canMove;
@@ -456,7 +464,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         //Debug.Log("CurrentHP : " + CurrentHP);
         if (CurrentHP <= 0)
         {
-            GameObject.Instantiate(MinionDieFX, transform.position, Quaternion.identity);
+            Instantiate(MinionDieFX, transform.position, Quaternion.identity);
             CurrentHP = 0;
             RequestDie();
         }

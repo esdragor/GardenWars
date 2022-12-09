@@ -9,6 +9,7 @@ public class CheckEnemyInPOVRange : Node
     private Transform MyTransform;
     private Entity MyEntity;
     private float rangeFOV = 5f;
+    private int layerTargetFogOfWar = 1 << 29 | 1 << 30;
 
     private Node Root;
     //private Animator animator;
@@ -37,16 +38,19 @@ public class CheckEnemyInPOVRange : Node
                 foreach (var coll in colliders)
                 {
                     if (coll.gameObject == MyTransform.gameObject) continue;
-                    Entity entity = coll.GetComponent<Entity>();
+                    var entity = coll.GetComponent<Entity>();
                     if (!entity) continue;
-                    if (!MyEntity.GetEnemyTeams().Contains(entity.team) || entity.team == Enums.Team.NotAssigned) continue;
+                    if(Physics.Raycast(MyTransform.position, (entity.transform.position -MyTransform.position).normalized , out var hit, MyEntity.viewRange,
+                           layerTargetFogOfWar))
+                    {
+                        if(hit.collider.gameObject.layer != 29) continue;
+                    }
+
+                    if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
 
                     IAttackable attackable = coll.GetComponent<IAttackable>();
                     if (attackable == null) continue;
                     
-                    if (MyEntity.seenShowables.Count == 0) continue;
-                    if (!MyEntity.seenShowables.Contains(entity)) continue;
-
                     Root.SetDataInBlackboard("target", entity);
                     //animator.SetBool("Walking", true);
                     state = NodeState.Success;

@@ -5,7 +5,7 @@ public class Enums
     /// </summary>
     public enum Team
     {
-        Neutral, Team1, Team2, NotAssigned
+        Neutral, Team1, Team2
     }
     
     /// <summary>
