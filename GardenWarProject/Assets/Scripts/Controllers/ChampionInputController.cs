@@ -12,11 +12,10 @@ namespace Controllers.Inputs
     {
         private Champion champion;
         private int[] selectedEntity;
-        private bool isMoving;
         private Vector2 mousePos;
-        private Vector2 moveInput;
-        private Vector3 moveVector;
         private Camera cam;
+        private bool isRightClicking;
+        private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
 
         private void Update()
         {
@@ -24,7 +23,7 @@ namespace Controllers.Inputs
             UpdateTargets();
             champion.targetedEntities = selectedEntity;
             champion.targetedPositions = cursorWorldPos;
-            Debug.DrawLine(cursorWorldPos[0],cursorWorldPos[0]+Vector3.up,Color.yellow);
+            if(isRightClicking) OnMouseClick(nullCtx);
         }
 
         /// <summary>
@@ -142,14 +141,12 @@ namespace Controllers.Inputs
         
         private void OnHoldRightClick(InputAction.CallbackContext ctx)
         {
-            GameStateMachine.Instance.OnUpdate += champion.MouseOnDirection;
-            //champion.MoveToPosition(cursorWorldPos[0]);
+            isRightClicking = true;
         }
         
         private void OnReleaseRightClick(InputAction.CallbackContext ctx)
         {
-            GameStateMachine.Instance.OnUpdate -= champion.MouseOnDirection;
-            //champion.MoveToPosition(cursorWorldPos[0]);
+            isRightClicking = false;
         }
 
         protected override void Link(Entity entity)
@@ -233,6 +230,8 @@ namespace Controllers.Inputs
             inputs.MoveMouse.HoldRightClick.performed -= OnHoldRightClick;
 
             CameraController.Instance.UnLinkCamera();
+
+            isRightClicking = false;
         }
     }
 }
