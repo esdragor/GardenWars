@@ -60,8 +60,7 @@ namespace Entities.Champion
         
         public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
         public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
-
-
+        
         public void RequestAttack(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
         {
             if(isMaster)
@@ -83,55 +82,6 @@ namespace Entities.Champion
                 return;
             }
             photonView.RPC("SyncAttackRPC",RpcTarget.All,attackIndex,newTargetedEntities,newTargetedPositions);
-            return;
-
-            /*
-            lastCapacityIndex = attackIndex;
-            lastTargetedEntities = targetedEntities;
-            lastTargetedPositions = targetedPositions;
-            
-            
-            lastCapacity = CapacitySOCollectionManager.CreateActiveCapacity(attackIndex,this);
-            lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex);
-            var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
-
-            if (lastCapacity.CanCast(targetedEntities, targetedPositions))
-            {
-                if (lastCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
-                {
-                    bool isTargetEntity = lastCapacitySO.shootType == Enums.CapacityShootType.TargetEntity;
-                    Vector3 position = isTargetEntity
-                        ? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position
-                        : targetedPositions[0];
-
-                    if (!lastCapacity.isInRange(position))
-                    {
-                        Debug.Log("Not in range");
-                        if (isTargetEntity) SendFollowEntity(targetedEntities[0], lastCapacitySO.maxRange);
-                        else agent.SetDestination(position);
-                    }
-                    else
-                    {
-                        Debug.Log("Attack in Range");
-                        agent.SetDestination(transform.position);
-                        OnAttack?.Invoke(attackIndex, targetedEntities, targetedPositions);
-                        photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities,
-                            targetedPositions);
-
-                    }
-                }
-                else
-                {
-                    agent.SetDestination(transform.position);
-                    OnAttack?.Invoke(attackIndex, targetedEntities, targetedPositions);
-                    photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
-                }
-            }
-            else
-            {
-                //Cant Attack FeedBack
-            }
-            */
         }
 
         [PunRPC]
@@ -154,7 +104,7 @@ namespace Entities.Champion
             }
             
             Debug.Log($"Trying to attack Entity {targetedEntities}");
-            
+
             capacityDict[attackIndex].capacity.OnRelease(targetedEntities,targetedPositions);
             if(isMaster) OnAttack?.Invoke(attackIndex,targetedEntities,targetedPositions);
             OnAttackFeedback?.Invoke(attackIndex,targetedEntities,targetedPositions);

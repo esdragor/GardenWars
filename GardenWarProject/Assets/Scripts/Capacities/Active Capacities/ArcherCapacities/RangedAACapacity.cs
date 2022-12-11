@@ -6,7 +6,7 @@ namespace Entities.Capacities
     {
         private Entity target;
         private RangedAACapacitySO so => (RangedAACapacitySO) AssociatedActiveCapacitySO();
-        
+
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             target = EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes);

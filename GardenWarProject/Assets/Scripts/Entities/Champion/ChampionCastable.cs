@@ -50,37 +50,16 @@ namespace Entities.Champion
         public event GlobalDelegates.BoolDelegate OnSetCanCast;
         public event GlobalDelegates.BoolDelegate OnSetCanCastFeedback;
 
-        public void RequestCast(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
-        {
-            RequestOnReleaseCapacity(capacityIndex);
-        }
+        public void RequestCast(byte capacityIndex, int targetedEntities, Vector3 targetedPositions) { }
         
-        [PunRPC]
-        public void CastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
-        {
-            if(!canCast) return;
-            var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            
-            if (!activeCapacity.CanCast(targetedEntities, targetedPositions)) return;
-            
-            OnCast?.Invoke(capacityIndex,targetedEntities,targetedPositions);
-            photonView.RPC("SyncCastRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
-
-        }
-
-        [PunRPC]
-        public void SyncCastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
-        {
-            var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            activeCapacity.OnRelease(targetedEntities,targetedPositions);
-            OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
-        }
+        public void CastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions) { }
+        
+        public void SyncCastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions) { }
         
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCast;
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCastFeedback;
         
         
-
         public void RequestOnCastCapacity(byte capacityIndex)
         {
             if(isMaster)
@@ -130,6 +109,18 @@ namespace Entities.Champion
             foreach (var ability in capacityDict.Values.Where(ability => ability.isCasting))
             {
                 ability.capacity.OnHold(targetedEntities,targetedPositions);
+            }
+        }
+        
+        public void StartMoveCast(byte abilityIndex,int targetedEntity, Vector3 targetPosition)
+        {
+            var entityToMoveTo = EntityCollectionManager.GetEntityByIndex(targetedEntity);
+
+            StartMoveToTarget(entityToMoveTo,attackRange,StartRequestCast);
+
+            void StartRequestCast()
+            {
+                RequestOnReleaseCapacity(abilityIndex);
             }
         }
 

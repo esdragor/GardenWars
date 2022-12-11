@@ -31,7 +31,7 @@ namespace Entities.FogOfWar
         [SerializeField] private List<Entity> allViewables = new List<Entity>();
         [SerializeField] private List<Entity> allShowables = new List<Entity>();
         private IEnumerable<Entity> allyViewables => allViewables.Where(viewable => GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team);
-        private IEnumerable<Entity> enemyShowables => allShowables.Where(showable => showable.isEnemy);
+        private IEnumerable<Entity> enemyShowables => allShowables.Where(showable => showable.isEnemyOfPlayer);
         
         [Header("Camera and Scene Setup")] public Camera cameraFog;
         public List<string> sceneToRenderFog;

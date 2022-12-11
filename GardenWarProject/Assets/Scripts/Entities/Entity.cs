@@ -22,7 +22,7 @@ namespace Entities
         [Header("Team")]
         public bool canChangeTeam;
         public Enums.Team team;
-        public bool isEnemy => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
+        public bool isEnemyOfPlayer => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
 
         /// <summary>
         /// True if passiveCapacities can be added to the entity's passiveCapacitiesList. False if not.
@@ -107,7 +107,7 @@ namespace Entities
             FogOfWarManager.Instance.AddFOWViewable(this);
             FogOfWarManager.Instance.AddFOWShowable(this);
             
-            showMe = isEnemy;
+            showMe = isEnemyOfPlayer;
             team = newTeam;
 
             canShow = true;

@@ -27,9 +27,9 @@ namespace Entities.Capacities
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }
 
-        public bool CanCast(int targetsEntityIndexes, Vector3 targetPositions)
+        public bool CanCast(int targetsEntityIndex, Vector3 targetPosition)
         {
-            Debug.Log($"CanCast : {targetsEntityIndexes}, {targetPositions}");
+            Debug.Log($"CanCast : {targetsEntityIndex}, {targetPosition}");
             if (isOnCooldown)
             {
                 Debug.Log("On Cooldown");
@@ -42,22 +42,24 @@ namespace Entities.Capacities
                 case Enums.CapacityShootType.Skillshot:
                     break;
                 case Enums.CapacityShootType.TargetPosition:
-                    if (Vector3.Distance(casterPos, targetPositions) > maxRange)
+                    if (Vector3.Distance(casterPos, targetPosition) > maxRange)
                     {
-                        Debug.Log("Out of range");
+                        Debug.Log($"Out of range");
+                        
                         return false;
                     }
                     break;
                 case Enums.CapacityShootType.TargetEntity:
-                    if (Vector3.Distance(casterPos, EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes).position) > maxRange)
+                    var targetEntity = EntityCollectionManager.GetEntityByIndex(targetsEntityIndex);
+                    if (Vector3.Distance(casterPos, targetEntity.position) > maxRange)
                     {
-                        Debug.Log("Out of range");
+                        Debug.Log($"Out of range");
                         return false;
                     }
                     break;
             }
 
-            return AdditionalCastConditions(targetsEntityIndexes, targetPositions);
+            return AdditionalCastConditions(targetsEntityIndex, targetPosition);
         }
 
         protected abstract bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions);

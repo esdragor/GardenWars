@@ -139,7 +139,7 @@ namespace Controllers.Inputs
             champion.CancelMoveToTarget();
             champion.MoveToPosition(cursorWorldPos);
         }
-
+        
         private void StartMoveAttack()
         {
             Debug.Log($"Starting MoveAttack against {selectedEntities}");
