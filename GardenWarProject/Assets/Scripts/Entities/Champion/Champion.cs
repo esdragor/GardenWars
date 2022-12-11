@@ -15,6 +15,8 @@ namespace Entities.Champion
         private Animator animator;
 
         public CollisionBlocker blocker;
+        private static readonly int Speed = Animator.StringToHash("Speed");
+
         protected override void OnStart()
         {
             agent = GetComponent<NavMeshAgent>();
@@ -29,8 +31,8 @@ namespace Entities.Champion
         {
             CastHeldCapacities();
             CastHeldItems();
-            if (photonView.IsMine)
-                animator.SetFloat("Speed", agent.velocity.magnitude);
+            if (photonView.IsMine) animator.SetFloat(Speed, agent.velocity.magnitude);
+            TryMoveToTarget();
         }
 
         protected override void OnFixedUpdate()

@@ -7,9 +7,9 @@ namespace Entities.Capacities
         private Entity target;
         private RangedAACapacitySO so => (RangedAACapacitySO) AssociatedActiveCapacitySO();
         
-        protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            target = EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes[0]);
+            target = EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes);
             if (target == null)
             {
                 Debug.Log("No Target");
@@ -24,27 +24,27 @@ namespace Entities.Capacities
             return true;
         }
 
-        protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
             //spawn un projectile
             // lui dit d'aller vers le target
@@ -52,7 +52,7 @@ namespace Entities.Capacities
             //(ptet faire un object séparé jsp)
         }
 
-        protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
             projectile.Init(caster);

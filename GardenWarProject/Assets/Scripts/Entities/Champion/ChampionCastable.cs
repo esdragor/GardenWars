@@ -11,8 +11,8 @@ namespace Entities.Champion
         public byte[] abilitiesIndexes = new byte[3];
         private readonly Dictionary<byte, CastingAbility> capacityDict = new Dictionary<byte, CastingAbility>();
 
-        public int[] targetedEntities;
-        public Vector3[] targetedPositions;
+        public int targetedEntities;
+        public Vector3 targetedPositions;
 
         private class CastingAbility
         {
@@ -50,13 +50,13 @@ namespace Entities.Champion
         public event GlobalDelegates.BoolDelegate OnSetCanCast;
         public event GlobalDelegates.BoolDelegate OnSetCanCastFeedback;
 
-        public void RequestCast(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+        public void RequestCast(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
         {
             RequestOnReleaseCapacity(capacityIndex);
         }
         
         [PunRPC]
-        public void CastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+        public void CastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
         {
             if(!canCast) return;
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
@@ -69,7 +69,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void SyncCastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+        public void SyncCastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             activeCapacity.OnRelease(targetedEntities,targetedPositions);
@@ -92,7 +92,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        private void OnCastCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        private void OnCastCapacityRPC(byte capacityIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             if(!canCast) return;
             if (isOffline)
@@ -104,7 +104,7 @@ namespace Entities.Champion
         }
         
         [PunRPC]
-        private void SyncOnCastCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        private void SyncOnCastCapacityRPC(byte capacityIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             targetedEntities = newTargetedEntities;
             targetedPositions = newTargetedPositions;
@@ -144,7 +144,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        private void OnReleaseCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        private void OnReleaseCapacityRPC(byte capacityIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             if(!canCast) return;
             if (isOffline)
@@ -156,7 +156,7 @@ namespace Entities.Champion
         }
         
         [PunRPC]
-        private void SyncOnReleaseCapacityRPC(byte capacityIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        private void SyncOnReleaseCapacityRPC(byte capacityIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             targetedEntities = newTargetedEntities;
             targetedPositions = newTargetedPositions;

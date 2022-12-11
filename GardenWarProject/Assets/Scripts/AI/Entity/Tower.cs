@@ -90,12 +90,12 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
     public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
 
-    public void RequestAttack(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void RequestAttack(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
     {
         photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
-    public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
     {
         capacity ??= CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
         
@@ -105,7 +105,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
-    public void AttackRPC(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void AttackRPC(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
     {
         photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
     }

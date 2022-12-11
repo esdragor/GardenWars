@@ -118,14 +118,13 @@ public partial class UIManager
         
         if (((Champion) champion).isFighter) return;
         
-        SelectItem(0,null,null);
+        SelectItem(0,0,Vector3.zero);
         champion.OnActivateItemFeedback += SelectItem;
 
     }
 
-    private void SelectItem(byte index,int[] selectedEntities,Vector3[] positions)
+    private void SelectItem(byte index,int selectedEntities,Vector3 positions)
     {
-        
         for (byte i = 0; i < localInventory.slots.Count; i++)
         {
             var image = localInventory.slots[i].slotImages;

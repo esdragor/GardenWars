@@ -7,14 +7,14 @@ public class ActiveDarkMatter : ActiveCapacity
 {
     private double timer;
     private ActiveDarkMatterSO activeCapacitySo;
-    private Vector3[] dir;
+    private Vector3 dir;
 
-    protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
     {
         return true;
     }
 
-    protected override void Press(int[] targetsEntityIndexes, Vector3[] position)
+    protected override void Press(int targetsEntityIndexes, Vector3 position)
     {
         activeCapacitySo = (ActiveDarkMatterSO)AssociatedActiveCapacitySO();
         
@@ -23,27 +23,27 @@ public class ActiveDarkMatter : ActiveCapacity
         dir = position;
     }
 
-    protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         
     }
 
-    protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
     {
         
     }
 
-    protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         
     }
 
-    protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
     {
         
     }
 
-    protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         
     }
@@ -52,7 +52,7 @@ public class ActiveDarkMatter : ActiveCapacity
     {
         ITeamable casterTeam = caster.GetComponent<ITeamable>();
         
-        Collider[] detected = Physics.OverlapSphere(dir[0], activeCapacitySo.zoneRadius);
+        Collider[] detected = Physics.OverlapSphere(dir, activeCapacitySo.zoneRadius);
 
         foreach (var hit in detected)
         {

@@ -28,21 +28,21 @@ namespace Entities
         /// <param name="capacityIndex">the index on the CapacitySOCollectionManager of the activeCapacitySO to cast</param>
         /// <param name="targetedEntities">the entities targeted by the activeCapacity</param>
         /// <param name="targetedPositions">the positions targeted by  the activeCapacities</param>
-        public void RequestCast(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions);
+        public void RequestCast(byte capacityIndex, int targetedEntities, Vector3 targetedPositions);
         /// <summary>
         /// Casts an ActiveCapacity.
         /// </summary>
         /// <param name="capacityIndex">the index on the CapacitySOCollectionManager of the activeCapacitySO to cast</param>
         /// <param name="targetedEntities">the entities targeted by the activeCapacity</param>
         /// <param name="targetedPositions">the positions targeted by  the activeCapacities</param>
-        public void CastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions);
+        public void CastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions);
         /// <summary>
         /// Sends an RPC to all clients to cast an ActiveCapacity.
         /// </summary>
         /// <param name="capacityIndex">the index on the CapacitySOCollectionManager of the activeCapacitySO to cast</param>
         /// <param name="targetedEntities">the entities targeted by the activeCapacity</param>
         /// <param name="targetedPositions">the positions targeted by  the activeCapacities</param>
-        public void SyncCastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions);
+        public void SyncCastRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions);
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCast;
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCastFeedback;
     }

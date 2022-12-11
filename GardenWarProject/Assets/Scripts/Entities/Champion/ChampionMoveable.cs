@@ -1,7 +1,9 @@
+using System;
 using Entities.Capacities;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 namespace Entities.Champion
 {
@@ -112,14 +114,56 @@ namespace Entities.Champion
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
-        
+
         public void MoveToPosition(Vector3 position)
         {
             if(!canMove) return;
+            CancelMoveToTarget();
             position = ActiveCapacity.GetClosestValidPoint(position);
             agent.SetDestination(position);
         }
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
+
+        private void TryMoveToTarget()
+        {
+            MoveToTargetAction?.Invoke();
+        }
+        
+        public void StartMoveToTarget(Vector3 targetPos,float rangeToAction,Action action)
+        {
+            MoveToTargetAction += () => MoveToTarget(targetPos, rangeToAction, action);
+        }
+
+        private void MoveToTarget(Vector3 targetPos,float rangeToAction,Action action)
+        {
+            var distanceToTarget = Vector3.Distance(transform.position, targetPos);
+            if (distanceToTarget <= rangeToAction)
+            {
+                Debug.Log($"Arrived, invoking (distance : {distanceToTarget})");
+                //MoveToTargetAction = null;
+                agent.ResetPath();
+                action.Invoke();
+                return;
+            }
+            agent.SetDestination(targetPos);
+        }
+
+        public void StartMoveToTarget(Entity targetEntity,float rangeToAction,Action action)
+        {
+            MoveToTargetAction += () => MoveToTarget(targetEntity.position, rangeToAction, action);
+        }
+        
+        private void MoveToTarget(Entity targetEntity,float rangeToAction,Action action)
+        {
+            MoveToTarget(targetEntity.position,rangeToAction,action);
+        }
+
+        public void CancelMoveToTarget()
+        {
+            MoveToTargetAction = null;
+        }
+
+        public event Action MoveToTargetAction;
     }
 }

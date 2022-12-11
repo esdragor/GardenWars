@@ -8,16 +8,10 @@ namespace Entities.Champion
     {
         [Header("Attack")]
         public byte attackAbilityIndex;
-        private ActiveCapacity lastCapacity;
-        private ActiveCapacitySO lastCapacitySO;
         public bool canAttack;
         public float attackDamage;
         public double attackSpeed;
         public float attackRange;
-
-        private byte lastCapacityIndex;
-        private int[] lastTargetedEntities;
-        private Vector3[] lastTargetedPositions;
 
         public bool CanAttack()
         {
@@ -68,7 +62,7 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
 
 
-        public void RequestAttack(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
+        public void RequestAttack(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
         {
             if(isMaster)
             {
@@ -79,7 +73,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void AttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        public void AttackRPC(byte attackIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             if(!canAttack) return;
             
@@ -141,7 +135,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void SyncAttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        public void SyncAttackRPC(byte attackIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             targetedEntities = newTargetedEntities;
             targetedPositions = newTargetedPositions;
@@ -156,9 +150,10 @@ namespace Entities.Champion
                     isCasting = false,
                     capacity = CapacitySOCollectionManager.CreateActiveCapacity(attackIndex,this)
                 };
-                newCapacity.capacity.isBasicAttack = true;
                 capacityDict.Add(attackIndex,newCapacity);
             }
+            
+            Debug.Log($"Trying to attack Entity {targetedEntities}");
             
             capacityDict[attackIndex].capacity.OnRelease(targetedEntities,targetedPositions);
             if(isMaster) OnAttack?.Invoke(attackIndex,targetedEntities,targetedPositions);

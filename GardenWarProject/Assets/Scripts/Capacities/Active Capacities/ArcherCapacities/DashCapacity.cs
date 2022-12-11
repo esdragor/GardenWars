@@ -11,44 +11,43 @@ namespace Entities.Capacities
 
         private LayerMask collisionLayers;
 
-        protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return true;
         }
 
-        protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if (champion != null)  champion.canMove = false;
             
             collisionLayers = 1 << 9 | 1 << 22 | 1 << 30;
             
-            var destination = targetPositions[0];
-            var casterPos = caster.transform.position;
+            var destination = targetPositions;
             destination.y = casterPos.y;
             
             var direction = (destination - casterPos).normalized;

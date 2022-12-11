@@ -158,7 +158,7 @@ namespace Entities.Champion
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
         
-        public void RequestPressItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void RequestPressItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
@@ -174,7 +174,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void PressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void PressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
@@ -190,7 +190,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void SyncPressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void SyncPressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
@@ -215,7 +215,7 @@ namespace Entities.Champion
             }
         }
         
-        public void RequestReleaseItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void RequestReleaseItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             if (isMaster)
             {
@@ -226,7 +226,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void ReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void ReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             Debug.Log($"Released item {itemIndexInInventory}");
             if (isFighter)
@@ -250,7 +250,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void SyncReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void SyncReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             if (!isFighter)
             {

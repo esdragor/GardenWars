@@ -72,13 +72,13 @@ namespace Entities.Inventory
 
         protected abstract void OnItemRemovedEffectsFeedback(Entity entity);
         
-        public virtual void OnItemActivated(int[] targets, Vector3[] positions)
+        public virtual void OnItemActivated(int targets, Vector3 positions)
         {
             if(!consumable) return;
             count--;
         }
         
-        public virtual void OnItemActivatedFeedback(int[] targets, Vector3[] positions)
+        public virtual void OnItemActivatedFeedback(int targets, Vector3 positions)
         {
             if(!consumable) return;
             if (!PhotonNetwork.IsMasterClient) count--;

@@ -136,7 +136,7 @@ public class ChampionHUD : MonoBehaviour
         ultimateHolder.Setup(so.activeCapacities[2].icon);
     }
 
-    private void UpdateCooldown(byte capacityIndex, int[] intArray, Vector3[] vectors)
+    private void UpdateCooldown(byte capacityIndex, int intArray, Vector3 vectors)
     {
         //spellHolderDict[capacityIndex].StartTimer(CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex).cooldown) ;
     }

@@ -5,7 +5,7 @@ namespace Controllers.Inputs
     public abstract class PlayerInputController : Controller
     {
         protected PlayerInputs inputs;
-        protected Vector3[] cursorWorldPos;
+        protected Vector3 cursorWorldPos;
         protected LayerMask layersToHit;
 
         protected override void OnAwake()
