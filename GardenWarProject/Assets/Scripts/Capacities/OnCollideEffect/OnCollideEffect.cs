@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Entities;
-using Photon.Pun;
 using UnityEngine;
 
 public class OnCollideEffect : MonoBehaviour
@@ -24,7 +23,8 @@ public class OnCollideEffect : MonoBehaviour
         hitEntity = other.gameObject.GetComponent<Entity>();
         if (hitEntity == null) return;
         if((canHitAlly && enemyTeams.Contains(hitEntity.team)) || !canHitAlly && !enemyTeams.Contains(hitEntity.team)) return;
-        if (PhotonNetwork.IsMasterClient)
+        Debug.Log($"hitting {hitEntity}");
+        if (Entity.isMaster)
         {
             OnEntityCollide?.Invoke(hitEntity);
             OnEntityCollide = null;

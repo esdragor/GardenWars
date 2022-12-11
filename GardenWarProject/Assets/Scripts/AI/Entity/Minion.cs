@@ -17,7 +17,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
-    [SerializeField] private float CurrentHP = 100f;
+    [SerializeField] private float currentHp = 100f;
     [SerializeField] private Transform FalseFX;
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private GameObject MinionDieFX;
@@ -38,7 +38,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     protected override void OnStart()
     {
-        CurrentHP = MaxHP;
+        currentHp = MaxHP;
     }
 
     public override void OnInstantiated()
@@ -313,13 +313,13 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public float GetCurrentHp()
     {
-        return CurrentHP;
+        return currentHp;
     }
 
     public float GetCurrentHpPercent()
     {
         if (MaxHP == 0) return 0;
-        return CurrentHP / MaxHP * 100;
+        return currentHp / MaxHP * 100;
     }
 
     public void RequestSetMaxHp(float value)
@@ -392,14 +392,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncSetCurrentHpRPC(float value)
     {
-        CurrentHP = value;
-        OnSetCurrentHp?.Invoke(CurrentHP);
-        OnSetCurrentHpFeedback?.Invoke(CurrentHP);
+        currentHp = value;
+        OnSetCurrentHp?.Invoke(currentHp);
+        OnSetCurrentHpFeedback?.Invoke(currentHp);
     }
     [PunRPC]
     public void SetCurrentHpRPC(float value)
     {
-        CurrentHP = value;
+        currentHp = value;
         photonView.RPC("SyncSetCurrentHpRPC", RpcTarget.All, value);
     }
 
@@ -413,14 +413,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncSetCurrentHpPercentRPC(float value)
     {
-        CurrentHP = (value / 100) * MaxHP;
-        OnSetCurrentHpPercent?.Invoke(CurrentHP);
-        OnSetCurrentHpPercentFeedback?.Invoke(CurrentHP);
+        currentHp = (value / 100) * MaxHP;
+        OnSetCurrentHpPercent?.Invoke(currentHp);
+        OnSetCurrentHpPercentFeedback?.Invoke(currentHp);
     }
     [PunRPC]
     public void SetCurrentHpPercentRPC(float value)
     {
-        CurrentHP = (value / 100) * MaxHP;
+        currentHp = (value / 100) * MaxHP;
         photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, value);
     }
 
@@ -435,18 +435,18 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncIncreaseCurrentHpRPC(float amount)
     {
-        CurrentHP = amount;
+        currentHp = amount;
         OnIncreaseCurrentHpFeedback?.Invoke(amount);
     }
 
     [PunRPC]
     public void IncreaseCurrentHpRPC(float amount)
     {
-        CurrentHP += amount;
-        if (CurrentHP > MaxHP) CurrentHP = MaxHP;
+        currentHp += amount;
+        if (currentHp > MaxHP) currentHp = MaxHP;
         OnIncreaseCurrentHp?.Invoke(amount);
         
-        photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,CurrentHP);
+        photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
     }
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
@@ -460,17 +460,17 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount)
     {
-        CurrentHP = amount;
+        currentHp = amount;
         //Debug.Log("CurrentHP : " + CurrentHP);
-        if (CurrentHP <= 0)
+        if (currentHp <= 0)
         {
             Instantiate(MinionDieFX, transform.position, Quaternion.identity);
-            CurrentHP = 0;
-            RequestDie();
+            currentHp = 0;
+            if(isMaster)DieRPC();
         }
         else
         {
-                HitFX.Play();
+            HitFX.Play();
         }
         OnDecreaseCurrentHpFeedback?.Invoke(amount);
     }
@@ -478,9 +478,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void DecreaseCurrentHpRPC(float amount)
     {
-        CurrentHP -= amount;
+        currentHp -= amount;
         OnDecreaseCurrentHp?.Invoke(amount);
-        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,CurrentHP);
+        if (isOffline)
+        {
+            SyncDecreaseCurrentHpRPC(currentHp);
+            return;
+        }
+        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp);
     }
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
@@ -523,6 +528,11 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void DieRPC()
     {
+        if (isOffline)
+        {
+            SyncDieRPC();
+            return;
+        }
         photonView.RPC("SyncDieRPC", RpcTarget.All);
     }
     

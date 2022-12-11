@@ -62,6 +62,8 @@ namespace Entities.Champion
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = currentSo.attackDamage;
             attackSpeed = currentSo.attackSpeed;
+            attackRange = currentSo.attackRange;
+            
             attackAbilityIndex = currentSo.attackAbilityIndex;
             abilitiesIndexes = currentSo.activeCapacitiesIndexes;
             var championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,

@@ -12,6 +12,7 @@ namespace Entities.Champion
         public bool canAttack;
         public float attackDamage;
         public double attackSpeed;
+        public float attackRange;
 
         private byte lastCapacityIndex;
         private int[] lastTargetedEntities;
@@ -80,6 +81,7 @@ namespace Entities.Champion
         public void AttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
         {
             if(!canAttack) return;
+            
             if (isOffline)
             {
                 SyncAttackRPC(attackIndex, newTargetedEntities, newTargetedPositions);

@@ -11,8 +11,8 @@ namespace Entities
     [RequireComponent(typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
     public abstract partial class Entity : MonoBehaviourPun, ITeamable
     {
-        protected static bool isOffline => !PhotonNetwork.IsConnected;
-        protected static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
+        public static bool isOffline => !PhotonNetwork.IsConnected;
+        public static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
         protected UIManager uiManager => UIManager.Instance;

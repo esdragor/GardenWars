@@ -71,7 +71,7 @@ namespace Entities.Capacities
 
             if (damage == 0) return;
                 
-            projectile.OnEntityCollide += (entity) => entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(damage);
+            projectile.OnEntityCollide += DealDamage;
             projectile.OnEntityCollideFeedback += (entity) => gsm.OnUpdateFeedback -= MoveProjectile;
 
             gsm.OnUpdateFeedback += MoveProjectile;
@@ -79,6 +79,12 @@ namespace Entities.Capacities
             void MoveProjectile()
             {
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position, target.transform.position, 0.1f);
+            }
+
+            void DealDamage(Entity entity)
+            {
+                Debug.Log($"Dealing damage to {entity}");
+                entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(damage);
             }
         }
     }

@@ -11,11 +11,12 @@ namespace Entities.Capacities
         public byte indexOfSOInCollection;
         
         public Entity caster;
+        public Champion.Champion champion => ((Champion.Champion) caster);
         
         public bool isBasicAttack;
         protected Vector3 casterPos => caster.transform.position;
 
-        public double baseCooldown => isBasicAttack ? ((Champion.Champion)caster).attackSpeed : AssociatedActiveCapacitySO().cooldown;
+        public double baseCooldown => isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
         private double cooldownTimer;
         
@@ -39,9 +40,11 @@ namespace Entities.Capacities
                 case Enums.CapacityShootType.Skillshot:
                     break;
                 case Enums.CapacityShootType.TargetPosition:
-                    if (Vector3.Distance(casterPos, targetPositions[0]) > so.maxRange)
+                    var maxRange = isBasicAttack ? champion.attackRange : so.maxRange;
+                    if (Vector3.Distance(casterPos, targetPositions[0]) > maxRange)
                     {
                         Debug.Log("Out of range");
+                        if(isBasicAttack) 
                         return false;
                     }
                     break;
