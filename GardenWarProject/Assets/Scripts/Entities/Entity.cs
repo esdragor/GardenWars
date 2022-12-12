@@ -17,7 +17,8 @@ namespace Entities
         protected GameStateMachine gsm => GameStateMachine.Instance;
         protected UIManager uiManager => UIManager.Instance;
         public int entityIndex => photonView.ViewID;
-        public Vector3 position => transform.position;
+        public Vector3 position => showMe ? transform.position : lastSeenPosition;
+        private Vector3 lastSeenPosition;
         
         [Header("Team")]
         public bool canChangeTeam;

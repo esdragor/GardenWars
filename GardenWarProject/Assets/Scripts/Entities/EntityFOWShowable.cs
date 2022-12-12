@@ -150,6 +150,7 @@ namespace  Entities
         {
             if(!showMe || !canHide) return;
             showMe = false;
+            lastSeenPosition = transform.position;
             foreach (var go in elementsToShow)
             {
                 go.SetActive(false);
