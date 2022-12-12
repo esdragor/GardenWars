@@ -11,14 +11,17 @@ namespace Entities.Capacities
         public byte indexOfSOInCollection;
         
         public Entity caster;
-        public Champion.Champion champion => ((Champion.Champion) caster);
+        public Champion.Champion champion => caster as Champion.Champion;
         
-        public bool isBasicAttack => champion.attackAbilityIndex == indexOfSOInCollection;
+        public bool isBasicAttack => champion != null && champion.attackAbilityIndex == indexOfSOInCollection;
         protected Vector3 casterPos => caster.transform.position;
 
-        public double baseCooldown => isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
+        public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
         private double cooldownTimer;
+
+        protected Entity targetedEntity;
+        protected Vector3 targetedPosition;
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
 
@@ -29,10 +32,8 @@ namespace Entities.Capacities
 
         public bool CanCast(int targetsEntityIndex, Vector3 targetPosition)
         {
-            Debug.Log($"CanCast : {targetsEntityIndex}, {targetPosition}");
             if (isOnCooldown)
             {
-                Debug.Log("On Cooldown");
                 return false;
             }
             var so = AssociatedActiveCapacitySO();
@@ -42,18 +43,20 @@ namespace Entities.Capacities
                 case Enums.CapacityShootType.Skillshot:
                     break;
                 case Enums.CapacityShootType.TargetPosition:
-                    if (Vector3.Distance(casterPos, targetPosition) > maxRange)
+                    targetedPosition = targetPosition;
+                    if (Vector3.Distance(casterPos, targetedPosition) > maxRange)
                     {
-                        Debug.Log($"Out of range");
-                        
                         return false;
                     }
                     break;
                 case Enums.CapacityShootType.TargetEntity:
-                    var targetEntity = EntityCollectionManager.GetEntityByIndex(targetsEntityIndex);
-                    if (Vector3.Distance(casterPos, targetEntity.position) > maxRange)
+                    targetedEntity = EntityCollectionManager.GetEntityByIndex(targetsEntityIndex);
+                    if (targetedEntity == null)
                     {
-                        Debug.Log($"Out of range");
+                        return false;
+                    }
+                    if (Vector3.Distance(casterPos, targetedEntity.position) > maxRange)
+                    {
                         return false;
                     }
                     break;

@@ -47,7 +47,7 @@ namespace Entities.Champion
 
         public override void OnInstantiatedFeedback()
         {
-            
+            isAlive = true;
         }
 
         public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam, Enums.ChampionRole newRole)

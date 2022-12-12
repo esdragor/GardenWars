@@ -140,8 +140,6 @@ namespace Entities.Champion
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
             if (distanceToTarget <= rangeToAction)
             {
-                Debug.Log($"Arrived, invoking (distance : {distanceToTarget})");
-                //MoveToTargetAction = null;
                 agent.ResetPath();
                 action.Invoke();
                 return;

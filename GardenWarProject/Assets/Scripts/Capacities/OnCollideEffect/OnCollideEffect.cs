@@ -23,7 +23,6 @@ public class OnCollideEffect : MonoBehaviour
         hitEntity = other.gameObject.GetComponent<Entity>();
         if (hitEntity == null) return;
         if((canHitAlly && enemyTeams.Contains(hitEntity.team)) || !canHitAlly && !enemyTeams.Contains(hitEntity.team)) return;
-        Debug.Log($"hitting {hitEntity}");
         if (Entity.isMaster)
         {
             OnEntityCollide?.Invoke(hitEntity);

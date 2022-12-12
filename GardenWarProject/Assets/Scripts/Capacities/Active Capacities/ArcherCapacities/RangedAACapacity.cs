@@ -4,23 +4,28 @@ namespace Entities.Capacities
 {
     public class RangedAACapacity : ActiveCapacity
     {
-        private Entity target;
         private RangedAACapacitySO so => (RangedAACapacitySO) AssociatedActiveCapacitySO();
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            target = EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes);
-            if (target == null)
-            {
-                Debug.Log("No Target");
-                return false;
-            }
+            if (targetedEntity.GetComponent<IActiveLifeable>() == null) return false;
+            var deadable = targetedEntity.GetComponent<IDeadable>();
 
-            if (!caster.GetEnemyTeams().Contains(target.team))
+            if (deadable != null)
             {
-                Debug.Log("Target is Ally");
+                if (!deadable.IsAlive())
+                {
+                    Debug.Log("Target is Dead");
+                    return false;
+                }
+            }
+            
+            if (!caster.GetEnemyTeams().Contains(targetedEntity.team))
+            {
+                Debug.Log("Target isn't an enemy");
                 return false;
             }
+            Debug.Log("Shooting");
             return true;
         }
 
@@ -57,18 +62,13 @@ namespace Entities.Capacities
             var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
             projectile.Init(caster);
             var projectileTr = projectile.transform;
-            var champion = caster.GetComponent<Champion.Champion>();
             float damage = 0;
-            if (champion != null)
+            var attackable = caster.GetComponent<IAttackable>();
+            if (attackable != null)
             {
-                damage = champion.attackDamage;
+                damage = attackable.GetAttackDamage();
             }
-            else
-            {
-                var tower = caster.GetComponent<Tower>();
-                if (tower != null) damage = tower.damage;
-            }
-
+            
             if (damage == 0) return;
                 
             projectile.OnEntityCollide += DealDamage;
@@ -78,13 +78,13 @@ namespace Entities.Capacities
             
             void MoveProjectile()
             {
-                projectileTr.position = Vector3.MoveTowards(projectileTr.position, target.transform.position, 0.1f);
+                projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position, 0.1f);
             }
 
             void DealDamage(Entity entity)
             {
-                Debug.Log($"Dealing damage to {entity}");
-                entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(damage);
+                var lifeable = entity.GetComponent<IActiveLifeable>();
+                lifeable.DecreaseCurrentHpRPC(damage);
             }
         }
     }

@@ -271,9 +271,10 @@ MonoBehaviour:
   canAttack: 0
   attackDamage: 0
   attackSpeed: 0
+  attackRange: 0
   abilitiesIndexes: 00
-  targetedEntities: 
-  targetedPositions: []
+  targetedEntities: 0
+  targetedPositions: {x: 0, y: 0, z: 0}
   canCast: 0
   isAlive: 0
   canDie: 0

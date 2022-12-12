@@ -142,7 +142,6 @@ namespace Controllers.Inputs
         
         private void StartMoveAttack()
         {
-            Debug.Log($"Starting MoveAttack against {selectedEntities}");
             if(selectedEntities == -1) return;
             
             var entityToMoveTo = selectedEntities;

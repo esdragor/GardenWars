@@ -7,10 +7,10 @@ namespace Entities.Champion
 {
     public partial class Champion : IDeadable
     {
+        [Header("Deadable")]
         public bool isAlive;
         public bool canDie;
-
-        // TODO: Delete when TickManager is implemented
+        
         public float respawnDuration = 3;
         private double respawnTimer;
 

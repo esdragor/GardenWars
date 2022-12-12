@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class TaskAttack : Node
 {
-    private IAttackable attack;
+    private IAttackable attackable;
     private Entity MyEntity;
     private float attackSpeed;
     private double CurrentAtkTime = 0f;
@@ -25,7 +25,7 @@ public class TaskAttack : Node
     {
         Root = _Root;
         MyEntity = entity;
-        attack = entity.GetComponent<IAttackable>();
+        attackable = entity.GetComponent<IAttackable>();
         attackSpeed = _attackSpeed;
         capacityIndex = capaIndex;
         _model = model;
@@ -33,9 +33,9 @@ public class TaskAttack : Node
 
     public override NodeState Evaluate(Node root)
     {
-        if (attack == null) return NodeState.Failure;
+        if (attackable == null) return NodeState.Failure;
 
-        if (!attack.CanAttack()) return NodeState.Failure;
+        if (!attackable.CanAttack()) return NodeState.Failure;
 
         Entity target = (Entity)root.GetData("target");
 
@@ -54,7 +54,7 @@ public class TaskAttack : Node
 
         CurrentAtkTime = 0f;
         
-        attack.RequestAttack(capacityIndex, target.entityIndex, target.position);
+        attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
         _model.LookAt(target.position);
         root.ClearData("target");
 

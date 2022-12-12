@@ -228,7 +228,6 @@ namespace Entities.Champion
         [PunRPC]
         public void ReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
-            Debug.Log($"Released item {itemIndexInInventory}");
             if (isFighter)
             {
                 if (itemIndexInInventory >= items.Count) return;

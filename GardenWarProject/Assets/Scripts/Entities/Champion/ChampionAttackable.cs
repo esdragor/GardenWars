@@ -103,8 +103,6 @@ namespace Entities.Champion
                 capacityDict.Add(attackIndex,newCapacity);
             }
             
-            Debug.Log($"Trying to attack Entity {targetedEntities}");
-
             capacityDict[attackIndex].capacity.OnRelease(targetedEntities,targetedPositions);
             if(isMaster) OnAttack?.Invoke(attackIndex,targetedEntities,targetedPositions);
             OnAttackFeedback?.Invoke(attackIndex,targetedEntities,targetedPositions);

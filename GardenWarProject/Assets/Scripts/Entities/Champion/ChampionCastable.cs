@@ -111,18 +111,6 @@ namespace Entities.Champion
                 ability.capacity.OnHold(targetedEntities,targetedPositions);
             }
         }
-        
-        public void StartMoveCast(byte abilityIndex,int targetedEntity, Vector3 targetPosition)
-        {
-            var entityToMoveTo = EntityCollectionManager.GetEntityByIndex(targetedEntity);
-
-            StartMoveToTarget(entityToMoveTo,attackRange,StartRequestCast);
-
-            void StartRequestCast()
-            {
-                RequestOnReleaseCapacity(abilityIndex);
-            }
-        }
 
         public void RequestOnReleaseCapacity(byte capacityIndex)
         {
