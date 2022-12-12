@@ -67,11 +67,12 @@ namespace Entities.Capacities
 
         protected abstract bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions);
         
-        public void OnPress(int targetsEntityIndexes, Vector3 targetPositions)
+        public bool OnPress(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            if(!CanCast(targetsEntityIndexes,targetPositions)) return;
+            if(!CanCast(targetsEntityIndexes,targetPositions)) return false;
             if(isMaster) Press(targetsEntityIndexes,targetPositions);
             PressFeedback(targetsEntityIndexes,targetPositions);
+            return true;
         }
         protected abstract void Press(int targetsEntityIndexes, Vector3 targetPositions);
         protected abstract void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions);
