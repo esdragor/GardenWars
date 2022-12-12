@@ -78,12 +78,11 @@ namespace Entities.Inventory
         public void OnItemActivated(int target, Vector3 position)
         {
             if (consumable) count--;
-            if (isMaster)
-            {
-                OnItemActivatedEffects(target,position);
-                if(count<=0) inventory.RemoveItemRPC(this);
-            }
+            if (isMaster) OnItemActivatedEffects(target,position);
+            
             OnItemActivatedFeedbackEffects(target,position);
+            
+            if(isMaster && count<=0) inventory.RemoveItemRPC(this);
         }
 
         public abstract void OnItemActivatedEffects(int targetIndex, Vector3 position);
