@@ -72,7 +72,7 @@ namespace Entities.Capacities
             return !PhotonNetwork.IsConnected ? Object.Instantiate(so.itemBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>() : PhotonNetwork.Instantiate(so.itemBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>();
         }
 
-        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             champion.PlayThrowAnimation();
             if (HelperDirection) HelperDirection.SetActive(false);

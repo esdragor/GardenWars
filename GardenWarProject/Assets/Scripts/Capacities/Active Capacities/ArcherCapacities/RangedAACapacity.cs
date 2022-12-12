@@ -48,16 +48,13 @@ namespace Entities.Capacities
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            //spawn un projectile
-            // lui dit d'aller vers le target
-            // a l'impact fait X degat
-            //(ptet faire un object séparé jsp)
+
         }
 
-        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
-            projectile.Init(caster);
+            projectile.Init(caster, EntityCollectionManager.GetEntityByIndex(targetEntityIndex));
             var projectileTr = projectile.transform;
             float damage = 0;
             var attackable = caster.GetComponent<IAttackable>();
@@ -75,11 +72,13 @@ namespace Entities.Capacities
             
             void MoveProjectile()
             {
-                projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position, 0.1f);
+                projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position + Vector3.up, 0.1f);
+                projectileTr.LookAt(targetedEntity.transform);
             }
 
             void DealDamage(Entity entity)
             {
+                if (!entity) return;
                 var lifeable = entity.GetComponent<IActiveLifeable>();
                 lifeable.DecreaseCurrentHpRPC(damage);
             }

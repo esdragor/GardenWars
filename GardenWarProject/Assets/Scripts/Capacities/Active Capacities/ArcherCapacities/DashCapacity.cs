@@ -41,7 +41,7 @@ namespace Entities.Capacities
             
         }
 
-        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             if (champion != null)  champion.canMove = false;
             

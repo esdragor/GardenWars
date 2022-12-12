@@ -93,7 +93,7 @@ namespace Entities.Capacities
         }
 
         protected abstract void Release(int targetsEntityIndexes, Vector3 targetPositions);
-        protected abstract void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions);
+        protected abstract void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions);
 
         private void EnterCooldown(double timeOnCooldown)
         {

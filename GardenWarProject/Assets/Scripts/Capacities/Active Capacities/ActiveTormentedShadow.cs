@@ -49,7 +49,7 @@ namespace Entities.Capacities
             Debug.Log("Released");
         }
 
-        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             Debug.Log("Released Feedback");
         }

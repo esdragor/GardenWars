@@ -140,7 +140,7 @@ public class XerathUltimate : ActiveCapacity
         if (UIJauge) UIJauge.gameObject.SetActive(false);
     }
 
-    protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+    protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
     {
         if (HelperDirection) HelperDirection.SetActive(false);
         if (UIJauge) UIJauge.gameObject.SetActive(false);

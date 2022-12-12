@@ -38,7 +38,7 @@ public class ActiveMinionAuto : ActiveCapacity
         
     }
 
-    protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+    protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
     {
         
     }

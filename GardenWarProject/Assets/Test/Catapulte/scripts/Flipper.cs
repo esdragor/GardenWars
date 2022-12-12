@@ -61,7 +61,7 @@ public class Flipper : ActiveCapacity
         candyBag.GetComponent<CandyScript>().Init(flipperSO, dir);
     }
 
-    protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+    protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
     {
         
     }
