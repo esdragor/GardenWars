@@ -5,15 +5,16 @@ namespace Entities.Capacities
     public class RangedAACapacity : ActiveCapacity
     {
         private RangedAACapacitySO so => (RangedAACapacitySO) AssociatedActiveCapacitySO();
+        IDeadable deadableEntity;
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if (targetedEntity.GetComponent<IActiveLifeable>() == null) return false;
-            var deadable = targetedEntity.GetComponent<IDeadable>();
+            deadableEntity = targetedEntity.GetComponent<IDeadable>();
 
-            if (deadable != null)
+            if (deadableEntity != null)
             {
-                if (!deadable.IsAlive())
+                if (!deadableEntity.IsAlive())
                 {
                     return false;
                 }
@@ -65,13 +66,18 @@ namespace Entities.Capacities
             
             if (damage == 0) return;
                 
-            projectile.OnEntityCollide += DealDamage;
+            projectile.OnEntityCollide += CollideProjectile;
             projectile.OnEntityCollideFeedback += (entity) => gsm.OnUpdateFeedback -= MoveProjectile;
 
             gsm.OnUpdateFeedback += MoveProjectile;
             
             void MoveProjectile()
             {
+                if (!deadableEntity.IsAlive())
+                {
+                    CollideProjectile(null);
+                    return;
+                }
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position + Vector3.up, 0.1f);
                 projectileTr.LookAt(targetedEntity.transform);
             }
@@ -81,6 +87,14 @@ namespace Entities.Capacities
                 if (!entity) return;
                 var lifeable = entity.GetComponent<IActiveLifeable>();
                 lifeable.DecreaseCurrentHpRPC(damage);
+            }
+            
+            void CollideProjectile(Entity entity)
+            {
+                gsm.OnUpdateFeedback -= MoveProjectile;
+                projectile.OnEntityCollide -= CollideProjectile;
+                DealDamage(entity);
+                projectile.gameObject.SetActive(false);
             }
         }
     }

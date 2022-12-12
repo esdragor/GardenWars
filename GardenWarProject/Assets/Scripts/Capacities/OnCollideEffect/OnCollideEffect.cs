@@ -41,6 +41,5 @@ public class OnCollideEffect : MonoBehaviour
 
         OnEntityCollideFeedback?.Invoke(hitEntity);
         OnEntityCollideFeedback = null;
-        gameObject.SetActive(false); //TODO - link to pool
     }
 }
