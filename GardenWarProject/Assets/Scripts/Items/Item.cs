@@ -8,12 +8,15 @@ namespace Entities.Inventory
     [System.Serializable]
     public abstract class Item
     {
+        public static bool isOffline => !PhotonNetwork.IsConnected;
+        public static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
+        
         public bool consumable;
         public int count;
         
         public Entity entityOfInventory;
         public IInventoryable inventory;
-        
+
         public double baseCooldown => AssociatedItemSO().activationCooldown;
         public bool isOnCooldown;
         private double cooldownTimer;
@@ -71,19 +74,19 @@ namespace Entities.Inventory
         }
 
         protected abstract void OnItemRemovedEffectsFeedback(Entity entity);
-        
-        public virtual void OnItemActivated(int[] targets, Vector3[] positions)
+
+        public void OnItemActivated(int target, Vector3 position)
         {
-            if(!consumable) return;
-            count--;
+            if (consumable) count--;
+            if (isMaster)
+            {
+                OnItemActivatedEffects(target,position);
+                if(count<=0) inventory.RemoveItemRPC(this);
+            }
+            OnItemActivatedFeedbackEffects(target,position);
         }
-        
-        public virtual void OnItemActivatedFeedback(int[] targets, Vector3[] positions)
-        {
-            if(!consumable) return;
-            if (!PhotonNetwork.IsMasterClient) count--;
-            if(count > 0 || !PhotonNetwork.IsMasterClient) return;
-            inventory.RemoveItemRPC(this);
-        }
+
+        public abstract void OnItemActivatedEffects(int targetIndex, Vector3 position);
+        public abstract void OnItemActivatedFeedbackEffects(int targetIndex, Vector3 position);
     }
 }

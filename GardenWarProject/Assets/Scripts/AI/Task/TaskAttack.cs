@@ -10,12 +10,12 @@ using UnityEngine;
 
 public class TaskAttack : Node
 {
-    private IAttackable attack;
+    private IAttackable attackable;
     private Entity MyEntity;
     private float attackSpeed;
     private double CurrentAtkTime = 0f;
     private Entity PreviousTarget;
-    private GameStateMachine sm = null;
+    private GameStateMachine sm => GameStateMachine.Instance;
     private Node Root;
     private byte capacityIndex = 0;
     private Transform _model;
@@ -25,19 +25,19 @@ public class TaskAttack : Node
     {
         Root = _Root;
         MyEntity = entity;
-        attack = entity.GetComponent<IAttackable>();
+        attackable = entity.GetComponent<IAttackable>();
         attackSpeed = _attackSpeed;
         capacityIndex = capaIndex;
         _model = model;
     }
 
-    public override NodeState Evaluate(Node Root)
+    public override NodeState Evaluate(Node root)
     {
-        if (attack == null) return NodeState.Failure;
+        if (attackable == null) return NodeState.Failure;
 
-        if (!attack.CanAttack()) return NodeState.Failure;
+        if (!attackable.CanAttack()) return NodeState.Failure;
 
-        Entity target = (Entity)Root.GetData("target");
+        Entity target = (Entity)root.GetData("target");
 
         if (target == null) return NodeState.Failure;
 
@@ -46,10 +46,7 @@ public class TaskAttack : Node
             PreviousTarget = target;
             CurrentAtkTime = 0f;
         }
-
-        if (!sm)
-            sm = GameStateMachine.Instance;
-
+        
        //CurrentAtkTime += 1.0f / sm.tickRate;
        CurrentAtkTime += Time.deltaTime;
 
@@ -57,9 +54,9 @@ public class TaskAttack : Node
 
         CurrentAtkTime = 0f;
         
-        attack.RequestAttack(capacityIndex, new[] { target.entityIndex }, new[] { target.transform.position });
-        _model.LookAt(target.transform.position);
-        Root.ClearData("target");
+        attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
+        _model.LookAt(target.position);
+        root.ClearData("target");
 
         return NodeState.Success;
     }

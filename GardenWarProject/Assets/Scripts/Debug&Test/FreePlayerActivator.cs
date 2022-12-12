@@ -8,6 +8,7 @@ namespace FreePlayer
     public class FreePlayerActivator : MonoBehaviour
     {
         [SerializeField] private Champion champion;
+        [SerializeField] private Minion minion;
 
         private void Start()
         {
@@ -25,6 +26,8 @@ namespace FreePlayer
             GameStateMachine.SetupChampion(champion);
             
             UIManager.Instance.AssignInventory(0);
+            
+            if(minion != null) minion.InitEntity(Enums.Team.Neutral);
         }
         
         

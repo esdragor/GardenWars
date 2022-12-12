@@ -18,8 +18,9 @@ namespace Entities.Champion
         public float baseMoveSpeed;
         [Tooltip("Mana per tick")] public float hpRegen;
         [Tooltip("Mana per tick")] public float manaRegen;
-        [Tooltip("Time between attacks")] public double attackSpeed;
         public float attackDamage;
+        [Tooltip("Time between attacks")] public double attackSpeed;
+        public float attackRange = 10;
         public float baseArmorPenetration;
         public float baseLifesteal;
         

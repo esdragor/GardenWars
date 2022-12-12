@@ -4,47 +4,49 @@ namespace Entities.Capacities
 {
     public class RangedAACapacity : ActiveCapacity
     {
-        private Entity target;
         private RangedAACapacitySO so => (RangedAACapacitySO) AssociatedActiveCapacitySO();
-        
-        protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
-        {
-            target = EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes[0]);
-            if (target == null)
-            {
-                Debug.Log("No Target");
-                return false;
-            }
 
-            if (!caster.GetEnemyTeams().Contains(target.team))
+        protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
+        {
+            if (targetedEntity.GetComponent<IActiveLifeable>() == null) return false;
+            var deadable = targetedEntity.GetComponent<IDeadable>();
+
+            if (deadable != null)
             {
-                Debug.Log("Target is Ally");
+                if (!deadable.IsAlive())
+                {
+                    return false;
+                }
+            }
+            
+            if (!caster.GetEnemyTeams().Contains(targetedEntity.team))
+            {
                 return false;
             }
             return true;
         }
 
-        protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
             //spawn un projectile
             // lui dit d'aller vers le target
@@ -52,33 +54,34 @@ namespace Entities.Capacities
             //(ptet faire un object séparé jsp)
         }
 
-        protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
             projectile.Init(caster);
             var projectileTr = projectile.transform;
-            var champion = caster.GetComponent<Champion.Champion>();
             float damage = 0;
-            if (champion != null)
+            var attackable = caster.GetComponent<IAttackable>();
+            if (attackable != null)
             {
-                damage = champion.attackDamage;
+                damage = attackable.GetAttackDamage();
             }
-            else
-            {
-                var tower = caster.GetComponent<Tower>();
-                if (tower != null) damage = tower.damage;
-            }
-
+            
             if (damage == 0) return;
                 
-            projectile.OnEntityCollide += (entity) => entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(damage);
+            projectile.OnEntityCollide += DealDamage;
             projectile.OnEntityCollideFeedback += (entity) => gsm.OnUpdateFeedback -= MoveProjectile;
 
             gsm.OnUpdateFeedback += MoveProjectile;
             
             void MoveProjectile()
             {
-                projectileTr.position = Vector3.MoveTowards(projectileTr.position, target.transform.position, 0.1f);
+                projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position, 0.1f);
+            }
+
+            void DealDamage(Entity entity)
+            {
+                var lifeable = entity.GetComponent<IActiveLifeable>();
+                lifeable.DecreaseCurrentHpRPC(damage);
             }
         }
     }

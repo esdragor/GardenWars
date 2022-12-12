@@ -15,6 +15,8 @@ namespace Entities.Champion
         private Animator animator;
 
         public CollisionBlocker blocker;
+        private static readonly int Speed = Animator.StringToHash("Speed");
+
         protected override void OnStart()
         {
             agent = GetComponent<NavMeshAgent>();
@@ -29,8 +31,8 @@ namespace Entities.Champion
         {
             CastHeldCapacities();
             CastHeldItems();
-            if (photonView.IsMine)
-                animator.SetFloat("Speed", agent.velocity.magnitude);
+            if (photonView.IsMine && animator != null) animator.SetFloat(Speed, agent.velocity.magnitude);
+            TryMoveToTarget();
         }
 
         protected override void OnFixedUpdate()
@@ -45,7 +47,7 @@ namespace Entities.Champion
 
         public override void OnInstantiatedFeedback()
         {
-            
+            isAlive = true;
         }
 
         public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam, Enums.ChampionRole newRole)
@@ -62,6 +64,8 @@ namespace Entities.Champion
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = currentSo.attackDamage;
             attackSpeed = currentSo.attackSpeed;
+            attackRange = currentSo.attackRange;
+            
             attackAbilityIndex = currentSo.attackAbilityIndex;
             abilitiesIndexes = currentSo.activeCapacitiesIndexes;
             var championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,

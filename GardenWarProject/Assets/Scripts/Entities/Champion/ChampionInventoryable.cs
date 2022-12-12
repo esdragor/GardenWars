@@ -147,7 +147,7 @@ namespace Entities.Champion
             var item = items[index];
             items.Remove(item);
             if(heldItems.Contains(item))heldItems.Remove(item);
-            if (PhotonNetwork.IsMasterClient)
+            if (isMaster)
             {
                 item.OnItemRemovedFromInventory(this);
                 OnRemoveItem?.Invoke(index);
@@ -158,7 +158,7 @@ namespace Entities.Champion
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
         
-        public void RequestPressItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void RequestPressItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
@@ -174,7 +174,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void PressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void PressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
@@ -190,7 +190,7 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void SyncPressItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void SyncPressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
@@ -215,7 +215,7 @@ namespace Entities.Champion
             }
         }
         
-        public void RequestReleaseItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void RequestReleaseItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
             if (isMaster)
             {
@@ -226,21 +226,8 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void ReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void ReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
-            Debug.Log($"Released item {itemIndexInInventory}");
-            if (isFighter)
-            {
-                if (itemIndexInInventory >= items.Count) return;
-                var item = items[itemIndexInInventory];
-                if (item == null) return;
-                items[itemIndexInInventory].OnItemActivated(selectedEntities, positions);
-                OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
-            }
-            else
-            {
-                OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
-            }
             if (isOffline)
             {
                 SyncReleaseItemRPC(itemIndexInInventory, selectedEntities, positions);
@@ -250,23 +237,25 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void SyncReleaseItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
+        public void SyncReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
         {
-            if (!isFighter)
-            {
-                OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions);
-                return;
-            }
-            if(itemIndexInInventory >= items.Count) return;
+            if (itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
-            if(items[itemIndexInInventory] == null) return;
-            heldItems.Remove(item);
-            foreach (var activeCapacity in item.activeCapacities)
+            if (item == null) return;
+            
+            if (isFighter)
             {
-                activeCapacity.OnRelease(selectedEntities,positions);
+                items[itemIndexInInventory].OnItemActivated(selectedEntities, positions);
+                foreach (var activeCapacity in item.activeCapacities)
+                {
+                    activeCapacity.OnRelease(selectedEntities,positions);
+                }
             }
-            items[itemIndexInInventory].OnItemActivatedFeedback(selectedEntities,positions);
+            
+            if(isMaster) OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
             OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions);
+            
+            heldItems.Remove(item);
         }
         
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;

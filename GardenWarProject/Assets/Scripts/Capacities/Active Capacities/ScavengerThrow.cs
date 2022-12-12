@@ -19,7 +19,7 @@ namespace Entities.Capacities
 
         private Item itemToThrow;
         
-        protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             champion = caster.GetComponent<Champion.Champion>();
             if (champion == null) return false;
@@ -27,13 +27,13 @@ namespace Entities.Capacities
             return champion.GetItem(champion.selectedItemIndex) != null;
         }
 
-        protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
         {
             time_Pressed = Time.time;
             hextechDistance = so.MinDistanceHFlash;
         }
 
-        protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if (HelperDirection) HelperDirection.SetActive(true);
             else HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -41,25 +41,25 @@ namespace Entities.Capacities
             else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
         }
 
-        protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
-        protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if (!HelperDirection) return;
-            HelperDirection.transform.position = casterPos + (targetPositions[0] - casterPos).normalized + Vector3.up;
+            HelperDirection.transform.position = casterPos + (targetPositions - casterPos).normalized + Vector3.up;
             if (UIJauge) UIJauge.UpdateJaugeSlider(so.MinDistanceHFlash, so.MaxDistanceHFlash,
                 hextechDistance + (Time.time - time_Pressed) * so.HextechFlashSpeedScale);
         }
 
-        protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
             time_Pressed =  (Time.time - time_Pressed ) * so.HextechFlashSpeedScale;
             hextechDistance += time_Pressed;
             if (hextechDistance > so.MaxDistanceHFlash) hextechDistance = so.MaxDistanceHFlash;
-            targetPosition = GetClosestValidPoint(casterPos + (targetPositions[0] - casterPos).normalized * (float)hextechDistance);
+            targetPosition = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * (float)hextechDistance);
             targetPosition.y = 1;
 
             itemToThrow = champion.PopSelectedItem();
@@ -72,7 +72,7 @@ namespace Entities.Capacities
             return !PhotonNetwork.IsConnected ? Object.Instantiate(so.itemBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>() : PhotonNetwork.Instantiate(so.itemBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>();
         }
 
-        protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             champion.PlayThrowAnimation();
             if (HelperDirection) HelperDirection.SetActive(false);

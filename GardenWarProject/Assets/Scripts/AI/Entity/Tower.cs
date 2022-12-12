@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Entities;
 using Entities.Capacities;
 using Photon.Pun;
@@ -11,10 +7,9 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 {
     public ActiveCapacitySO activeTowerAutoSO;
     private ActiveCapacity capacity;
-
-    public float damage = 50;
+    
     [SerializeField] private bool canAttack = true;
-    [SerializeField] private float attackValue = 5f;
+    [SerializeField] private float attackValue = 50f;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float CurrentHP = 100f;
@@ -90,14 +85,16 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
     public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
 
-    public void RequestAttack(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void RequestAttack(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
     {
         photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
-    public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
     {
         capacity ??= CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
+        
+        Debug.Log($"Attacking with {capacity}");
         
         capacity.OnRelease(targetedEntities,targetedPositions);
         
@@ -105,7 +102,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }
     [PunRPC]
-    public void AttackRPC(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    public void AttackRPC(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
     {
         photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
     }
@@ -311,7 +308,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public void SetCanDieRPC(bool value)
     {
        canDie = value;
-         photonView.RPC("SyncSetCanDieRPC",RpcTarget.All,value);
+       photonView.RPC("SyncSetCanDieRPC",RpcTarget.All,value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;

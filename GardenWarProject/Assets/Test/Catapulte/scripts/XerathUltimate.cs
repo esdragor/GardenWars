@@ -57,12 +57,12 @@ public class XerathUltimate : ActiveCapacity
         }
     }
 
-    protected override bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
     {
         return true;
     }
 
-    protected override void Press(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
     {
         time_Pressed = Time.time;
         hextechDistance = activeCapa.MinDistanceHFlash;
@@ -74,7 +74,7 @@ public class XerathUltimate : ActiveCapacity
         }
     }
 
-    protected override void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         if (HelperDirection) HelperDirection.SetActive(true);
         else
@@ -85,11 +85,11 @@ public class XerathUltimate : ActiveCapacity
             UIJauge = GameObject.Instantiate(activeCapa.prefabJauge).GetComponent<UIJauge>();
     }
 
-    protected override void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
     {
     }
 
-    protected override void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         if (!HelperDirection) return;
         if (activeCapa.hextechMode != HextechMode.mouseDistance)
@@ -105,7 +105,7 @@ public class XerathUltimate : ActiveCapacity
             HelperDirection.transform.position = casterPos + getDirByMousePosition() + Vector3.up;
     }
 
-    protected override void Release(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
     {
         Init();
         time_Pressed =  (Time.time - time_Pressed ) * activeCapa.HextechFlashSpeedScale;
@@ -140,7 +140,7 @@ public class XerathUltimate : ActiveCapacity
         if (UIJauge) UIJauge.gameObject.SetActive(false);
     }
 
-    protected override void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions)
+    protected override void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         if (HelperDirection) HelperDirection.SetActive(false);
         if (UIJauge) UIJauge.gameObject.SetActive(false);

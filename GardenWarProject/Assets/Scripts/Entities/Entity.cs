@@ -11,17 +11,19 @@ namespace Entities
     [RequireComponent(typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
     public abstract partial class Entity : MonoBehaviourPun, ITeamable
     {
-        protected static bool isOffline => !PhotonNetwork.IsConnected;
-        protected static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
+        public static bool isOffline => !PhotonNetwork.IsConnected;
+        public static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
         protected UIManager uiManager => UIManager.Instance;
         public int entityIndex => photonView.ViewID;
+        public Vector3 position => showMe ? transform.position : lastSeenPosition;
+        private Vector3 lastSeenPosition;
         
         [Header("Team")]
         public bool canChangeTeam;
         public Enums.Team team;
-        public bool isEnemy => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
+        public bool isEnemyOfPlayer => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
 
         /// <summary>
         /// True if passiveCapacities can be added to the entity's passiveCapacitiesList. False if not.
@@ -106,7 +108,7 @@ namespace Entities
             FogOfWarManager.Instance.AddFOWViewable(this);
             FogOfWarManager.Instance.AddFOWShowable(this);
             
-            showMe = isEnemy;
+            showMe = isEnemyOfPlayer;
             team = newTeam;
 
             canShow = true;

@@ -6,16 +6,12 @@ namespace Entities.Champion
 {
     public partial class Champion : IAttackable
     {
+        [Header("Attack")]
         public byte attackAbilityIndex;
-        private ActiveCapacity lastCapacity;
-        private ActiveCapacitySO lastCapacitySO;
         public bool canAttack;
         public float attackDamage;
         public double attackSpeed;
-
-        private byte lastCapacityIndex;
-        private int[] lastTargetedEntities;
-        private Vector3[] lastTargetedPositions;
+        public float attackRange;
 
         public bool CanAttack()
         {
@@ -64,9 +60,8 @@ namespace Entities.Champion
         
         public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
         public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
-
-
-        public void RequestAttack(byte attackIndex, int[] targetedEntities, Vector3[] targetedPositions)
+        
+        public void RequestAttack(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
         {
             if(isMaster)
             {
@@ -77,68 +72,20 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void AttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        public void AttackRPC(byte attackIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             if(!canAttack) return;
+            
             if (isOffline)
             {
                 SyncAttackRPC(attackIndex, newTargetedEntities, newTargetedPositions);
                 return;
             }
             photonView.RPC("SyncAttackRPC",RpcTarget.All,attackIndex,newTargetedEntities,newTargetedPositions);
-            return;
-
-            /*
-            lastCapacityIndex = attackIndex;
-            lastTargetedEntities = targetedEntities;
-            lastTargetedPositions = targetedPositions;
-            
-            
-            lastCapacity = CapacitySOCollectionManager.CreateActiveCapacity(attackIndex,this);
-            lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex);
-            var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
-
-            if (lastCapacity.CanCast(targetedEntities, targetedPositions))
-            {
-                if (lastCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
-                {
-                    bool isTargetEntity = lastCapacitySO.shootType == Enums.CapacityShootType.TargetEntity;
-                    Vector3 position = isTargetEntity
-                        ? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position
-                        : targetedPositions[0];
-
-                    if (!lastCapacity.isInRange(position))
-                    {
-                        Debug.Log("Not in range");
-                        if (isTargetEntity) SendFollowEntity(targetedEntities[0], lastCapacitySO.maxRange);
-                        else agent.SetDestination(position);
-                    }
-                    else
-                    {
-                        Debug.Log("Attack in Range");
-                        agent.SetDestination(transform.position);
-                        OnAttack?.Invoke(attackIndex, targetedEntities, targetedPositions);
-                        photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities,
-                            targetedPositions);
-
-                    }
-                }
-                else
-                {
-                    agent.SetDestination(transform.position);
-                    OnAttack?.Invoke(attackIndex, targetedEntities, targetedPositions);
-                    photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
-                }
-            }
-            else
-            {
-                //Cant Attack FeedBack
-            }
-            */
         }
 
         [PunRPC]
-        public void SyncAttackRPC(byte attackIndex, int[] newTargetedEntities, Vector3[] newTargetedPositions)
+        public void SyncAttackRPC(byte attackIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
             targetedEntities = newTargetedEntities;
             targetedPositions = newTargetedPositions;
@@ -153,7 +100,6 @@ namespace Entities.Champion
                     isCasting = false,
                     capacity = CapacitySOCollectionManager.CreateActiveCapacity(attackIndex,this)
                 };
-                newCapacity.capacity.isBasicAttack = true;
                 capacityDict.Add(attackIndex,newCapacity);
             }
             

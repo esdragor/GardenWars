@@ -1,10 +1,8 @@
-using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
 using Entities.Capacities;
 using Entities.Champion;
-using GameStates;
 using UnityEngine.AI;
 
 namespace Controllers.Inputs
@@ -12,20 +10,20 @@ namespace Controllers.Inputs
     public class ChampionInputController : PlayerInputController
     {
         private Champion champion;
-        private int[] selectedEntity;
-        private bool isMoving;
+        private int selectedEntities;
+        private Entity selectedEntity => EntityCollectionManager.GetEntityByIndex(selectedEntities);
         private Vector2 mousePos;
-        private Vector2 moveInput;
-        private Vector3 moveVector;
         private Camera cam;
+        private bool isRightClicking;
+        private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
 
         private void Update()
         {
             if(champion == null) return;
             UpdateTargets();
-            champion.targetedEntities = selectedEntity;
+            champion.targetedEntities = selectedEntities;
             champion.targetedPositions = cursorWorldPos;
-            Debug.DrawLine(cursorWorldPos[0],cursorWorldPos[0]+Vector3.up,Color.yellow);
+            if(isRightClicking) OnMouseClick(nullCtx);
         }
 
         /// <summary>
@@ -34,7 +32,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnAttack(InputAction.CallbackContext ctx)
         {
-            champion.RequestAttack(champion.attackAbilityIndex,selectedEntity,cursorWorldPos);
+            champion.RequestAttack(champion.attackAbilityIndex,selectedEntities,cursorWorldPos);
         }
         
         /// <summary>
@@ -88,28 +86,28 @@ namespace Controllers.Inputs
 
         private void OnPressItem0(InputAction.CallbackContext ctx)
         {
-            champion.RequestPressItem(0,selectedEntity,cursorWorldPos);
+            champion.RequestPressItem(0,selectedEntities,cursorWorldPos);
         }
         private void OnPressItem1(InputAction.CallbackContext ctx)
         {
-            champion.RequestPressItem(1,selectedEntity,cursorWorldPos);
+            champion.RequestPressItem(1,selectedEntities,cursorWorldPos);
         }
         private void OnPressItem2(InputAction.CallbackContext ctx)
         {
-            champion.RequestPressItem(2,selectedEntity,cursorWorldPos);
+            champion.RequestPressItem(2,selectedEntities,cursorWorldPos);
         }
         
         private void OnReleaseItem0(InputAction.CallbackContext ctx)
         {
-            champion.RequestReleaseItem(0,selectedEntity,cursorWorldPos);
+            champion.RequestReleaseItem(0,selectedEntities,cursorWorldPos);
         }
         private void OnReleaseItem1(InputAction.CallbackContext ctx)
         {
-            champion.RequestReleaseItem(1,selectedEntity,cursorWorldPos);
+            champion.RequestReleaseItem(1,selectedEntities,cursorWorldPos);
         }
         private void OnReleaseItem2(InputAction.CallbackContext ctx)
         {
-            champion.RequestReleaseItem(2,selectedEntity,cursorWorldPos);
+            champion.RequestReleaseItem(2,selectedEntities,cursorWorldPos);
         }
 
         private void OnMouseMove(InputAction.CallbackContext ctx)
@@ -122,35 +120,48 @@ namespace Controllers.Inputs
         {
             var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
             if (!Physics.Raycast(mouseRay, out var hit, Mathf.Infinity, layersToHit)) return;
-            cursorWorldPos[0] = hit.point;
-            selectedEntity[0] = -1;
+            cursorWorldPos = hit.point;
+            selectedEntities = -1;
             var ent = hit.transform.GetComponent<Entity>();
             if (ent == null && hit.transform.parent != null) hit.transform.parent.GetComponent<Entity>();
             if (ent == null) return;
-            selectedEntity[0] = ent.entityIndex;
-            cursorWorldPos[0] = ent.transform.position;
+            selectedEntities = ent.entityIndex;
+            cursorWorldPos = ent.transform.position;
         }
         
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
-            if (selectedEntity[0] != -1)
+            if (selectedEntities != -1)
             {
-                champion.RequestAttack(champion.attackAbilityIndex, selectedEntity, cursorWorldPos);
+                StartMoveAttack();
                 return;
             }
-            champion.MoveToPosition(cursorWorldPos[0]);
+            champion.CancelMoveToTarget();
+            champion.MoveToPosition(cursorWorldPos);
         }
         
+        private void StartMoveAttack()
+        {
+            if(selectedEntities == -1) return;
+            
+            var entityToMoveTo = selectedEntities;
+            
+            champion.StartMoveToTarget(selectedEntity,champion.attackRange,RequestAttack);
+
+            void RequestAttack()
+            {
+                champion.RequestAttack(champion.attackAbilityIndex, entityToMoveTo, cursorWorldPos);
+            }
+        }
+
         private void OnHoldRightClick(InputAction.CallbackContext ctx)
         {
-            GameStateMachine.Instance.OnUpdate += champion.MouseOnDirection;
-            //champion.MoveToPosition(cursorWorldPos[0]);
+            isRightClicking = true;
         }
         
         private void OnReleaseRightClick(InputAction.CallbackContext ctx)
         {
-            GameStateMachine.Instance.OnUpdate -= champion.MouseOnDirection;
-            //champion.MoveToPosition(cursorWorldPos[0]);
+            isRightClicking = false;
         }
 
         protected override void Link(Entity entity)
@@ -159,9 +170,7 @@ namespace Controllers.Inputs
             base.Link(entity);
             
             cam = Camera.main;
-            selectedEntity = new int[1];
-            cursorWorldPos = new Vector3[1];
-            
+
             inputs.Attack.Attack.performed += OnAttack;
             
             inputs.Capacity.Capacity0.performed += OnPressCapacity0;
@@ -200,7 +209,7 @@ namespace Controllers.Inputs
 
         private void DebugNavMeshPoint(InputAction.CallbackContext ctx)
         {
-            var point = ActiveCapacity.GetClosestValidPoint(cursorWorldPos[0]);
+            var point = ActiveCapacity.GetClosestValidPoint(cursorWorldPos);
             Debug.DrawLine(point,point+Vector3.up,Color.yellow,1f);
         }
         
@@ -234,6 +243,8 @@ namespace Controllers.Inputs
             inputs.MoveMouse.HoldRightClick.performed -= OnHoldRightClick;
 
             CameraController.Instance.UnLinkCamera();
+
+            isRightClicking = false;
         }
     }
 }

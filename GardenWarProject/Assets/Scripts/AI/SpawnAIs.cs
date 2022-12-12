@@ -99,11 +99,9 @@ public class SpawnAIs : MonoBehaviourPun
     [PunRPC]
     public void SyncDataTowerRPC(int[] towerIndexes,byte[] teams)
     {
-        for (var i = 0; i < towerIndexes.Length; i++)
+        foreach (var index in towerIndexes)
         {
-            var index = towerIndexes[i];
             var entity = EntityCollectionManager.GetEntityByIndex(index);
-            //entity.InitEntity((Enums.Team) teams[i]);
             if (!towers.Contains(entity))
             {
                 towers.Add(entity);

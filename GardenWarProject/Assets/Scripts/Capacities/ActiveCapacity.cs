@@ -11,13 +11,17 @@ namespace Entities.Capacities
         public byte indexOfSOInCollection;
         
         public Entity caster;
+        public Champion.Champion champion => caster as Champion.Champion;
         
-        public bool isBasicAttack;
+        public bool isBasicAttack => champion != null && champion.attackAbilityIndex == indexOfSOInCollection;
         protected Vector3 casterPos => caster.transform.position;
 
-        public double baseCooldown => isBasicAttack ? ((Champion.Champion)caster).attackSpeed : AssociatedActiveCapacitySO().cooldown;
+        public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
         private double cooldownTimer;
+
+        protected Entity targetedEntity;
+        protected Vector3 targetedPosition;
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
 
@@ -26,59 +30,61 @@ namespace Entities.Capacities
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }
 
-        public bool CanCast(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        public bool CanCast(int targetsEntityIndex, Vector3 targetPosition)
         {
             if (isOnCooldown)
             {
-                Debug.Log("On Cooldown");
                 return false;
             }
             var so = AssociatedActiveCapacitySO();
+            var maxRange = isBasicAttack ? champion.attackRange : so.maxRange;
             switch (so.shootType)
             {
                 case Enums.CapacityShootType.Skillshot:
                     break;
                 case Enums.CapacityShootType.TargetPosition:
-                    if (Vector3.Distance(casterPos, targetPositions[0]) > so.maxRange)
+                    targetedPosition = targetPosition;
+                    if (Vector3.Distance(casterPos, targetedPosition) > maxRange)
                     {
-                        Debug.Log("Out of range");
                         return false;
                     }
                     break;
                 case Enums.CapacityShootType.TargetEntity:
-                    if (Vector3.Distance(casterPos,
-                            EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes[0]).transform.position) >
-                        so.maxRange)
+                    targetedEntity = EntityCollectionManager.GetEntityByIndex(targetsEntityIndex);
+                    if (targetedEntity == null)
                     {
-                        Debug.Log("Out of range");
+                        return false;
+                    }
+                    if (Vector3.Distance(casterPos, targetedEntity.position) > maxRange)
+                    {
                         return false;
                     }
                     break;
             }
 
-            return AdditionalCastConditions(targetsEntityIndexes, targetPositions);
+            return AdditionalCastConditions(targetsEntityIndex, targetPosition);
         }
 
-        protected abstract bool AdditionalCastConditions(int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions);
         
-        public void OnPress(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        public void OnPress(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if(!CanCast(targetsEntityIndexes,targetPositions)) return;
             if(isMaster) Press(targetsEntityIndexes,targetPositions);
             PressFeedback(targetsEntityIndexes,targetPositions);
         }
-        protected abstract void Press(int[] targetsEntityIndexes, Vector3[] targetPositions);
-        protected abstract void PressFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void Press(int targetsEntityIndexes, Vector3 targetPositions);
+        protected abstract void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions);
 
-        public void OnHold(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        public void OnHold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if(isMaster) Hold(targetsEntityIndexes,targetPositions);
             HoldFeedback(targetsEntityIndexes,targetPositions);
         }
 
-        protected abstract void Hold(int[] targetsEntityIndexes, Vector3[] targetPositions);
-        protected abstract void HoldFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions);
-        public void OnRelease(int[] targetsEntityIndexes, Vector3[] targetPositions)
+        protected abstract void Hold(int targetsEntityIndexes, Vector3 targetPositions);
+        protected abstract void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions);
+        public void OnRelease(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if(!CanCast(targetsEntityIndexes,targetPositions)) return;
             if(isMaster) Release(targetsEntityIndexes,targetPositions);
@@ -86,8 +92,8 @@ namespace Entities.Capacities
             if(baseCooldown > 0) EnterCooldown(baseCooldown);
         }
 
-        protected abstract void Release(int[] targetsEntityIndexes, Vector3[] targetPositions);
-        protected abstract void ReleaseFeedback(int[] targetsEntityIndexes, Vector3[] targetPositions);
+        protected abstract void Release(int targetsEntityIndexes, Vector3 targetPositions);
+        protected abstract void ReleaseFeedback(int targetsEntityIndexes, Vector3 targetPositions);
 
         private void EnterCooldown(double timeOnCooldown)
         {
