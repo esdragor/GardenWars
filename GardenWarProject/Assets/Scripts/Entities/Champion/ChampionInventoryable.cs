@@ -243,9 +243,12 @@ namespace Entities.Champion
             var item = items[itemIndexInInventory];
             if (item == null) return;
             
-            if (isFighter)
+            if (item.activeCapacities.Any(activeCapacity => !activeCapacity.CanCast(selectedEntities,positions)))
+                return;
+
+            if (isFighter && !item.isOnCooldown)
             {
-                items[itemIndexInInventory].OnItemActivated(selectedEntities, positions);
+                item.OnItemActivated(selectedEntities, positions);
                 foreach (var activeCapacity in item.activeCapacities)
                 {
                     activeCapacity.OnRelease(selectedEntities,positions);
