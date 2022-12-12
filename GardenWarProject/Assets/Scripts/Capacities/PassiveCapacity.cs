@@ -15,13 +15,11 @@ namespace Entities.Capacities
         public abstract PassiveCapacitySO AssociatedPassiveCapacitySO();
 
         protected Entity entity;
-        
-        
+
         public void OnAdded(Entity target)
         {
             if (stackable) count++;
             entity = target;
-            Debug.Log("onadded");
             OnAddedEffects(entity);
         }
 

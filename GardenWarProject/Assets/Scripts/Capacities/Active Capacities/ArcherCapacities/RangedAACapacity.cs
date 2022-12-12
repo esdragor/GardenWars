@@ -15,17 +15,14 @@ namespace Entities.Capacities
             {
                 if (!deadable.IsAlive())
                 {
-                    Debug.Log("Target is Dead");
                     return false;
                 }
             }
             
             if (!caster.GetEnemyTeams().Contains(targetedEntity.team))
             {
-                Debug.Log("Target isn't an enemy");
                 return false;
             }
-            Debug.Log("Shooting");
             return true;
         }
 

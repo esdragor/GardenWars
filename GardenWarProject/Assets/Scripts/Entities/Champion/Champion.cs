@@ -31,7 +31,7 @@ namespace Entities.Champion
         {
             CastHeldCapacities();
             CastHeldItems();
-            if (photonView.IsMine) animator.SetFloat(Speed, agent.velocity.magnitude);
+            if (photonView.IsMine && animator != null) animator.SetFloat(Speed, agent.velocity.magnitude);
             TryMoveToTarget();
         }
 
