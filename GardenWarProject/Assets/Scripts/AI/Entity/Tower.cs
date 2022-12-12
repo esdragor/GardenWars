@@ -13,6 +13,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float CurrentHP = 100f;
+    [SerializeField] private ParticleSystem HitFX;
 
     private bool isAlive = true;
     private bool canDie = true;
@@ -268,8 +269,13 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         //Debug.Log("CurrentHP : " + CurrentHP);
         if (CurrentHP <= 0)
         {
+            //Instantiate(MinionDieFX, transform.position, Quaternion.identity);
             CurrentHP = 0;
             RequestDie();
+        }
+        else
+        {
+            HitFX.Play();
         }
         OnDecreaseCurrentHpFeedback?.Invoke(amount);
     }

@@ -36,6 +36,7 @@ Transform:
   - {fileID: 8987056042186729160}
   - {fileID: 1699357401805159467}
   - {fileID: 2465843384666126295}
+  - {fileID: 2089501711957444051}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,6 +117,7 @@ MonoBehaviour:
   attackSpeed: 2
   MaxHP: 100
   CurrentHP: 100
+  HitFX: {fileID: 2089501711957444044}
 --- !u!114 &605525518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,4 +509,79 @@ PrefabInstance:
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7205494883066054669, guid: 19a95e9cd1f33d743ac74dc0a47de443, type: 3}
   m_PrefabInstance: {fileID: 6088387981664979387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6663849630372816771
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2322287294554273813}
+    m_Modifications:
+    - target: {fileID: 4649361137147978317, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_Name
+      value: prefab_TowerHit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978319, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978319, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+--- !u!4 &2089501711957444051 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+  m_PrefabInstance: {fileID: 6663849630372816771}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2089501711957444044 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4649361137147978319, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+  m_PrefabInstance: {fileID: 6663849630372816771}
   m_PrefabAsset: {fileID: 0}
