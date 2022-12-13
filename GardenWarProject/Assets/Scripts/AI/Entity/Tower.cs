@@ -95,8 +95,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         capacity ??= CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
         
-        Debug.Log($"Attacking with {capacity}");
-        
         capacity.OnRelease(targetedEntities,targetedPositions);
         
         if(isMaster) OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);

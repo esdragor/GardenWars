@@ -55,7 +55,7 @@ namespace Entities.Capacities
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
-            projectile.Init(caster, EntityCollectionManager.GetEntityByIndex(targetEntityIndex));
+            projectile.Init( EntityCollectionManager.GetEntityByIndex(targetEntityIndex));
             var projectileTr = projectile.transform;
             float damage = 0;
             var attackable = caster.GetComponent<IAttackable>();
