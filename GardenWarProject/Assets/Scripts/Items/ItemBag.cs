@@ -31,15 +31,15 @@ public class ItemBag : MonoBehaviourPun
 
     private GameStateMachine gsm => GameStateMachine.Instance;
     
-    public void ThrowBag(Vector3 targetPosition,int bounceCount,float heightValue,float speed,byte associatedTeam, byte itemSoIndex, double _speed)
+    public void ThrowBag(Vector3 targetPosition, ScavengerThrowSO so, byte associatedTeam, byte itemSoIndex, double _speed)
     {
         startPosition = transform.position;
         endPosition = targetPosition;
         
-        nbBounce = bounceCount;
-        height = heightValue;
+        nbBounce = so.nbBounce;
+        height = so.height;
         
-        reduceSpeed = speed * 0.02f;
+        reduceSpeed = so.SpeedOnAir * 0.02f;
 
         canBePickedUp = false;
 
