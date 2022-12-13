@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_DeerRocket
-  m_Shader: {fileID: -6465566751694194690, guid: 60d5402189e4ea54ea9f749f1bb872d8, type: 3}
+  m_Name: M_Smoke 2
+  m_Shader: {fileID: -6465566751694194690, guid: ca6d820f4b7522a40ac2749ade2a905e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,16 +19,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_9b9101705b634498a6c1a7a335e9a512:
-        m_Texture: {fileID: 2800000, guid: fa2dcb68941c38d468544491b7ec9d51, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Base_Texture:
-        m_Texture: {fileID: 2800000, guid: 8fa34b3987ca8b04fa52089ebaa1c1af, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -67,10 +59,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Shadow_Masking:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -88,7 +76,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Boolean_8367edeb36d64b8a985b40c38f0b54c8: 1
+    - Vector1_170a2c91e1d94a9c991eaa3319a78e12: 0.7
+    - Vector1_3d43745ef3b44e258c427b00953ed594: 1
+    - Vector1_a521d8a0a4f54509ad41f906f8ce9eb3: 2
+    - Vector1_af1fa927147e409a861dccf8fa76501c: 0.3
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -96,7 +87,6 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Depth_Sensitivity: 0.565
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -105,18 +95,10 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _Normals_Sensitivity: 1
     - _OcclusionStrength: 1
-    - _Outline: 1
-    - _Outline_Thickness: 3
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _Ramp_Offset: 0.2
-    - _Ramp_Smoothness: 0.2
     - _ReceiveShadows: 1
-    - _Rimlight: 1
-    - _Rimlight_Fresnel: 1.59
-    - _Rimlight_Intensity: 3.38
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -125,14 +107,15 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_448eabd193364dd590e8cde83b51f749: {r: 0, g: 0, b: 0, a: 0}
+    - Color_bf3b040f6cc146549ca900c6cc4924e6: {r: 0.8301887, g: 0.43057054, b: 0.30936277, a: 1}
+    - Color_f7d7add40e3b439b9e0f5a7c720a4985: {r: 0.6117647, g: 0.16470586, b: 0.33039108, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Outline_Color: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tint: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &3780424906723910660
+--- !u!114 &4603476348920126593
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
