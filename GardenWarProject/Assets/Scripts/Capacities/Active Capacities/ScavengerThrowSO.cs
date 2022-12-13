@@ -14,7 +14,6 @@ namespace Entities.Capacities
         public float HextechFlashSpeedScale = 1f;
         public float MinDistanceHFlash = 5.0f;
         public float MaxDistanceHFlash = 5.0f;
-        public float RatioMouseDistance = 10.0f;
 
         public override Type AssociatedType()
         {
