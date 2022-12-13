@@ -46,10 +46,9 @@ public class TaskPatrol : Node
         }
         else
         {
-            Vector3 pos = waypoints[CurrentWaypointIndex].position;
             Vector3 MyPos = Mytransform.position;
             
-            pos.y = 1.5f;
+
 
             if (CurrentWaypointIndex + 1 < waypoints.Length)
             {
@@ -62,17 +61,20 @@ public class TaskPatrol : Node
                     CurrentWaypointIndex++;
                 }
             }
+           if (CurrentWaypointIndex >= waypoints.Length) // agent has reached the last waypoint
+            {
+                minion.ReachEnemyCamp();
+                return NodeState.Running; 
+            }
+           
+           Vector3 pos = waypoints[CurrentWaypointIndex].position;
+           pos.y = 1.5f;
             
             if (Vector3.Distance(MyPos, pos) < 0.3f)
             {
                 agent.SetDestination(pos);
                 waitCounter = 0f;
                 waiting = true;
-                if (CurrentWaypointIndex + 1 >= waypoints.Length)// agent has reached the last waypoint
-                {
-                    minion.ReachEnemyCamp();
-                    return NodeState.Running; 
-                }
                 CurrentWaypointIndex++;
                 //animator.SetBool("Walking", false);
             }
