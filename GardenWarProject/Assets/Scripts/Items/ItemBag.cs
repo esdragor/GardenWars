@@ -44,6 +44,7 @@ public class ItemBag : MonoBehaviourPun
         canBePickedUp = false;
 
         hextechDistance = _speed;
+        dir = (endPosition - startPosition).normalized;
         
         team = (Enums.Team)associatedTeam;
         associatedSO = itemSoIndex;
@@ -96,16 +97,17 @@ public class ItemBag : MonoBehaviourPun
                 endPosition = new Vector3(endPosition.x + (nbBounce *0.5f) * dir.x + dir.x * (float)hextechDistance,
                     endPosition.y,
                     endPosition.z + (nbBounce *0.5f) * dir.z + dir.z * (float)hextechDistance);
-                endPosition = ActiveCapacity.GetClosestValidPoint(new Vector3(endPosition.x, 0, endPosition.z));
+                endPosition = ActiveCapacity.GetClosestValidPoint(endPosition);
+                endPosition.y = 1f;
                 nbBounce--;
-                reduceSpeed *= 1.1f;
+                reduceSpeed *= 0.9f;
             }
             else
             {
                 GameStateMachine.Instance.OnUpdate -= MoveBag;
             }
         }
-        Animation += (1 - gsm.tickRate / 100) * reduceSpeed;
+        Animation += (1 / gsm.tickRate) * reduceSpeed;
         transform.position = ParabolaClass.Parabola(startPosition, endPosition, height, Animation);
     }
 
