@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Controllers.Inputs;
+using Entities.Capacities;
 using Entities.Champion;
 using Entities.Inventory;
 using Photon.Pun;
@@ -572,6 +573,8 @@ namespace GameStates
         /// </summary>
         public void LoadMap()
         {
+            CapacitySOCollectionManager.Instance.SetIndexes();
+            
             LinkChampionSOCapacityIndexes();
 
             ItemCollectionManager.Instance.LinkCapacityIndexes();

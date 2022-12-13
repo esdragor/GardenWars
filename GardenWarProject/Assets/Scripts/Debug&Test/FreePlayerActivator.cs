@@ -1,4 +1,5 @@
 using Controllers.Inputs;
+using Entities.Capacities;
 using Entities.Champion;
 using GameStates;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace FreePlayer
             var controller = champion.GetComponent<PlayerInputController>();
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
+            
+            CapacitySOCollectionManager.Instance.SetIndexes();
             
             foreach (var championSo in GameStateMachine.Instance.allChampionsSo)
             {

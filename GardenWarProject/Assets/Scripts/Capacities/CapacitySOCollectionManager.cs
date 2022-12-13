@@ -29,6 +29,13 @@ namespace Entities.Capacities
 
         private void Start()
         {
+            SetIndexes();
+        }
+
+        public void SetIndexes()
+        {
+            if(!allActiveCapacities.Contains(fighterThrowCapacitySo)) allActiveCapacities.Add(fighterThrowCapacitySo);
+            if(!allActiveCapacities.Contains(scavengerThrowCapacitySo)) allActiveCapacities.Add(scavengerThrowCapacitySo);
             for (byte i = 0; i < allActiveCapacities.Count; i++)
             {
                 allActiveCapacities[i].indexInCollection = i;
