@@ -8,6 +8,8 @@ namespace FreePlayer
     public class FreePlayerActivator : MonoBehaviour
     {
         [SerializeField] private Champion champion;
+        [SerializeField] private Enums.Team team;
+        [SerializeField] private Enums.ChampionRole role;
         [SerializeField] private Minion minion;
 
         private void Start()
@@ -23,9 +25,11 @@ namespace FreePlayer
             
             champion.ApplyChampionSO(1, Enums.Team.Team1,Enums.ChampionRole.Scavenger);
             
+            GameStateMachine.AddOfflinePlayer(champion,team,role);
+
             GameStateMachine.SetupChampion(champion);
             
-            UIManager.Instance.AssignInventory(0);
+            UIManager.Instance.AssignInventory(-1);
             
             if(minion != null) minion.InitEntity(Enums.Team.Neutral);
         }
