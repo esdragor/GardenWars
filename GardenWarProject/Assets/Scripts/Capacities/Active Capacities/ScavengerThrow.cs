@@ -64,7 +64,7 @@ namespace Entities.Capacities
             Vector3 direction = (targetPosition - casterPos).normalized;
 
             itemToThrow = champion.PopSelectedItem();
-            InitItemBag().ThrowBag(targetPosition,so.nbBounce,so.height,so.SpeedOnAir * 0.02f,(byte)caster.team,itemToThrow.indexOfSOInCollection, direction, hextechDistance);
+            InitItemBag().ThrowBag(targetPosition,so.nbBounce,so.height,so.SpeedOnAir * 0.02f,(byte)caster.team,itemToThrow.indexOfSOInCollection, hextechDistance);
             if (UIJauge) UIJauge.gameObject.SetActive(false);
         }
 

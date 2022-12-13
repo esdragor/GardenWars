@@ -31,7 +31,7 @@ public class ItemBag : MonoBehaviourPun
 
     private GameStateMachine gsm => GameStateMachine.Instance;
     
-    public void ThrowBag(Vector3 targetPosition,int bounceCount,float heightValue,float speed,byte associatedTeam, byte itemSoIndex)
+    public void ThrowBag(Vector3 targetPosition,int bounceCount,float heightValue,float speed,byte associatedTeam, byte itemSoIndex, double _speed)
     {
         startPosition = transform.position;
         endPosition = targetPosition;
@@ -42,6 +42,8 @@ public class ItemBag : MonoBehaviourPun
         reduceSpeed = speed * 0.02f;
 
         canBePickedUp = false;
+
+        hextechDistance = _speed;
         
         team = (Enums.Team)associatedTeam;
         associatedSO = itemSoIndex;
