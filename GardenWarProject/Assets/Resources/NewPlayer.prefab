@@ -241,6 +241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd02bc21320e20240b19f07a1660a995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxItems: 3
+  items: []
   canChangeTeam: 0
   team: 0
   canAddPassiveCapacity: 1
@@ -265,6 +267,7 @@ MonoBehaviour:
   rotateParent: {fileID: 3480681341152264625}
   rb: {fileID: 6530865356692434526}
   blocker: {fileID: 3711244289653556686}
+  selectedItemIndex: 0
   maxHp: 0
   currentHp: 0
   attackAbilityIndex: 0
@@ -280,8 +283,6 @@ MonoBehaviour:
   canDie: 0
   respawnDuration: 3
   canBeDisplaced: 0
-  items: []
-  selectedItemIndex: 0
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
   canMove: 0

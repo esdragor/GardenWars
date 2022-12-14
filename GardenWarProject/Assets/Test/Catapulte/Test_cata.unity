@@ -823,11 +823,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
---- !u!4 &1815191888 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4475987759303325518, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
-  m_PrefabInstance: {fileID: 145703179}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1827764483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1600,7 +1595,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a4cd11b2fc635429e1f87f46feb455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Caster: {fileID: 1815191888}
-  jaugeText: {fileID: 1827764485}
-  capacitySo: {fileID: 11400000, guid: d9bc6d2194b87024e929fa26de50a273, type: 2}
-  EndPoint: {x: 0, y: 0, z: 0}

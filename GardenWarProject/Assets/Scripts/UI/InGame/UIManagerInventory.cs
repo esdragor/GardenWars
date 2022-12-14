@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using Entities;
-using Entities.Champion;
 using Entities.Inventory;
 using GameStates;
-using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -97,7 +93,7 @@ public partial class UIManager
     public void AssignInventory(int actorNumber)
     {
         var playerTeam = GameStateMachine.Instance.GetPlayerTeam(actorNumber);
-        var champion = GameStateMachine.Instance.GetPlayerChampion(actorNumber).GetComponent<IInventoryable>();
+        var champion = GameStateMachine.Instance.GetPlayerChampion(actorNumber);
         foreach (var panel in inventoriesPanel)
         {
             if (panel.team != playerTeam || !panel.available) continue;
@@ -108,7 +104,7 @@ public partial class UIManager
             break;
         }
 
-        if ((Champion) champion != GameStateMachine.Instance.GetPlayerChampion()) return;
+        if (champion != GameStateMachine.Instance.GetPlayerChampion()) return;
         
         localInventory = new LocalInventory
         {
@@ -116,7 +112,7 @@ public partial class UIManager
         };
         localInventory.LinkWithInventory(champion);
         
-        if (((Champion) champion).isFighter) return;
+        if ((champion).isFighter) return;
         
         SelectItem(0,0,Vector3.zero);
         champion.OnActivateItemFeedback += SelectItem;

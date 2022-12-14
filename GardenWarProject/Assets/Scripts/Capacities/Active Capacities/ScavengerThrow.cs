@@ -15,7 +15,7 @@ namespace Entities.Capacities
         private UIJauge UIJauge = null;
 
         private float time_Pressed = 0f;
-        private double hextechDistance;
+        private double bagSpeed;
 
         private Item itemToThrow;
         
@@ -30,7 +30,7 @@ namespace Entities.Capacities
         protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
         {
             time_Pressed = Time.time;
-            hextechDistance = so.MinDistanceHFlash;
+            bagSpeed = so.MinDistanceHFlash;
         }
 
         protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
@@ -51,20 +51,7 @@ namespace Entities.Capacities
             if (!HelperDirection) return;
             HelperDirection.transform.position = casterPos + (targetPositions - casterPos).normalized + Vector3.up;
             if (UIJauge) UIJauge.UpdateJaugeSlider(so.MinDistanceHFlash, so.MaxDistanceHFlash,
-                hextechDistance + (Time.time - time_Pressed) * so.HextechFlashSpeedScale);
-        }
-
-        protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
-        {
-            time_Pressed =  (Time.time - time_Pressed ) * so.HextechFlashSpeedScale;
-            hextechDistance += time_Pressed;
-            if (hextechDistance > so.MaxDistanceHFlash) hextechDistance = so.MaxDistanceHFlash;
-            targetPosition = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * (float)hextechDistance);
-            targetPosition.y = 1;
-
-            itemToThrow = champion.PopSelectedItem();
-            InitItemBag().ThrowBag(targetPosition, so, (byte)caster.team, itemToThrow.indexOfSOInCollection, hextechDistance);
-            if (UIJauge) UIJauge.gameObject.SetActive(false);
+                bagSpeed + (Time.time - time_Pressed) * so.HextechFlashSpeedScale);
         }
 
         private ItemBag InitItemBag()
@@ -72,6 +59,23 @@ namespace Entities.Capacities
             return !PhotonNetwork.IsConnected ? Object.Instantiate(so.itemBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>() : PhotonNetwork.Instantiate(so.itemBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<ItemBag>();
         }
 
+        
+        protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
+        {
+            time_Pressed =  (Time.time - time_Pressed ) * so.HextechFlashSpeedScale;
+            bagSpeed += time_Pressed;
+            if (bagSpeed > so.MaxDistanceHFlash) bagSpeed = so.MaxDistanceHFlash;
+            targetPosition = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * (float)bagSpeed);
+            targetPosition.y = 1;
+
+            itemToThrow = champion.PopSelectedItem();
+            var itemBag = InitItemBag();
+            itemBag.InitBag(targetPosition, bagSpeed, caster);
+            itemBag.SetItemBag(so,itemToThrow.indexOfSOInCollection);
+            itemBag.ThrowBag();
+            if (UIJauge) UIJauge.gameObject.SetActive(false);
+        }
+        
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             champion.PlayThrowAnimation();

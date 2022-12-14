@@ -1,4 +1,7 @@
+using System.Linq;
+using Entities.Inventory;
 using GameStates;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -158,6 +161,124 @@ namespace Entities.Champion
         public void PlayThrowAnimation()
         {
             animator.SetTrigger("Throw");
+        }
+        
+        
+        //hgrzighq
+        
+        public int selectedItemIndex = 0;
+        
+        public void RequestPressItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        {
+            selectedItemIndex = itemIndexInInventory;
+            if (!isFighter) return;
+            if (itemIndexInInventory >= items.Count) return;
+            if (isMaster)
+            {
+                PressItemRPC(itemIndexInInventory, selectedEntities, positions);
+                return;
+            }
+
+            photonView.RPC("PressItemRPC", RpcTarget.MasterClient, itemIndexInInventory, selectedEntities,
+                positions);
+        }
+
+        [PunRPC]
+        public void PressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        {
+            selectedItemIndex = itemIndexInInventory;
+            if (!isFighter) return;
+            if(itemIndexInInventory >= items.Count) return;
+            var item = items[itemIndexInInventory];
+            if(item == null) return;
+            if (isOffline)
+            {
+                SyncPressItemRPC(itemIndexInInventory, selectedEntities, positions);
+                return;
+            }
+            photonView.RPC("SyncPressItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions);
+        }
+
+        [PunRPC]
+        public void SyncPressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        {
+            selectedItemIndex = itemIndexInInventory;
+            if (!isFighter) return;
+            targetedEntities = selectedEntities;
+            targetedPositions = positions;
+            if(itemIndexInInventory >= items.Count) return;
+            var item = items[itemIndexInInventory];
+            if(items[itemIndexInInventory] == null) return;
+            foreach (var activeCapacity in item.activeCapacities)
+            {
+                activeCapacity.OnPress(targetedEntities,targetedPositions);
+            }
+            heldItems.Add(item);
+        }
+        
+        private void CastHeldItems()
+        {
+            if (!isFighter) return;
+            foreach (var capacity in heldItems.SelectMany(item => item.activeCapacities))
+            {
+                capacity.OnHold(targetedEntities,targetedPositions);
+            }
+        }
+        
+        public void RequestReleaseItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        {
+            if (isMaster)
+            {
+                ReleaseItemRPC(itemIndexInInventory,selectedEntities,positions);
+                return;
+            }
+            photonView.RPC("ReleaseItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
+        }
+
+        [PunRPC]
+        public void ReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        {
+            if (isOffline)
+            {
+                SyncReleaseItemRPC(itemIndexInInventory, selectedEntities, positions);
+                return;
+            }
+            photonView.RPC("SyncReleaseItemRPC", RpcTarget.All, itemIndexInInventory, selectedEntities, positions);
+        }
+
+        [PunRPC]
+        public void SyncReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        {
+            if (itemIndexInInventory >= items.Count) return;
+            var item = items[itemIndexInInventory];
+            if (item == null) return;
+            
+            if (item.activeCapacities.Any(activeCapacity => !activeCapacity.CanCast(selectedEntities,positions)))
+                return;
+
+            if (isFighter && !item.isOnCooldown)
+            {
+                item.OnItemActivated(selectedEntities, positions);
+                foreach (var activeCapacity in item.activeCapacities)
+                {
+                    activeCapacity.OnRelease(selectedEntities,positions);
+                }
+            }
+            
+            if(isMaster) OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
+            OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions);
+            
+            heldItems.Remove(item);
+        }
+        
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
+        
+        public Item PopSelectedItem()
+        {
+            var item = GetItem(selectedItemIndex);
+            if(item != null) RemoveItemRPC(item);
+            return item;
         }
     }
 }

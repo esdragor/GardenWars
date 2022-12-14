@@ -52,29 +52,6 @@ namespace Entities.Inventory
         public void SyncRemoveItemRPC(byte index);
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
-        
-        /// <summary>
-        /// Sends an RPC to the master to activate an item in the entity's inventory.
-        /// </summary>
-        /// <param name="itemIndex">the index of the item on the ItemCollectionManager</param>
-        public void RequestPressItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions);
-        /// <summary>
-        /// Activates an item in the entity's inventory.
-        /// </summary>
-        /// <param name="index">the index of the item on the ItemCollectionManager</param>
-        public void PressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions);
-        /// <summary>
-        /// Sends an RPC to all clients to activate an item in the entity's inventory.
-        /// </summary>
-        /// <param name="index">the index of the item on the ItemCollectionManager</param>
-        public void SyncPressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions);
-        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;
-        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
-        public void RequestReleaseItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions);
-        public void ReleaseItemRPC(byte itemIndexInInventory, int selectedEntities, Vector3 positions);
-        public void SyncReleaseItemRPC(byte itemIndexInInventory, int selectedEntities, Vector3 positions);
-
-
     }
 }
 

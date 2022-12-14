@@ -23,7 +23,7 @@ public class UIShop : MonoBehaviour
         {
             ShopItemImagesUI[a].slotImage.sprite = ItemCollectionManager.Instance.allItemSOs[a].sprite;
             var indexOfItemToAdd = a;
-            ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => GameStateMachine.Instance.GetPlayerChampion().GetComponent<IInventoryable>().RequestAddItem(indexOfItemToAdd));
+            ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => GameStateMachine.Instance.GetPlayerChampion().RequestAddItem(indexOfItemToAdd));
         }
     }
     
