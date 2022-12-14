@@ -416,6 +416,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1361b97c7dc1d478016f6251b08591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxItems: 0
+  items: []
   canChangeTeam: 0
   team: 0
   canAddPassiveCapacity: 1
@@ -448,6 +450,8 @@ MonoBehaviour:
   FalseFX: {fileID: 3065083602997010545}
   HitFX: {fileID: 557445818242320917}
   MinionDieFX: {fileID: 55932162552029174, guid: dc9c800c2d45ce4469490addebe62230, type: 3}
+  references:
+    version: 1
 --- !u!208 &8682732196991000772
 NavMeshObstacle:
   m_ObjectHideFlags: 0

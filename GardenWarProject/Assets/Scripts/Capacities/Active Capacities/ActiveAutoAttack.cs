@@ -41,7 +41,7 @@ public class ActiveAutoAttack : ActiveCapacity
     private void ApplyEffect()
     {
         IActiveLifeable activeLifeable = EntityCollectionManager.GetEntityByIndex(target).GetComponent<IActiveLifeable>();
-        activeLifeable.DecreaseCurrentHpRPC(activeAutoAttackSO.damage);
+        activeLifeable.DecreaseCurrentHpRPC(activeAutoAttackSO.damage, caster.entityIndex);
     }
 
     public void DelayAutoAttack()

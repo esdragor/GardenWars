@@ -5,8 +5,9 @@ using Entities.Inventory;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public abstract class BagParent : MonoBehaviourPun
+public abstract class Bag : MonoBehaviourPun
 {
     protected static bool isOffline => !PhotonNetwork.IsConnected;
     protected static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
@@ -14,7 +15,6 @@ public abstract class BagParent : MonoBehaviourPun
     protected Entity thrower;
     
     protected Entity collidedEntity;
-    protected IInventoryable entityInventory;
     
     protected bool canBePickedUp;
     
@@ -26,15 +26,19 @@ public abstract class BagParent : MonoBehaviourPun
     protected double speed;
     protected Vector3 startPosition;
     protected Vector3 endPosition;
+    protected bool isRandom = false;
+    protected float randomRangeRadius = 0f;
     private GameStateMachine gsm => GameStateMachine.Instance;
 
-    public void InitBag(Vector3 targetPosition,double _speed, Entity spawner)
+    public void InitBag(Vector3 targetPosition,double _speed, bool RandomPos, float randomRadius, Entity spawner)
     {
         thrower = spawner;
         
         startPosition = transform.position;
         endPosition = targetPosition;
         speed = _speed;
+        isRandom = RandomPos;
+        randomRangeRadius = randomRadius;
         
         canBePickedUp = false;
     }
@@ -86,9 +90,10 @@ public abstract class BagParent : MonoBehaviourPun
                 height /= 1.5f;
                 speed /= 4f;
                 startPosition = endPosition;
-                endPosition = new Vector3(endPosition.x + (nbBounce *0.5f) * dir.x + dir.x * (float)speed,
-                    endPosition.y,
-                    endPosition.z + (nbBounce *0.5f) * dir.z + dir.z * (float)speed);
+                
+                endPosition.x += (nbBounce *0.5f) * dir.x + dir.x * (float)speed + Random.Range(-randomRangeRadius, randomRangeRadius) * ((isRandom) ? 1 : 0);
+                endPosition.z += (nbBounce *0.5f) * dir.z + dir.z * (float)speed + Random.Range(-randomRangeRadius, randomRangeRadius) * ((isRandom) ? 1 : 0);
+                
                 endPosition = ActiveCapacity.GetClosestValidPoint(endPosition);
                 endPosition.y = 1f;
                 nbBounce--;
@@ -108,12 +113,12 @@ public abstract class BagParent : MonoBehaviourPun
         if(!canBePickedUp) return;
         collidedEntity = other.collider.GetComponent<Entity>();
         if (collidedEntity == null) return;
-        entityInventory = collidedEntity.GetComponent<IInventoryable>();
-        if(entityInventory == null) return;
-        
+
         Debug.Log($"Collided with {collidedEntity}");
 
         RecoltBag();
+
+        photonView.RPC("ChangeVisualsRPC",RpcTarget.All,false);
     }
     
     protected abstract void RecoltBag();

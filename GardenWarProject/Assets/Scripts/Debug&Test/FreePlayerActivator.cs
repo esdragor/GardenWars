@@ -26,7 +26,7 @@ namespace FreePlayer
                 championSo.SetIndexes();
             }
             
-            champion.ApplyChampionSO(1, Enums.Team.Team1,Enums.ChampionRole.Scavenger);
+            champion.ApplyChampionSO(1, team,role);
             
             GameStateMachine.AddOfflinePlayer(champion,team,role);
 

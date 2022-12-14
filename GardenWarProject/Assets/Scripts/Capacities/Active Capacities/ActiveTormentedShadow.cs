@@ -88,7 +88,7 @@ namespace Entities.Capacities
                     {
                         IActiveLifeable entityActiveLifeable = entityTouch.GetComponent<IActiveLifeable>();
 
-                        if(entityActiveLifeable != null) entityActiveLifeable.DecreaseCurrentHpRPC(so.damageAmount);
+                        if(entityActiveLifeable != null) entityActiveLifeable.DecreaseCurrentHpRPC(so.damageAmount, caster.entityIndex);
                     }
                 }
             }

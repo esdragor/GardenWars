@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bc664da88a83d4aad6c638a36e07f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxItems: 0
+  items: []
   canChangeTeam: 0
   team: 0
   canAddPassiveCapacity: 1
@@ -116,6 +118,8 @@ MonoBehaviour:
   MaxHP: 100
   CurrentHP: 100
   HitFX: {fileID: 2089501711957444044}
+  references:
+    version: 1
 --- !u!114 &605525518
 MonoBehaviour:
   m_ObjectHideFlags: 0

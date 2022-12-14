@@ -17,6 +17,7 @@ namespace Entities.Capacities
 
         private void Awake()
         {
+            Debug.Log("Setting Instance");
             if (Instance != null && Instance != this)
             {
                 DestroyImmediate(gameObject);
@@ -24,18 +25,13 @@ namespace Entities.Capacities
             }
 
             Instance = this;
+            
 
-        }
-
-        private void Start()
-        {
-            SetIndexes();
         }
 
         public void SetIndexes()
         {
-            if(!allActiveCapacities.Contains(fighterThrowCapacitySo)) allActiveCapacities.Add(fighterThrowCapacitySo);
-            if(!allActiveCapacities.Contains(scavengerThrowCapacitySo)) allActiveCapacities.Add(scavengerThrowCapacitySo);
+            Debug.Log("Setting indexes");
             for (byte i = 0; i < allActiveCapacities.Count; i++)
             {
                 allActiveCapacities[i].indexInCollection = i;
@@ -43,6 +39,11 @@ namespace Entities.Capacities
             for (byte i = 0; i < allPassiveCapacitiesSo.Count; i++)
             {
                 allPassiveCapacitiesSo[i].indexInCollection = i;
+            }
+
+            foreach (var active in allActiveCapacities)
+            {
+                Debug.Log($"Active: {active.name} - {active.indexInCollection}");
             }
         }
 

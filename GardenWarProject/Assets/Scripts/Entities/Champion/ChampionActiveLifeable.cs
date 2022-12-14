@@ -57,29 +57,29 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetMaxHp;
         public event GlobalDelegates.FloatDelegate OnSetMaxHpFeedback;
 
-        public void RequestIncreaseMaxHp(float amount)
+        public void RequestIncreaseMaxHp(float amount, int killerId)
         {
             if(isMaster)
             {
-                IncreaseMaxHpRPC(amount);
+                IncreaseMaxHpRPC(amount, killerId);
                 return;
             }
-            photonView.RPC("IncreaseMaxHpRPC", RpcTarget.MasterClient, amount);
+            photonView.RPC("IncreaseMaxHpRPC", RpcTarget.MasterClient, amount, killerId);
         }
         
         [PunRPC]
-        public void IncreaseMaxHpRPC(float amount)
+        public void IncreaseMaxHpRPC(float amount, int killerId)
         {
             maxHp += amount;
             currentHp += amount;
             if (currentHp > maxHp) currentHp = maxHp;
             OnIncreaseMaxHp?.Invoke(amount);
             if (isOffline) return;
-            photonView.RPC("SyncIncreaseMaxHpRPC", RpcTarget.All, maxHp);
+            photonView.RPC("SyncIncreaseMaxHpRPC", RpcTarget.All, maxHp, killerId);
         }
 
         [PunRPC]
-        public void SyncIncreaseMaxHpRPC(float newMaxHp)
+        public void SyncIncreaseMaxHpRPC(float newMaxHp, int killerId)
         {
             var gainedHp = newMaxHp - maxHp;
             maxHp = newMaxHp;
@@ -91,18 +91,18 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHpFeedback;
 
-        public void RequestDecreaseMaxHp(float amount)
+        public void RequestDecreaseMaxHp(float amount, int killerId)
         {
             if(isMaster)
             {
-                DecreaseMaxHpRPC(amount);
+                DecreaseMaxHpRPC(amount, killerId);
                 return;
             }
-            photonView.RPC("DecreaseMaxHpRPC", RpcTarget.MasterClient, amount);
+            photonView.RPC("DecreaseMaxHpRPC", RpcTarget.MasterClient, amount, killerId);
         }
         
         [PunRPC]
-        public void DecreaseMaxHpRPC(float amount)
+        public void DecreaseMaxHpRPC(float amount, int killerId)
         {
             maxHp -= amount;
             if(currentHp>maxHp) currentHp = maxHp;
@@ -112,11 +112,11 @@ namespace Entities.Champion
                 OnDecreaseMaxHpFeedback?.Invoke(amount);
                 return;
             }
-            photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, maxHp);
+            photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, maxHp, killerId);
         }
 
         [PunRPC]
-        public void SyncDecreaseMaxHpRPC(float newMaxHp)
+        public void SyncDecreaseMaxHpRPC(float newMaxHp, int killerId)
         {
             var lostHp = maxHp - newMaxHp;
             maxHp = newMaxHp;
@@ -195,18 +195,18 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
 
-        public void RequestIncreaseCurrentHp(float amount)
+        public void RequestIncreaseCurrentHp(float amount, int killerId)
         {
             if(isMaster)
             {
-                IncreaseCurrentHpRPC(amount);
+                IncreaseCurrentHpRPC(amount, killerId);
                 return;
             }
-            photonView.RPC("IncreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+            photonView.RPC("IncreaseCurrentHpRPC",RpcTarget.MasterClient,amount, killerId);
         }
         
         [PunRPC]
-        public void IncreaseCurrentHpRPC(float amount)
+        public void IncreaseCurrentHpRPC(float amount, int killerId)
         {
             currentHp += amount;
             if (currentHp > maxHp) currentHp = maxHp;
@@ -216,11 +216,11 @@ namespace Entities.Champion
                 OnIncreaseCurrentHpFeedback?.Invoke(amount);
                 return;
             }
-            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
+            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
         }
 
         [PunRPC]
-        public void SyncIncreaseCurrentHpRPC(float amount)
+        public void SyncIncreaseCurrentHpRPC(float amount, int killerId)
         {
             currentHp = amount;
             OnIncreaseCurrentHpFeedback?.Invoke(amount);
@@ -229,18 +229,18 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
 
-        public void RequestDecreaseCurrentHp(float amount)
+        public void RequestDecreaseCurrentHp(float amount, int killerId)
         {
             if(isMaster)
             {
-                DecreaseCurrentHpRPC(amount);
+                DecreaseCurrentHpRPC(amount, killerId);
                 return;
             }
-            photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+            photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount, killerId);
         }
         
         [PunRPC]
-        public void DecreaseCurrentHpRPC(float amount)
+        public void DecreaseCurrentHpRPC(float amount, int killerId)
         {
             currentHp -= amount;
             OnDecreaseCurrentHp?.Invoke(amount);
@@ -249,17 +249,18 @@ namespace Entities.Champion
                 OnDecreaseCurrentHpFeedback?.Invoke(amount);
                 return;
             }
-            photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp);
+
+            photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHp, killerId);
         }
 
         [PunRPC]
-        public void SyncDecreaseCurrentHpRPC(float amount)
+        public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
         {
             currentHp = amount;
             if (currentHp <= 0)
             {
                 currentHp = 0;
-                RequestDie();
+                RequestDie(killerId);
             }
             OnDecreaseCurrentHpFeedback?.Invoke(amount);
         }

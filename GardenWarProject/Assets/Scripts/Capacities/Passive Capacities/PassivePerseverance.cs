@@ -46,7 +46,7 @@ namespace Entities.Capacities
         {
             float maxHP = activeLifeable.GetMaxHp();
             float modAmount = maxHP * passiveCapacitySo.percentage;
-            activeLifeable.IncreaseCurrentHpRPC(modAmount);
+            activeLifeable.IncreaseCurrentHpRPC(modAmount, entity.entityIndex);
  
           //  PoolLocalManager.Instance.PoolInstantiate(((PassivePerseveranceSO)AssociatedPassiveCapacitySO()).healEffectPrefab, entity.transform.position, Quaternion.identity,
             //    entity.transform);

@@ -230,6 +230,10 @@ PrefabInstance:
       value: FreePlayer
       objectReference: {fileID: 0}
     - target: {fileID: 1031388204894298971, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
+      propertyPath: role
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031388204894298971, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: minion
       value: 
       objectReference: {fileID: 312693308}
@@ -279,7 +283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2281823923713793854, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: sceneViewId
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2902222110996056688, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: m_AnchorMax.y
@@ -331,7 +335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3440534756346751764, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: sceneViewId
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3940727462931963627, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: m_AnchorMax.y
@@ -357,25 +361,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4475987759303325513, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 512
+    - target: {fileID: 4475987759303325514, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
+      propertyPath: maxCandy
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4475987759303325514, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
-      propertyPath: championSo
-      value: 
-      objectReference: {fileID: 11400000, guid: 09a5f4fc328facc46b8df84dc8d1fbe7, type: 2}
+      propertyPath: currentCandy
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4475987759303325515, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: sceneViewId
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4475987759303325518, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.707
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8065097211137479411, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
       propertyPath: sceneViewId
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82f6a1a47a698534784258dc44ccbd29, type: 3}
