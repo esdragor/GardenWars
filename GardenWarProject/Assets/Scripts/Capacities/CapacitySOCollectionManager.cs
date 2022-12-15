@@ -31,7 +31,6 @@ namespace Entities.Capacities
 
         public void SetIndexes()
         {
-            Debug.Log("Setting indexes");
             for (byte i = 0; i < allActiveCapacities.Count; i++)
             {
                 allActiveCapacities[i].indexInCollection = i;
@@ -39,11 +38,6 @@ namespace Entities.Capacities
             for (byte i = 0; i < allPassiveCapacitiesSo.Count; i++)
             {
                 allPassiveCapacitiesSo[i].indexInCollection = i;
-            }
-
-            foreach (var active in allActiveCapacities)
-            {
-                Debug.Log($"Active: {active.name} - {active.indexInCollection}");
             }
         }
 
