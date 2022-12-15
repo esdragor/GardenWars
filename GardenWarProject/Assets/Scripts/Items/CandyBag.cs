@@ -11,7 +11,7 @@ public class CandyBag : Bag
         nbBounce = so.nbBounce;
         height = so.height;
         
-        speedDecreaseInAir = so.SpeedOnAir * 0.02f;
+        speedDecreaseInAir = so.SpeedOnAir;
         amount = _amount;
     }
     
@@ -29,7 +29,7 @@ public class CandyBag : Bag
         nbBounce = 0;
         height = 0;
         
-        speedDecreaseInAir = 0.02f;
+        speedDecreaseInAir = 0f;
         amount = 0;
     }
 }

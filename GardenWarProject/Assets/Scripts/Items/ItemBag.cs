@@ -21,7 +21,7 @@ public class ItemBag : Bag
         nbBounce = so.nbBounce;
         height = so.height;
         
-        speedDecreaseInAir = so.SpeedOnAir * 0.02f;
+        speedDecreaseInAir = so.SpeedOnAir;
     }
 
     protected override void ChangeVisuals(bool show)
@@ -44,7 +44,7 @@ public class ItemBag : Bag
         nbBounce = 0;
         height = 0;
         
-        speedDecreaseInAir = 0.02f;
+        speedDecreaseInAir = 0f;
         
         if (isOffline)
         {
