@@ -67,9 +67,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSceneName: InGameScene
+  isInDebugMode: 0
   ticksPerSecond: 10
-  winner: 0
-  allPlayersIDs: 
   expectedPlayerCount: 4
   allChampionsSo:
   - {fileID: 11400000, guid: 09a5f4fc328facc46b8df84dc8d1fbe7, type: 2}
@@ -84,4 +83,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 603d01d730be24147adda7897e463598, type: 3}
   - role: 1
     sprite: {fileID: 21300000, guid: 99d7e777338ab8f4ba890cc738794dba, type: 3}
-  isInDebugMode: 0
+  allPlayersIDs: 
+  winner: 0
+  scoreToWin: 10
+  startTime: 0

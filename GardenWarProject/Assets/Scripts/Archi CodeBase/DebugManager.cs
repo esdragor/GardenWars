@@ -1,4 +1,3 @@
-using System;
 using GameStates;
 using Photon.Pun;
 using TMPro;
@@ -6,7 +5,7 @@ using UnityEngine;
 
 public class DebugManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI clientDataText;
+    [SerializeField] private TextMeshProUGUI masterText;
     [SerializeField] private TextMeshProUGUI frameDataText;
     private GameStateMachine gsm => GameStateMachine.Instance;
     
@@ -17,7 +16,7 @@ public class DebugManager : MonoBehaviour
     private void Start()
     {
         var id = PhotonNetwork.LocalPlayer.ActorNumber;
-        clientDataText.text = $"Client {id} / {GameStateMachine.Instance.GetPlayerTeam()}";
+        masterText.text = ($"Client {id} / {GameStateMachine.Instance.GetPlayerTeam()}") + (PhotonNetwork.IsMasterClient ? " (Master)" : ""); 
         gsm.OnTick += (() => tickCount++);
     }
 
@@ -35,25 +34,5 @@ public class DebugManager : MonoBehaviour
         frameDataText.text = $"FPS : {frameCount} \nTPS : {tickCount}";
         frameCount = 0;
         tickCount = 0;
-    }
-
-    public void OnStartInGameState()
-    {
-        gsm.SwitchState(2);
-    }
-    
-    public void OnTeamWins(int index)
-    {
-        gsm.winner = index == 0 ? Enums.Team.Team1 : Enums.Team.Team2;
-    }
-
-    public void OnDieButtonClick()
-    {
-        gsm.GetPlayerChampion().RequestDie(-1);
-    }
-
-    public void OnDamageButtonClick()
-    {
-        gsm.GetPlayerChampion().DecreaseCurrentHpRPC(2, -1);
     }
 }

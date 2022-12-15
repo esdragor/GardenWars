@@ -30,7 +30,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void ReachEnemyCamp()
     {
-        DieRPC(-1);
+        gsm.IncreaseScore(team);
+        DieRPC(entityIndex);
     }
     
     public float GetAttackSpeed()

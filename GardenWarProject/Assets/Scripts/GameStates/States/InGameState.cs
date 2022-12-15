@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using UnityEngine;
 
 namespace GameStates.States
@@ -16,6 +17,8 @@ namespace GameStates.States
             InputManager.EnablePlayerMap(true);
             
             lastTickTime = currentTime;
+
+            sm.startTime = currentTime;
             
             sm.StartEntitySpawner();
         }
@@ -47,8 +50,6 @@ namespace GameStates.States
 
         private bool IsWinConditionChecked()
         {
-            // Check win condition for any team
-            //sm.winner = Enums.Team.Neutral;
             return sm.winner != Enums.Team.Neutral;
         }
     }

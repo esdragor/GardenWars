@@ -7,7 +7,7 @@ public partial class UIManager
     
     public void InstantiateChampionHUD()
     {
-        var champion = GameStateMachine.Instance.GetPlayerChampion();
+        var champion = gsm.GetPlayerChampion();
         if (champion == null) return;
         var canvasIndex = champion.currentSo.canvasIndex;
         if (canvasIndex >= championOverlays.Length) canvasIndex = 0;
