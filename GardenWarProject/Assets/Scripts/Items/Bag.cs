@@ -28,6 +28,7 @@ public abstract class Bag : MonoBehaviourPun
     protected Vector3 endPosition;
     protected bool isRandom = false;
     protected float randomRangeRadius = 0f;
+    private bool Finished = false;
     private GameStateMachine gsm => GameStateMachine.Instance;
 
     public void InitBag(Vector3 targetPosition,double _speed, bool RandomPos, float randomRadius, Entity spawner)
@@ -39,7 +40,6 @@ public abstract class Bag : MonoBehaviourPun
         speed = _speed;
         isRandom = RandomPos;
         randomRangeRadius = randomRadius;
-        
         canBePickedUp = false;
     }
 
@@ -102,6 +102,7 @@ public abstract class Bag : MonoBehaviourPun
             else
             {
                 GameStateMachine.Instance.OnUpdate -= MoveBag;
+                Finished = true;
             }
         }
         Animation += (1 / gsm.tickRate) * speedDecreaseInAir;
@@ -111,15 +112,16 @@ public abstract class Bag : MonoBehaviourPun
     private void OnCollisionEnter(Collision other)
     {
         if(!canBePickedUp) return;
+
         collidedEntity = other.collider.GetComponent<Entity>();
         if (collidedEntity == null) return;
 
         Debug.Log($"Collided with {collidedEntity}");
 
-        RecoltBag();
+        RecoltBag(Finished, thrower);
 
-        photonView.RPC("ChangeVisualsRPC",RpcTarget.All,false);
+        
     }
     
-    protected abstract void RecoltBag();
+    protected abstract void RecoltBag(bool Finished, Entity thrower);
 }

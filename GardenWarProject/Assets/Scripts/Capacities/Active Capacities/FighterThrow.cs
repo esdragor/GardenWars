@@ -76,6 +76,7 @@ public class FighterThrow : ActiveCapacity
         champion.RequestDecreaseCurrentCandy(nbCandyStocked);
 
         var candyBag = InitCandyBag();
+        candyBag.transform.localScale =  Vector3.one * (!so.ScalebyNbCandy ? so.scaleByCandy * nbCandyStocked : (nbCandyStocked / so.NbCandyPerPalier) * so.scaleAndDamageByNbCandyOnBag);
         candyBag.InitBag(targetPosition, distanceCandy, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
         candyBag.SetCandyBag(so, nbCandyStocked);
         candyBag.ThrowBag();

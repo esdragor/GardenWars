@@ -1,3 +1,4 @@
+using Entities;
 using Entities.Capacities;
 using Entities.Inventory;
 using Photon.Pun;
@@ -33,7 +34,7 @@ public class ItemBag : Bag
         image.sprite = ItemCollectionManager.Instance.GetItemSObyIndex(itemSoIndex).sprite;
     }
 
-    protected override void RecoltBag()
+    protected override void  RecoltBag(bool finished, Entity thrower)
     {
         if(collidedEntity.team != team) return;
         if(!collidedEntity.CanAddItem(itemSoIndex)) return;

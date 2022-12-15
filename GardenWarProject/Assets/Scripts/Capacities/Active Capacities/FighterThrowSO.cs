@@ -15,12 +15,12 @@ public class FighterThrowSO : ActiveCapacitySO
     public float accelerationJauge = 1f;
     public bool RandomizeRebound = false;
     public float RandomizeReboundRadius = 0.5f;
-    // public bool ScalebyNbCandy = false;
-    // public int damageCandyScale = 1; // damage if not palier, damage * (scaleByCandy * nbCandy)
-    // public float scaleByCandy = 0.33f; // if not palier
-    // public float scaleAndDamageByNbCandyOnBag = 5f; //if palier
-    // public int NbCandyPerPalier = 5; // nb candy trigger palier
-    // public int NbCandyTriggerDamage = 1; // nb candy need to trigger damage
+    public bool ScalebyNbCandy = false;
+    public float scaleByCandy = 0.33f; // if not palier
+    public int NbCandyPerPalier = 5; // nb candy trigger palier
+    public float scaleAndDamageByNbCandyOnBag = 5f; //if palier
+    public int damageCandyScale = 1; // damage if not palier, damage * (scaleByCandy * nbCandy)
+    public int NbCandyTriggerDamage = 1; // nb candy need to trigger damage
     // public Vector3 DecalCenterRandomize = Vector3.zero; // nb candy need to trigger damage
 
     public override Type AssociatedType()
