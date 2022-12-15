@@ -258,7 +258,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestDecreaseCurrentHp(float amount, int killerId)
     {
-        photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+        photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount, killerId);
     }
 
     [PunRPC]
@@ -284,7 +284,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         CurrentHP -= amount;
         OnDecreaseCurrentHp?.Invoke(amount);
-        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,CurrentHP);
+        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,CurrentHP, killerId);
     }
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
@@ -321,7 +321,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestDie(int killerId)
     {
-        photonView.RPC("DieRPC", RpcTarget.MasterClient);
+        photonView.RPC("DieRPC", RpcTarget.MasterClient, killerId);
     }
 
     [PunRPC]
@@ -336,7 +336,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public void DieRPC(int killerId)
 
     {
-        photonView.RPC("SyncDieRPC", RpcTarget.All);
+        photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
     }
 
     public event Action<int> OnDie;

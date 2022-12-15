@@ -22,6 +22,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private Transform FalseFX;
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private GameObject MinionDieFX;
+    [SerializeField] private int NbCandyDropOnDeath = 5;
 
     private float currentMoveSpeed;
     private bool isAlive = true;
@@ -526,9 +527,18 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void DieRPC(int KillerID)
     {
+        var entity = EntityCollectionManager.GetEntityByIndex(KillerID);
+        if (entity)
+        {
+            var candyScript = entity.GetComponent<ICandyable>();
+            if(candyScript != null && GetEnemyTeams().Contains(entity.team))candyScript.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+        }
+
+        
         if (isOffline)
         {
             SyncDieRPC(KillerID);
+            
             return;
         }
         photonView.RPC("SyncDieRPC", RpcTarget.All, KillerID);
@@ -539,6 +549,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         isAlive = false;
         FogOfWarManager.Instance.RemoveFOWViewable(this);
+
         gameObject.SetActive(false);
     }
 
