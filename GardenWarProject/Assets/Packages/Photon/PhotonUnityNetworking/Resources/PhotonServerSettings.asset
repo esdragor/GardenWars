@@ -232,6 +232,20 @@ MonoBehaviour:
   - InitVisualsRPC
   - ChangeVisualsRPC
   - SyncBushRPC
+  - DecreaseCurrentCandyRPC
+  - DecreaseMaxCandyRPC
+  - IncreaseCurrentCandyRPC
+  - IncreaseMaxCandyRPC
+  - SetCurrentCandyPercentRPC
+  - SetCurrentCandyRPC
+  - SetMaxCandyRPC
+  - SyncDecreaseCurrentCandyRPC
+  - SyncDecreaseMaxCandyRPC
+  - SyncIncreaseCurrentCandyRPC
+  - SyncIncreaseMaxCandyRPC
+  - SyncSetCurrentCandyPercentRPC
+  - SyncSetCurrentCandyRPC
+  - SyncSetMaxCandyRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

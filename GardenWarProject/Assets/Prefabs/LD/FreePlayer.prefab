@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   champion: {fileID: 4475987759303325514}
   team: 1
-  role: 0
+  role: 1
   minion: {fileID: 0}
 --- !u!1001 &1031388205637064955
 PrefabInstance:
@@ -130,7 +130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3480681341667345171, guid: 73a83e6dab4b03843a993e90f0e36e35, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.707
       objectReference: {fileID: 0}
     - target: {fileID: 3480681341667345171, guid: 73a83e6dab4b03843a993e90f0e36e35, type: 3}
       propertyPath: m_LocalPosition.z
@@ -197,6 +197,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1031388204894298972}
     m_Modifications:
+    - target: {fileID: 1032358462637503682, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487338298682654952, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: fighterThrowCapacitySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 29b90ecf0cd2aad48b6ed54597560c9b, type: 2}
+    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: allActiveCapacities.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: allActiveCapacities.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 767d664d888b16942a1fd4784c839d9a, type: 2}
+    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: allActiveCapacities.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 29b90ecf0cd2aad48b6ed54597560c9b, type: 2}
+    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: allActiveCapacities.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 29b90ecf0cd2aad48b6ed54597560c9b, type: 2}
     - target: {fileID: 8293423625793494612, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: m_Name
       value: Collections
@@ -262,6 +290,10 @@ PrefabInstance:
     - target: {fileID: 166142745878382476, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
       propertyPath: m_Name
       value: GameStateMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382478, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: sceneViewId
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
       propertyPath: m_RootOrder

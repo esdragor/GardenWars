@@ -4,7 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemBag : BagParent
+public class ItemBag : Bag
 {
     [Header("Visual")]
     [SerializeField] protected Image image;
@@ -38,11 +38,21 @@ public class ItemBag : BagParent
         if(collidedEntity.team != team) return;
         if(!collidedEntity.CanAddItem(itemSoIndex)) return;
         collidedEntity.AddItemRPC(itemSoIndex);
+        itemSoIndex = 0;
+        team = Enums.Team.Neutral;
+        
+        nbBounce = 0;
+        height = 0;
+        
+        speedDecreaseInAir = 0.02f;
+        
         if (isOffline)
         {
             ChangeVisualsRPC(false);
             return;
         }
+        
+        
         photonView.RPC("ChangeVisualsRPC",RpcTarget.All,false);
     }
 }

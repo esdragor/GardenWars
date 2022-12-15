@@ -1,3 +1,4 @@
+using System;
 using Entities.FogOfWar;
 using GameStates;
 using Photon.Pun;
@@ -47,14 +48,14 @@ namespace Entities.Champion
         public event GlobalDelegates.BoolDelegate OnSetCanDie;
         public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
 
-        public void RequestDie()
+        public void RequestDie(int killerId)
         {
-            photonView.RPC("DieRPC", RpcTarget.MasterClient);
+            photonView.RPC("DieRPC", RpcTarget.MasterClient, killerId);
             Debug.Log("Request to die");
         }
 
         [PunRPC]
-        public void DieRPC()
+        public void DieRPC(int killerId)
         {
             if (!canDie)
             {
@@ -67,14 +68,14 @@ namespace Entities.Champion
             
             // TODO - Disable collision, etc...
 
-            OnDie?.Invoke();
+            OnDie?.Invoke(killerId);
             GameStateMachine.Instance.OnTick += Revive;
-            photonView.RPC("SyncDieRPC", RpcTarget.All);
+            photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
         }
         
         
         [PunRPC]
-        public void SyncDieRPC()
+        public void SyncDieRPC(int killerId)
         {
             if (photonView.IsMine)
             {
@@ -89,11 +90,11 @@ namespace Entities.Champion
             uiTransform.gameObject.SetActive(false);
             FogOfWarManager.Instance.RemoveFOWViewable(this);
 
-            OnDieFeedback?.Invoke();
+            OnDieFeedback?.Invoke(killerId);
         }
 
-        public event GlobalDelegates.NoParameterDelegate OnDie;
-        public event GlobalDelegates.NoParameterDelegate OnDieFeedback;
+        public event Action<int> OnDie;
+        public event Action<int> OnDieFeedback;
 
         public void RequestRevive()
         {

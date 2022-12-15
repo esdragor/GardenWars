@@ -32,17 +32,17 @@
         /// Sends an RPC to the master to increase the entity's maxHp.
         /// </summary>
         /// <param name="amount">the increase amount</param>
-        public void RequestIncreaseMaxHp(float amount);
+        public void RequestIncreaseMaxHp(float amount, int source);
         /// <summary>
         /// Sends an RPC to all clients to increase the entity's maxHp.
         /// </summary>
         /// <param name="amount">the increase amount</param>
-        public void SyncIncreaseMaxHpRPC(float amount);
+        public void SyncIncreaseMaxHpRPC(float amount, int source);
         /// <summary>
         /// Increases the entity's maxHp.
         /// </summary>
         /// <param name="amount">the increase amount</param>
-        public void IncreaseMaxHpRPC(float amount);
+        public void IncreaseMaxHpRPC(float amount, int source);
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHpFeedback;
@@ -51,17 +51,17 @@
         /// Sends an RPC to the master to decrease the entity's maxHp.
         /// </summary>
         /// <param name="amount">the decrease amount</param>
-        public void RequestDecreaseMaxHp(float amount);
+        public void RequestDecreaseMaxHp(float amount, int source);
         /// <summary>
         /// Sends an RPC to all clients to decrease the entity's maxHp.
         /// </summary>
         /// <param name="amount">the increase amount</param>
-        public void SyncDecreaseMaxHpRPC(float amount);
+        public void SyncDecreaseMaxHpRPC(float amount, int source);
         /// <summary>
         /// Decreases the entity's maxHp.
         /// </summary>
         /// <param name="amount">the increase amount</param>
-        public void DecreaseMaxHpRPC(float amount);
+        public void DecreaseMaxHpRPC(float amount, int source);
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxHpFeedback;
@@ -108,17 +108,17 @@
         /// Sends an RPC to the master to increase the entity's currentHp.
         /// </summary>
         /// <param name="amount">the increase amount</param>
-        public void RequestIncreaseCurrentHp(float amount);
+        public void RequestIncreaseCurrentHp(float amount, int source);
         /// <summary>
         /// Sends an RPC to all clients to increase the entity's currentHp.
         /// </summary>
         /// <param name="amount">the increase amount</param>
-        public void SyncIncreaseCurrentHpRPC(float amount);
+        public void SyncIncreaseCurrentHpRPC(float amount, int source);
         /// <summary>
         /// Increases the entity's currentHp.
         /// </summary>
         /// <param name="amount">the decrease amount</param>
-        public void IncreaseCurrentHpRPC(float amount);
+        public void IncreaseCurrentHpRPC(float amount, int source);
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
@@ -127,17 +127,17 @@
         /// Sends an RPC to the master to decrease the entity's currentHp.
         /// </summary>
         /// <param name="amount">the decrease amount</param>
-        public void RequestDecreaseCurrentHp(float amount);
+        public void RequestDecreaseCurrentHp(float amount, int source);
         /// <summary>
         /// Sends an RPC to all clients to decrease the entity's currentHp.
         /// </summary>
         /// <param name="amount">the decrease amount</param>
-        public void SyncDecreaseCurrentHpRPC(float amount);
+        public void SyncDecreaseCurrentHpRPC(float amount, int source);
         /// <summary>
         /// Decreases the entity's currentHp.
         /// </summary>
         /// <param name="amount">the decrease amount</param>
-        public void DecreaseCurrentHpRPC(float amount);
+        public void DecreaseCurrentHpRPC(float amount, int source);
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;

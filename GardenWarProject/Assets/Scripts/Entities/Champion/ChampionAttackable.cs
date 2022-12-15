@@ -95,6 +95,7 @@ namespace Entities.Champion
             }
             else
             {
+                Debug.Log($"Creating new capacity of {attackIndex}");
                 var newCapacity = new CastingAbility
                 {
                     isCasting = false,

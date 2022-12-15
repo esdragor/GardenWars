@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Entities;
 using Entities.Capacities;
 using Entities.Inventory;
 using Photon.Pun;
@@ -16,62 +17,69 @@ public class FighterThrow : ActiveCapacity
     private UIJauge UIJauge = null;
 
     private float time_Pressed = 0f;
-    private double hextechDistance;
+    private int nbCandyStocked = 0;
 
-    private Item itemToThrow;
-    
+    private double acceleration = 0.1;
+    private float distanceCandy = 10f;
+
     protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
     {
         champion = caster.GetComponent<Entities.Champion.Champion>();
         if (champion == null) return false;
         if (!champion.isFighter) return false;
-        return champion.GetItem(champion.selectedItemIndex) != null;
+        return (champion.currentCandy > 0);
     }
 
     protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
     {
         time_Pressed = Time.time;
-        hextechDistance = so.MinDistanceHFlash;
+        nbCandyStocked = so.MinCandy;
     }
 
     protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         if (HelperDirection) HelperDirection.SetActive(true);
         else HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        if (UIJauge) UIJauge.gameObject.SetActive(true);
-        else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
     }
 
     protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
     {
-            
     }
 
     protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
         if (!HelperDirection) return;
         HelperDirection.transform.position = casterPos + (targetPositions - casterPos).normalized + Vector3.up;
-        if (UIJauge) UIJauge.UpdateJaugeSlider(so.MinDistanceHFlash, so.MaxDistanceHFlash,
-            hextechDistance + (Time.time - time_Pressed) * so.HextechFlashSpeedScale);
+
+        acceleration += (Time.time - time_Pressed) * so.accelerationJauge;
+
+        nbCandyStocked = so.MinCandy + Mathf.RoundToInt((float)acceleration);
     }
 
     private CandyBag InitCandyBag()
     {
-        return !PhotonNetwork.IsConnected ? 
-            Object.Instantiate(so.candyBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<CandyBag>() : 
-            PhotonNetwork.Instantiate(so.candyBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity).GetComponent<CandyBag>();
+        return !PhotonNetwork.IsConnected
+            ? Object.Instantiate(so.candyBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity)
+                .GetComponent<CandyBag>()
+            : PhotonNetwork
+                .Instantiate(so.candyBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity)
+                .GetComponent<CandyBag>();
     }
-    
+
     protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
     {
-        time_Pressed =  (Time.time - time_Pressed ) * so.HextechFlashSpeedScale;
-        hextechDistance += time_Pressed;
-        if (hextechDistance > so.MaxDistanceHFlash) hextechDistance = so.MaxDistanceHFlash;
-        targetPosition = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * (float)hextechDistance);
+        if (nbCandyStocked > so.MaxCandy) nbCandyStocked = so.MaxCandy;
+        if (nbCandyStocked > champion.currentCandy) nbCandyStocked = champion.currentCandy;
+        targetPosition = GetClosestValidPoint(targetPositions);
         targetPosition.y = 1;
+
+        champion.RequestDecreaseCurrentCandy(nbCandyStocked);
+
+        var candyBag = InitCandyBag();
+        candyBag.InitBag(targetPosition, distanceCandy, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
+        candyBag.SetCandyBag(so, nbCandyStocked);
+        candyBag.ThrowBag();
         if (UIJauge) UIJauge.gameObject.SetActive(false);
-        
-        
     }
 
     protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)

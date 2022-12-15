@@ -1,4 +1,6 @@
-﻿namespace Entities
+﻿using System;
+
+namespace Entities
 {
     public interface IDeadable
     {
@@ -26,18 +28,18 @@
         /// <summary>
         /// Sends an RPC to the master to kill the entity.
         /// </summary>
-        public void RequestDie();
+        public void RequestDie(int source);
         /// <summary>
         /// Sends an RPC to all clients to kill the entity.
         /// </summary>
-        public void SyncDieRPC();
+        public void SyncDieRPC(int source);
         /// <summary>
         /// Kills the entity.
         /// </summary>
-        public void DieRPC();
+        public void DieRPC(int source);
 
-        public event GlobalDelegates.NoParameterDelegate OnDie;
-        public event GlobalDelegates.NoParameterDelegate OnDieFeedback;
+        public event Action<int> OnDie;
+        public event Action<int> OnDieFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to revive the entity.

@@ -66,7 +66,7 @@ public class ActiveDarkMatter : ActiveCapacity
                 {
                     IActiveLifeable entityActiveLifeable = entityTouch.GetComponent<IActiveLifeable>();
 
-                    entityActiveLifeable.DecreaseCurrentHpRPC( activeCapacitySo.damageAmount);
+                    entityActiveLifeable.DecreaseCurrentHpRPC( activeCapacitySo.damageAmount, caster.entityIndex);
                 }
             }
         }

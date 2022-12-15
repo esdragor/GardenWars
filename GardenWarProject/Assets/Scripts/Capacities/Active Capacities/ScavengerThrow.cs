@@ -18,6 +18,7 @@ namespace Entities.Capacities
         private double bagSpeed;
 
         private Item itemToThrow;
+        private double acceleration = 0.1;
         
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -48,10 +49,12 @@ namespace Entities.Capacities
 
         protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            acceleration += (Time.time - time_Pressed) *  so.accelerationJauge;
+
             if (!HelperDirection) return;
             HelperDirection.transform.position = casterPos + (targetPositions - casterPos).normalized + Vector3.up;
             if (UIJauge) UIJauge.UpdateJaugeSlider(so.MinDistanceHFlash, so.MaxDistanceHFlash,
-                bagSpeed + (Time.time - time_Pressed) * so.HextechFlashSpeedScale);
+                bagSpeed + (Time.time - time_Pressed) * so.HextechFlashSpeedScale + acceleration);
         }
 
         private ItemBag InitItemBag()
@@ -70,7 +73,7 @@ namespace Entities.Capacities
 
             itemToThrow = champion.PopSelectedItem();
             var itemBag = InitItemBag();
-            itemBag.InitBag(targetPosition, bagSpeed, caster);
+            itemBag.InitBag(targetPosition, bagSpeed, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
             itemBag.SetItemBag(so,itemToThrow.indexOfSOInCollection);
             itemBag.ThrowBag();
             if (UIJauge) UIJauge.gameObject.SetActive(false);

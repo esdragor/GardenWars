@@ -187,12 +187,22 @@ namespace GameStates
 
         public void RequestAddPlayer()
         {
+            if (isMaster)
+            {
+                AddPlayerRPC(PhotonNetwork.LocalPlayer.ActorNumber);
+                return;
+            }
             photonView.RPC("AddPlayerRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         [PunRPC]
         private void AddPlayerRPC(int actorNumber)
         {
+            if (isOffline)
+            {
+                SyncAddPlayerRPC(actorNumber);
+                return;
+            }
             photonView.RPC("SyncAddPlayerRPC", RpcTarget.All, actorNumber);
         }
 

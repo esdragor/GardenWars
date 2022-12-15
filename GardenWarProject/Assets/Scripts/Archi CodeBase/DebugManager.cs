@@ -49,11 +49,11 @@ public class DebugManager : MonoBehaviour
 
     public void OnDieButtonClick()
     {
-        gsm.GetPlayerChampion().RequestDie();
+        gsm.GetPlayerChampion().RequestDie(-1);
     }
 
     public void OnDamageButtonClick()
     {
-        gsm.GetPlayerChampion().DecreaseCurrentHpRPC(2);
+        gsm.GetPlayerChampion().DecreaseCurrentHpRPC(2, -1);
     }
 }

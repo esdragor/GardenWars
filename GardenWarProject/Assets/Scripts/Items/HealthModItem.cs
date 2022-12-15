@@ -11,7 +11,7 @@ namespace Entities.Inventory
         protected override void OnItemAddedEffects(Entity entity)
         {
             lifeable = entity.GetComponent<IActiveLifeable>();
-            lifeable?.IncreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod);
+            lifeable?.IncreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod, entity.entityIndex);
             Debug.Log($"Gained {((HealthModItemSO)AssociatedItemSO()).healthMod} hp");
         }
 
@@ -22,7 +22,7 @@ namespace Entities.Inventory
 
         protected override void OnItemRemovedEffects(Entity entity)
         {
-            lifeable?.DecreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod);
+            lifeable?.DecreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod, entity.entityIndex);
             Debug.Log($"Removed {((HealthModItemSO)AssociatedItemSO()).healthMod} hp");
         }
 

@@ -42,13 +42,13 @@ namespace Entities.Capacities
 
             if (tickDamageTimer >= so.damageTickSpeed)
             {
-                lifeable.DecreaseCurrentHpRPC(so.damage);
+                lifeable.DecreaseCurrentHpRPC(so.damage, entity.entityIndex);
                 tickDamageTimer = 0;
             }
 
             if (durationTimer >= so.duration)
             {
-                lifeable.DecreaseCurrentHpRPC(so.damage);
+                lifeable.DecreaseCurrentHpRPC(so.damage, entity.entityIndex);
                 GameStateMachine.Instance.OnTick -= WaitForTickDamage;
             }
             

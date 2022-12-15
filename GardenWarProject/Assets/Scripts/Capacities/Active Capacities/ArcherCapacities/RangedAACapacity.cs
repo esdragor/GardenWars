@@ -5,7 +5,7 @@ namespace Entities.Capacities
     public class RangedAACapacity : ActiveCapacity
     {
         private RangedAACapacitySO so => (RangedAACapacitySO) AssociatedActiveCapacitySO();
-        IDeadable deadableEntity;
+        private IDeadable deadableEntity;
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -86,7 +86,7 @@ namespace Entities.Capacities
             {
                 if (!entity) return;
                 var lifeable = entity.GetComponent<IActiveLifeable>();
-                lifeable.DecreaseCurrentHpRPC(damage);
+                lifeable.DecreaseCurrentHpRPC(damage, caster.entityIndex);
             }
             
             void CollideProjectile(Entity entity)
