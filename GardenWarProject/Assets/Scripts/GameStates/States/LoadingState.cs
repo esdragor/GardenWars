@@ -7,6 +7,7 @@ namespace GameStates.States
         public override void StartState()
         {
             if (GameStateMachine.isOffline) return;
+            sm.ResetScore();
             sm.MoveToGameScene();
             sm.winner = Enums.Team.Neutral;
         }
