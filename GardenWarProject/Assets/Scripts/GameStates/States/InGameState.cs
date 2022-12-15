@@ -17,6 +17,8 @@ namespace GameStates.States
             InputManager.EnablePlayerMap(true);
             
             lastTickTime = currentTime;
+
+            sm.startTime = currentTime;
             
             sm.StartEntitySpawner();
         }

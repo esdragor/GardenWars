@@ -7,7 +7,6 @@ using Entities.Champion;
 using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace GameStates
 {
@@ -40,9 +39,11 @@ namespace GameStates
         private readonly Dictionary<int, PlayerData> playerDataDict =
             new Dictionary<int, PlayerData>();
 
-        [Header("InGameData")] public Enums.Team winner = Enums.Team.Neutral;
+        [Header("InGameData")]
+        public Enums.Team winner = Enums.Team.Neutral;
         private List<int> scores = new List<int>();
-        private int scoreToWin = 10;
+        [SerializeField] private int scoreToWin = 10;
+        [HideInInspector] public double startTime;
 
         [Serializable]
         public struct Role
@@ -701,6 +702,8 @@ namespace GameStates
             if (UIManager.Instance == null) return;
 
             UIManager.Instance.InstantiateChampionHUD();
+            
+            UIManager.Instance.SetupTopBar();
 
             foreach (var actorNumber in playerDataDict)
             {
@@ -747,7 +750,10 @@ namespace GameStates
             }
         }
 
-
+        public int GetTeamScore(Enums.Team team)
+        {
+            return scores[(int)team];
+        }
         
         public void IncreaseScore(Enums.Team team)
         {
@@ -772,7 +778,7 @@ namespace GameStates
             Debug.Log($"increase score of team {team} ({scores[team]})");
         }
         
-        public static event Action<byte> OnTeamIncreaseScore;
-        public static event Action<byte> OnTeamIncreaseScoreFeedBack;
+        public event Action<byte> OnTeamIncreaseScore;
+        public event Action<byte> OnTeamIncreaseScoreFeedBack;
     }
 }

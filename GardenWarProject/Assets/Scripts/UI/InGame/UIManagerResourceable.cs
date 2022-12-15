@@ -16,10 +16,5 @@ public partial class UIManager
         var canvasResource = Instantiate(resourceBarPrefab, entity.uiTransform.position + entity.uiOffset, Quaternion.identity, entity.uiTransform);
         entity.elementsToShow.Add(canvasResource);
         canvasResource.GetComponent<EntityResourceBar>().InitResourceBar(entity);
-        return;
-        if (entity.team != GameStateMachine.Instance.GetPlayerTeam())
-        {
-          canvasResource.SetActive(false);
-        }
     }
 }

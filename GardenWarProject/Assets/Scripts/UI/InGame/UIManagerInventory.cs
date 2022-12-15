@@ -44,7 +44,7 @@ public partial class UIManager
     
     public class LocalInventory
     {
-        public IInventoryable inventory;
+        private IInventoryable inventory;
         
         public List<LocalInventorySlots> slots = new List<LocalInventorySlots>();
         
@@ -92,8 +92,8 @@ public partial class UIManager
     
     public void AssignInventory(int actorNumber)
     {
-        var playerTeam = GameStateMachine.Instance.GetPlayerTeam(actorNumber);
-        var champion = GameStateMachine.Instance.GetPlayerChampion(actorNumber);
+        var playerTeam = gsm.GetPlayerTeam(actorNumber);
+        var champion = gsm.GetPlayerChampion(actorNumber);
         foreach (var panel in inventoriesPanel)
         {
             if (panel.team != playerTeam || !panel.available) continue;
@@ -104,7 +104,7 @@ public partial class UIManager
             break;
         }
 
-        if (champion != GameStateMachine.Instance.GetPlayerChampion()) return;
+        if (champion != gsm.GetPlayerChampion()) return;
         
         localInventory = new LocalInventory
         {
