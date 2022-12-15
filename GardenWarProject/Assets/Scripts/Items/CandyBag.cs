@@ -42,7 +42,7 @@ public class CandyBag : Bag
         
         speedDecreaseInAir = 0f;
         amount = 0;
-        
+        if (isOffline) return;
         photonView.RPC("ChangeVisualsRPC",RpcTarget.All,false);
     }
 }

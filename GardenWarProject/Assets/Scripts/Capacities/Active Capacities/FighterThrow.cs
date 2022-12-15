@@ -70,6 +70,8 @@ public class FighterThrow : ActiveCapacity
     {
         if (nbCandyStocked > so.MaxCandy) nbCandyStocked = so.MaxCandy;
         if (nbCandyStocked > champion.currentCandy) nbCandyStocked = champion.currentCandy;
+        targetPosition.x *= so.DecalRandomizeCenter.x;
+        targetPosition.z *= so.DecalRandomizeCenter.z;
         targetPosition = GetClosestValidPoint(targetPositions);
         targetPosition.y = 1;
 
