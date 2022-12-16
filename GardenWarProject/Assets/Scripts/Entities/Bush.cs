@@ -26,7 +26,6 @@ public class Bush : MonoBehaviour
     
     public void EntityEnter(Entity entity)
     {
-        Debug.Log($"Adding {entity}");
         if(!entitiesInside.Contains(entity)) entitiesInside.Add(entity);
         foreach (var obj in objectsToHide)
         {

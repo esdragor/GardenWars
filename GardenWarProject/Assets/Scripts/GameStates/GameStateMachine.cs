@@ -621,6 +621,7 @@ namespace GameStates
             foreach (var champion in playerDataDict.Select(kvp => kvp.Value).Select(value => value.champion))
             {
                 SetupChampion(champion);
+                UIManager.Instance.InitPlayerIcon(champion);
             }
 
             SetupUI();
