@@ -17,7 +17,8 @@ namespace Entities.FogOfWar
 
         private void Awake()
         {
-            cameraFog.GetComponent<Camera>().orthographicSize = worldSize * 0.5f;
+            cameraFog.orthographicSize = worldSize * 0.5f;
+            cameraMinimap.orthographicSize = worldSize * 0.5f;
             if (_instance != null && _instance != this)
             {
                 Destroy(gameObject);
@@ -33,7 +34,11 @@ namespace Entities.FogOfWar
         private IEnumerable<Entity> allyViewables => allViewables.Where(viewable => GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team);
         private IEnumerable<Entity> enemyShowables => allShowables.Where(showable => showable.isEnemyOfPlayer);
         
-        [Header("Camera and Scene Setup")] public Camera cameraFog;
+        [Header("Camera and Scene Setup")]
+        public Camera cameraFog;
+        public Camera cameraMinimap;
+        public Camera cameraMinimapLevel;
+        
         public List<string> sceneToRenderFog;
 
         [Header("Fog Of War Parameter")] [Tooltip("Color for the area where the player can't see")]
