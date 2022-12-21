@@ -34,18 +34,24 @@ public class ItemBag : Bag
         image.sprite = ItemCollectionManager.Instance.GetItemSObyIndex(itemSoIndex).sprite;
     }
 
-    protected override void  RecoltBag(bool finished, Entity thrower)
+    private void ResetValue()
     {
-        if(collidedEntity.team != team) return;
-        if(!collidedEntity.CanAddItem(itemSoIndex)) return;
-        collidedEntity.AddItemRPC(itemSoIndex);
         itemSoIndex = 0;
         team = Enums.Team.Neutral;
         
         nbBounce = 0;
         height = 0;
         
-        speedDecreaseInAir = 0f;
+        speedDecreaseInAir = 0f; 
+    }
+
+    protected override void  RecoltBag(bool finished, Entity thrower)
+    {
+        if(collidedEntity.team != team) return;
+        if(!collidedEntity.CanAddItem(itemSoIndex)) return;
+        collidedEntity.AddItemRPC(itemSoIndex);
+
+        ResetValue();
         
         if (isOffline)
         {
