@@ -1,4 +1,6 @@
+using Entities.Inventory;
 using Photon.Pun;
+using UnityEngine;
 
 namespace Entities.Champion
 {
@@ -6,6 +8,7 @@ namespace Entities.Champion
     {
         public float maxResource;
         public float currentResource;
+        public float recupItemRange = 1f;
 
         public float GetMaxResource()
         {
@@ -37,7 +40,7 @@ namespace Entities.Champion
         [PunRPC]
         public void SetMaxResourceRPC(float value)
         {
-            maxResource = value; 
+            maxResource = value;
             OnSetMaxResource?.Invoke(value);
             photonView.RPC("SyncSetMaxResourceRPC", RpcTarget.All, value);
         }
@@ -129,7 +132,7 @@ namespace Entities.Champion
         [PunRPC]
         public void SetCurrentResourcePercentRPC(float value)
         {
-            currentResource = (value * 100)/maxResource;
+            currentResource = (value * 100) / maxResource;
             OnSetCurrentResourcePercent?.Invoke(value);
             photonView.RPC("SyncSetCurrentResourcePercentRPC", RpcTarget.All, value);
         }
@@ -182,5 +185,44 @@ namespace Entities.Champion
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResource;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResourceFeedback;
+        
+        
+        public void RequestSwitchInventoryToInventory(int Giver, byte itemIndex)
+        {
+            if (isMaster)
+            {
+                SwitchInventoryRPC(Giver, itemIndex);
+                return;
+            }
+
+            photonView.RPC("SwitchInventoryRPC", RpcTarget.MasterClient, Giver, itemIndex);
+        }
+
+        [PunRPC]
+        public void SwitchInventoryRPC(int Giver, byte itemIndex)
+        {
+            if (items.Count >= maxItems) return;
+
+            if (isOffline)
+            {
+                SyncSwitchInventoryRPC(Giver, itemIndex);
+                return;
+            }
+
+            photonView.RPC("SyncSwitchInventoryRPC", RpcTarget.All, Giver, itemIndex);
+        }
+
+        [PunRPC]
+        public void SyncSwitchInventoryRPC(int GiverIndex, byte itemIndex)
+        {
+            Entity giver = EntityCollectionManager.GetEntityByIndex(GiverIndex);
+            Debug.Log("Item index: " + itemIndex);
+            Debug.Log("to item index in collection" + giver.items[itemIndex].indexOfSOInCollection);
+            byte indexOfItem = giver.items[itemIndex].indexOfSOInCollection;
+            
+            AddItemRPC(indexOfItem);
+
+            giver.RemoveItemRPC(indexOfItem);
+        }
     }
 }
