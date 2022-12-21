@@ -50,6 +50,7 @@ namespace Entities.Inventory
         /// </summary>
         /// <param name="index">the index of the item on the entity's item list</param>
         public void SyncRemoveItemRPC(byte index);
+        
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
     }

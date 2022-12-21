@@ -147,12 +147,13 @@ namespace Entities.Champion
             agent.SetDestination(targetPos);
         }
 
-        public void StartMoveToTarget(Entity targetEntity,float rangeToAction,Action action)
+        public void StartMoveToTarget(Entity targetEntity, float rangeToAction, Action action)
         {
+            if (!targetEntity) return;
             MoveToTargetAction += () => MoveToTarget(targetEntity.position, rangeToAction, action);
         }
         
-        private void MoveToTarget(Entity targetEntity,float rangeToAction,Action action)
+        private void MoveToTarget(Entity targetEntity, float rangeToAction, Action action)
         {
             MoveToTarget(targetEntity.position,rangeToAction,action);
         }
