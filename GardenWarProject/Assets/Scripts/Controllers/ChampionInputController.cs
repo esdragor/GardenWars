@@ -12,10 +12,8 @@ namespace Controllers.Inputs
     public class ChampionInputController : PlayerInputController
     {
         private Champion champion;
-        private Entity selectedEntities;
         private Entity selectedEntity => EntityCollectionManager.GetEntityByIndex(-1);
         private Vector2 mousePos;
-        private Camera cam;
         private bool isRightClicking;
         private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
 
@@ -124,19 +122,6 @@ namespace Controllers.Inputs
             UpdateTargets();
         }
 
-        private void UpdateTargets()
-        {
-            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(mouseRay, out var hit, Mathf.Infinity, layersToHit)) return;
-            cursorWorldPos = hit.point;
-            selectedEntities = null;
-            var ent = hit.transform.GetComponent<Entity>();
-            if (ent == null && hit.transform.parent != null) hit.transform.parent.GetComponent<Entity>();
-            if (ent == null) return;
-            selectedEntities = ent;
-            cursorWorldPos = ent.transform.position;
-        }
-
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
             if (selectedEntities)
@@ -199,8 +184,6 @@ namespace Controllers.Inputs
         {
             champion = controlledEntity as Champion;
             base.Link(entity);
-
-            cam = Camera.main;
 
             inputs.Attack.Attack.performed += OnAttack;
 
