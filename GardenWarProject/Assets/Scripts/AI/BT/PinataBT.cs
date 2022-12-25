@@ -4,10 +4,9 @@ using BehaviourTree;
 using Test.IA_BL.Task;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 using Tree = BehaviourTree.Tree;
 
-public class MyAIBT : Tree
+public class PinataBT : Tree
 {
     public Transform[] waypoints;
     
@@ -54,5 +53,5 @@ public class MyAIBT : Tree
 
         return origin;
     }
-    
+
 }

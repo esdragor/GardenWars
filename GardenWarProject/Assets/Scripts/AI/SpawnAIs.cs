@@ -140,8 +140,8 @@ public class SpawnAIs : MonoBehaviourPun
             .GetComponent<Entity>();
         blueMinion.SyncInstantiate(Enums.Team.Team1);
         redMinion.SyncInstantiate(Enums.Team.Team2);
-        var blueBt = blueMinion.GetComponent<MyAIBT>();
-        var redBt = redMinion.GetComponent<MyAIBT>();
+        var blueBt = blueMinion.GetComponent<MinionBT>();
+        var redBt = redMinion.GetComponent<MinionBT>();
         blueBt.enabled = true;
         redBt.enabled = true;
         blueBt.waypoints = waypointsTeamBlue;
