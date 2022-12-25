@@ -8,6 +8,7 @@ public partial class UIManager
 {
     [Header("Minimap")]
     [SerializeField] private RawImage miniMapRenderImage;
+    private RectTransform minimapRenderTransform;
     [SerializeField] private RawImage miniMapCoverImage;
     [SerializeField] private Transform playerIconsParent;
     [SerializeField] private MinimapPlayerIcon playerIconPrefab;
@@ -17,8 +18,8 @@ public partial class UIManager
     private void Start()
     {
         minimapSize = miniMapRenderImage.GetComponent<RectTransform>().sizeDelta;
+        minimapRenderTransform = miniMapRenderImage.rectTransform;
     }
-
 
     public void SetupMinimap()
     {
@@ -41,6 +42,17 @@ public partial class UIManager
         {
             icon.rectTransform.localPosition = (Vector2)minimapCamera.WorldToScreenPoint(icon.associatedChampion.position) - minimapSize/2;
         }
+    }
+
+    public RectTransform GetMinimapRect()
+    {
+        return minimapRenderTransform;
+    }
+
+    public Ray MiniMapCamRay(Vector2 mousePos)
+    {
+        var sizeDelta = minimapRenderTransform.sizeDelta;
+        return minimapCamera.ViewportPointToRay((mousePos - (Vector2)minimapRenderTransform.position + sizeDelta * 0.5f)/sizeDelta);
     }
     
     
