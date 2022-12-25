@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class ChampionHUD : MonoBehaviour
 {
+    [SerializeField] private Image Portrait;
     [SerializeField] private Image healthBar;
     [SerializeField] private Image resourceBar;
     [SerializeField] private Image spellPassive;
@@ -104,6 +105,7 @@ public class ChampionHUD : MonoBehaviour
     private void UpdateIcons(Champion champion)
     {
         var so = champion.currentSo;
+        
         passiveHolder = new SpellHolder
         {
             spellIcon = spellPassive,
@@ -129,11 +131,13 @@ public class ChampionHUD : MonoBehaviour
         if(!spellHolderDict.ContainsKey(so.activeCapacitiesIndexes[2]))spellHolderDict.Add(so.activeCapacitiesIndexes[2], ultimateHolder);
         else Debug.Log("A FIXE, CA BUG ");
         
-        if(so.passiveCapacities.Length != 0)
-        passiveHolder.Setup(so.passiveCapacities[0].icon);
+        if(so.passiveCapacities.Length > 0)
+            passiveHolder.Setup(so.passiveCapacities[0].icon);
         spellOneHolder.Setup(so.activeCapacities[0].icon);
         spellTwoHolder.Setup(so.activeCapacities[1].icon);
         ultimateHolder.Setup(so.activeCapacities[2].icon);
+        
+        Portrait.sprite = so.portrait;
     }
 
     private void UpdateCooldown(byte capacityIndex, int intArray, Vector3 vectors)
