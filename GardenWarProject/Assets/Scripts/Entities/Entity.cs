@@ -228,8 +228,17 @@ namespace Entities
         [PunRPC]
         public void SyncRemovePassiveCapacityRPC(byte index)
         {
-            if(index >= passiveCapacitiesList.Count) return;
-            var capacity = passiveCapacitiesList[index];
+            if(passiveCapacitiesList.Count == 0) return;
+            var capacity = null as PassiveCapacity;
+            for (int i = 0; i < passiveCapacitiesList.Count; i++)
+            {
+                if (passiveCapacitiesList[i].indexOfSo == index)
+                {
+                    capacity = passiveCapacitiesList[i];
+                    break;
+                }
+            }
+            if (capacity == null) return;
             passiveCapacitiesList.Remove(capacity);
             if (PhotonNetwork.IsMasterClient)
             {

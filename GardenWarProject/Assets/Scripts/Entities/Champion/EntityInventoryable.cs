@@ -123,7 +123,7 @@ namespace Entities
         [PunRPC]
         public void SyncRemoveItemRPC(byte index)
         {
-            if(index >= items.Count) return;
+            if(items.Count == 0) return;
             var item = items[index];
             items.Remove(item);
             if(heldItems.Contains(item))heldItems.Remove(item);

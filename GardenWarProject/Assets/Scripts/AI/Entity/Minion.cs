@@ -29,8 +29,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     private bool isAlive = true;
     private bool canDie = true;
     
-    private float initialSpeedAgent = 5f;
-
     public void ReachEnemyCamp()
     {
         gsm.IncreaseScore(team);
@@ -45,9 +43,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     protected override void OnStart()
     {
         currentHp = MaxHP;
-        initialSpeedAgent = agent.speed;
-        OnAddItemFeedback += AddItemFeedback;
-        OnRemoveItemFeedback += RemoveItemFeedback;
     }
 
     public override void OnInstantiated()
@@ -65,28 +60,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         if (enemyTeams.Contains(Enums.Team.Neutral)) enemyTeams.Remove(Enums.Team.Neutral);
         return enemyTeams;
     }
-    
-    public void AddItemFeedback(byte b)
-    {
-        ItemSO itemSO = ItemCollectionManager.Instance.GetItemSObyIndex(b);
-        if (!itemSO) return;
-        
-        /////// ADD here the modification of item ///////
-        agent.speed = 0f; // example
-        ////////////////////////////////////////////////
-    }
-    
-    public void RemoveItemFeedback(byte b)
-    {
-        ItemSO itemSO = ItemCollectionManager.Instance.GetItemSObyIndex(b);
-        if (!itemSO) return;
-        
-        /////// ADD here the modification of item ///////
-        agent.speed = initialSpeedAgent; // example
-        ////////////////////////////////////////////////
-    }
-    
-    
+
     public bool CanMove()
     {
         return canMove;
