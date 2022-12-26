@@ -49,13 +49,13 @@ public class TaskAttack : Node
         
        //CurrentAtkTime += 1.0f / sm.tickRate;
        CurrentAtkTime += Time.deltaTime;
+        _model.LookAt(target.position);
 
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
         
         attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
-        _model.LookAt(target.position);
         root.ClearData("target");
 
         return NodeState.Success;
