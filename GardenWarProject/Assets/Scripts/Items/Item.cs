@@ -10,10 +10,10 @@ namespace Entities.Inventory
     {
         public static bool isOffline => !PhotonNetwork.IsConnected;
         public static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
-        
+
         public bool consumable;
         public int count;
-        
+
         public Entity entityOfInventory;
         public IInventoryable inventory;
 
@@ -35,10 +35,27 @@ namespace Entities.Inventory
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
             OnItemAddedEffects(entity);
+            if (entityOfInventory.GetComponent<Minion>())
+            {
+                foreach (var index in AssociatedItemSO().MinionPassiveCapacitiesIndexes)
+                {
+                    entityOfInventory.AddPassiveCapacityRPC(index);
+                }
+
+                activeCapacities.Clear();
+                foreach (var index in AssociatedItemSO().MinionActiveCapacitiesIndexes)
+                {
+                    activeCapacities.Add(CapacitySOCollectionManager.CreateActiveCapacity(index, entityOfInventory));
+                }
+
+                return;
+            }
+
             foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
             {
                 entityOfInventory.AddPassiveCapacityRPC(index);
             }
+
             activeCapacities.Clear();
             foreach (var index in AssociatedItemSO().activeCapacitiesIndexes)
             {
@@ -56,13 +73,21 @@ namespace Entities.Inventory
         }
 
         protected abstract void OnItemAddedEffectsFeedback(Entity entity);
-        
+
         public void OnItemRemovedFromInventory(Entity entity)
         {
             OnItemRemovedEffects(entity);
-            foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
+            if (!entity.GetComponent<Minion>())
+                foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
+                {
+                    entityOfInventory.RemovePassiveCapacityByIndex(index);
+                }
+            else
             {
-                entityOfInventory.RemovePassiveCapacityByIndex(index);
+                foreach (var index in AssociatedItemSO().MinionPassiveCapacitiesIndexes)
+                {
+                    entityOfInventory.RemovePassiveCapacityByIndex(index);
+                }
             }
         }
 
@@ -78,11 +103,11 @@ namespace Entities.Inventory
         public void OnItemActivated(int target, Vector3 position)
         {
             if (consumable) count--;
-            if (isMaster) OnItemActivatedEffects(target,position);
-            
-            OnItemActivatedFeedbackEffects(target,position);
-            
-            if(isMaster && count<=0) inventory.RemoveItemRPC(this);
+            if (isMaster) OnItemActivatedEffects(target, position);
+
+            OnItemActivatedFeedbackEffects(target, position);
+
+            if (isMaster && count <= 0) inventory.RemoveItemRPC(this);
         }
 
         public abstract void OnItemActivatedEffects(int targetIndex, Vector3 position);

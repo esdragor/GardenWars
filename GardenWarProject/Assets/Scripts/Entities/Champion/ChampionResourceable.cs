@@ -222,7 +222,7 @@ namespace Entities.Champion
             
             AddItemRPC(indexOfItem);
 
-            giver.RemoveItemRPC(indexOfItem);
+            giver.RemoveItemRPC(itemIndex);
         }
     }
 }
