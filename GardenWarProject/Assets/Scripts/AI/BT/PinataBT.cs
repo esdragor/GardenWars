@@ -26,6 +26,13 @@ public class PinataBT : Tree
         {
             new Sequence(new List<Node>
             {
+                new CheckCanMove(entity),
+               //far to camp or bool back to camp activated
+               new GoToTarget(origin, agent, transform, Model)
+               //back to camp activated if < distance
+            }),
+            new Sequence(new List<Node>
+            {
                 new CheckEnemyInPOVRange(origin, entity,enemyMask, FOVRange),
                 new Selector(new List<Node>
                 {
@@ -40,12 +47,6 @@ public class PinataBT : Tree
                         new GoToTarget(origin, agent, transform, Model)
                     })
                 }),
-            }),
-
-            new Sequence(new List<Node>
-            {
-                new CheckCanMove(entity),
-                new TaskPatrol(agent, entity, transform, Model, waypoints, 5f)
             }),
 
 
