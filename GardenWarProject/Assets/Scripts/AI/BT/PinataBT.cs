@@ -38,7 +38,7 @@ public class PinataBT : Tree
                     new Sequence(new List<Node>
                     {
                         new CheckEnemyInAttackRange(origin, transform, AtkRange),
-                        new TaskAttack(origin, entity, Model, entity.activePinataAutoSO.indexInCollection, atkDelay),
+                        new TaskAttack(origin, entity, Model, entity.activePinataAutoSO.indexInCollection, atkDelay, agent),
                     }),
                     new Sequence(new List<Node>
                     {

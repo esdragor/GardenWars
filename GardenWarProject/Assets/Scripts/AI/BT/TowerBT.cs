@@ -17,7 +17,7 @@ namespace BehaviourTree
             origin = new Sequence(new List<Node>
             {
                 new CheckEnemyInPOVRange(origin, entity,enemyMask, AtkRange), 
-                new TaskAttack(origin, entity, gameObject.transform, entity.activeTowerAutoSO.indexInCollection, atkDelay)
+                new TaskAttack(origin, entity, gameObject.transform, entity.activeTowerAutoSO.indexInCollection, atkDelay, null)
             });
             return origin;
         }

@@ -33,7 +33,7 @@ public class MinionBT : Tree
                     new Sequence(new List<Node>
                     {
                         new CheckEnemyInAttackRange(origin, transform, AtkRange),
-                        new TaskAttack(origin, entity, Model, entity.activeMinionAutoSO.indexInCollection, atkDelay),
+                        new TaskAttack(origin, entity, Model, entity.activeMinionAutoSO.indexInCollection, atkDelay, agent),
                     }),
                     new Sequence(new List<Node>
                     {

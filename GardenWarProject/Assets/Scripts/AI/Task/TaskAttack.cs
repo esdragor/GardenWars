@@ -7,6 +7,7 @@ using Entities.Champion;
 using GameStates;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TaskAttack : Node
 {
@@ -19,9 +20,10 @@ public class TaskAttack : Node
     private Node Root;
     private byte capacityIndex = 0;
     private Transform _model;
+    private NavMeshAgent agent;
 
 
-    public TaskAttack(Node _Root, Entity entity, Transform model, byte capaIndex, float _attackSpeed)
+    public TaskAttack(Node _Root, Entity entity, Transform model, byte capaIndex, float _attackSpeed, NavMeshAgent _agent)
     {
         Root = _Root;
         MyEntity = entity;
@@ -29,6 +31,7 @@ public class TaskAttack : Node
         attackSpeed = _attackSpeed;
         capacityIndex = capaIndex;
         _model = model;
+        agent = _agent;
     }
 
     public override NodeState Evaluate(Node root)
@@ -50,6 +53,9 @@ public class TaskAttack : Node
        //CurrentAtkTime += 1.0f / sm.tickRate;
        CurrentAtkTime += Time.deltaTime;
         _model.LookAt(target.position);
+        
+        if (agent)
+        agent.SetDestination(MyEntity.transform.position);
 
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
