@@ -54,7 +54,7 @@ void OutlineObject_float(float2 UV, float OutlineThickness, float DepthSensitivi
 
 	float3 normalFiniteDifference0 = normalSamples[1] - normalSamples[0];
 	float3 normalFiniteDifference1 = normalSamples[3] - normalSamples[2];
-	float edgeNormal = sqrt(dot(normalFiniteDifference0, normalFiniteDifference1) + dot(normalFiniteDifference1, normalFiniteDifference0));
+	float edgeNormal = sqrt(dot(normalFiniteDifference0, normalFiniteDifference0) + dot(normalFiniteDifference1, normalFiniteDifference1));
 	edgeNormal = edgeNormal > (1 / NormalsSensitivity) ? 1 : 0;
 	float edge = max(edgeDepth, edgeNormal);
 	Out = edge;
