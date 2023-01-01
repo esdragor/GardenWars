@@ -1,19 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Entities;
+using Entities.Capacities;
+using Entities.FogOfWar;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Pinata : Entity, IMoveable
+public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
 {
     public ActiveMinionAutoSO activePinataAutoSO;
     
     [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private bool canAttack = true;
+    [SerializeField] private float attackValue = 5f;
+    [SerializeField] private Transform FalseFX;
     
+    [SerializeField] private float MaxHP = 100f;
+    [SerializeField] private float currentHp = 100f;
+    [SerializeField] private GameObject PinataDieFX;
+    [SerializeField] private ParticleSystem HitFX;
+
+
+
     private bool canMove;
     private float referenceMoveSpeed;
     private float currentMoveSpeed;
+    private bool isAlive = true;
+    private bool canDie = true;
 
     protected override void OnStart()
     {
@@ -208,4 +223,346 @@ public class Pinata : Entity, IMoveable
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
     public event GlobalDelegates.Vector3Delegate OnMove;
     public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
+   
+     public bool CanAttack()
+    {
+        return canAttack;
+    }
+
+    public void RequestSetCanAttack(bool value)
+    {
+        SetCanAttackRPC(value);
+    }
+    [PunRPC]
+    public void SetCanAttackRPC(bool value)
+    {
+        canAttack = value;
+        photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
+    }
+    [PunRPC]
+    public void SyncSetCanAttackRPC(bool value)
+    {
+        canAttack = value;
+        OnSetCanAttack?.Invoke(canAttack);
+        OnSetCanAttackFeedback?.Invoke(canAttack);
+    }
+
+    public event GlobalDelegates.BoolDelegate OnSetCanAttack;
+    public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;
+
+    public float GetAttackDamage()
+    {
+        return attackValue;
+    }
+
+    public void RequestSetAttackDamage(float value)
+    {
+        SetAttackDamageRPC(value);
+    }
+    [PunRPC]
+    public void SyncSetAttackDamageRPC(float value)
+    {
+        attackValue = value;
+        OnSetAttackDamage?.Invoke(attackValue);
+        OnSetAttackDamageFeedback?.Invoke(attackValue);
+    }
+    [PunRPC]
+    public void SetAttackDamageRPC(float value)
+    {
+        attackValue = value;
+        photonView.RPC("SyncSetAttackDamageRPC", RpcTarget.All, value);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
+    public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
+
+    public void RequestAttack(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
+    {
+        photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
+    }
+    [PunRPC]
+    public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
+    {
+        FalseFX.gameObject.SetActive(true);
+        OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+        OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+    }
+    [PunRPC]
+    public void AttackRPC(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
+    {
+        attackValue = ((ActiveMinionAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex)).AtkValue;
+        var entity = EntityCollectionManager.GetEntityByIndex(targetedEntities);
+        entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue, entityIndex);
+        photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
+    }
+
+    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
+    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
+
+    public float GetMaxHp()
+    {
+        return MaxHP;
+    }
+
+    public float GetCurrentHp()
+    {
+        return currentHp;
+    }
+
+    public float GetCurrentHpPercent()
+    {
+        if (MaxHP == 0) return 0;
+        return currentHp / MaxHP * 100;
+    }
+
+    public void RequestSetMaxHp(float value)
+    {
+        SetMaxHpRPC(value);
+    }
+    [PunRPC]
+    public void SyncSetMaxHpRPC(float value)
+    {
+        MaxHP = value;
+        OnSetMaxHp?.Invoke(MaxHP);
+        OnSetMaxHpFeedback?.Invoke(MaxHP);
+    }
+    [PunRPC]
+    public void SetMaxHpRPC(float value)
+    {
+        MaxHP = value;
+        photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, value);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetMaxHp;
+    public event GlobalDelegates.FloatDelegate OnSetMaxHpFeedback;
+
+    public void RequestIncreaseMaxHp(float amount, int killerId)
+    {
+        IncreaseMaxHpRPC(amount, killerId);
+    }
+    [PunRPC]
+    public void SyncIncreaseMaxHpRPC(float amount, int killerId)
+    {
+        MaxHP += amount;
+        OnIncreaseMaxHp?.Invoke(MaxHP);
+        OnIncreaseMaxHpFeedback?.Invoke(MaxHP);
+    }
+    [PunRPC]
+    public void IncreaseMaxHpRPC(float amount, int killerId)
+    {
+        MaxHP += amount;
+        photonView.RPC("SyncIncreaseMaxHpRPC", RpcTarget.All, amount, killerId);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
+    public event GlobalDelegates.FloatDelegate OnIncreaseMaxHpFeedback;
+
+    public void RequestDecreaseMaxHp(float amount, int killerId)
+    {
+        DecreaseMaxHpRPC(amount, killerId);
+    }
+    [PunRPC]
+    public void SyncDecreaseMaxHpRPC(float amount, int killerId)
+    {
+        MaxHP -= amount;
+        OnDecreaseMaxHp?.Invoke(MaxHP);
+        OnDecreaseMaxHpFeedback?.Invoke(MaxHP);
+    }
+    [PunRPC]
+    public void DecreaseMaxHpRPC(float amount, int killerId)
+    {
+        MaxHP -= amount;
+        photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, amount, killerId);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
+    public event GlobalDelegates.FloatDelegate OnDecreaseMaxHpFeedback;
+
+    public void RequestSetCurrentHp(float value)
+    {
+        SetCurrentHpRPC(value);
+    }
+    [PunRPC]
+    public void SyncSetCurrentHpRPC(float value)
+    {
+        currentHp = value;
+        OnSetCurrentHp?.Invoke(currentHp);
+        OnSetCurrentHpFeedback?.Invoke(currentHp);
+    }
+    [PunRPC]
+    public void SetCurrentHpRPC(float value)
+    {
+        currentHp = value;
+        photonView.RPC("SyncSetCurrentHpRPC", RpcTarget.All, value);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHpFeedback;
+
+    public void RequestSetCurrentHpPercent(float value)
+    {
+        SetCurrentHpPercentRPC(value);
+    }
+    [PunRPC]
+    public void SyncSetCurrentHpPercentRPC(float value)
+    {
+        currentHp = (value / 100) * MaxHP;
+        OnSetCurrentHpPercent?.Invoke(currentHp);
+        OnSetCurrentHpPercentFeedback?.Invoke(currentHp);
+    }
+    [PunRPC]
+    public void SetCurrentHpPercentRPC(float value)
+    {
+        currentHp = (value / 100) * MaxHP;
+        photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, value);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
+
+    public void RequestIncreaseCurrentHp(float amount, int killerId)
+    {
+        IncreaseCurrentHpRPC(amount, killerId);
+    }
+
+    [PunRPC]
+    public void SyncIncreaseCurrentHpRPC(float amount, int killerId)
+    {
+        currentHp = amount;
+        OnIncreaseCurrentHpFeedback?.Invoke(amount);
+    }
+
+    [PunRPC]
+    public void IncreaseCurrentHpRPC(float amount, int killerId)
+    {
+        currentHp += amount;
+        if (currentHp > MaxHP) currentHp = MaxHP;
+        OnIncreaseCurrentHp?.Invoke(amount);
+        
+        photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
+    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+
+    public void RequestDecreaseCurrentHp(float amount, int killerId)
+    {
+        photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount, killerId);
+    }
+
+    [PunRPC]
+    public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
+    {
+        currentHp = amount;
+        //Debug.Log("CurrentHP : " + CurrentHP);
+        if (currentHp <= 0)
+        {
+            Instantiate(PinataDieFX, transform.position, Quaternion.identity);
+            currentHp = 0;
+            if(isMaster) DieRPC(killerId);
+        }
+        else
+        {
+            HitFX.Play();
+        }
+        OnDecreaseCurrentHpFeedback?.Invoke(amount);
+    }
+
+    [PunRPC]
+    public void DecreaseCurrentHpRPC(float amount, int killerId)
+    {
+        currentHp -= amount;
+        OnDecreaseCurrentHp?.Invoke(amount);
+        if (isOffline)
+        {
+            SyncDecreaseCurrentHpRPC(currentHp, killerId);
+            return;
+        }
+        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
+    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+    
+    public bool IsAlive()
+    {
+        return isAlive;
+    }
+
+    public bool CanDie()
+    {
+        return canDie;
+    }
+
+    public void RequestSetCanDie(bool value)
+    {
+        photonView.RPC("SetCanDieRPC",RpcTarget.MasterClient,value);
+    }
+
+    public void SyncSetCanDieRPC(bool value)
+    {
+        canDie = value;
+    }
+
+    public void SetCanDieRPC(bool value)
+    {
+        canDie = value;
+        photonView.RPC("SyncSetCanDieRPC",RpcTarget.All,value);
+    }
+
+    public event GlobalDelegates.BoolDelegate OnSetCanDie;
+    public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
+
+    public void RequestDie(int KillerID)
+    {
+        photonView.RPC("DieRPC", RpcTarget.MasterClient, KillerID);
+    }
+    
+    [PunRPC]
+    public void DieRPC(int KillerID)
+    {
+        var entity = EntityCollectionManager.GetEntityByIndex(KillerID);
+        if (entity)
+        {
+        }
+
+        
+        if (isOffline)
+        {
+            SyncDieRPC(KillerID);
+            
+            return;
+        }
+        photonView.RPC("SyncDieRPC", RpcTarget.All, KillerID);
+    }
+    
+    [PunRPC]
+    public void SyncDieRPC(int KillerID)
+    {
+        isAlive = false;
+        FogOfWarManager.Instance.RemoveFOWViewable(this);
+
+        gameObject.SetActive(false);
+    }
+
+    public event Action<int> OnDie;
+    public event Action<int> OnDieFeedback;
+
+    public void RequestRevive()
+    {
+        
+    }
+
+    public void SyncReviveRPC()
+    {
+       
+    }
+
+    public void ReviveRPC()
+    {
+        
+    }
+
+    public event GlobalDelegates.NoParameterDelegate OnRevive;
+    public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
 }

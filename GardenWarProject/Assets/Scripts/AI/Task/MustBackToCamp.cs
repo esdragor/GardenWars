@@ -27,10 +27,9 @@ public class MustBackToCamp : Node
     {
         if (Vector3.Distance(trans.position, Camp) > MaxDist || isBack)
         {
-            isBack = true;
             agent.SetDestination(Camp);
             trans.LookAt(Camp);
-            isBack = (!(Vector3.Distance(trans.position, Camp) < 1)) && (isBack = true);
+            isBack = (!(Vector3.Distance(trans.position, Camp) < 1));
             return NodeState.Success;
         }
         return NodeState.Failure;
