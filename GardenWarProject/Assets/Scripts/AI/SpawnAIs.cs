@@ -21,10 +21,17 @@ public class SpawnAIs : MonoBehaviourPun
 
     [Header("Towers")]
     [SerializeField] private Transform[] towerSpawnPoints;
+    
+    [Header("Pinata")]
+    [SerializeField] private Transform[] pinataSpawnPoints;
+    [SerializeField] float timeBeforeSpawnPinata = 0;
 
     private GameStateMachine gsm => GameStateMachine.Instance;
     
     private readonly List<Entity> towers = new List<Entity>();
+    private readonly List<Entity> Pinatas = new List<Entity>();
+    private double timerPinata;
+
 
     public static SpawnAIs Instance;
 
@@ -42,13 +49,17 @@ public class SpawnAIs : MonoBehaviourPun
     private void Start()
     {
         timer = 0;
+        timerPinata = 0;
         gsm.OnTick += OnTick;
     }
     
     public void Init()
     {
         towers.Clear();
-        if(PhotonNetwork.IsMasterClient) InitTowers();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            InitTowers();
+        }
     }
 
     public void Sync()
@@ -65,12 +76,14 @@ public class SpawnAIs : MonoBehaviourPun
         
         timer = timeBetweenWaves-timeBeforeFirstWave;
         gsm.OnTick += SpawnWaves;
+        gsm.OnTick += InitPinata;
 
     }
 
     private void OnTick()
     {
         timer += gsm.increasePerTick;
+        timerPinata += gsm.increasePerTick;
     }
 
     #region Towers
@@ -87,6 +100,24 @@ public class SpawnAIs : MonoBehaviourPun
         
         towers.Add(blueTower);
         towers.Add(redTower);
+    }
+    
+    public void SpawnPinata()
+    {
+        var Pinata = PhotonNetwork.Instantiate("Pinata", pinataSpawnPoints[0].position, Quaternion.identity)
+            .GetComponent<Entity>();
+
+        //Pinata.SyncInstantiate(Enums.Team.Neutral);
+
+        Pinatas.Add(Pinata);
+        Pinata.GetComponent<PinataBT>().OnStart();
+    }
+    
+    private void InitPinata()
+    {
+        if(timerPinata < timeBeforeSpawnPinata) return;
+        gsm.OnTick -= InitPinata;
+        SpawnPinata();
     }
     
     private void SyncTowerData()

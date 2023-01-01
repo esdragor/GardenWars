@@ -8,11 +8,12 @@ using Tree = BehaviourTree.Tree;
 
 public class PinataBT : Tree
 {
-    public Transform[] waypoints;
+    public Transform CampPosition;
+    public float MaxDistanceToCamp;
     
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private LayerMask enemyMask;
-    [SerializeField] private Minion entity;
+    [SerializeField] private Pinata entity;
     [SerializeField] private float AtkRange;
     [SerializeField] private float FOVRange;
     [SerializeField] private float atkDelay = 15;
@@ -26,13 +27,18 @@ public class PinataBT : Tree
         {
             new Sequence(new List<Node>
             {
+                new CheckCanMove(entity),
+                new MustBackToCamp(origin, transform, CampPosition.position, MaxDistanceToCamp, agent)
+            }),
+            new Sequence(new List<Node>
+            {
                 new CheckEnemyInPOVRange(origin, entity,enemyMask, FOVRange),
                 new Selector(new List<Node>
                 {
                     new Sequence(new List<Node>
                     {
                         new CheckEnemyInAttackRange(origin, transform, AtkRange),
-                        new TaskAttack(origin, entity, Model, entity.activeMinionAutoSO.indexInCollection, atkDelay),
+                        new TaskAttack(origin, entity, Model, entity.activePinataAutoSO.indexInCollection, atkDelay),
                     }),
                     new Sequence(new List<Node>
                     {
@@ -40,12 +46,6 @@ public class PinataBT : Tree
                         new GoToTarget(origin, agent, transform, Model)
                     })
                 }),
-            }),
-
-            new Sequence(new List<Node>
-            {
-                new CheckCanMove(entity),
-                new TaskPatrol(agent, entity, transform, Model, waypoints, 5f)
             }),
 
 

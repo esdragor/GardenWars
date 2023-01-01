@@ -1,13 +1,14 @@
 using BehaviourTree;
+using Entities;
 using UnityEngine;
 
 namespace Test.IA_BL.Task
 {
     public class CheckCanMove : Node
     {
-        private Minion entity;
+        private IMoveable entity;
        
-        public CheckCanMove(Minion _entity)
+        public CheckCanMove(IMoveable _entity)
         {
             entity = _entity;
         }
