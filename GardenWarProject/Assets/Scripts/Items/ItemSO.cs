@@ -13,6 +13,7 @@ namespace Entities.Inventory
         [Tooltip("GD Name")] public string itemName;
         [TextArea(4, 4)] [Tooltip("Description of the item")] public string description;
         public Sprite sprite;
+        public Color itemColor;
 
         [Header("Gameplay")]
         public bool consumable;

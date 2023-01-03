@@ -19,6 +19,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 5f;
     [SerializeField] private Transform FalseFX;
+    [SerializeField] private GameObject Mesh;
     
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float currentHp = 100f;
@@ -36,18 +37,21 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
     protected override void OnStart()
     {
         canMove = true;
-        RequestAddItem(AssignRandomItem());
+        Item item = AssignRandomItem();
+        Mesh.GetComponent<Renderer>().material.color = item.AssociatedItemSO().itemColor;
+        RequestAddItem(item.indexOfSOInCollection);
     }
 
     public override void OnInstantiated()
     {
     }
 
-    private byte AssignRandomItem()
+    private Item AssignRandomItem()
     {
         ItemCollectionManager im = ItemCollectionManager.Instance;
         int randomItem = Random.Range(0, im.allItemSOs.Count);
-        return im.allItemSOs[randomItem].indexInCollection; 
+
+        return im.CreateItem((byte)randomItem, this);
     }
 
     public bool CanMove()
