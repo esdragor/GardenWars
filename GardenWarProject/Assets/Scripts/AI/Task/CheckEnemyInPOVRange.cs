@@ -40,6 +40,7 @@ public class CheckEnemyInPOVRange : Node
                     if (coll.gameObject == MyTransform.gameObject) continue;
                     var entity = coll.GetComponent<Entity>();
                     if (!entity) continue;
+                    if (!entity.isVisible) continue;
                     if(Physics.Raycast(MyTransform.position, (entity.transform.position -MyTransform.position).normalized , out var hit, MyEntity.viewRange,
                            layerTargetFogOfWar))
                     {

@@ -10,7 +10,7 @@ namespace  Entities
         [Header("Showable")]
         public bool canShow;
         public bool canHide;
-        public bool showMe;
+        public bool isVisible;
         private List<IFOWViewable> enemiesThatCanSeeMe = new List<IFOWViewable>();
         public List<GameObject> elementsToShow = new List<GameObject>();
         public bool CanShow() 
@@ -95,8 +95,8 @@ namespace  Entities
 
         public void ShowElements()
         {
-            if(showMe || !canShow) return;
-            showMe = true;
+            if(isVisible || !canShow) return;
+            isVisible = true;
             foreach (var go in elementsToShow)
             {
                 go.SetActive(true);
@@ -148,8 +148,8 @@ namespace  Entities
 
         public void HideElements()
         {
-            if(!showMe || !canHide) return;
-            showMe = false;
+            if(!isVisible || !canHide) return;
+            isVisible = false;
             lastSeenPosition = transform.position;
             foreach (var go in elementsToShow)
             {

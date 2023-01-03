@@ -17,7 +17,7 @@ namespace Entities
         protected GameStateMachine gsm => GameStateMachine.Instance;
         protected UIManager uiManager => UIManager.Instance;
         public int entityIndex => photonView.ViewID;
-        public Vector3 position => showMe ? transform.position : lastSeenPosition;
+        public Vector3 position => isVisible ? transform.position : lastSeenPosition;
         private Vector3 lastSeenPosition;
         
         [Header("Team")]
@@ -108,7 +108,7 @@ namespace Entities
             FogOfWarManager.Instance.AddFOWViewable(this);
             FogOfWarManager.Instance.AddFOWShowable(this);
             
-            showMe = isEnemyOfPlayer;
+            isVisible = isEnemyOfPlayer;
             team = newTeam;
 
             canShow = true;

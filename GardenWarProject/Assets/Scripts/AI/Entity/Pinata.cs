@@ -8,6 +8,7 @@ using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using Object = System.Object;
 using Random = UnityEngine.Random;
 
 public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
@@ -468,8 +469,15 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
         //Debug.Log("CurrentHP : " + CurrentHP);
         if (currentHp <= 0)
         {
-            Instantiate(PinataDieFX, transform.position, Quaternion.identity);
             currentHp = 0;
+            Instantiate(PinataDieFX, transform.position, Quaternion.identity);
+            
+            GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
+            ItemBag bag = item.GetComponent<ItemBag>();
+            bag.SetItemBag(items[0].indexOfSOInCollection, EntityCollectionManager.GetEntityByIndex(killerId).team);
+            bag.ChangeVisuals(true);
+            bag.IsCollectible();
+            
             if(isMaster) DieRPC(killerId);
         }
         else
@@ -494,6 +502,11 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+
+    private void DropItem()
+    {
+        
+    }
     
     public bool IsAlive()
     {

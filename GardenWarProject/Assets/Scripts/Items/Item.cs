@@ -21,6 +21,8 @@ namespace Entities.Inventory
         public bool isOnCooldown;
         private double cooldownTimer;
         public readonly List<ActiveCapacity> activeCapacities = new List<ActiveCapacity>();
+        
+        public Sprite sprite => AssociatedItemSO().sprite;
 
         public byte indexOfSOInCollection;
 

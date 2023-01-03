@@ -10,6 +10,7 @@ public class ActivePinataAutoSO : ActiveCapacitySO
 {
     
     public int AtkValue;
+    public GameObject ItemBagPrefab;
     public override Type AssociatedType()
     {
         return typeof(ActivePinataAutoSO);
