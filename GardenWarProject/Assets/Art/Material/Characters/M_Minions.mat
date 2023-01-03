@@ -33,7 +33,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_9b9101705b634498a6c1a7a335e9a512:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6c999041dfd5e2947b5b9db7a6ddaebe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8991adb2961c4ed4c9a8f5992fffa930, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -109,7 +109,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Depth_Sensitivity: 0.5
+    - _Depth_Sensitivity: 0.639
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -118,14 +118,14 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _Normals_Sensitivity: 0.5
+    - _Normals_Sensitivity: 0.543
     - _OcclusionStrength: 1
     - _Outline: 1
-    - _Outline_Thickness: 0
+    - _Outline_Thickness: 3
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _Ramp_Offset: 0
-    - _Ramp_Smoothness: 0
+    - _Ramp_Offset: 0.2
+    - _Ramp_Smoothness: 0.2
     - _ReceiveShadows: 1
     - _Rimlight: 1
     - _Rimlight_Fresnel: 6.8
