@@ -14,7 +14,7 @@ namespace Controllers.Inputs
 
 
         protected Vector3 cursorWorldPos;
-        protected Entity selectedEntities;
+        protected Entity selectedEntity;
 
 
         protected override void OnAwake()
@@ -52,16 +52,15 @@ namespace Controllers.Inputs
         {
             CastCamRay(out var hit);
             cursorWorldPos = hit.point;
-            selectedEntities = null;
+            selectedEntity = null;
             if (hit.transform == null)
             {
-                Debug.Log($"Wesh {hit.collider}");
                 return;
             }
             var ent = hit.transform.GetComponent<Entity>();
             if (ent == null && hit.transform.parent != null) hit.transform.parent.GetComponent<Entity>();
             if (ent == null) return;
-            selectedEntities = ent;
+            selectedEntity = ent;
             cursorWorldPos = ent.transform.position;
         }
 

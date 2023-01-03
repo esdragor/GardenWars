@@ -129,17 +129,13 @@ namespace Entities.Champion
         {
             MoveToTargetAction?.Invoke();
         }
-        
-        public void StartMoveToTarget(Vector3 targetPos,float rangeToAction,Action action)
-        {
-            MoveToTargetAction += () => MoveToTarget(targetPos, rangeToAction, action);
-        }
 
         private void MoveToTarget(Vector3 targetPos,float rangeToAction,Action action)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
             if (distanceToTarget <= rangeToAction)
             {
+                Debug.Log("In Range");
                 agent.ResetPath();
                 action.Invoke();
                 return;
@@ -151,11 +147,6 @@ namespace Entities.Champion
         {
             if (!targetEntity) return;
             MoveToTargetAction += () => MoveToTarget(targetEntity.position, rangeToAction, action);
-        }
-        
-        private void MoveToTarget(Entity targetEntity, float rangeToAction, Action action)
-        {
-            MoveToTarget(targetEntity.position,rangeToAction,action);
         }
 
         public void CancelMoveToTarget()
