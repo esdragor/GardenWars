@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
 using Entities.FogOfWar;
+using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
 {
@@ -33,10 +35,19 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
     protected override void OnStart()
     {
         canMove = true;
+        items.Add(AssignRandomItem());
     }
 
     public override void OnInstantiated()
     {
+    }
+
+    private Item AssignRandomItem()
+    {
+        ItemCollectionManager im = ItemCollectionManager.Instance;
+        int randomItem = Random.Range(0, im.allItemSOs.Count);
+
+        return im.CreateItem((byte)randomItem, this);
     }
 
     public bool CanMove()
