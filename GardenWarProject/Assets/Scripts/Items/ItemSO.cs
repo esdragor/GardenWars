@@ -26,6 +26,11 @@ namespace Entities.Inventory
         [HideInInspector] public byte[] MinionPassiveCapacitiesIndexes = new byte[0];
         public ActiveCapacitySO[] MinionActiveCapacities = new ActiveCapacitySO[0];
         [HideInInspector] public byte[] MinionActiveCapacitiesIndexes = new byte[0];
+        [Header("Pinata")]
+        public PassiveCapacitySO[] PinataPassiveCapacities = new PassiveCapacitySO[0];
+        [HideInInspector] public byte[] PinataPassiveCapacitiesIndexes = new byte[0];
+        public ActiveCapacitySO[] PinataActiveCapacities = new ActiveCapacitySO[0];
+        [HideInInspector] public byte[] PinataActiveCapacitiesIndexes = new byte[0];
         
 
         /// <returns>the type of Item associated with this ItemSO</returns>
@@ -51,6 +56,14 @@ namespace Entities.Inventory
                 MinionPassiveCapacitiesIndexes[index] =
                     CapacitySOCollectionManager.GetPassiveCapacitySOIndex(passiveCapacitySo);
             }
+            if (PinataPassiveCapacities != null)
+                PinataPassiveCapacitiesIndexes = new byte[ PinataPassiveCapacities.Length];
+            for (var index = 0; index <  PinataPassiveCapacities.Length; index++)
+            {
+                var passiveCapacitySo =  PinataPassiveCapacities[index];
+                PinataPassiveCapacitiesIndexes[index] =
+                    CapacitySOCollectionManager.GetPassiveCapacitySOIndex(passiveCapacitySo);
+            }
             // Actives
             activeCapacitiesIndexes = new byte[activeCapacities.Length];
             for (var index = 0; index < activeCapacities.Length; index++)
@@ -64,6 +77,13 @@ namespace Entities.Inventory
             {
                 var activeCapacitySo = MinionActiveCapacities[index];
                 MinionActiveCapacitiesIndexes[index] =
+                    CapacitySOCollectionManager.GetActiveCapacitySOIndex(activeCapacitySo);
+            }
+            PinataActiveCapacitiesIndexes = new byte[PinataActiveCapacities.Length];
+            for (var index = 0; index < PinataActiveCapacities.Length; index++)
+            {
+                var activeCapacitySo = PinataActiveCapacities[index];
+                PinataActiveCapacitiesIndexes[index] =
                     CapacitySOCollectionManager.GetActiveCapacitySOIndex(activeCapacitySo);
             }
         }
