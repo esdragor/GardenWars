@@ -19,18 +19,18 @@ public class TaskAttack : Node
     private GameStateMachine sm => GameStateMachine.Instance;
     private Node Root;
     private byte capacityIndex = 0;
-    private Transform _model;
+    private Transform model;
     private NavMeshAgent agent;
 
 
-    public TaskAttack(Node _Root, Entity entity, Transform model, byte capaIndex, float _attackSpeed, NavMeshAgent _agent)
+    public TaskAttack(Node _Root, Entity entity, Transform _model, byte capaIndex, float _attackSpeed, NavMeshAgent _agent)
     {
         Root = _Root;
         MyEntity = entity;
         attackable = entity.GetComponent<IAttackable>();
         attackSpeed = _attackSpeed;
         capacityIndex = capaIndex;
-        _model = model;
+        model = _model;
         agent = _agent;
     }
 
@@ -52,7 +52,7 @@ public class TaskAttack : Node
         
        //CurrentAtkTime += 1.0f / sm.tickRate;
        CurrentAtkTime += Time.deltaTime;
-        _model.LookAt(target.position);
+        model.LookAt(new Vector3(target.position.x, model.position.y, target.position.z));
         
         if (agent)
         agent.SetDestination(MyEntity.transform.position);

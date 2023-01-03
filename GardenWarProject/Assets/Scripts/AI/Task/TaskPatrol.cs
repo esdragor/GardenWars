@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using BehaviourTree;
+using GameStates;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -81,7 +82,14 @@ public class TaskPatrol : Node
             else
             {
                 agent.SetDestination(pos);
-                Mytransform.LookAt(model);
+                // Vector3 MoveTo = Vector3.MoveTowards(Mytransform.position, pos, agent.speed * (float)GameStateMachine.Instance.increasePerTick);
+                // model.LookAt(new Vector3(MoveTo.x, model.position.y, MoveTo.z));
+                
+                var turnTowardNavSteeringTarget = agent.steeringTarget;
+                Debug.Log(turnTowardNavSteeringTarget);
+     
+                Vector3 direction = (turnTowardNavSteeringTarget - Mytransform.position).normalized;
+
             }
         }
 

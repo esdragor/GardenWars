@@ -148,7 +148,7 @@ public class SpawnAIs : MonoBehaviourPun
     {
         if(timer<timeBetweenWaves) return;
         timer = 0;
-        for (var i = 0; i < minionsPerWave; i++)
+        for (var i = 0; i < 1; i++)
         {
             var spawnTimer = i * timeBetweenMinionSpawn;
 
