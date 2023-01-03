@@ -12,7 +12,7 @@ namespace Controllers.Inputs
     public class ChampionInputController : PlayerInputController
     {
         private Champion champion;
-        private Entity selectedEntity => EntityCollectionManager.GetEntityByIndex(-1);
+        
         private Vector2 mousePos;
         private bool isRightClicking;
         private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
@@ -21,7 +21,7 @@ namespace Controllers.Inputs
         {
             if (champion == null) return;
             UpdateTargets();
-            champion.targetedEntities = (selectedEntities) ? selectedEntities.entityIndex : -1;
+            champion.targetedEntities = (selectedEntity) ? selectedEntity.entityIndex : -1;
             champion.targetedPositions = cursorWorldPos;
             if (isRightClicking) OnMouseClick(nullCtx);
         }
@@ -32,7 +32,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnAttack(InputAction.CallbackContext ctx)
         {
-            champion.RequestAttack(champion.attackAbilityIndex, selectedEntities.entityIndex, cursorWorldPos);
+            champion.RequestAttack(champion.attackAbilityIndex, selectedEntity.entityIndex, cursorWorldPos);
         }
 
         /// <summary>
@@ -88,32 +88,32 @@ namespace Controllers.Inputs
 
         private void OnPressItem0(InputAction.CallbackContext ctx)
         {
-            champion.RequestPressItem(0, selectedEntities.entityIndex, cursorWorldPos);
+            champion.RequestPressItem(0, selectedEntity.entityIndex, cursorWorldPos);
         }
 
         private void OnPressItem1(InputAction.CallbackContext ctx)
         {
-            champion.RequestPressItem(1, selectedEntities.entityIndex, cursorWorldPos);
+            champion.RequestPressItem(1, selectedEntity.entityIndex, cursorWorldPos);
         }
 
         private void OnPressItem2(InputAction.CallbackContext ctx)
         {
-            champion.RequestPressItem(2, selectedEntities.entityIndex, cursorWorldPos);
+            champion.RequestPressItem(2, selectedEntity.entityIndex, cursorWorldPos);
         }
 
         private void OnReleaseItem0(InputAction.CallbackContext ctx)
         {
-            champion.RequestReleaseItem(0, selectedEntities.entityIndex, cursorWorldPos);
+            champion.RequestReleaseItem(0, selectedEntity.entityIndex, cursorWorldPos);
         }
 
         private void OnReleaseItem1(InputAction.CallbackContext ctx)
         {
-            champion.RequestReleaseItem(1, selectedEntities.entityIndex, cursorWorldPos);
+            champion.RequestReleaseItem(1, selectedEntity.entityIndex, cursorWorldPos);
         }
 
         private void OnReleaseItem2(InputAction.CallbackContext ctx)
         {
-            champion.RequestReleaseItem(2, selectedEntities.entityIndex, cursorWorldPos);
+            champion.RequestReleaseItem(2, selectedEntity.entityIndex, cursorWorldPos);
         }
 
         private void OnMouseMove(InputAction.CallbackContext ctx)
@@ -124,9 +124,9 @@ namespace Controllers.Inputs
 
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
-            if (selectedEntities)
+            if (selectedEntity != null)
             {
-                if (champion != selectedEntities && selectedEntities.team == champion.team)
+                if (champion != selectedEntity && selectedEntity.team == champion.team)
                 {
                     StartMoveGetItem();
                     return;
@@ -142,11 +142,9 @@ namespace Controllers.Inputs
 
         private void StartMoveAttack()
         {
-            if (!selectedEntities) return;
+            var entityToMoveTo = selectedEntity;
 
-            var entityToMoveTo = selectedEntities;
-
-            champion.StartMoveToTarget(selectedEntities, champion.recupItemRange, RequestAttack);
+            champion.StartMoveToTarget(selectedEntity, champion.attackRange, RequestAttack);
 
             void RequestAttack()
             {
@@ -157,16 +155,15 @@ namespace Controllers.Inputs
         // ReSharper disable Unity.PerformanceAnalysis
         private void StartMoveGetItem()
         {
-            if (!selectedEntities) return;
-
-
-            champion.StartMoveToTarget(selectedEntities, champion.attackRange, RequestGetItem);
+            if (!selectedEntity) return;
+            
+            champion.StartMoveToTarget(selectedEntity, champion.recupItemRange, RequestGetItem);
 
             void RequestGetItem()
             {
-                if (!selectedEntities) return;
-                if (selectedEntities.items.Count > 0)
-                    champion.RequestSwitchInventoryToInventory(selectedEntities.entityIndex, 0);
+                if (!selectedEntity) return;
+                if (selectedEntity.items.Count > 0)
+                    champion.RequestSwitchInventoryToInventory(selectedEntity.entityIndex, 0);
             }
         }
 
