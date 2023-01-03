@@ -21,16 +21,17 @@ MonoBehaviour:
   baseMoveSpeed: 0
   hpRegen: 0
   manaRegen: 0
-  attackSpeed: 0.05
   attackDamage: 10
+  attackSpeed: 0.05
+  attackRange: 3
   baseArmorPenetration: 0
   baseLifesteal: 0
-  attackAbility: {fileID: 11400000, guid: d9922b631c4e9d449bcd18acfad5975e, type: 2}
-  attackAbilityIndex: 11
+  attackAbility: {fileID: 11400000, guid: 39aa558a85db888408bae906e7c338fa, type: 2}
+  attackAbilityIndex: 8
   passiveCapacities: []
   passiveCapacitiesIndexes: 
   activeCapacities:
   - {fileID: 11400000, guid: 3e4bbb6ee5cff4d4dae3237f6dbd1799, type: 2}
   - {fileID: 11400000, guid: 9f3bd6cee36cc9944b0293b32939e45a, type: 2}
   - {fileID: 11400000, guid: 35efd2713517ad74ca47f2ef61b7ba14, type: 2}
-  activeCapacitiesIndexes: 050809
+  activeCapacitiesIndexes: 010203

@@ -57,10 +57,24 @@ namespace Entities.Capacities
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            var timer = so.timeUntilAttack;
+
+            gsm.OnUpdate += IncreaseTimer;
+
+            void IncreaseTimer()
+            {
+                timer -= Time.deltaTime;
+                if (timer > 0) return;
+
+                targetedEntity.GetComponent<IActiveLifeable>()?.DecreaseCurrentHpRPC(champion.attackDamage,caster.entityIndex);
+                
+                gsm.OnUpdate -= IncreaseTimer;
+            }
         }
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
+            //TODO - Play Animation
         }
     }
 
