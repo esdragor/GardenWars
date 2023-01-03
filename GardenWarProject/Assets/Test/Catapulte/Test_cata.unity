@@ -1112,7 +1112,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5d0150d12d233104196ad334cda917f5, type: 2}
+  - {fileID: 2100000, guid: ee5ff083d21d4144fb43e921dd5653f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4487,6 +4487,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7374749977257497103}
   m_CullTransparentMesh: 1
+--- !u!1001 &5768535017483250803
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307094964095780083, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6686893100077801033, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+      propertyPath: m_Name
+      value: Prefab_Arbalist_Low
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
 --- !u!114 &5769458628416104530
 MonoBehaviour:
   m_ObjectHideFlags: 0

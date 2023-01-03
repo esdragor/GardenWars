@@ -15,7 +15,7 @@ namespace Entities.Champion
         public Transform rotateParent;
         private Vector3 respawnPos;
         public Rigidbody rb;
-        private Animator animator;
+       
 
         public CollisionBlocker blocker;
         private static readonly int Speed = Animator.StringToHash("Speed");
@@ -34,8 +34,17 @@ namespace Entities.Champion
         {
             CastHeldCapacities();
             CastHeldItems();
-            if (photonView.IsMine && animator != null) animator.SetFloat(Speed, agent.velocity.magnitude);
+            UpdateAnimators();
             TryMoveToTarget();
+        }
+
+        private void UpdateAnimators()
+        {
+            if (!photonView.IsMine) return;
+            foreach (Animator animator in animators)
+            {
+                animator.SetFloat(Speed, agent.velocity.magnitude);
+            }
         }
 
         protected override void OnFixedUpdate()
@@ -77,9 +86,11 @@ namespace Entities.Champion
 
             team = newTeam;
             role = newRole;
-            
-            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
-            animator = championMesh.GetComponent<Animator>();
+
+            var linker = championMesh.GetComponent<ChampionMeshLinker>();
+
+            linker.LinkTeamColor(team);
+            animators = linker.animators;
             
             elementsToShow.Add(championMesh);
             
@@ -160,11 +171,8 @@ namespace Entities.Champion
 
         public void PlayThrowAnimation()
         {
-            animator.SetTrigger("Throw");
+            SetAnimatorTrigger("Throw");
         }
-        
-        
-        //hgrzighq
         
         public int selectedItemIndex = 0;
         
