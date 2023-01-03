@@ -59,12 +59,12 @@ public abstract class Bag : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void ChangeVisualsRPC(bool show)
+    public void ChangeVisualsRPC(bool show)
     {
         ChangeVisuals(show);
     }
 
-    protected abstract void ChangeVisuals(bool show);
+    public abstract void ChangeVisuals(bool show);
 
     private class ParabolaClass
     {
@@ -80,7 +80,7 @@ public abstract class Bag : MonoBehaviourPun
 
     private void MoveBag()
     {
-        if (Animation > 0.5f) canBePickedUp = true;
+        if (Animation > 0.5f) IsCollectible();
         
         if (Animation > 0.99f)
         {
@@ -121,6 +121,11 @@ public abstract class Bag : MonoBehaviourPun
         RecoltBag(Finished, thrower);
 
         
+    }
+
+    public void IsCollectible()
+    {
+        canBePickedUp = true;
     }
     
     protected abstract void RecoltBag(bool Finished, Entity thrower);

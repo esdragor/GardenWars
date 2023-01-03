@@ -1,3 +1,4 @@
+using System.Net;
 using Entities;
 using Entities.Capacities;
 using Entities.Inventory;
@@ -18,14 +19,22 @@ public class ItemBag : Bag
     {
         itemSoIndex = _itemSoIndex;
         team = thrower.team;
+
+        if (!so) return;
         
         nbBounce = so.nbBounce;
         height = so.height;
         
         speedDecreaseInAir = so.SpeedOnAir;
     }
+    
+    public void SetItemBag(byte _itemSoIndex, Enums.Team _team = Enums.Team.Neutral)
+    {
+        itemSoIndex = _itemSoIndex;
+        team = _team;
+    }
 
-    protected override void ChangeVisuals(bool show)
+    public override void ChangeVisuals(bool show)
     {
         gameObject.SetActive(show);
         if(!show) return;

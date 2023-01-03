@@ -63,7 +63,13 @@ public class TaskAttack : Node
         
         attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
         root.ClearData("target");
-
+        
+        if(MyEntity is Pinata)
+        {
+            Debug.Log("A SUPPRIMER");
+            MyEntity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(1000, target.entityIndex);
+        }
+        
         return NodeState.Success;
     }
 }

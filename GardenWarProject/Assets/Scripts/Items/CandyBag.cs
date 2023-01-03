@@ -18,7 +18,7 @@ public class CandyBag : Bag
         this.so = so;
     }
 
-    protected override void ChangeVisuals(bool show)
+    public override void ChangeVisuals(bool show)
     {
         gameObject.SetActive(show);
     }
