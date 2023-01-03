@@ -52,6 +52,21 @@ namespace Entities.Inventory
 
                 return;
             }
+            if (entityOfInventory.GetComponent<Pinata>())
+            {
+                foreach (var index in AssociatedItemSO().PinataPassiveCapacitiesIndexes)
+                {
+                    entityOfInventory.AddPassiveCapacityRPC(index);
+                }
+
+                activeCapacities.Clear();
+                foreach (var index in AssociatedItemSO().PinataActiveCapacitiesIndexes)
+                {
+                    activeCapacities.Add(CapacitySOCollectionManager.CreateActiveCapacity(index, entityOfInventory));
+                }
+
+                return;
+            }
 
             foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
             {

@@ -36,19 +36,18 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
     protected override void OnStart()
     {
         canMove = true;
-        items.Add(AssignRandomItem());
+        RequestAddItem(AssignRandomItem());
     }
 
     public override void OnInstantiated()
     {
     }
 
-    private Item AssignRandomItem()
+    private byte AssignRandomItem()
     {
         ItemCollectionManager im = ItemCollectionManager.Instance;
         int randomItem = Random.Range(0, im.allItemSOs.Count);
-
-        return im.CreateItem((byte)randomItem, this);
+        return im.allItemSOs[randomItem].indexInCollection; 
     }
 
     public bool CanMove()
