@@ -73,24 +73,12 @@ public class TaskPatrol : Node
             
             if (Vector3.Distance(MyPos, pos) < 0.3f)
             {
-                agent.SetDestination(pos);
                 waitCounter = 0f;
                 waiting = true;
                 CurrentWaypointIndex++;
                 //animator.SetBool("Walking", false);
             }
-            else
-            {
-                agent.SetDestination(pos);
-                // Vector3 MoveTo = Vector3.MoveTowards(Mytransform.position, pos, agent.speed * (float)GameStateMachine.Instance.increasePerTick);
-                // model.LookAt(new Vector3(MoveTo.x, model.position.y, MoveTo.z));
-                
-                var turnTowardNavSteeringTarget = agent.steeringTarget;
-                Debug.Log(turnTowardNavSteeringTarget);
-     
-                Vector3 direction = (turnTowardNavSteeringTarget - Mytransform.position).normalized;
-
-            }
+            agent.SetDestination(pos);
         }
 
         state = NodeState.Running;
