@@ -11,6 +11,6 @@ public class ActiveMinionAutoSO : ActiveCapacitySO
     
     public override Type AssociatedType()
     {
-        return typeof(ActiveMinionAuto);
+        return typeof(ActivePinataAuto);
     }
 }

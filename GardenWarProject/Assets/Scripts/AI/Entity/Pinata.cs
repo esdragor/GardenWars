@@ -10,7 +10,7 @@ using UnityEngine.AI;
 
 public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
 {
-    public ActiveMinionAutoSO activePinataAutoSO;
+    public ActivePinataAutoSO activePinataAutoSO;
     
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private bool canAttack = true;
@@ -290,7 +290,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
     [PunRPC]
     public void AttackRPC(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
     {
-        attackValue = ((ActiveMinionAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex)).AtkValue;
+        attackValue = ((ActivePinataAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex)).AtkValue;
         var entity = EntityCollectionManager.GetEntityByIndex(targetedEntities);
         entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue, entityIndex);
         photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
