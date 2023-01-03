@@ -298,6 +298,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
     {
+        if(FalseFX)
         FalseFX.gameObject.SetActive(true);
         OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
