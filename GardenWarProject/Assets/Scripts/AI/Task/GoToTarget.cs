@@ -33,7 +33,7 @@ public class GoToTarget : Node
         {
             agent.SetDestination(pos);
             //Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
-            MyTransform.LookAt(model);
+            //MyTransform.LookAt(model);
             state = NodeState.Running;
             return state;
         }

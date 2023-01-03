@@ -400,11 +400,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4649361137147978319, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
       propertyPath: looping
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4649361137147978319, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
       propertyPath: lengthInSec
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137147978319, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
       propertyPath: m_RootOrder
@@ -448,6 +452,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4649361137147978320, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361137620596488, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649361138255316056, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5927560539004405170, guid: ab05acff74ad2004c91b26dd0428175b, type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

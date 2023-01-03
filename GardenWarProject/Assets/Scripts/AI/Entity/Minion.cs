@@ -28,6 +28,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     private float currentMoveSpeed;
     private bool isAlive = true;
     private bool canDie = true;
+    private double cooldownHide = 0.2f;
     
     public void ReachEnemyCamp()
     {
@@ -288,9 +289,20 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
     }
+    
+    private void FalseFxHide()
+    {
+        cooldownHide -= gsm.increasePerTick;
+        if (cooldownHide > 0f) return;
+        FalseFX.gameObject.SetActive(false);
+        gsm.OnTick -= FalseFxHide;
+    }
+    
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
     {
+        cooldownHide = 0.2f;
+        gsm.OnTick += FalseFxHide;
         FalseFX.gameObject.SetActive(true);
         OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
