@@ -6,7 +6,8 @@ namespace Entities.Champion
 {
     public class ChampionMeshLinker : MonoBehaviourPun
     {
-        [SerializeField] private MeshRenderer[] teamColorfulParts;
+        public Animator[] animators = new Animator[0];
+        [SerializeField] private MeshRenderer[] teamColorfulParts = new MeshRenderer[0];
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
         private GameStateMachine gsm;
 

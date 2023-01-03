@@ -120,7 +120,11 @@ namespace Entities.Champion
             if(!canMove) return;
             CancelMoveToTarget();
             position = ActiveCapacity.GetClosestValidPoint(position);
+
             agent.SetDestination(position);
+
+            position.y = rotateParent.position.y;
+            rotateParent.LookAt(position);
         }
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
@@ -135,12 +139,17 @@ namespace Entities.Champion
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
             if (distanceToTarget <= rangeToAction)
             {
-                Debug.Log("In Range");
+                //Debug.Log("In Range");
+
                 agent.ResetPath();
                 action.Invoke();
                 return;
             }
+
             agent.SetDestination(targetPos);
+
+            targetPos.y = rotateParent.position.y;
+            rotateParent.LookAt(targetPos);
         }
 
         public void StartMoveToTarget(Entity targetEntity, float rangeToAction, Action action)

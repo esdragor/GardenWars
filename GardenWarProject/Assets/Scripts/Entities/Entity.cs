@@ -54,6 +54,8 @@ namespace Entities
 
         [SerializeField] private List<Renderer> renderers = new List<Renderer>();
 
+        protected Animator[] animators;
+
         private void Start()
         {
             EntityCollectionManager.AddEntity(this);
@@ -265,6 +267,24 @@ namespace Entities
                     Enums.Team.Team2 => Color.red,
                     _ => material.color
                 };
+            }
+        }
+
+        public void SetAnimatorTrigger(string trigger)
+        {
+            if (!photonView.IsMine) return; 
+            foreach(Animator animator in animators)
+            {
+                animator.SetTrigger(trigger);
+            }
+        }
+
+        public void SetAnimatorTrigger(int id)
+        {
+            if (!photonView.IsMine) return;
+            foreach (Animator animator in animators)
+            {
+                animator.SetTrigger(id);
             }
         }
     }
