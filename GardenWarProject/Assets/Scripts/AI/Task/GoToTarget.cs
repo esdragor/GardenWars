@@ -32,8 +32,7 @@ public class GoToTarget : Node
         if (Vector3.Distance(MyPos, pos) > agent.radius)
         {
             agent.SetDestination(pos);
-            Debug.Log(Vector3.Distance(MyPos, pos));
-                //Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
+            //Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
             MyTransform.LookAt(model);
             state = NodeState.Running;
             return state;
