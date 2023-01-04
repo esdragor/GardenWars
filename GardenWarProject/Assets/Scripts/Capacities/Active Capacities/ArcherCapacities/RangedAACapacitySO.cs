@@ -8,6 +8,7 @@ namespace Entities.Capacities
     public class RangedAACapacitySO : ActiveCapacitySO
     {
         public OnCollideEffect projectile;
+        public float speedFire = 0.1f;
         
         public override Type AssociatedType()
         {
@@ -91,7 +92,7 @@ namespace Entities.Capacities
                     CollideProjectile(null);
                     return;
                 }
-                projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position + Vector3.up, 0.1f);
+                projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position + Vector3.up, so.speedFire);
                 projectileTr.LookAt(targetedEntity.transform);
             }
 
