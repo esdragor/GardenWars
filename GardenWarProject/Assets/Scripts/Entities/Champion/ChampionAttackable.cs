@@ -1,3 +1,4 @@
+using System;
 using Entities.Capacities;
 using UnityEngine;
 using Photon.Pun;
@@ -10,7 +11,9 @@ namespace Entities.Champion
         public byte attackAbilityIndex;
         public bool canAttack;
         public float attackDamage;
-        public double attackSpeed;
+        public double baseAttackSpeed;
+        public double bonusAttackSpeed;
+        public double attackSpeed => baseAttackSpeed - bonusAttackSpeed;
         public float attackRange;
 
         public bool CanAttack()
@@ -111,5 +114,40 @@ namespace Entities.Champion
 
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
+        
+        public void RequestChangeAttackSpeed(float attackSpeedMod)
+        {
+            if(isMaster)
+            {
+                ChangeAttackSpeedRPC(attackSpeedMod);
+                return;
+            }
+            photonView.RPC("ChangeAttackSpeedRPC",RpcTarget.MasterClient,attackSpeedMod);
+        }
+
+        [PunRPC]
+        public void ChangeAttackSpeedRPC(float attackSpeedMod)
+        {
+            bonusAttackSpeed += attackSpeedMod;
+            
+            if (isOffline)
+            {
+                SyncChangeAttackSpeedRPC((float)bonusAttackSpeed,attackSpeedMod);
+                return;
+            }
+            photonView.RPC("SyncChangeAttackSpeedRPC",RpcTarget.All,(float)bonusAttackSpeed,attackSpeedMod);
+        }
+
+        [PunRPC]
+        public void SyncChangeAttackSpeedRPC(float newValue,float mod)
+        {
+            bonusAttackSpeed = newValue;
+            
+            if(isMaster) OnChangeAttackSpeed?.Invoke(mod);
+            OnChangeAttackSpeedFeedback?.Invoke(mod);
+        }
+
+        public event Action<float> OnChangeAttackSpeed;
+        public event Action<float> OnChangeAttackSpeedFeedback;
     }
 }

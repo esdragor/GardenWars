@@ -15,6 +15,7 @@ namespace Entities.Champion
         public bool canMove;
         
         [HideInInspector] public NavMeshAgent agent;
+        public float currentVelocity => agent.velocity.magnitude;
         
         public bool CanMove()
         {
@@ -122,6 +123,7 @@ namespace Entities.Champion
             position = ActiveCapacity.GetClosestValidPoint(position);
 
             agent.SetDestination(position);
+            OnMove?.Invoke(position);
 
             position.y = rotateParent.position.y;
             rotateParent.LookAt(position);
@@ -147,7 +149,8 @@ namespace Entities.Champion
             }
 
             agent.SetDestination(targetPos);
-
+            OnMove?.Invoke(targetPos);
+            
             targetPos.y = rotateParent.position.y;
             rotateParent.LookAt(targetPos);
         }

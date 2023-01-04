@@ -97,13 +97,13 @@ namespace Entities.Inventory
             if (!entity.GetComponent<Minion>())
                 foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
                 {
-                    entityOfInventory.RemovePassiveCapacityByIndex(index);
+                    entityOfInventory.RemovePassiveCapacityByIndexRPC(index);
                 }
             else
             {
                 foreach (var index in AssociatedItemSO().MinionPassiveCapacitiesIndexes)
                 {
-                    entityOfInventory.RemovePassiveCapacityByIndex(index);
+                    entityOfInventory.RemovePassiveCapacityByIndexRPC(index);
                 }
             }
         }

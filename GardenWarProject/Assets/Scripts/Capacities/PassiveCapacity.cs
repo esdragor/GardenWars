@@ -1,20 +1,24 @@
 using System.Collections.Generic;
-using UnityEngine;
+using GameStates;
 
 namespace Entities.Capacities
 {
     public abstract class PassiveCapacity
     {
+        protected GameStateMachine gsm => GameStateMachine.Instance;
+        
         public byte indexOfSo; //Index Reference in CapacitySOCollectionManager
 
         public bool stackable;
-        private int count; //Amount of Stacks
+        public int count; //Amount of Stacks
 
         public List<Enums.CapacityType> types; //All types of the capacity
 
         public abstract PassiveCapacitySO AssociatedPassiveCapacitySO();
 
         protected Entity entity;
+        protected Champion.Champion champion => (Champion.Champion) entity;
+        
 
         public void OnAdded(Entity target)
         {
