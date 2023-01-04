@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Capacities
@@ -41,8 +40,6 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            Debug.Log($"Added effect to champion {champion} ({champion.isPlayerChampion})");
-            
             currentStacks = 0;
             maxStacks = so.maxStacks;
 
@@ -57,7 +54,17 @@ namespace Entities.Capacities
         
         protected override void OnAddedFeedbackEffects(Entity target)
         {
-            if(champion.isPlayerChampion) gsm.OnUpdateFeedback += OnUpdate;
+            if (!champion.isPlayerChampion) return;
+            
+            currentStacks = 0;
+            maxStacks = so.maxStacks;
+
+            timeToIncrease = so.timeToIncrease;
+            timeToDecrease = so.timeToDecrease;
+            
+            timer = 0;
+                
+            gsm.OnUpdateFeedback += OnUpdate;
         }
         
         private void ResetStacks(int _)

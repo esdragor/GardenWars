@@ -78,11 +78,16 @@ namespace Entities.Capacities
             if(soIndex>= allPassiveCapacitiesSo.Count) return null;
             var so = allPassiveCapacitiesSo[soIndex];
             PassiveCapacity capacity;
-            if (so.stackable)
+            if (so.stackable || so.stackType == Enums.StackType.Unique)
             {
                 capacity = entity.GetPassiveCapacityBySOIndex(soIndex);
                 if (capacity != null)
                 {
+                    if (so.stackType == Enums.StackType.Unique)
+                    {
+                        Debug.LogWarning("Passive is Unique, returning null");
+                        return null;
+                    }
                     capacity.stackable = so.stackable;
                     return capacity;
                 }

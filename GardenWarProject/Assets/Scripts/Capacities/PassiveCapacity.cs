@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GameStates;
+using Photon.Pun;
 
 namespace Entities.Capacities
 {
@@ -37,6 +38,7 @@ namespace Entities.Capacities
         /// </summary>
         public void OnAddedFeedback(Entity target)
         {
+            if (stackable && !PhotonNetwork.IsMasterClient) count++;
             entity = target;
             OnAddedFeedbackEffects(target);
         }
