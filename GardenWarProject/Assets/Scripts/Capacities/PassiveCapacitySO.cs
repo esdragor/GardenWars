@@ -16,10 +16,11 @@ namespace Entities.Capacities
 
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
-        
-        public bool stackable;
 
-        
+        public Enums.StackType stackType;
+        public bool stackable => stackType == Enums.StackType.Stackable;
+
+
         /// <summary>
         /// return typeof(PassiveCapacity);
         /// </summary>

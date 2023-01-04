@@ -16,6 +16,11 @@ public class Enums
         Kit, Item, Positive, Negative, BasicAttack 
     }
 
+    public enum StackType
+    {
+        None,Stackable,Unique
+    }
+
     public enum CapacityShootType
     {
         Skillshot, TargetPosition, TargetEntity
