@@ -8,6 +8,7 @@ namespace Entities.Champion
     {
         [Header("Visual")]
         public Sprite portrait;
+        public Sprite SpriteSelection;
         public GameObject championMeshPrefab;
         public int canvasIndex;
         
