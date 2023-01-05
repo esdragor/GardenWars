@@ -477,7 +477,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         //Debug.Log("CurrentHP : " + CurrentHP);
         if (currentHp <= 0)
         {
-            Instantiate(MinionDieFX, transform.position, Quaternion.identity);
+            Destroy(Instantiate(MinionDieFX, transform.position, Quaternion.identity), 2f);
             currentHp = 0;
             if(isMaster)DieRPC(killerId);
         }

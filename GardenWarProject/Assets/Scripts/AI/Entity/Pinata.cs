@@ -474,7 +474,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
         if (currentHp <= 0)
         {
             currentHp = 0;
-            Instantiate(PinataDieFX, transform.position, Quaternion.identity);
+            Destroy(Instantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
             
             GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
             ItemBag bag = item.GetComponent<ItemBag>();
