@@ -88,7 +88,7 @@ namespace  Entities
             var viewable = EntityCollectionManager.GetEntityByIndex(viewableIndex).GetComponent<IFOWViewable>();
             if (viewable == null) return;
             if (enemiesThatCanSeeMe.Contains(viewable)) return;
-            
+   
             enemiesThatCanSeeMe.Add(viewable);
             if (show) ShowElements();
         }

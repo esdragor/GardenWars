@@ -254,7 +254,8 @@ MonoBehaviour:
   canRemovePassiveCapacity: 1
   uiTransform: {fileID: 7723959817813510235}
   uiOffset: {x: 0, y: 2, z: 0}
-  renderers: []
+  renderers:
+  - {fileID: 7518766679380973968}
   canShow: 1
   canHide: 1
   isVisible: 0
@@ -478,5 +479,10 @@ GameObject:
 --- !u!4 &8652306218164167423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1c36276cb472dfd4783671979b807a08, type: 3}
+  m_PrefabInstance: {fileID: 9194542655733318932}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7518766679380973968 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 1c36276cb472dfd4783671979b807a08, type: 3}
   m_PrefabInstance: {fileID: 9194542655733318932}
   m_PrefabAsset: {fileID: 0}

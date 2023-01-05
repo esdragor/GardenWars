@@ -56,7 +56,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         agent.speed = referenceMoveSpeed;
 
         UIManager.Instance.InstantiateHealthBarForEntity(this);
-        Debug.Log(team);
         Mesh.GetComponent<Renderer>().material = team == Enums.Team.Team1 ? BlueMaterial : RedMaterial;
     }
 
