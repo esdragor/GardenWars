@@ -8,10 +8,12 @@ namespace Entities.Champion
     {
         [Header("Visual")]
         public Sprite portrait;
+        public Sprite SpriteSelection;
         public GameObject championMeshPrefab;
         public int canvasIndex;
         
         [Header("Stats")]
+        public string ChampionName;
         public float maxHp;
         public float maxMana;
         public float baseDefense;
