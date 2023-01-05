@@ -415,6 +415,9 @@ MonoBehaviour:
   HitFX: {fileID: 557445818242320917}
   MinionDieFX: {fileID: 55932162552029174, guid: dc9c800c2d45ce4469490addebe62230, type: 3}
   NbCandyDropOnDeath: 5
+  BlueMaterial: {fileID: 2100000, guid: 84f6411ae1edc124ca8aed00947bcb96, type: 2}
+  RedMaterial: {fileID: 2100000, guid: 95967b0b914f3fc45aac3be969a4e8cc, type: 2}
+  Mesh: {fileID: 7979108560468846309}
   references:
     version: 1
 --- !u!208 &8682732196991000772
@@ -626,14 +629,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ea2c8f342885474e8070b9900581115, type: 3}
---- !u!198 &557445818242320917 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 2512745322748852598, guid: 9ea2c8f342885474e8070b9900581115, type: 3}
-  m_PrefabInstance: {fileID: 2694105349033849699}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &557445818242320916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2512745322748852599, guid: 9ea2c8f342885474e8070b9900581115, type: 3}
+  m_PrefabInstance: {fileID: 2694105349033849699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &557445818242320917 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2512745322748852598, guid: 9ea2c8f342885474e8070b9900581115, type: 3}
   m_PrefabInstance: {fileID: 2694105349033849699}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7096007407491029940
@@ -697,6 +700,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f15b7d01f97a514294ee7f0a73c8293, type: 3}
+--- !u!1 &7979108560468846309 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9f15b7d01f97a514294ee7f0a73c8293, type: 3}
+  m_PrefabInstance: {fileID: 7096007407491029940}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7345560492401130591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9f15b7d01f97a514294ee7f0a73c8293, type: 3}

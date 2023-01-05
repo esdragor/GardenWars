@@ -24,6 +24,9 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private GameObject MinionDieFX;
     [SerializeField] private int NbCandyDropOnDeath = 5;
+    [SerializeField] private Material BlueMaterial;
+    [SerializeField] private Material RedMaterial;
+    [SerializeField] private GameObject Mesh;
 
     private float currentMoveSpeed;
     private bool isAlive = true;
@@ -53,6 +56,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         agent.speed = referenceMoveSpeed;
 
         UIManager.Instance.InstantiateHealthBarForEntity(this);
+        Debug.Log(team);
+        Mesh.GetComponent<Renderer>().material = team == Enums.Team.Team1 ? BlueMaterial : RedMaterial;
     }
 
     public override List<Enums.Team> GetEnemyTeams()
