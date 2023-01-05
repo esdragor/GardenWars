@@ -72,7 +72,7 @@ namespace UIComponents.Lobby
                 if (championSo != null)
                 {
                     championImage.sprite = championSo.portrait;
-                    championNameText.text = $"{championSo.name}";
+                    championNameText.text = $"{championSo.ChampionName}";
                 }
             }
             else

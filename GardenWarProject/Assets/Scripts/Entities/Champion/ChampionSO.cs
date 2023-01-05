@@ -12,6 +12,7 @@ namespace Entities.Champion
         public int canvasIndex;
         
         [Header("Stats")]
+        public string ChampionName;
         public float maxHp;
         public float maxMana;
         public float baseDefense;
