@@ -32,6 +32,8 @@ namespace FreePlayer
 
             GameStateMachine.SetupChampion(champion);
             
+            UIManager.Instance.InstantiateChampionHUD();
+            
             UIManager.Instance.AssignInventory(-1);
             
             if(minion != null) minion.InitEntity(Enums.Team.Neutral);
