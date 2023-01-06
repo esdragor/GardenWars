@@ -34,12 +34,15 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         CurrentHP = MaxHP;
         animators = animatorss;
+        if (team != Enums.Team.Team2) return;
+
+        var transformRotation = TowerModel.transform.rotation;
+        TowerModel.transform.Rotate(Vector3.back, 90);
     }
 
     public override void OnInstantiated()
     {
         gameObject.SetActive(true);
-        //myAIBT.enabled = true;
     }
 
     public bool CanAttack()
