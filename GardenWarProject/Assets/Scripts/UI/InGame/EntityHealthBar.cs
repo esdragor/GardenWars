@@ -1,5 +1,7 @@
 using System;
 using Entities;
+using Entities.Champion;
+using GameStates;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,10 @@ namespace UIComponents
     public class EntityHealthBar : MonoBehaviour
     {
         [SerializeField] private Image healthBar;
+        [SerializeField] private Color ChampionColor;
+        [SerializeField] private Color AllyColor;
+        [SerializeField] private Color EnemyColor;
+        
         private IActiveLifeable lifeable;
         private Camera cam;
         
@@ -25,6 +31,14 @@ namespace UIComponents
             lifeable.OnDecreaseMaxHpFeedback += UpdateFillPercent;
 
             cam = Camera.main;
+            if (GameStateMachine.Instance.GetPlayerTeam() != entity.GetTeam())
+            {
+                healthBar.color = EnemyColor;
+            }
+            else
+            {
+                healthBar.color = (!entity.GetComponent<Champion>()) ? AllyColor : ChampionColor;
+            }
         }
 
         private void UpdateFillPercentByPercent(float value)
