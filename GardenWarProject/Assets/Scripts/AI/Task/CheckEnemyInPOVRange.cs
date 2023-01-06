@@ -12,19 +12,16 @@ public class CheckEnemyInPOVRange : Node
     private int layerTargetFogOfWar = 1 << 29 | 1 << 30;
 
     private Node Root;
-    //private Animator animator;
 
     public CheckEnemyInPOVRange(Node _Root, Entity entity, int enemyMaskByFunct, float _rangeFOV = 5f)
     {
         if (entity == null) return;
         MyTransform = entity.transform;
-        //animator = getComponent<Animator>();
         rangeFOV = _rangeFOV;
         EnemyLayerMaskF = enemyMaskByFunct;
         Root = _Root;
         MyEntity = entity;
     }
-
     public override NodeState Evaluate(Node root)
     {
         if (Root == null) Root = root;
@@ -54,6 +51,7 @@ public class CheckEnemyInPOVRange : Node
                     
                     Root.SetDataInBlackboard("target", entity);
                     //animator.SetBool("Walking", true);
+                    MyEntity.SetAnimatorTrigger("SpotEnemy");
                     state = NodeState.Success;
                     return state;
                 }

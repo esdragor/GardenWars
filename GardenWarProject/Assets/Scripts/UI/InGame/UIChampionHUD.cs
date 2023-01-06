@@ -191,6 +191,8 @@ namespace UIComponents
 
         private void AddPassiveIcon(PassiveCapacity capacity)
         {
+            //TODO : Don't add if passive from kit
+            
             if (handledPassives.ContainsKey(capacity)) return;
 
             Transform parent = null;
@@ -208,7 +210,7 @@ namespace UIComponents
             
             if(parent == null) return;
 
-            var passiveIcon = Instantiate(passiveIconPrefab, parent);
+            var passiveIcon = Instantiate(passiveIconPrefab, parent); // TODO - Pool
 
             handledPassives.Add(capacity,passiveIcon);
             

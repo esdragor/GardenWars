@@ -481,6 +481,8 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             currentHp = 0;
             Destroy(Instantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
             
+            SetAnimatorTrigger("Death");
+            
             GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
             ItemBag bag = item.GetComponent<ItemBag>();
             bag.SetItemBag(items[0].indexOfSOInCollection, EntityCollectionManager.GetEntityByIndex(killerId).team);

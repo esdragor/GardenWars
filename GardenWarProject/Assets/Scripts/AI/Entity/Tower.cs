@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using BehaviourTree;
 using Entities;
 using Entities.Capacities;
 using Photon.Pun;
@@ -15,6 +17,10 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float CurrentHP = 100f;
     [SerializeField] private ParticleSystem HitFX;
+    
+    [SerializeField] private GameObject TowerModel;
+    [SerializeField] private TowerBT BT;
+    [SerializeField] private Animator[] animatorss;
 
     private bool isAlive = true;
     private bool canDie = true;
@@ -27,6 +33,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     protected override void OnStart()
     {
         CurrentHP = MaxHP;
+        animators = animatorss;
     }
 
     public override void OnInstantiated()
@@ -270,6 +277,9 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         {
             //Instantiate(MinionDieFX, transform.position, Quaternion.identity);
             CurrentHP = 0;
+            SetAnimatorTrigger("Death");
+            TowerModel.SetActive(false);
+            
             RequestDie(killerId);
         }
         else
@@ -329,7 +339,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         isAlive = false;
         canView = false;
-        gameObject.SetActive(false);
+        enabled = false;
+        BT.enabled = false;
     }
 
     [PunRPC]
