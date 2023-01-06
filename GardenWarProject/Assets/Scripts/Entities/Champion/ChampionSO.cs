@@ -11,6 +11,8 @@ namespace Entities.Champion
         public Sprite SpriteSelection;
         public GameObject championMeshPrefab;
         public int canvasIndex;
+        public Material[] materialsRedTeam;
+        public Material[] materialsBlueTeam;
         
         [Header("Stats")]
         public string ChampionName;

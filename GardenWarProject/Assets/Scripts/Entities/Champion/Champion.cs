@@ -10,14 +10,14 @@ namespace Entities.Champion
     public partial class Champion : Entity
     {
         public bool isPlayerChampion => gsm.GetPlayerChampion() == this;
-        
+
         [HideInInspector] public ChampionSO currentSo;
-        public Enums.ChampionRole  role;
+        public Enums.ChampionRole role;
         public bool isFighter => role == Enums.ChampionRole.Fighter;
         public Transform rotateParent;
         private Vector3 respawnPos;
         public Rigidbody rb;
-        
+
         public CollisionBlocker blocker;
         private static readonly int Speed = Animator.StringToHash("Speed");
 
@@ -50,12 +50,10 @@ namespace Entities.Champion
 
         protected override void OnFixedUpdate()
         {
-            
         }
 
         public override void OnInstantiated()
         {
-            
         }
 
         public override void OnInstantiatedFeedback()
@@ -78,7 +76,7 @@ namespace Entities.Champion
             attackDamage = currentSo.attackDamage;
             baseAttackSpeed = currentSo.attackSpeed;
             attackRange = currentSo.attackRange;
-            
+
             attackAbilityIndex = currentSo.attackAbilityIndex;
             abilitiesIndexes = currentSo.activeCapacitiesIndexes;
             var championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
@@ -89,24 +87,31 @@ namespace Entities.Champion
             role = newRole;
 
             var linker = championMesh.GetComponent<ChampionMeshLinker>();
-
-            linker.LinkTeamColor(team);
+            switch (team)
+            {
+                case Enums.Team.Team1:
+                    linker.LinkTeamColor(currentSo.materialsBlueTeam);
+                    break;
+                case Enums.Team.Team2:
+                    linker.LinkTeamColor(currentSo.materialsRedTeam);
+                    break;
+            }
             animators = linker.animators;
-            
+
             elementsToShow.Add(championMesh);
-            
+
             if (!isOffline)
             {
                 so.SetIndexes();
-                
+
                 foreach (var index in so.passiveCapacitiesIndexes)
                 {
                     AddPassiveCapacityRPC(index);
                 }
-                
+
                 if (gsm.GetPlayerTeam() != team) championMesh.SetActive(false);
             }
-            
+
             canDie = true;
             canMove = true;
             canAttack = true;
@@ -123,6 +128,7 @@ namespace Entities.Champion
                 rb.velocity = Vector3.zero;
                 return;
             }
+
             switch (team)
             {
                 case Enums.Team.Team1:
@@ -158,7 +164,7 @@ namespace Entities.Champion
                     pos = transform;
                     break;
             }
-            
+
             respawnPos = transform.position = pos.position;
             rb.velocity = Vector3.zero;
         }
@@ -174,10 +180,10 @@ namespace Entities.Champion
         {
             SetAnimatorTrigger("Throw");
         }
-        
+
         public int selectedItemIndex = 0;
-        
-        public void RequestPressItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+
+        public void RequestPressItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
@@ -193,76 +199,80 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void PressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        public void PressItemRPC(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
-            if(itemIndexInInventory >= items.Count) return;
+            if (itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
-            if(item == null) return;
+            if (item == null) return;
             if (isOffline)
             {
                 SyncPressItemRPC(itemIndexInInventory, selectedEntities, positions);
                 return;
             }
-            photonView.RPC("SyncPressItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions);
+
+            photonView.RPC("SyncPressItemRPC", RpcTarget.All, itemIndexInInventory, selectedEntities, positions);
         }
 
         [PunRPC]
-        public void SyncPressItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        public void SyncPressItemRPC(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;
             if (!isFighter) return;
             targetedEntities = selectedEntities;
             targetedPositions = positions;
-            if(itemIndexInInventory >= items.Count) return;
+            if (itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
-            if(items[itemIndexInInventory] == null) return;
+            if (items[itemIndexInInventory] == null) return;
             foreach (var activeCapacity in item.activeCapacities)
             {
-                activeCapacity.OnPress(targetedEntities,targetedPositions);
+                activeCapacity.OnPress(targetedEntities, targetedPositions);
             }
+
             heldItems.Add(item);
         }
-        
+
         private void CastHeldItems()
         {
             if (!isFighter) return;
             foreach (var capacity in heldItems.SelectMany(item => item.activeCapacities))
             {
-                capacity.OnHold(targetedEntities,targetedPositions);
+                capacity.OnHold(targetedEntities, targetedPositions);
             }
         }
-        
-        public void RequestReleaseItem(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+
+        public void RequestReleaseItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
             if (isMaster)
             {
-                ReleaseItemRPC(itemIndexInInventory,selectedEntities,positions);
+                ReleaseItemRPC(itemIndexInInventory, selectedEntities, positions);
                 return;
             }
-            photonView.RPC("ReleaseItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
+
+            photonView.RPC("ReleaseItemRPC", RpcTarget.MasterClient, itemIndexInInventory, selectedEntities, positions);
         }
 
         [PunRPC]
-        public void ReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        public void ReleaseItemRPC(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
             if (isOffline)
             {
                 SyncReleaseItemRPC(itemIndexInInventory, selectedEntities, positions);
                 return;
             }
+
             photonView.RPC("SyncReleaseItemRPC", RpcTarget.All, itemIndexInInventory, selectedEntities, positions);
         }
 
         [PunRPC]
-        public void SyncReleaseItemRPC(byte itemIndexInInventory,int selectedEntities,Vector3 positions)
+        public void SyncReleaseItemRPC(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
             if (itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if (item == null) return;
-            
-            if (item.activeCapacities.Any(activeCapacity => !activeCapacity.CanCast(selectedEntities,positions)))
+
+            if (item.activeCapacities.Any(activeCapacity => !activeCapacity.CanCast(selectedEntities, positions)))
                 return;
 
             if (isFighter && !item.isOnCooldown)
@@ -270,23 +280,23 @@ namespace Entities.Champion
                 item.OnItemActivated(selectedEntities, positions);
                 foreach (var activeCapacity in item.activeCapacities)
                 {
-                    activeCapacity.OnRelease(selectedEntities,positions);
+                    activeCapacity.OnRelease(selectedEntities, positions);
                 }
             }
-            
-            if(isMaster) OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
-            OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions);
-            
+
+            if (isMaster) OnActivateItem?.Invoke(itemIndexInInventory, selectedEntities, positions);
+            OnActivateItemFeedback?.Invoke(itemIndexInInventory, selectedEntities, positions);
+
             heldItems.Remove(item);
         }
-        
+
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
-        
+
         public Item PopSelectedItem()
         {
             var item = GetItem(selectedItemIndex);
-            if(item != null) RemoveItemRPC(item);
+            if (item != null) RemoveItemRPC(item);
             return item;
         }
     }

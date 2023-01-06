@@ -16,7 +16,11 @@ MonoBehaviour:
   SpriteSelection: {fileID: 21300000, guid: 84c1a43f29acd304689fee43338f8da4, type: 3}
   championMeshPrefab: {fileID: 6686893100077801033, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
   canvasIndex: 0
-  ChampionName: Roberto
+  materialsRedTeam:
+  - {fileID: 2100000, guid: 2e7eb7125a3a4704d99f78da02a6911a, type: 2}
+  materialsBlueTeam:
+  - {fileID: 2100000, guid: 35d3abb053586d444a9735ac5054b1b6, type: 2}
+  ChampionName: Reinbow
   maxHp: 100
   maxMana: 0
   baseDefense: 0
@@ -32,7 +36,7 @@ MonoBehaviour:
   attackAbilityIndex: 4
   passiveCapacities:
   - {fileID: 11400000, guid: 401f7befc22c8d447823cc773e7f3f73, type: 2}
-  passiveCapacitiesIndexes: 00
+  passiveCapacitiesIndexes: 03
   activeCapacities:
   - {fileID: 11400000, guid: 3e4bbb6ee5cff4d4dae3237f6dbd1799, type: 2}
   - {fileID: 11400000, guid: 9f3bd6cee36cc9944b0293b32939e45a, type: 2}

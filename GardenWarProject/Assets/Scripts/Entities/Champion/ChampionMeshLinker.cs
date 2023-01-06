@@ -7,7 +7,7 @@ namespace Entities.Champion
     public class ChampionMeshLinker : MonoBehaviourPun
     {
         public Animator[] animators = new Animator[0];
-        [SerializeField] private MeshRenderer[] teamColorfulParts = new MeshRenderer[0];
+        [SerializeField] private SkinnedMeshRenderer[] teamColorfulParts = new SkinnedMeshRenderer[0];
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
         private GameStateMachine gsm;
 
@@ -16,23 +16,13 @@ namespace Entities.Champion
             gsm = GameStateMachine.Instance;
         }
 
-        public void LinkTeamColor(Enums.Team team)
+        public void LinkTeamColor(Material[] mats)
         {
-            var color = Color.white;
-            if (gsm != null)
-            {
-                foreach (var tc in GameStateMachine.Instance.teamColors)
-                {
-                    if (team != tc.team) continue;
-                    color = tc.color;
-                    break;
-                }
-            }
-
             if (teamColorfulParts.Length <= 0) return;
-            foreach (var rd in teamColorfulParts)
+
+            for (int i = 0; i < teamColorfulParts.Length; i++)
             {
-                rd.material.SetColor(EmissionColor, color * 1f);
+                teamColorfulParts[i].material = mats[i];
             }
         }
     }

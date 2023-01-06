@@ -47,7 +47,8 @@ MonoBehaviour:
   animators:
   - {fileID: 7188035489936636093}
   - {fileID: 6496092102429604876}
-  teamColorfulParts: []
+  teamColorfulParts:
+  - {fileID: 2448492698371108559}
 --- !u!1001 &3651185200170419500
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,6 +122,11 @@ Transform:
 --- !u!95 &7188035489936636093 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0062422fa192b7d438dc8839f65a0112, type: 3}
+  m_PrefabInstance: {fileID: 3651185200170419500}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2448492698371108559 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7831382917189309469, guid: 0062422fa192b7d438dc8839f65a0112, type: 3}
   m_PrefabInstance: {fileID: 3651185200170419500}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4614773158729543444
