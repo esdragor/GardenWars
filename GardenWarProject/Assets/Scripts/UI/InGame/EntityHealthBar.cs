@@ -1,3 +1,4 @@
+using System;
 using Entities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ namespace UIComponents
     {
         [SerializeField] private Image healthBar;
         private IActiveLifeable lifeable;
+        private Camera cam;
         
         public void InitHealthBar(Entity entity)
         {
@@ -21,7 +23,8 @@ namespace UIComponents
             lifeable.OnDecreaseCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnIncreaseMaxHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseMaxHpFeedback += UpdateFillPercent;
-        
+
+            cam = Camera.main;
         }
 
         private void UpdateFillPercentByPercent(float value)
@@ -33,6 +36,10 @@ namespace UIComponents
         {
             healthBar.fillAmount = lifeable.GetCurrentHp()/lifeable.GetMaxHp();
         }
-        
+
+        private void Update()
+        {
+           transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+        }
     }
 }
