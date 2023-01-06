@@ -63,7 +63,7 @@ namespace UIComponents
 
             gameStateMachine.OnDataDictUpdated += OnPlayerDataUpdated;
 
-            roomNameText.text = $"Room : {NetworkManager.Instance.currentRoomName}";
+            roomNameText.text = $"Room : {PhotonNetwork.CloudRegion}#{NetworkManager.Instance.currentRoomName}";
         }
         
         private void OnDisable()

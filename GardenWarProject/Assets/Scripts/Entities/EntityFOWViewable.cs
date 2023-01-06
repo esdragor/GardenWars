@@ -162,6 +162,8 @@ namespace Entities
 
         public void AddShowable(IFOWShowable showable)
         {
+            if (this is Pinata)
+                Debug.Log("Ok");
             if(!canView) return;
             if (seenShowables.Contains(showable)) return;
             seenShowables.Add(showable);

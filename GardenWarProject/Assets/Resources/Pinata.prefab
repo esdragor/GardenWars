@@ -111,6 +111,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1540465090822995665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7723959817813510235}
+  m_Layer: 29
+  m_Name: UI Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7723959817813510235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540465090822995665}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.096, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5121303772905984994}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5121303772905985001
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,6 +178,7 @@ Transform:
   - {fileID: 6680177220653903345}
   - {fileID: 8970935660252743461}
   - {fileID: 3028777561540902078}
+  - {fileID: 7723959817813510235}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -221,11 +252,12 @@ MonoBehaviour:
   team: 0
   canAddPassiveCapacity: 1
   canRemovePassiveCapacity: 1
-  uiTransform: {fileID: 0}
+  uiTransform: {fileID: 7723959817813510235}
   uiOffset: {x: 0, y: 2, z: 0}
-  renderers: []
-  canShow: 0
-  canHide: 0
+  renderers:
+  - {fileID: 7518766679380973968}
+  canShow: 1
+  canHide: 1
   isVisible: 0
   elementsToShow: []
   baseViewRange: 0
@@ -447,5 +479,10 @@ GameObject:
 --- !u!4 &8652306218164167423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1c36276cb472dfd4783671979b807a08, type: 3}
+  m_PrefabInstance: {fileID: 9194542655733318932}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7518766679380973968 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 1c36276cb472dfd4783671979b807a08, type: 3}
   m_PrefabInstance: {fileID: 9194542655733318932}
   m_PrefabAsset: {fileID: 0}

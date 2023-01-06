@@ -107,10 +107,10 @@ public class SpawnAIs : MonoBehaviourPun
         var Pinata = PhotonNetwork.Instantiate("Pinata", pinataSpawnPoints[0].position, Quaternion.identity)
             .GetComponent<Entity>();
 
-        //Pinata.SyncInstantiate(Enums.Team.Neutral);
 
         Pinatas.Add(Pinata);
         Pinata.GetComponent<PinataBT>().OnStart();
+        Pinata.SyncInstantiate(Enums.Team.Neutral);
     }
     
     private void InitPinata()

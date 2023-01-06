@@ -30,7 +30,7 @@ public partial class UIManager : MonoBehaviour
         UpdateTimer();
         
         gsm.OnTeamIncreaseScoreFeedBack += UpdateScore;
-        gsm.OnTick += UpdateTimer;
+        gsm.OnTickFeedback += UpdateTimer;
     }
 
     private void UpdateScore(byte _)

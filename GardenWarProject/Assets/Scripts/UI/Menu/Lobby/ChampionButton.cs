@@ -17,7 +17,7 @@ namespace UIComponents.Lobby
             assignedLobby = lobby;
             gameStateMachine = GameStateMachine.Instance;
             
-            championPortraitImage.sprite = gameStateMachine.allChampionsSo[index].portrait;
+            championPortraitImage.sprite = gameStateMachine.allChampionsSo[index].SpriteSelection;
             championSOIndex = index;
             
             button.onClick.AddListener(OnButtonClick);

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dde311ad2745fe47bffefc44c802ccf, type: 3}
+  m_Name: Archer Champion
+  m_EditorClassIdentifier: 
+  portrait: {fileID: 21300000, guid: 84c1a43f29acd304689fee43338f8da4, type: 3}
+  SpriteSelection: {fileID: 21300000, guid: 84c1a43f29acd304689fee43338f8da4, type: 3}
+  championMeshPrefab: {fileID: 6686893100077801033, guid: 61d0051b84c19984eb6babdbd8fc9f31, type: 3}
+  canvasIndex: 0
+  ChampionName: Roberto
+  maxHp: 100
+  maxMana: 0
+  baseDefense: 0
+  baseMoveSpeed: 0
+  hpRegen: 0
+  manaRegen: 0
+  attackDamage: 20
+  attackSpeed: 1
+  attackRange: 10
+  baseArmorPenetration: 0
+  baseLifesteal: 0
+  attackAbility: {fileID: 11400000, guid: d9922b631c4e9d449bcd18acfad5975e, type: 2}
+  attackAbilityIndex: 4
+  passiveCapacities:
+  - {fileID: 11400000, guid: 401f7befc22c8d447823cc773e7f3f73, type: 2}
+  passiveCapacitiesIndexes: 00
+  activeCapacities:
+  - {fileID: 11400000, guid: 3e4bbb6ee5cff4d4dae3237f6dbd1799, type: 2}
+  - {fileID: 11400000, guid: 9f3bd6cee36cc9944b0293b32939e45a, type: 2}
+  - {fileID: 11400000, guid: 35efd2713517ad74ca47f2ef61b7ba14, type: 2}
+  activeCapacitiesIndexes: 010203

@@ -14,7 +14,7 @@ public partial class UIManager
         if (entity.GetComponent<IActiveLifeable>() == null) return;
         var canvasHealth = Instantiate(healthBarPrefab, entity.uiTransform.position + entity.uiOffset, Quaternion.identity, entity.uiTransform);
         entity.elementsToShow.Add(canvasHealth);
-        if (entity.team != gsm.GetPlayerTeam())
+        if (entity.team != gsm.GetPlayerTeam() && entity.team != Enums.Team.Neutral)
         {
             canvasHealth.SetActive(false);
         }

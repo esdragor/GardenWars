@@ -11,7 +11,7 @@ using UnityEngine.AI;
 using Object = System.Object;
 using Random = UnityEngine.Random;
 
-public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
+public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 {
     public ActivePinataAutoSO activePinataAutoSO;
     
@@ -40,10 +40,15 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
         Item item = AssignRandomItem();
         Mesh.GetComponent<Renderer>().material.color = item.AssociatedItemSO().itemColor;
         RequestAddItem(item.indexOfSOInCollection);
+        OnInstantiated();
     }
 
     public override void OnInstantiated()
     {
+        referenceMoveSpeed = activePinataAutoSO.Speed;
+        currentMoveSpeed = referenceMoveSpeed;
+        agent.speed = referenceMoveSpeed;
+        UIManager.Instance.InstantiateHealthBarForEntity(this);
     }
 
     private Item AssignRandomItem()
@@ -474,7 +479,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable
         if (currentHp <= 0)
         {
             currentHp = 0;
-            Instantiate(PinataDieFX, transform.position, Quaternion.identity);
+            Destroy(Instantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
             
             GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
             ItemBag bag = item.GetComponent<ItemBag>();

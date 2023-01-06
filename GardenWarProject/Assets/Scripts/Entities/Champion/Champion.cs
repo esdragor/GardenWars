@@ -9,14 +9,15 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
+        public bool isPlayerChampion => gsm.GetPlayerChampion() == this;
+        
         [HideInInspector] public ChampionSO currentSo;
         public Enums.ChampionRole  role;
         public bool isFighter => role == Enums.ChampionRole.Fighter;
         public Transform rotateParent;
         private Vector3 respawnPos;
         public Rigidbody rb;
-       
-
+        
         public CollisionBlocker blocker;
         private static readonly int Speed = Animator.StringToHash("Speed");
 
@@ -41,9 +42,9 @@ namespace Entities.Champion
         private void UpdateAnimators()
         {
             if (!photonView.IsMine) return;
-            foreach (Animator animator in animators)
+            foreach (var animator in animators)
             {
-                animator.SetFloat(Speed, agent.velocity.magnitude);
+                animator.SetFloat(Speed, currentVelocity);
             }
         }
 
@@ -75,7 +76,7 @@ namespace Entities.Champion
             referenceMoveSpeed = currentSo.baseMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = currentSo.attackDamage;
-            attackSpeed = currentSo.attackSpeed;
+            baseAttackSpeed = currentSo.attackSpeed;
             attackRange = currentSo.attackRange;
             
             attackAbilityIndex = currentSo.attackAbilityIndex;

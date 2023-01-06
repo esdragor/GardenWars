@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
@@ -54,7 +55,7 @@ namespace Entities
 
         [SerializeField] private List<Renderer> renderers = new List<Renderer>();
 
-        protected Animator[] animators;
+        protected Animator[] animators = Array.Empty<Animator>();
 
         private void Start()
         {
@@ -171,6 +172,16 @@ namespace Entities
         {
             canRemovePassiveCapacity = value;
         }
+        
+        public void RequestAddPassiveCapacityByIndex(byte index)
+        {
+            if (isMaster)
+            {
+                AddPassiveCapacityRPC(index);
+                return;
+            }
+            photonView.RPC("AddPassiveCapacityRPC",RpcTarget.MasterClient,index);
+        }
 
         /// <summary>
         /// Adds a PassiveCapacity to the passiveCapacityList.
@@ -200,20 +211,31 @@ namespace Entities
             if (PhotonNetwork.IsMasterClient)
             {
                 capacity.OnAdded(this);
-                OnPassiveCapacityAdded?.Invoke(capacityIndex);
+                OnPassiveCapacityAdded?.Invoke(capacity);
             }
 
             capacity.OnAddedFeedback(this);
-            OnPassiveCapacityAddedFeedback?.Invoke(capacityIndex);
+            OnPassiveCapacityAddedFeedback?.Invoke(capacity);
         }
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityAdded;
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityAddedFeedback;
+        public event Action<PassiveCapacity> OnPassiveCapacityAdded;
+        public event Action<PassiveCapacity> OnPassiveCapacityAddedFeedback;
+
+        public void RequestRemovePassiveCapacityByIndex(byte index)
+        {
+            if (isMaster)
+            {
+                RemovePassiveCapacityByIndexRPC(index);
+                return;
+            }
+            photonView.RPC("RemovePassiveCapacityByIndexRPC",RpcTarget.MasterClient,index);
+        }
         
         /// <summary>
         /// Removes a PassiveCapacity from the passiveCapacityList.
         /// </summary>
         /// <param name="index">The index in the passiveCapacityList of the PassiveCapacity to remove</param>
-        public void RemovePassiveCapacityByIndex(byte index)
+        [PunRPC]
+        public void RemovePassiveCapacityByIndexRPC(byte index)
         {
             if(isOffline)
             {
@@ -241,19 +263,28 @@ namespace Entities
                 }
             }
             if (capacity == null) return;
-            passiveCapacitiesList.Remove(capacity);
+
+            if (capacity.stackable)
+            {
+                if(capacity.count == 1) passiveCapacitiesList.Remove(capacity);
+            }
+            else
+            {
+                passiveCapacitiesList.Remove(capacity);
+            }
+            
             if (PhotonNetwork.IsMasterClient)
             {
                 capacity.OnRemoved(this);
-                OnPassiveCapacityRemoved?.Invoke(index);
+                OnPassiveCapacityRemoved?.Invoke(capacity);
             }
             
             capacity.OnRemovedFeedback(this);
-            OnPassiveCapacityRemovedFeedback?.Invoke(index);
+            OnPassiveCapacityRemovedFeedback?.Invoke(capacity);
         }
         
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemoved;
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemovedFeedback;
+        public event Action<PassiveCapacity> OnPassiveCapacityRemoved;
+        public event Action<PassiveCapacity> OnPassiveCapacityRemovedFeedback;
         
 
         public void ChangeColor()

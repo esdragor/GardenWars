@@ -28,7 +28,7 @@ public class PinataBT : Tree
             new Sequence(new List<Node>
             {
                 new CheckCanMove(entity),
-                new MustBackToCamp(origin, transform, CampPosition.position, MaxDistanceToCamp, agent)
+                new MustBackToCamp(origin, transform, CampPosition.position, MaxDistanceToCamp, agent, entity)
             }),
             new Sequence(new List<Node>
             {
