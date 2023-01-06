@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Entities;
+using Entities.Capacities;
 using Entities.Champion;
 using GameStates;
 using UnityEngine;
@@ -9,6 +11,13 @@ namespace UIComponents
 {
     public class UIChampionHUD : MonoBehaviour
     {
+        [Header("Passive")]
+        [SerializeField] private UIPassiveIcon passiveIconPrefab;
+
+        [SerializeField] private Transform positivePassiveParent;
+        [SerializeField] private Transform negativePassiveParent;
+        
+        [Header("Components")]
         [SerializeField] private Image Portrait;
         [SerializeField] private Image healthBar;
         [SerializeField] private Image resourceBar;
@@ -20,12 +29,16 @@ namespace UIComponents
         [SerializeField] private Image spellOneCooldown;
         [SerializeField] private Image spellTwoCooldown;
         [SerializeField] private Image spellUltimateCooldown;
+        
         private Champion champion;
         private IResourceable resourceable;
         private IActiveLifeable lifeable;
         private ICastable castable;
         private SpellHolder passiveHolder;
         private Dictionary<byte, SpellHolder> spellHolderDict = new Dictionary<byte, SpellHolder>();
+
+        private Dictionary<PassiveCapacity, UIPassiveIcon> handledPassives =
+            new Dictionary<PassiveCapacity, UIPassiveIcon>();
 
         public class SpellHolder
         {
@@ -70,6 +83,9 @@ namespace UIComponents
 
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
             resourceBar.fillAmount = resourceable.GetCurrentResourcePercent();
+            
+            handledPassives.Clear();
+            
             LinkToEvents();
             UpdateIcons(champion);
         }
@@ -100,6 +116,8 @@ namespace UIComponents
             resourceable.OnDecreaseCurrentResourceFeedback += UpdateFillPercentResource;
             resourceable.OnIncreaseMaxResourceFeedback += UpdateFillPercentResource;
             resourceable.OnDecreaseMaxResourceFeedback += UpdateFillPercentResource;
+
+            champion.OnPassiveCapacityAddedFeedback += AddPassiveIcon;
         }
 
         private void UpdateIcons(Champion champion)
@@ -139,6 +157,11 @@ namespace UIComponents
             ultimateHolder.Setup(so.activeCapacities[2].icon);
 
             Portrait.sprite = so.portrait;
+
+            foreach (var passiveCapacity in champion.passiveCapacitiesList)
+            {
+                AddPassiveIcon(passiveCapacity);
+            }
         }
 
         private void UpdateCooldown(byte capacityIndex, int intArray, Vector3 vectors)
@@ -165,5 +188,43 @@ namespace UIComponents
         {
             resourceBar.fillAmount = resourceable.GetCurrentResource();
         }
+
+        private void AddPassiveIcon(PassiveCapacity capacity)
+        {
+            if (handledPassives.ContainsKey(capacity)) return;
+
+            Transform parent = null;
+
+            var types = capacity.AssociatedPassiveCapacitySO().types;
+            
+            if (types.Contains(Enums.CapacityType.Positive))
+            {
+                parent = positivePassiveParent;
+            }
+            if (types.Contains(Enums.CapacityType.Negative))
+            {
+                parent = negativePassiveParent;
+            }
+            
+            if(parent == null) return;
+
+            var passiveIcon = Instantiate(passiveIconPrefab, parent);
+
+            handledPassives.Add(capacity,passiveIcon);
+            
+            passiveIcon.LinkWithChampion(champion,capacity,RemovePassiveIcon);
+            
+            void RemovePassiveIcon(Entity _)
+            {
+                if (passiveIcon.RemovePassive(_))
+                {
+                    handledPassives.Remove(capacity);
+                    Destroy(passiveIcon.gameObject);
+                }
+            }
+        }
+
+        
+        
     }
 }

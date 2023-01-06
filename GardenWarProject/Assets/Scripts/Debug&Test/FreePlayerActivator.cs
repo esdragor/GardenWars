@@ -1,3 +1,4 @@
+using System;
 using Controllers.Inputs;
 using Entities.Capacities;
 using Entities.Champion;
@@ -9,6 +10,7 @@ namespace FreePlayer
     public class FreePlayerActivator : MonoBehaviour
     {
         [SerializeField] private Champion champion;
+        [SerializeField] private ChampionSO championSO;
         [SerializeField] private Enums.Team team;
         [SerializeField] private Enums.ChampionRole role;
         [SerializeField] private Minion minion;
@@ -25,8 +27,9 @@ namespace FreePlayer
             {
                 championSo.SetIndexes();
             }
-            
-            champion.ApplyChampionSO(1, team,role);
+
+            var soIndex = Array.IndexOf<ChampionSO>(GameStateMachine.Instance.allChampionsSo, championSO);
+            champion.ApplyChampionSO((byte)soIndex, team,role);
             
             GameStateMachine.AddOfflinePlayer(champion,team,role);
 

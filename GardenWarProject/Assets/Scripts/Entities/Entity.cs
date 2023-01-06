@@ -211,14 +211,14 @@ namespace Entities
             if (PhotonNetwork.IsMasterClient)
             {
                 capacity.OnAdded(this);
-                OnPassiveCapacityAdded?.Invoke(capacityIndex);
+                OnPassiveCapacityAdded?.Invoke(capacity);
             }
 
             capacity.OnAddedFeedback(this);
-            OnPassiveCapacityAddedFeedback?.Invoke(capacityIndex);
+            OnPassiveCapacityAddedFeedback?.Invoke(capacity);
         }
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityAdded;
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityAddedFeedback;
+        public event Action<PassiveCapacity> OnPassiveCapacityAdded;
+        public event Action<PassiveCapacity> OnPassiveCapacityAddedFeedback;
 
         public void RequestRemovePassiveCapacityByIndex(byte index)
         {
@@ -276,15 +276,15 @@ namespace Entities
             if (PhotonNetwork.IsMasterClient)
             {
                 capacity.OnRemoved(this);
-                OnPassiveCapacityRemoved?.Invoke(index);
+                OnPassiveCapacityRemoved?.Invoke(capacity);
             }
             
             capacity.OnRemovedFeedback(this);
-            OnPassiveCapacityRemovedFeedback?.Invoke(index);
+            OnPassiveCapacityRemovedFeedback?.Invoke(capacity);
         }
         
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemoved;
-        public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemovedFeedback;
+        public event Action<PassiveCapacity> OnPassiveCapacityRemoved;
+        public event Action<PassiveCapacity> OnPassiveCapacityRemovedFeedback;
         
 
         public void ChangeColor()
