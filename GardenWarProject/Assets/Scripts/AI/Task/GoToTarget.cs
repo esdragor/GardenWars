@@ -24,7 +24,11 @@ public class GoToTarget : Node
 
     public override NodeState Evaluate(Node Root)
     {
-        Vector3 pos = ((Entity)Root.GetData("target")).transform.position;
+        Entity t = ((Entity)Root.GetData("target"));
+        
+        if (t == null) return NodeState.Failure;
+        
+        Vector3 pos = t.transform.position;
         Vector3 MyPos = MyTransform.position;
         
         pos.y = 1.5f;

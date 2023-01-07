@@ -76,7 +76,7 @@ public class TaskAttack : Node
         // if (MyEntity is Tower)
         //     MyEntity.GetComponent<IActiveLifeable>().RequestDecreaseCurrentHp(1000, target.entityIndex);
 
-        //attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
+        attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
         MyEntity.SetAnimatorTrigger("Fire");
 
         return NodeState.Success;

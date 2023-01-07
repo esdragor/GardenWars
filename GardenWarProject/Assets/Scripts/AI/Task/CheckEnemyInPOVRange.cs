@@ -26,6 +26,10 @@ public class CheckEnemyInPOVRange : Node
     {
         if (Root == null) Root = root;
         Entity t = (Entity)Root.GetData("target");
+        if (MyEntity is Minion && MyEntity.team == Enums.Team.Team1)
+        {
+            Debug.Log("Minion");
+        }
         if (t == null)
         {
             Collider[] colliders = Physics.OverlapSphere(MyTransform.position, rangeFOV, EnemyLayerMaskF);
@@ -59,7 +63,12 @@ public class CheckEnemyInPOVRange : Node
                 return NodeState.Failure;
             }
         }
-        
+
+        if (t != null && !t.gameObject.activeSelf)
+        {
+            Root.ClearData("target");
+            state = NodeState.Failure;
+        }
         if (t != null && Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV)
             return NodeState.Success;
         if (t != null) Root.ClearData("target");
