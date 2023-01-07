@@ -122,6 +122,9 @@ MonoBehaviour:
   BT: {fileID: 605525518}
   animatorss:
   - {fileID: 9125056010151283320}
+  towersMaterials:
+  - {fileID: 2100000, guid: aea73ec332f067940a42e0f96d7051d8, type: 2}
+  - {fileID: 2100000, guid: 97fae6b1c6f964442b8789867cb4fa09, type: 2}
   references:
     version: 1
 --- !u!114 &605525518
@@ -314,6 +317,63 @@ Transform:
   m_Father: {fileID: 2322287294554273813}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1889997617342867625
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7702020074748419337}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.313
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.106
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.034
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.47158822
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.47158843
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5268819
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5268818
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -96.339
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
+      propertyPath: m_Name
+      value: SM_HairDryer_01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1768560ba2eb5494a89db49a71410406, type: 3}
 --- !u!1001 &6279953876684019747
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -522,7 +582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26dea78112c520145bfc02ca2981fb6c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.281
+      value: 0.14
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26dea78112c520145bfc02ca2981fb6c, type: 3}
       propertyPath: m_LocalRotation.w

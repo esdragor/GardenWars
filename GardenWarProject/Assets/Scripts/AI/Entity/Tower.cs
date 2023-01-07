@@ -10,21 +10,22 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 {
     public ActiveCapacitySO activeTowerAutoSO;
     private ActiveCapacity capacity;
-    
+
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 50f;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float CurrentHP = 100f;
     [SerializeField] private ParticleSystem HitFX;
-    
+
     [SerializeField] private GameObject TowerModel;
     [SerializeField] private TowerBT BT;
     [SerializeField] private Animator[] animatorss;
+    [SerializeField] private Material[] towersMaterials;
 
     private bool isAlive = true;
     private bool canDie = true;
-    
+
     public float GetAttackSpeed()
     {
         return attackSpeed;
@@ -34,10 +35,15 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         CurrentHP = MaxHP;
         animators = animatorss;
-        if (team != Enums.Team.Team2) return;
-
-        var transformRotation = TowerModel.transform.rotation;
-        TowerModel.transform.Rotate(Vector3.back, 90);
+        if (team == Enums.Team.Team1)
+        {
+            TowerModel.GetComponent<Renderer>().material = towersMaterials[0];
+        }
+        else
+        {
+            TowerModel.transform.Rotate(Vector3.back, 90);
+            TowerModel.GetComponent<Renderer>().material = towersMaterials[1];
+        }
     }
 
     public override void OnInstantiated()
@@ -54,12 +60,14 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         SetCanAttackRPC(value);
     }
+
     [PunRPC]
     public void SetCanAttackRPC(bool value)
     {
         canAttack = value;
         photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
     }
+
     [PunRPC]
     public void SyncSetCanAttackRPC(bool value)
     {
@@ -80,6 +88,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         SetAttackDamageRPC(value);
     }
+
     [PunRPC]
     public void SyncSetAttackDamageRPC(float value)
     {
@@ -87,6 +96,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnSetAttackDamage?.Invoke(attackValue);
         OnSetAttackDamageFeedback?.Invoke(attackValue);
     }
+
     [PunRPC]
     public void SetAttackDamageRPC(float value)
     {
@@ -101,16 +111,18 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
     }
+
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
     {
         capacity ??= CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
-        
-        capacity.OnRelease(targetedEntities,targetedPositions);
-        
-        if(isMaster) OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+
+        capacity.OnRelease(targetedEntities, targetedPositions);
+
+        if (isMaster) OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }
+
     [PunRPC]
     public void AttackRPC(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
     {
@@ -140,6 +152,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         SetMaxHpRPC(value);
     }
+
     [PunRPC]
     public void SyncSetMaxHpRPC(float value)
     {
@@ -147,6 +160,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnSetMaxHp?.Invoke(MaxHP);
         OnSetMaxHpFeedback?.Invoke(MaxHP);
     }
+
     [PunRPC]
     public void SetMaxHpRPC(float value)
     {
@@ -161,6 +175,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         IncreaseMaxHpRPC(amount, killerId);
     }
+
     [PunRPC]
     public void SyncIncreaseMaxHpRPC(float amount, int killerId)
     {
@@ -168,6 +183,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnIncreaseMaxHp?.Invoke(MaxHP);
         OnIncreaseMaxHpFeedback?.Invoke(MaxHP);
     }
+
     [PunRPC]
     public void IncreaseMaxHpRPC(float amount, int killerId)
     {
@@ -182,6 +198,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         DecreaseMaxHpRPC(amount, killerId);
     }
+
     [PunRPC]
     public void SyncDecreaseMaxHpRPC(float amount, int killerId)
     {
@@ -189,6 +206,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnDecreaseMaxHp?.Invoke(MaxHP);
         OnDecreaseMaxHpFeedback?.Invoke(MaxHP);
     }
+
     [PunRPC]
     public void DecreaseMaxHpRPC(float amount, int killerId)
     {
@@ -203,6 +221,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         SetCurrentHpRPC(value);
     }
+
     [PunRPC]
     public void SyncSetCurrentHpRPC(float value)
     {
@@ -210,6 +229,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnSetCurrentHp?.Invoke(CurrentHP);
         OnSetCurrentHpFeedback?.Invoke(CurrentHP);
     }
+
     [PunRPC]
     public void SetCurrentHpRPC(float value)
     {
@@ -224,6 +244,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         SetCurrentHpPercentRPC(value);
     }
+
     [PunRPC]
     public void SyncSetCurrentHpPercentRPC(float value)
     {
@@ -231,6 +252,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         OnSetCurrentHpPercent?.Invoke(CurrentHP);
         OnSetCurrentHpPercentFeedback?.Invoke(CurrentHP);
     }
+
     [PunRPC]
     public void SetCurrentHpPercentRPC(float value)
     {
@@ -259,8 +281,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         CurrentHP += amount;
         if (CurrentHP > MaxHP) CurrentHP = MaxHP;
         OnIncreaseCurrentHp?.Invoke(amount);
-        
-        photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,CurrentHP, killerId);
+
+        photonView.RPC("SyncIncreaseCurrentHpRPC", RpcTarget.All, CurrentHP, killerId);
     }
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
@@ -268,7 +290,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestDecreaseCurrentHp(float amount, int killerId)
     {
-        photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount, killerId);
+        photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount, killerId);
     }
 
     [PunRPC]
@@ -282,13 +304,14 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
             CurrentHP = 0;
             SetAnimatorTrigger("Death");
             TowerModel.SetActive(false);
-            
+
             RequestDie(killerId);
         }
         else
         {
             HitFX.Play();
         }
+
         OnDecreaseCurrentHpFeedback?.Invoke(amount);
     }
 
@@ -297,7 +320,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         CurrentHP -= amount;
         OnDecreaseCurrentHp?.Invoke(amount);
-        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,CurrentHP, killerId);
+        photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, CurrentHP, killerId);
     }
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
@@ -315,7 +338,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestSetCanDie(bool value)
     {
-        photonView.RPC("SetCanDieRPC",RpcTarget.MasterClient,value);
+        photonView.RPC("SetCanDieRPC", RpcTarget.MasterClient, value);
     }
 
     public void SyncSetCanDieRPC(bool value)
@@ -325,8 +348,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void SetCanDieRPC(bool value)
     {
-       canDie = value;
-       photonView.RPC("SyncSetCanDieRPC",RpcTarget.All,value);
+        canDie = value;
+        photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;
@@ -354,21 +377,18 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     }
 
     public event Action<int> OnDie;
-    public event  Action<int> OnDieFeedback;
+    public event Action<int> OnDieFeedback;
 
     public void RequestRevive()
     {
-        
     }
 
     public void SyncReviveRPC()
     {
-       
     }
 
     public void ReviveRPC()
     {
-        
     }
 
     public event GlobalDelegates.NoParameterDelegate OnRevive;
