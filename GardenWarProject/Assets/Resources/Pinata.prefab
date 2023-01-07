@@ -150,12 +150,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5121303772905984994}
-  - component: {fileID: 5121303772905984999}
   - component: {fileID: 5121303772905984998}
   - component: {fileID: 5121303772905984997}
   - component: {fileID: 5121303772905984996}
   - component: {fileID: 5121303772905985003}
   - component: {fileID: 5121303772905985002}
+  - component: {fileID: 4435092801337144789}
   m_Layer: 29
   m_Name: Pinata
   m_TagString: Untagged
@@ -182,19 +182,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5121303772905984999
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121303772905985001}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5121303772905984998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +310,19 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &4435092801337144789
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121303772905985001}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2291164, y: 2.1338263, z: 1}
+  m_Center: {x: -0.1189034, y: 0.56691295, z: 0}
 --- !u!1001 &3323917213337714076
 PrefabInstance:
   m_ObjectHideFlags: 0

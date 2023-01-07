@@ -26,10 +26,6 @@ public class CheckEnemyInPOVRange : Node
     {
         if (Root == null) Root = root;
         Entity t = (Entity)Root.GetData("target");
-        if (MyEntity is Minion && MyEntity.team == Enums.Team.Team1)
-        {
-            Debug.Log("Minion");
-        }
         if (t == null)
         {
             Collider[] colliders = Physics.OverlapSphere(MyTransform.position, rangeFOV, EnemyLayerMaskF);
