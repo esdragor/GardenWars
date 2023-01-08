@@ -16,8 +16,10 @@ MonoBehaviour:
   SpriteSelection: {fileID: 21300000, guid: 681914c382be2934baf74140971e3173, type: 3}
   championMeshPrefab: {fileID: 6389646249965025388, guid: 6c0ec95c1d8c319438ec2caf277c4f67, type: 3}
   canvasIndex: 0
-  materialsRedTeam: []
-  materialsBlueTeam: []
+  materialsRedTeam:
+  - {fileID: 2100000, guid: 491cceb53a19caf49bd22d493237b8f8, type: 2}
+  materialsBlueTeam:
+  - {fileID: 2100000, guid: 92e144ccb0f818743864a57df73dad1b, type: 2}
   ChampionName: Bubulle
   maxHp: 100
   maxMana: 0
@@ -34,7 +36,7 @@ MonoBehaviour:
   attackAbilityIndex: 9
   passiveCapacities:
   - {fileID: 11400000, guid: a79af256dcb1a904eae66f1ad7928738, type: 2}
-  passiveCapacitiesIndexes: 
+  passiveCapacitiesIndexes: 05
   activeCapacities:
   - {fileID: 11400000, guid: 8f9c4e72258f40f4bbff6449861c27b1, type: 2}
   - {fileID: 11400000, guid: 9f3bd6cee36cc9944b0293b32939e45a, type: 2}

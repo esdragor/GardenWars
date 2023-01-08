@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animators:
   - {fileID: 8050462652081257781}
-  teamColorfulParts: []
+  teamColorfulParts:
+  - {fileID: 3454757290195036956}
 --- !u!1001 &5878911455780115921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -112,6 +113,11 @@ GameObject:
 --- !u!4 &6205027553921659450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4277f2d99b99f2e409d46095d38efdb5, type: 3}
+  m_PrefabInstance: {fileID: 5878911455780115921}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &3454757290195036956 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 9108483661815856845, guid: 4277f2d99b99f2e409d46095d38efdb5, type: 3}
   m_PrefabInstance: {fileID: 5878911455780115921}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &8050462652081257781
