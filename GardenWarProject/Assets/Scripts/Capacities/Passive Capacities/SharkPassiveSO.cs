@@ -73,7 +73,6 @@ namespace Entities.Capacities
             champion.OnAttackFeedback += ResetTimer;
             champion.OnAttackFeedback += UnBorrow;
             
-            champion.OnDieFeedback += UnBorrow;
             champion.OnDieFeedback += ResetTimer;
         }
         
@@ -110,14 +109,19 @@ namespace Entities.Capacities
         {
             var target = EntityCollectionManager.GetEntityByIndex(targetId);
             if(target == null) return;
+            if(!champion.GetEnemyTeams().Contains(target.team)) return;
             
             target.AddPassiveCapacityRPC(so.stunPassive.indexInCollection);
             
             champion.OnAttack -= StunTarget;
         }
         
-        private void UnBorrow(byte _,int __,Vector3 ___)
+        private void UnBorrow(byte _,int targetId,Vector3 ___)
         {
+            var target = EntityCollectionManager.GetEntityByIndex(targetId);
+            if(target == null) return;
+            if(!champion.GetEnemyTeams().Contains(target.team)) return;
+            
             if(!borrowed) return;
             
             //champion.SetCanBeTargetedRPC(true);
