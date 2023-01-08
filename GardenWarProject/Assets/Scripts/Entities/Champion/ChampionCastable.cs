@@ -165,6 +165,7 @@ namespace Entities.Champion
             
             capacityDict[capacityIndex].capacity.OnRelease(targetedEntities,targetedPositions);
             if(isMaster) OnCast?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+            
             OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
     }

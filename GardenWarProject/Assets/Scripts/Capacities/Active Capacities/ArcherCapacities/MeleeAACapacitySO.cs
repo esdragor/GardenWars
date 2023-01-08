@@ -58,6 +58,7 @@ namespace Entities.Capacities
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
             champion.LookAt(targetedEntity.position);
+            champion.SetAnimatorTrigger("Basic Attack");
             
             var timer = so.timeUntilAttack;
 
