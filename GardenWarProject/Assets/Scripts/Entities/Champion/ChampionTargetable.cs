@@ -4,21 +4,43 @@ namespace Entities.Champion
 {
     public partial class Champion : ITargetable
     {
+        private bool canBeTargeted;
+        
         public bool CanBeTargeted()
         {
-            return true;
+            return canBeTargeted;
         }
 
         public void RequestSetCanBeTargeted(bool value)
         {
+            if (isMaster)
+            {
+                SetCanBeTargetedRPC(value);
+                return;
+            }
+            photonView.RPC("SetCanBeTargetedRPC", RpcTarget.MasterClient, value);
+        }
+        
+        [PunRPC]
+        public void SetCanBeTargetedRPC(bool value)
+        {
+            canBeTargeted = value;
+            OnSetCanBeTargeted?.Invoke(value);
+            if (isOffline)
+            {
+                SyncSetCanBeTargetedRPC(value);
+                return;
+            }
+            photonView.RPC("SyncSetCanBeTargetedRPC", RpcTarget.All, value);
         }
 
         [PunRPC]
-        public void SyncSetCanBeTargetedRPC(bool value) { }
-
-        [PunRPC]
-        public void SetCanBeTargetedRPC(bool value) { }
-
+        public void SyncSetCanBeTargetedRPC(bool value)
+        {
+            canBeTargeted = value;
+            OnSetCanBeTargetedFeedback?.Invoke(value);
+        }
+        
         public event GlobalDelegates.BoolDelegate OnSetCanBeTargeted;
         public event GlobalDelegates.BoolDelegate OnSetCanBeTargetedFeedback;
 
