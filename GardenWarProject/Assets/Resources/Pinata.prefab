@@ -278,14 +278,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CampPosition: {fileID: 5121303772905984994}
-  MaxDistanceToCamp: 10
+  MaxDistanceToCamp: 3
   agent: {fileID: 5121303772905985002}
   enemyMask:
     serializedVersion: 2
     m_Bits: 536870912
   entity: {fileID: 5121303772905984996}
-  AtkRange: 3
-  FOVRange: 10
+  AtkRange: 1
+  FOVRange: 5
   atkDelay: 0.3
   Model: {fileID: 5121303772905984994}
 --- !u!195 &5121303772905985002
