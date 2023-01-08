@@ -10,7 +10,8 @@ public partial class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("Top Bar")]
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI scoreTextBlue;
+    [SerializeField] private TextMeshProUGUI scoreTextRed;
     [SerializeField] private TextMeshProUGUI timerText;
     
     private void Awake()
@@ -35,7 +36,8 @@ public partial class UIManager : MonoBehaviour
 
     private void UpdateScore(byte _)
     {
-        scoreText.text = $"<color=blue>{gsm.GetTeamScore(Enums.Team.Team1)}</color> vs <color=red>{gsm.GetTeamScore(Enums.Team.Team2)}</color>";
+        scoreTextBlue.text = $"<color=blue>{gsm.GetTeamScore(Enums.Team.Team1)}</color>";
+        scoreTextRed.text = $"<color=red>{gsm.GetTeamScore(Enums.Team.Team2)}</color>";
     }
 
     private void UpdateTimer()
