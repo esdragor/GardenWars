@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a7df3cf15e9f69469660cf496d5971c, type: 3}
+  m_Script: {fileID: 11500000, guid: 73d1d3e336395084489e8cd85c10b164, type: 3}
   m_Name: SharkShot
   m_EditorClassIdentifier: 
   descriptionName: 
@@ -19,6 +19,7 @@ MonoBehaviour:
   maxRange: 10
   types: 00000000
   shootType: 0
-  indexInCollection: 0
-  projectile: {fileID: 2111450335713149475, guid: 3844c48aa8842f64c93372069b84103d, type: 3}
-  projectileSpeed: 0.1
+  indexInCollection: 10
+  projectile: {fileID: 4689079691940470199, guid: 3844c48aa8842f64c93372069b84103d, type: 3}
+  projectileSpeed: 5
+  projectileDamage: 1

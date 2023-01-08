@@ -4,8 +4,8 @@ using Object = UnityEngine.Object;
 
 namespace Entities.Capacities
 {
-    [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/SkillShot", fileName = "new SkillShot")]
-    public class SkillShotSO : ActiveCapacitySO
+    [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/SharkSkillShot", fileName = "new Shark SkillShot")]
+    public class SharkShotSO : ActiveCapacitySO
     {
         public ProjectileOnCollideEffect projectile;
         public float projectileSpeed = 1f;
@@ -13,13 +13,13 @@ namespace Entities.Capacities
 
         public override Type AssociatedType()
         {
-            return typeof(SkillShot);
+            return typeof(SharkShot);
         }
     }
     
-    public class SkillShot : ActiveCapacity
+    public class SharkShot : ActiveCapacity
     {
-        private SkillShotSO so => (SkillShotSO) AssociatedActiveCapacitySO();
+        private SharkShotSO so => (SharkShotSO) AssociatedActiveCapacitySO();
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return true;
@@ -58,14 +58,14 @@ namespace Entities.Capacities
 
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
-            var projectile = Object.Instantiate(so.projectile,projectileSpawnPos,casterTr.rotation);
+            var projectile = Object.Instantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
             
             var projectileTr = projectile.transform;
 
             projectile.OnEntityCollide += EntityCollide;
-            projectile.OnEntityCollideFeedback += (entity) => gsm.OnUpdateFeedback -= MoveProjectile;
+            projectile.OnEntityCollideFeedback += EntityCollideFeedback;
 
             gsm.OnUpdateFeedback += MoveProjectile;
             
@@ -74,12 +74,9 @@ namespace Entities.Capacities
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetPos, so.projectileSpeed * Time.deltaTime);
                 if (Vector3.Distance(projectileTr.position, targetPos) <= 0.01f)
                 {
-                    Debug.Log("MaxRange, Destroying projectile");
-                    
                     gsm.OnUpdateFeedback -= MoveProjectile;
                     
                     projectile.DestroyProjectile();
-                    
                 }
             }
 
@@ -92,10 +89,19 @@ namespace Entities.Capacities
             
             void EntityCollide(Entity entity)
             {
-                if(!caster.GetEnemyTeams().Contains(entity.team)) return;
+                if (!caster.GetEnemyTeams().Contains(entity.team)) return;
                 
                 DealDamage(entity);
                 
+                gsm.OnUpdateFeedback -= MoveProjectile;
+                
+                projectile.DestroyProjectile();
+            }
+            
+            void EntityCollideFeedback(Entity entity)
+            {
+                if (!caster.GetEnemyTeams().Contains(entity.team)) return;
+
                 gsm.OnUpdateFeedback -= MoveProjectile;
                 
                 projectile.DestroyProjectile();
