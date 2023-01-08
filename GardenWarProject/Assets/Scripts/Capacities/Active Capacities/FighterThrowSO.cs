@@ -24,6 +24,7 @@ public class FighterThrowSO : ActiveCapacitySO
     public float scaleAndDamageByNbCandyOnBag = 5f; //if palier
     public int damageCandyScale = 1; // damage if not palier, damage * (scaleByCandy * nbCandy)
     public int NbCandyTriggerDamage = 1; // nb candy need to trigger damage
+    public GameObject prefabJauge;
 
     public override Type AssociatedType()
     {
@@ -66,6 +67,8 @@ public class FighterThrow : ActiveCapacity
     {
         if (HelperDirection) HelperDirection.SetActive(true);
         else HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        if (UIJauge) UIJauge.gameObject.SetActive(true);
+        else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
     }
 
     protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
@@ -76,11 +79,15 @@ public class FighterThrow : ActiveCapacity
         acceleration += (Time.time - time_Pressed) * so.accelerationJauge;
 
         nbCandyStocked = so.MinCandy + Mathf.RoundToInt((float)acceleration);
+        if (nbCandyStocked > so.MaxCandy) nbCandyStocked = so.MaxCandy;
+        if (nbCandyStocked > champion.currentCandy) nbCandyStocked = champion.currentCandy;
     }
 
     protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
     {
-
+        if (nbCandyStocked > so.MaxCandy) nbCandyStocked = so.MaxCandy;
+        if (nbCandyStocked > champion.currentCandy) nbCandyStocked = champion.currentCandy;
+        if (UIJauge) UIJauge.UpdateTextSlider(nbCandyStocked);
     }
 
     private CandyBag InitCandyBag()
