@@ -35,7 +35,6 @@ public class FighterThrowSO : ActiveCapacitySO
 public class FighterThrow : ActiveCapacity
 {
     private FighterThrowSO so => (FighterThrowSO)AssociatedActiveCapacitySO();
-    private Entities.Champion.Champion champion;
 
     private Vector3 targetPosition;
 
@@ -50,7 +49,6 @@ public class FighterThrow : ActiveCapacity
 
     protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
     {
-        champion = caster.GetComponent<Entities.Champion.Champion>();
         if (champion == null) return false;
         if (!champion.isFighter) return false;
         return (champion.currentCandy > 0);

@@ -58,13 +58,24 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestSetCanAttack(bool value)
     {
-        SetCanAttackRPC(value);
+        if (isMaster)
+        {
+            SetCanAttackRPC(value);
+            return;
+        }
+        photonView.RPC("SetCanAttackRPC", RpcTarget.MasterClient, value);
     }
-
+        
     [PunRPC]
     public void SetCanAttackRPC(bool value)
     {
         canAttack = value;
+        OnSetCanAttack?.Invoke(value);
+        if (isOffline)
+        {
+            SyncSetCanAttackRPC(value);
+            return;
+        }
         photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
     }
 
@@ -72,8 +83,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public void SyncSetCanAttackRPC(bool value)
     {
         canAttack = value;
-        OnSetCanAttack?.Invoke(canAttack);
-        OnSetCanAttackFeedback?.Invoke(canAttack);
+        OnSetCanAttackFeedback?.Invoke(value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanAttack;

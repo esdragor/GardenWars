@@ -83,20 +83,32 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestSetCanMove(bool value)
     {
+        if (isMaster)
+        {
+            SetCanMoveRPC(value);
+            return;
+        }
         photonView.RPC("SetCanMoveRPC", RpcTarget.MasterClient, value);
     }
-    [PunRPC]
-    public void SyncSetCanMoveRPC(bool value)
-    {
-        canMove = value;
-        OnSetCanMove?.Invoke(canMove);
-        OnSetCanMoveFeedback?.Invoke(canMove);
-    }
+
     [PunRPC]
     public void SetCanMoveRPC(bool value)
     {
         canMove = value;
+        OnSetCanMove?.Invoke(value);
+        if (isOffline)
+        {
+            SyncSetCanMoveRPC(value);
+            return;
+        }
         photonView.RPC("SyncSetCanMoveRPC", RpcTarget.All, value);
+    }
+
+    [PunRPC]
+    public void SyncSetCanMoveRPC(bool value)
+    {
+        canMove = value;
+        OnSetCanMoveFeedback?.Invoke(value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanMove;
@@ -244,20 +256,32 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestSetCanAttack(bool value)
     {
-        SetCanAttackRPC(value);
+        if (isMaster)
+        {
+            SetCanAttackRPC(value);
+            return;
+        }
+        photonView.RPC("SetCanAttackRPC", RpcTarget.MasterClient, value);
     }
+        
     [PunRPC]
     public void SetCanAttackRPC(bool value)
     {
         canAttack = value;
+        OnSetCanAttack?.Invoke(value);
+        if (isOffline)
+        {
+            SyncSetCanAttackRPC(value);
+            return;
+        }
         photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
     }
+
     [PunRPC]
     public void SyncSetCanAttackRPC(bool value)
     {
         canAttack = value;
-        OnSetCanAttack?.Invoke(canAttack);
-        OnSetCanAttackFeedback?.Invoke(canAttack);
+        OnSetCanAttackFeedback?.Invoke(value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanAttack;

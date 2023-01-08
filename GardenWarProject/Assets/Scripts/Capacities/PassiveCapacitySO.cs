@@ -18,6 +18,8 @@ namespace Entities.Capacities
         public Enums.StackType stackType;
         public bool stackable => stackType == Enums.StackType.Stackable;
 
+        public double duration = 0;
+
 
         /// <summary>
         /// return typeof(PassiveCapacity);

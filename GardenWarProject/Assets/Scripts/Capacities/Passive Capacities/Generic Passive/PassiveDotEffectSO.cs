@@ -7,7 +7,6 @@ namespace Entities.Capacities
     public class PassiveDotEffectSO : PassiveCapacitySO
     {
         public float damageTickSpeed;
-        public float duration;
         public float damage;
         
         public override Type AssociatedType()

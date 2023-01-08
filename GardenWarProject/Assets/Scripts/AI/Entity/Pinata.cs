@@ -77,22 +77,32 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestSetCanMove(bool value)
     {
+        if (isMaster)
+        {
+            SetCanMoveRPC(value);
+            return;
+        }
         photonView.RPC("SetCanMoveRPC", RpcTarget.MasterClient, value);
-    }
-
-    [PunRPC]
-    public void SyncSetCanMoveRPC(bool value)
-    {
-        canMove = value;
-        OnSetCanMove?.Invoke(canMove);
-        OnSetCanMoveFeedback?.Invoke(canMove);
     }
 
     [PunRPC]
     public void SetCanMoveRPC(bool value)
     {
         canMove = value;
+        OnSetCanMove?.Invoke(value);
+        if (isOffline)
+        {
+            SyncSetCanMoveRPC(value);
+            return;
+        }
         photonView.RPC("SyncSetCanMoveRPC", RpcTarget.All, value);
+    }
+
+    [PunRPC]
+    public void SyncSetCanMoveRPC(bool value)
+    {
+        canMove = value;
+        OnSetCanMoveFeedback?.Invoke(value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanMove;
@@ -250,23 +260,35 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         return canAttack;
     }
 
-    public void RequestSetCanAttack(bool value)
-    {
-        SetCanAttackRPC(value);
-    }
-    [PunRPC]
-    public void SetCanAttackRPC(bool value)
-    {
-        canAttack = value;
-        photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
-    }
-    [PunRPC]
-    public void SyncSetCanAttackRPC(bool value)
-    {
-        canAttack = value;
-        OnSetCanAttack?.Invoke(canAttack);
-        OnSetCanAttackFeedback?.Invoke(canAttack);
-    }
+     public void RequestSetCanAttack(bool value)
+     {
+         if (isMaster)
+         {
+             SetCanAttackRPC(value);
+             return;
+         }
+         photonView.RPC("SetCanAttackRPC", RpcTarget.MasterClient, value);
+     }
+        
+     [PunRPC]
+     public void SetCanAttackRPC(bool value)
+     {
+         canAttack = value;
+         OnSetCanAttack?.Invoke(value);
+         if (isOffline)
+         {
+             SyncSetCanAttackRPC(value);
+             return;
+         }
+         photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
+     }
+
+     [PunRPC]
+     public void SyncSetCanAttackRPC(bool value)
+     {
+         canAttack = value;
+         OnSetCanAttackFeedback?.Invoke(value);
+     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanAttack;
     public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;

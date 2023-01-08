@@ -12,6 +12,7 @@ namespace Entities.Capacities
         public double knockUpDuration = 1;
         public float knockUpDamage = 20f;
         public ProjectileOnCollideEffect aileron;
+        public StunPassiveSO stunPassive;
 
         public override Type AssociatedType()
         {
@@ -45,7 +46,6 @@ namespace Entities.Capacities
             aileronGo.SetActive(false);
             
             aileron.OnEntityCollide += EntityCollide;
-
             
             gsm.OnUpdate += IncreaseTimeUnBorrowed;
             
@@ -95,10 +95,25 @@ namespace Entities.Capacities
             //champion.SetCanBeTargetedRPC(false);
             
             champion.rotateParent.localPosition = Vector3.up * -0.75f;
+            
+            if (Entity.isMaster)
+            {
+                champion.OnAttack += StunTarget;
+            }
 
             borrowed = true;
             
             aileronGo.SetActive(true);
+        }
+
+        private void StunTarget(byte _,int targetId,Vector3 __)
+        {
+            var target = EntityCollectionManager.GetEntityByIndex(targetId);
+            if(target == null) return;
+            
+            target.AddPassiveCapacityRPC(so.stunPassive.indexInCollection);
+            
+            champion.OnAttack -= StunTarget;
         }
         
         private void UnBorrow(byte _,int __,Vector3 ___)
@@ -106,6 +121,11 @@ namespace Entities.Capacities
             if(!borrowed) return;
             
             //champion.SetCanBeTargetedRPC(true);
+
+            if (Entity.isMaster)
+            {
+                champion.OnAttack -= StunTarget;
+            }
             
             champion.rotateParent.localPosition = Vector3.zero;
             
@@ -140,12 +160,28 @@ namespace Entities.Capacities
 
         protected override void OnRemovedEffects(Entity target)
         {
+            aileron.OnEntityCollide -= EntityCollide;
             
+            gsm.OnUpdate -= IncreaseTimeUnBorrowed;
+            
+            champion.OnAttack -= ResetTimer;
+            champion.OnAttack -= UnBorrow;
+            
+            champion.OnDie -= UnBorrow;
+            champion.OnDie -= ResetTimer;
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
+            if (Entity.isMaster) return;
             
+            gsm.OnUpdateFeedback -= IncreaseTimeUnBorrowed;
+            
+            champion.OnAttackFeedback -= ResetTimer;
+            champion.OnAttackFeedback -= UnBorrow;
+            
+            champion.OnDieFeedback -= UnBorrow;
+            champion.OnDieFeedback -= ResetTimer;
         }
     }
 }

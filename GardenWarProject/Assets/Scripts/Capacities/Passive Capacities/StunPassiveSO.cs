@@ -16,6 +16,10 @@ namespace Entities.Capacities
 
     public class StunPassive : PassiveCapacity
     {
+        private IMoveable moveable;
+        private IAttackable attackable;
+        private ICastable castable;
+        
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
             return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
@@ -23,6 +27,13 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
+            moveable = entity.GetComponent<IMoveable>();
+            attackable = entity.GetComponent<IAttackable>();
+            castable = entity.GetComponent<ICastable>();
+
+            moveable?.SetCanMoveRPC(false);
+            attackable?.SetCanAttackRPC(false);
+            castable?.SetCanCastRPC(false);
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
@@ -32,10 +43,14 @@ namespace Entities.Capacities
 
         protected override void OnRemovedEffects(Entity target)
         {
+            moveable?.SetCanMoveRPC(true);
+            attackable?.SetCanAttackRPC(true);
+            castable?.SetCanCastRPC(true);
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
+            
         }
     }
 }
