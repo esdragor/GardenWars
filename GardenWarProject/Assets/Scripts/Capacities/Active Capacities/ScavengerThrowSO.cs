@@ -55,14 +55,15 @@ namespace Entities.Capacities
         {
             time_Pressed = Time.time;
             bagSpeed = so.MinDistanceHFlash;
+            if (UIJauge) UIJauge.gameObject.SetActive(true);
+            else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
         }
 
         protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if (HelperDirection) HelperDirection.SetActive(true);
             else HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            if (UIJauge) UIJauge.gameObject.SetActive(true);
-            else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
+   
         }
 
         protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
