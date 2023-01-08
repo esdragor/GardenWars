@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
+using Entities.Champion;
 using Entities.FogOfWar;
 using Entities.Inventory;
 using Photon.Pun;
@@ -479,16 +480,6 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         if (currentHp <= 0)
         {
             currentHp = 0;
-            Destroy(Instantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
-            
-            SetAnimatorTrigger("Death");
-            
-            GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
-            ItemBag bag = item.GetComponent<ItemBag>();
-            bag.SetItemBag(items[0].indexOfSOInCollection, EntityCollectionManager.GetEntityByIndex(killerId).team);
-            bag.ChangeVisuals(true);
-            bag.IsCollectible();
-            
             if(isMaster) DieRPC(killerId);
         }
         else
@@ -557,8 +548,17 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public void DieRPC(int KillerID)
     {
         var entity = EntityCollectionManager.GetEntityByIndex(KillerID);
-        if (entity)
+        if (entity && entity is Champion)
         {
+            
+
+            
+            // GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
+            // ItemBag bag = item.GetComponent<ItemBag>();
+            // bag.SetItemBag(items[0].indexOfSOInCollection, EntityCollectionManager.GetEntityByIndex(killerId).team);
+            // bag.ChangeVisuals(true);
+            // bag.IsCollectible();
+                entity.AddItemRPC(items[0].indexOfSOInCollection);
         }
 
         
@@ -576,6 +576,9 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         isAlive = false;
         FogOfWarManager.Instance.RemoveFOWViewable(this);
+
+        Destroy(Instantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
+        SetAnimatorTrigger("Death");
 
         gameObject.SetActive(false);
     }
