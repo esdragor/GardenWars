@@ -76,7 +76,6 @@ public class FighterThrow : ActiveCapacity
         acceleration += (Time.time - time_Pressed) * so.accelerationJauge;
 
         nbCandyStocked = so.MinCandy + Mathf.RoundToInt((float)acceleration);
-        Debug.Log(nbCandyStocked);
     }
 
     protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)

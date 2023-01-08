@@ -262,7 +262,6 @@ namespace Entities.Champion
                 OnDecreaseCurrentCandyFeedback?.Invoke(amount);
                 return;
             }
-
             photonView.RPC("SyncDecreaseCurrentCandyRPC", RpcTarget.All, currentCandy);
         }
 

@@ -4,6 +4,7 @@ using Entities;
 using Entities.Capacities;
 using Entities.Champion;
 using GameStates;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,10 +31,14 @@ namespace UIComponents
         [SerializeField] private Image spellTwoCooldown;
         [SerializeField] private Image spellUltimateCooldown;
         
+        [Header("Candy")]
+        [SerializeField] private TMP_Text nbCandy;
+        
         private Champion champion;
         private IResourceable resourceable;
         private IActiveLifeable lifeable;
         private ICastable castable;
+        private ICandyable candyable;
         private SpellHolder passiveHolder;
         private Dictionary<byte, SpellHolder> spellHolderDict = new Dictionary<byte, SpellHolder>();
 
@@ -74,12 +79,18 @@ namespace UIComponents
             }
         }
 
+        public void UpdateCandy(int _)
+        {
+            nbCandy.text = candyable.GetCurrentCandy().ToString();
+        }
+        
         public void InitHUD(Champion newChampion)
         {
             champion = newChampion;
             lifeable = champion.GetComponent<IActiveLifeable>();
             resourceable = champion.GetComponent<IResourceable>();
             castable = champion.GetComponent<ICastable>();
+            candyable = champion.GetComponent<ICandyable>();
 
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
             resourceBar.fillAmount = resourceable.GetCurrentResourcePercent();
@@ -88,6 +99,7 @@ namespace UIComponents
             
             LinkToEvents();
             UpdateIcons(champion);
+            UpdateCandy(0);
         }
 
         private void InitHolders()
@@ -116,6 +128,9 @@ namespace UIComponents
             resourceable.OnDecreaseCurrentResourceFeedback += UpdateFillPercentResource;
             resourceable.OnIncreaseMaxResourceFeedback += UpdateFillPercentResource;
             resourceable.OnDecreaseMaxResourceFeedback += UpdateFillPercentResource;
+            
+            candyable.OnDecreaseCurrentCandyFeedback += UpdateCandy;
+            candyable.OnIncreaseCurrentCandyFeedback += UpdateCandy;
 
             champion.OnPassiveCapacityAddedFeedback += AddPassiveIcon;
         }
