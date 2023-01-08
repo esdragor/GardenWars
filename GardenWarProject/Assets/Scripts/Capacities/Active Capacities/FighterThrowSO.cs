@@ -11,7 +11,6 @@ public class FighterThrowSO : ActiveCapacitySO
     public int nbBounce = 5;
     [Range(0.1f, 10f)] public float SpeedOnAir = 1.0f;
     public float height = 5.0f;
-    public float Speed = 1f;
     public int MinCandy = 5;
     public int MaxCandy = 10;
     public float accelerationJauge = 1f;
