@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Entities.Capacities
 {
@@ -10,7 +11,8 @@ namespace Entities.Capacities
         public float borrowDamage = 10f;
         public double knockUpDuration = 1;
         public float knockUpDamage = 20f;
-        
+        public ProjectileOnCollideEffect aileron;
+
         public override Type AssociatedType()
         {
             return typeof(SharkPassive);
@@ -20,11 +22,13 @@ namespace Entities.Capacities
     public class SharkPassive : PassiveCapacity
     {
         private SharkPassiveSO so => (SharkPassiveSO) AssociatedPassiveCapacitySO();
-        
-        private double timer;
 
-        private bool isMoving;
+        private ProjectileOnCollideEffect aileron;
+        private GameObject aileronGo;
         
+        private double timeUnBorrowed;
+        public bool borrowed;
+
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
             return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
@@ -32,15 +36,106 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            Debug.Log("Added Shark Passive :)");
+            timeUnBorrowed = 0;
+            borrowed = false;
             
-            //Borrow Interface
-            //Request Borrow on timer
+            aileron = Object.Instantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
+                champion.rotateParent);
+            aileronGo = aileron.gameObject;
+            aileronGo.SetActive(false);
+            
+            aileron.OnEntityCollide += EntityCollide;
+
+            
+            gsm.OnUpdate += IncreaseTimeUnBorrowed;
+            
+            champion.OnAttack += ResetTimer;
+            champion.OnAttack += UnBorrow;
+            
+            champion.OnDie += UnBorrow;
+            champion.OnDie += ResetTimer;
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
         {
+            if (Entity.isMaster) return;
+
+            aileron = Object.Instantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
+                champion.rotateParent);
+            aileronGo = aileron.gameObject;
+            aileronGo.SetActive(false);
             
+            timeUnBorrowed = 0;
+            borrowed = false;
+
+            gsm.OnUpdateFeedback += IncreaseTimeUnBorrowed;
+            
+            champion.OnAttackFeedback += ResetTimer;
+            champion.OnAttackFeedback += UnBorrow;
+            
+            champion.OnDieFeedback += UnBorrow;
+            champion.OnDieFeedback += ResetTimer;
+        }
+        
+        private void IncreaseTimeUnBorrowed()
+        {
+            if(borrowed) return;
+            
+            timeUnBorrowed += Time.deltaTime;
+            if (timeUnBorrowed >= so.timeUntilBorrow)
+            {
+                Borrow();
+            }
+        }
+
+        private void Borrow()
+        {
+            if(borrowed) return;
+            
+            //champion.SetCanBeTargetedRPC(false);
+            
+            champion.rotateParent.localPosition = Vector3.up * -0.75f;
+
+            borrowed = true;
+            
+            aileronGo.SetActive(true);
+        }
+        
+        private void UnBorrow(byte _,int __,Vector3 ___)
+        {
+            if(!borrowed) return;
+            
+            //champion.SetCanBeTargetedRPC(true);
+            
+            champion.rotateParent.localPosition = Vector3.zero;
+            
+            borrowed = false;
+            
+            aileronGo.SetActive(false);
+        }
+        
+        private void UnBorrow(int _)
+        {
+            UnBorrow(0,0,Vector3.zero);
+        }
+        
+        private void ResetTimer(byte _,int __,Vector3 ___)
+        {
+            timeUnBorrowed = 0;
+        }
+        
+        private void ResetTimer(int _)
+        {
+            ResetTimer(0,0,Vector3.zero);
+        }
+
+        private void EntityCollide(Entity entity)
+        {
+            if (!champion.GetEnemyTeams().Contains(entity.team)) return;
+            
+            var lifeable = entity.GetComponent<IActiveLifeable>();
+            
+            lifeable.DecreaseCurrentHpRPC(so.borrowDamage, champion.entityIndex);
         }
 
         protected override void OnRemovedEffects(Entity target)

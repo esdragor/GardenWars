@@ -14,7 +14,7 @@ namespace Entities.Champion
         [HideInInspector] public ChampionSO currentSo;
         public Enums.ChampionRole role;
         public bool isFighter => role == Enums.ChampionRole.Fighter;
-        [SerializeField] private Transform rotateParent;
+        [SerializeField] public Transform rotateParent;
         public Vector3 forward => rotateParent.forward;
         public Quaternion rotation => rotateParent.localRotation;
         private Vector3 respawnPos;
@@ -118,6 +118,7 @@ namespace Entities.Champion
             canMove = true;
             canAttack = true;
             canCast = true;
+            canBeTargeted = true;
         }
 
         public void SetupSpawn()
@@ -181,6 +182,11 @@ namespace Entities.Champion
         public void PlayThrowAnimation()
         {
             SetAnimatorTrigger("Throw");
+        }
+
+        public void LookAt(Vector3 pos)
+        {
+            rotateParent.LookAt(pos);
         }
 
         public int selectedItemIndex = 0;

@@ -57,6 +57,8 @@ namespace Entities.Capacities
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            champion.LookAt(targetedEntity.position);
+            
             var timer = so.timeUntilAttack;
 
             gsm.OnUpdate += IncreaseTimer;
