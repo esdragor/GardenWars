@@ -8,6 +8,7 @@ namespace Entities.Capacities
     public class SharkShotSO : ActiveCapacitySO
     {
         public ProjectileOnCollideEffect projectile;
+        public ShieldPassiveSO shieldPassiveSo;
         public float projectileSpeed = 1f;
         public float projectileDamage;
 
@@ -84,6 +85,10 @@ namespace Entities.Capacities
             {
                 if (!entity) return;
                 var lifeable = entity.GetComponent<IActiveLifeable>();
+                
+                caster.AddPassiveCapacityRPC(so.shieldPassiveSo.indexInCollection);
+                var shield = (ShieldPassive)caster.GetPassiveCapacityBySOIndex(so.shieldPassiveSo.indexInCollection);
+                
                 lifeable.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
             }
             

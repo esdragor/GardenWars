@@ -453,7 +453,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public void SyncIncreaseCurrentHpRPC(float amount, int killerId)
     {
         currentHp = amount;
-        OnIncreaseCurrentHpFeedback?.Invoke(amount);
+        OnIncreaseCurrentHpFeedback?.Invoke(amount,killerId);
     }
 
     [PunRPC]
@@ -461,13 +461,13 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         currentHp += amount;
         if (currentHp > MaxHP) currentHp = MaxHP;
-        OnIncreaseCurrentHp?.Invoke(amount);
+        OnIncreaseCurrentHp?.Invoke(amount,killerId);
         
         photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
     }
 
-    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
-    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+    public event Action<float,int> OnIncreaseCurrentHp;
+    public event Action<float,int> OnIncreaseCurrentHpFeedback;
 
     public void RequestDecreaseCurrentHp(float amount, int killerId)
     {
@@ -489,14 +489,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         {
             HitFX.Play();
         }
-        OnDecreaseCurrentHpFeedback?.Invoke(amount);
+        OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
     }
 
     [PunRPC]
     public void DecreaseCurrentHpRPC(float amount, int killerId)
     {
         currentHp -= amount;
-        OnDecreaseCurrentHp?.Invoke(amount);
+        OnDecreaseCurrentHp?.Invoke(amount,killerId);
         if (isOffline)
         {
             SyncDecreaseCurrentHpRPC(currentHp, killerId);
@@ -505,8 +505,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
     }
 
-    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
-    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+    public event Action<float,int> OnDecreaseCurrentHp;
+    public event Action<float,int> OnDecreaseCurrentHpFeedback;
 
     public bool IsAlive()
     {

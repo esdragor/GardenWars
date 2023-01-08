@@ -272,7 +272,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public void SyncIncreaseCurrentHpRPC(float amount, int killerId)
     {
         CurrentHP = amount;
-        OnIncreaseCurrentHpFeedback?.Invoke(amount);
+        OnIncreaseCurrentHpFeedback?.Invoke(amount,killerId);
     }
 
     [PunRPC]
@@ -280,13 +280,13 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         CurrentHP += amount;
         if (CurrentHP > MaxHP) CurrentHP = MaxHP;
-        OnIncreaseCurrentHp?.Invoke(amount);
+        OnIncreaseCurrentHp?.Invoke(amount,killerId);
 
         photonView.RPC("SyncIncreaseCurrentHpRPC", RpcTarget.All, CurrentHP, killerId);
     }
 
-    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
-    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+    public event Action<float,int> OnIncreaseCurrentHp;
+    public event Action<float,int> OnIncreaseCurrentHpFeedback;
 
     public void RequestDecreaseCurrentHp(float amount, int killerId)
     {
@@ -312,19 +312,19 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
             HitFX.Play();
         }
 
-        OnDecreaseCurrentHpFeedback?.Invoke(amount);
+        OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
     }
 
     [PunRPC]
     public void DecreaseCurrentHpRPC(float amount, int killerId)
     {
         CurrentHP -= amount;
-        OnDecreaseCurrentHp?.Invoke(amount);
+        OnDecreaseCurrentHp?.Invoke(amount,killerId);
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, CurrentHP, killerId);
     }
 
-    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
-    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+    public event Action<float,int> OnDecreaseCurrentHp;
+    public event Action<float,int> OnDecreaseCurrentHpFeedback;
 
     public bool IsAlive()
     {

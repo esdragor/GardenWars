@@ -45,8 +45,13 @@ namespace UIComponents
         {
             healthBar.fillAmount = lifeable.GetCurrentHp()/lifeable.GetMaxHp();
         }
-    
+        
         private void UpdateFillPercent(float value)
+        {
+            healthBar.fillAmount = lifeable.GetCurrentHp()/lifeable.GetMaxHp();
+        }
+    
+        private void UpdateFillPercent(float value,int _)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp()/lifeable.GetMaxHp();
         }
