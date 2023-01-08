@@ -19,6 +19,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private ParticleSystem HitFX;
 
     [SerializeField] private GameObject TowerModel;
+    [SerializeField] private GameObject HairDryer;
     [SerializeField] private TowerBT BT;
     [SerializeField] private Animator[] animatorss;
     [SerializeField] private Material[] towersMaterials;
@@ -367,6 +368,9 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         canView = false;
         enabled = false;
         BT.enabled = false;
+        BT.Poussin.parent = null;
+        gameObject.SetActive(false);
+        HairDryer.SetActive(false);
     }
 
     [PunRPC]

@@ -10,7 +10,7 @@ namespace BehaviourTree
         [SerializeField] private LayerMask enemyMask;
         [SerializeField] private Tower entity;
         [SerializeField] private float AtkRange;
-        [SerializeField] private Transform Poussin;
+        [SerializeField] public Transform Poussin;
         private float atkDelay => entity.GetAttackSpeed();
         
         protected override Node InitTree()
