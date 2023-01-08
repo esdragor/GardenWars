@@ -22,17 +22,16 @@ MonoBehaviour:
   indexInCollection: 7
   candyBagPrefab: {fileID: 302393227357116420, guid: 1c845a85e73f83647a13ee404104dafa, type: 3}
   nbBounce: 1
-  SpeedOnAir: 0.5
-  height: 4
-  Speed: 1
+  SpeedOnAir: 0.35
+  height: 3
   MinCandy: 5
-  MaxCandy: 90
-  accelerationJauge: 1
-  RandomizeRebound: 0
-  RandomizeReboundRadius: 0.5
+  MaxCandy: 50
+  accelerationJauge: 0.1
+  RandomizeRebound: 1
+  RandomizeReboundRadius: 3
   DecalRandomizeCenter: {x: 0, y: 0, z: 0}
   ScalebyNbCandy: 0
-  scaleByCandy: 0.15
+  scaleByCandy: 0.1
   NbCandyPerPalier: 5
   scaleAndDamageByNbCandyOnBag: 5
   damageCandyScale: 100
