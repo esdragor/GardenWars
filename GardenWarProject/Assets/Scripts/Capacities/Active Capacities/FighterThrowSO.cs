@@ -107,12 +107,13 @@ public class FighterThrow : ActiveCapacity
         targetPosition.x *= so.DecalRandomizeCenter.x;
         targetPosition.z *= so.DecalRandomizeCenter.z;
         targetPosition = GetClosestValidPoint(targetPositions);
-        targetPosition.y = 1;
 
         champion.RequestDecreaseCurrentCandy(nbCandyStocked);
 
         var candyBag = InitCandyBag();
-        candyBag.transform.localScale =  Vector3.one * (!so.ScalebyNbCandy ? so.scaleByCandy * nbCandyStocked : (nbCandyStocked / so.NbCandyPerPalier) * so.scaleAndDamageByNbCandyOnBag);
+        var transform = candyBag.transform;
+        transform.localScale =  Vector3.one * (!so.ScalebyNbCandy ? so.scaleByCandy * nbCandyStocked : (nbCandyStocked / so.NbCandyPerPalier) * so.scaleAndDamageByNbCandyOnBag);
+        targetPosition.y = transform.localScale.y;
         candyBag.InitBag(targetPosition, distanceCandy, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
         candyBag.SetCandyBag(so, nbCandyStocked);
         candyBag.ThrowBag();

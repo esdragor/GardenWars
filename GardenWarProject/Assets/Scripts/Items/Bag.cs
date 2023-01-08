@@ -95,14 +95,15 @@ public abstract class Bag : MonoBehaviourPun
                 endPosition.z += (nbBounce *0.5f) * dir.z + dir.z * (float)speed + Random.Range(-randomRangeRadius, randomRangeRadius) * ((isRandom) ? 1 : 0);
                 
                 endPosition = ActiveCapacity.GetClosestValidPoint(endPosition);
-                endPosition.y = 1f;
                 nbBounce--;
                 speedDecreaseInAir *= 0.9f;
             }
             else
             {
                 GameStateMachine.Instance.OnUpdate -= MoveBag;
+                transform.position = new Vector3(transform.position.x, endPosition.y, transform.position.z);
                 Finished = true;
+                return;
             }
         }
         Animation += (1 / gsm.tickRate) * speedDecreaseInAir;
