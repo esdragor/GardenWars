@@ -21,10 +21,9 @@ namespace Entities.Capacities
     {
         private SharkPassiveSO so => (SharkPassiveSO) AssociatedPassiveCapacitySO();
         
-        private double timer;
+        private double timeUnBorrowed;
+        public bool borrowed;
 
-        private bool isMoving;
-        
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
             return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
@@ -32,10 +31,60 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            Debug.Log("Added Shark Passive :)");
+            timeUnBorrowed = 0;
+            borrowed = false;
+
+            gsm.OnUpdate += IncreaseTimeUnBorrowed;
             
-            //Borrow Interface
-            //Request Borrow on timer
+            champion.OnAttack += ResetTimer;
+            champion.OnAttack += UnBorrow;
+            
+            champion.OnDie += UnBorrow;
+            champion.OnDie += ResetTimer;
+        }
+
+        private void IncreaseTimeUnBorrowed()
+        {
+            if(borrowed) return;
+            
+            timeUnBorrowed += Time.deltaTime;
+            if (timeUnBorrowed >= so.timeUntilBorrow)
+            {
+                Borrow();
+            }
+        }
+
+        private void Borrow()
+        {
+            if(borrowed) return;
+            
+            champion.SetCanBeTargetedRPC(false);
+            
+            borrowed = true;
+        }
+        
+        private void UnBorrow(byte _,int __,Vector3 ___)
+        {
+            if(!borrowed) return;
+            
+            champion.SetCanBeTargetedRPC(true);
+            
+            borrowed = false;
+        }
+        
+        private void UnBorrow(int _)
+        {
+            UnBorrow(0,0,Vector3.zero);
+        }
+        
+        private void ResetTimer(byte _,int __,Vector3 ___)
+        {
+            timeUnBorrowed = 0;
+        }
+        
+        private void ResetTimer(int _)
+        {
+            ResetTimer(0,0,Vector3.zero);
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)

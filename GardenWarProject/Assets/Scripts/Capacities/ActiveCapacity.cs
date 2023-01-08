@@ -60,6 +60,12 @@ namespace Entities.Capacities
                     {
                         return false;
                     }
+
+                    var targetable = targetedEntity.GetComponent<ITargetable>();
+                    if (targetable != null)
+                    {
+                        if (!targetable.CanBeTargeted()) return false;
+                    }
                     break;
             }
 

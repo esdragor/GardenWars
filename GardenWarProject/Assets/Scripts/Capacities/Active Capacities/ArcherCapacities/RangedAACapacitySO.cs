@@ -68,10 +68,28 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
-            var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
             var target = EntityCollectionManager.GetEntityByIndex(targetEntityIndex);
+            
+            var rotation = casterTr.localRotation;
+
+            var spawnPos = casterPos + casterTr.forward;
+
+            if (caster is Champion.Champion castChamp)
+            {
+                Debug.Log("casted");
+                
+                castChamp.LookAt(target.position);
+                
+                spawnPos = casterPos + castChamp.forward * 0.5f;
+                rotation = Quaternion.LookRotation(castChamp.forward);
+            }
+            
+            var projectile = Object.Instantiate(so.projectile,spawnPos,rotation);
+
             var projectileTr = projectile.transform;
+            
             float damage = 0;
+            
             var attackable = caster.GetComponent<IAttackable>();
             if (attackable != null)
             {
@@ -79,9 +97,6 @@ namespace Entities.Capacities
             }
             
             if (damage == 0) return;
-                
-            projectile.OnEntityCollide += EntityCollide;
-            projectile.OnEntityCollideFeedback += EntityCollideFeedback;
 
             gsm.OnUpdateFeedback += MoveProjectile;
             
@@ -89,11 +104,23 @@ namespace Entities.Capacities
             {
                 if (!deadableEntity.IsAlive())
                 {
-                    EntityCollide(null);
-                    return;
+                   RemoveProjectile();
+                    
+                   return;
                 }
-                projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position + Vector3.up, so.speedFire);
-                projectileTr.LookAt(targetedEntity.transform);
+
+                var targetPos = targetedEntity.transform.position + Vector3.up;
+                
+                projectileTr.position = Vector3.MoveTowards(projectileTr.position,targetPos, so.speedFire);
+                
+                projectileTr.LookAt(targetPos);
+
+                if (Vector3.Distance(projectileTr.position, targetPos) <= 0.01f)
+                {
+                    RemoveProjectile();
+                    
+                    DealDamage(target);
+                }
             }
 
             void DealDamage(Entity entity)
@@ -102,24 +129,11 @@ namespace Entities.Capacities
                 var lifeable = entity.GetComponent<IActiveLifeable>();
                 lifeable.DecreaseCurrentHpRPC(damage, caster.entityIndex);
             }
-            
-            void EntityCollide(Entity entity)
-            {
-                if (entity != target) return;
-                
-                gsm.OnUpdateFeedback -= MoveProjectile;
 
-                DealDamage(entity);
-                
-                projectile.DestroyProjectile();
-            }
-            
-            void EntityCollideFeedback(Entity entity)
+            void RemoveProjectile()
             {
-                if (entity != target) return;
-                
                 gsm.OnUpdateFeedback -= MoveProjectile;
-
+                    
                 projectile.DestroyProjectile();
             }
         }

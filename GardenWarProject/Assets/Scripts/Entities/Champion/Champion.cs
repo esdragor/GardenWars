@@ -118,6 +118,7 @@ namespace Entities.Champion
             canMove = true;
             canAttack = true;
             canCast = true;
+            canBeTargeted = true;
         }
 
         public void SetupSpawn()
@@ -181,6 +182,11 @@ namespace Entities.Champion
         public void PlayThrowAnimation()
         {
             SetAnimatorTrigger("Throw");
+        }
+
+        public void LookAt(Vector3 pos)
+        {
+            rotateParent.LookAt(pos);
         }
 
         public int selectedItemIndex = 0;
