@@ -186,6 +186,7 @@ namespace Entities.Champion
 
         public void LookAt(Vector3 pos)
         {
+            pos.y = rotateParent.position.y;
             rotateParent.LookAt(pos);
         }
 

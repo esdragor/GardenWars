@@ -52,7 +52,13 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
-            if (champion != null) champion.canMove = false;
+            if (champion != null)
+            {
+                champion.canMove = false;
+                
+                champion.SetAnimatorTrigger("Ability1");
+            }
+            
 
             collisionLayers = 1 << 9 | 1 << 22 | 1 << 30;
 

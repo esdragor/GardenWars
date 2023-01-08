@@ -80,6 +80,8 @@ namespace Entities.Capacities
                 
                 castChamp.LookAt(target.position);
                 
+                castChamp.SetAnimatorTrigger("Basic Attack");
+                
                 spawnPos = casterPos + castChamp.forward * 0.5f;
                 rotation = Quaternion.LookRotation(castChamp.forward);
             }
