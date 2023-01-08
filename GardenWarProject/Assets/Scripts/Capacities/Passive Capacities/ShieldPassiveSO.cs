@@ -30,16 +30,12 @@ namespace Entities.Capacities
         protected override void OnAddedEffects(Entity target)
         {
             currentShieldAmount += so.shieldAmount;
-            
-            Debug.Log($"Added shield (now {currentShieldAmount})");
-            
+
             lifeable = target.GetComponent<IActiveLifeable>();
             deadable = target.GetComponent<IDeadable>();
             
             if(lifeable == null || count > 1) return;
-            
-            Debug.Log("Subscribed to event");
-            
+
             lifeable.OnDecreaseCurrentHp += DecreaseShiedAmount;
             
             deadable?.SetCanDieRPC(false); //Todo - immune to death plus propre
@@ -53,9 +49,7 @@ namespace Entities.Capacities
         private void DecreaseShiedAmount(float damage,int source)
         {
             currentShieldAmount -= damage;
-            
-            Debug.Log($"Removed shield (now {currentShieldAmount})");
-            
+
             lifeable.IncreaseCurrentHpRPC(damage,entity.entityIndex);
 
             if (currentShieldAmount > 0) return;
@@ -72,9 +66,7 @@ namespace Entities.Capacities
         protected override void OnRemovedEffects(Entity target)
         {
             if(count > 0)  return;
-            
-            Debug.Log("Removed Shield");
-            
+
             lifeable.OnDecreaseCurrentHp -= DecreaseShiedAmount;
             
             deadable.SetCanDieRPC(true);
