@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 
 namespace Entities.Capacities
 {
+    [CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO/Shield", fileName = "SharkShield")]
     public class ShieldPassiveSO : PassiveCapacitySO
     {
         public float shieldAmount;
@@ -18,7 +16,11 @@ namespace Entities.Capacities
 
     public class ShieldPassive : PassiveCapacity
     {
-        public float currentShieldAmount;
+        private ShieldPassiveSO so => (ShieldPassiveSO) AssociatedPassiveCapacitySO();
+        
+        private float currentShieldAmount = 0;
+        private IActiveLifeable lifeable;
+        private IDeadable deadable;
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
@@ -27,11 +29,20 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            var lifeable = target.GetComponent<IActiveLifeable>();
+            currentShieldAmount += so.shieldAmount;
             
-            if(lifeable == null) return;
-
+            Debug.Log($"Added shield (now {currentShieldAmount})");
+            
+            lifeable = target.GetComponent<IActiveLifeable>();
+            deadable = target.GetComponent<IDeadable>();
+            
+            if(lifeable == null || count > 1) return;
+            
+            Debug.Log("Subscribed to event");
+            
             lifeable.OnDecreaseCurrentHp += DecreaseShiedAmount;
+            
+            deadable?.SetCanDieRPC(false); //Todo - immune to death plus propre
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
@@ -41,12 +52,32 @@ namespace Entities.Capacities
 
         private void DecreaseShiedAmount(float damage,int source)
         {
+            currentShieldAmount -= damage;
             
+            Debug.Log($"Removed shield (now {currentShieldAmount})");
+            
+            lifeable.IncreaseCurrentHpRPC(damage,entity.entityIndex);
+
+            if (currentShieldAmount > 0) return;
+
+            var overflowDamage = -currentShieldAmount;
+            
+            entity.RemovePassiveCapacityByIndexRPC(indexOfSo);
+            
+            deadable.SetCanDieRPC(true);
+            
+            lifeable.DecreaseCurrentHpRPC(overflowDamage,source);
         }
 
         protected override void OnRemovedEffects(Entity target)
         {
+            if(count > 0)  return;
             
+            Debug.Log("Removed Shield");
+            
+            lifeable.OnDecreaseCurrentHp -= DecreaseShiedAmount;
+            
+            deadable.SetCanDieRPC(true);
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)

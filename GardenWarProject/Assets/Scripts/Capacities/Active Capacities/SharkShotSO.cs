@@ -87,8 +87,7 @@ namespace Entities.Capacities
                 var lifeable = entity.GetComponent<IActiveLifeable>();
                 
                 caster.AddPassiveCapacityRPC(so.shieldPassiveSo.indexInCollection);
-                var shield = (ShieldPassive)caster.GetPassiveCapacityBySOIndex(so.shieldPassiveSo.indexInCollection);
-                
+
                 lifeable.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
             }
             

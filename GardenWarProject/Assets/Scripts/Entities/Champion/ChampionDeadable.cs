@@ -27,7 +27,25 @@ namespace Entities.Champion
 
         public void RequestSetCanDie(bool value)
         {
+            if (isMaster)
+            {
+                SetCanDieRPC(value);
+                return;
+            }
             photonView.RPC("SetCanDieRPC", RpcTarget.MasterClient, value);
+        }
+        
+        [PunRPC]
+        public void SetCanDieRPC(bool value)
+        {
+            canDie = value;
+            OnSetCanDie?.Invoke(value);
+            if (isOffline)
+            {
+                SyncSetCanDieRPC(value);
+                return;
+            }
+            photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
         }
 
         [PunRPC]
@@ -37,13 +55,7 @@ namespace Entities.Champion
             OnSetCanDieFeedback?.Invoke(value);
         }
 
-        [PunRPC]
-        public void SetCanDieRPC(bool value)
-        {
-            canDie = value;
-            OnSetCanDie?.Invoke(value);
-            photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
-        }
+        
 
         public event GlobalDelegates.BoolDelegate OnSetCanDie;
         public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;

@@ -208,7 +208,7 @@ namespace Entities
             var capacity = CapacitySOCollectionManager.Instance.CreatePassiveCapacity(capacityIndex, this);
             if(capacity == null) return;
             if(!passiveCapacitiesList.Contains(capacity)) passiveCapacitiesList.Add(capacity);
-            if (PhotonNetwork.IsMasterClient)
+            if (isMaster)
             {
                 capacity.OnAdded(this);
                 OnPassiveCapacityAdded?.Invoke(capacity);
@@ -273,7 +273,7 @@ namespace Entities
                 passiveCapacitiesList.Remove(capacity);
             }
             
-            if (PhotonNetwork.IsMasterClient)
+            if (isMaster)
             {
                 capacity.OnRemoved(this);
                 OnPassiveCapacityRemoved?.Invoke(capacity);
