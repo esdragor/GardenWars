@@ -59,6 +59,7 @@ public class FighterThrow : ActiveCapacity
     {
         time_Pressed = Time.time;
         nbCandyStocked = so.MinCandy;
+        acceleration = 0;
     }
 
     protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
@@ -69,16 +70,18 @@ public class FighterThrow : ActiveCapacity
 
     protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
     {
-    }
-
-    protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
-    {
         if (!HelperDirection) return;
         HelperDirection.transform.position = casterPos + (targetPositions - casterPos).normalized + Vector3.up;
 
         acceleration += (Time.time - time_Pressed) * so.accelerationJauge;
 
         nbCandyStocked = so.MinCandy + Mathf.RoundToInt((float)acceleration);
+        Debug.Log(nbCandyStocked);
+    }
+
+    protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+    {
+
     }
 
     private CandyBag InitCandyBag()
