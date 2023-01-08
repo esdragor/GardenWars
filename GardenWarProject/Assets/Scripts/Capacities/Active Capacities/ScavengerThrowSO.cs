@@ -57,6 +57,7 @@ namespace Entities.Capacities
             bagSpeed = so.MinDistanceHFlash;
             if (UIJauge) UIJauge.gameObject.SetActive(true);
             else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
+            acceleration = 0;
         }
 
         protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
