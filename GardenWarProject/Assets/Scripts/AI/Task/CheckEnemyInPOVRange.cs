@@ -44,7 +44,7 @@ public class CheckEnemyInPOVRange : Node
                         if(hit.collider.gameObject.layer != 29) continue;
                     }
 
-                    if (!MyEntity.GetEnemyTeams().Contains(entity.team)) continue;
+                    if (!MyEntity.GetEnemyTeams().Contains(entity.team) || entity.team == Enums.Team.Neutral) continue;
 
                     IAttackable attackable = coll.GetComponent<IAttackable>();
                     if (attackable == null) continue;
