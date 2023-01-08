@@ -21,13 +21,35 @@ namespace Entities.Champion
             return canAttack;
         }
 
-        public void RequestSetCanAttack(bool value) { }
+        public void RequestSetCanAttack(bool value)
+        {
+            if (isMaster)
+            {
+                SetCanAttackRPC(value);
+                return;
+            }
+            photonView.RPC("SetCanAttackRPC", RpcTarget.MasterClient, value);
+        }
+        
+        [PunRPC]
+        public void SetCanAttackRPC(bool value)
+        {
+            canAttack = value;
+            OnSetCanAttack?.Invoke(value);
+            if (isOffline)
+            {
+                SyncSetCanAttackRPC(value);
+                return;
+            }
+            photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
+        }
 
         [PunRPC]
-        public void SyncSetCanAttackRPC(bool value) { }
-
-        [PunRPC]
-        public void SetCanAttackRPC(bool value) { }
+        public void SyncSetCanAttackRPC(bool value)
+        {
+            canAttack = value;
+            OnSetCanAttackFeedback?.Invoke(value);
+        }
 
         public event GlobalDelegates.BoolDelegate OnSetCanAttack;
         public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;

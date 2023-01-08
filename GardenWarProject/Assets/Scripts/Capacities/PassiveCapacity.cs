@@ -13,6 +13,9 @@ namespace Entities.Capacities
         public bool stackable;
         public int count; //Amount of Stacks
 
+        public double internalPassiveTimer;
+        private bool subscribedForTimer = false;
+
         public abstract PassiveCapacitySO AssociatedPassiveCapacitySO();
 
         protected Entity entity;
@@ -21,13 +24,16 @@ namespace Entities.Capacities
         public void OnAdded(Entity target)
         {
             if (stackable) count++;
+            
             entity = target;
+            
             OnAddedEffects(entity);
+            
             OnAddedEffectsCallback?.Invoke(entity);
         }
 
         /// <summary>
-        /// Call when a Stack of the capicity is Added
+        /// Called when a Stack of the capacity is Added
         /// </summary>
         protected abstract void OnAddedEffects(Entity target);
 
@@ -37,11 +43,42 @@ namespace Entities.Capacities
         public void OnAddedFeedback(Entity target)
         {
             if (stackable && !PhotonNetwork.IsMasterClient) count++;
+
+            if (internalPassiveTimer > 0)
+            {
+                SetupTimer(internalPassiveTimer);
+            }   
+            
             entity = target;
+            
             OnAddedFeedbackEffects(entity);
+            
             OnAddedEffectsFeedbackCallback?.Invoke(entity);
         }
+
+        private void SetupTimer(double time)
+        {
+            internalPassiveTimer = time;
+
+            gsm.OnTickFeedback += DecreaseTimer;
+            subscribedForTimer = true;
+        }
         
+        private void DecreaseTimer()
+        {
+            internalPassiveTimer -= 1 / gsm.tickRate;
+
+            if (!(internalPassiveTimer <= 0)) return;
+                
+            gsm.OnTickFeedback -= DecreaseTimer;
+            subscribedForTimer = false;
+                
+            if (Entity.isMaster)
+            {
+                entity.RemovePassiveCapacityByIndexRPC(indexOfSo);
+            }
+        }
+
         protected abstract void OnAddedFeedbackEffects(Entity target);
 
         public event Action<Entity> OnAddedEffectsCallback;
@@ -66,6 +103,11 @@ namespace Entities.Capacities
         public void OnRemovedFeedback(Entity target)
         {
             if (stackable && !PhotonNetwork.IsMasterClient) count--;
+            if (subscribedForTimer)
+            {
+                gsm.OnTickFeedback -= DecreaseTimer;
+                subscribedForTimer = false;
+            }
             OnRemovedFeedbackEffects(target);
             OnRemovedEffectsFeedbackCallback?.Invoke(target);
         }

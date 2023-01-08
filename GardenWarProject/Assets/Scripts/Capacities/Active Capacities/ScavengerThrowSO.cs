@@ -30,7 +30,6 @@ namespace Entities.Capacities
         public class ScavengerThrow : ActiveCapacity
     {
         private ScavengerThrowSO so => (ScavengerThrowSO)AssociatedActiveCapacitySO();
-        private Champion.Champion champion;
 
         private Vector3 targetPosition;
 
@@ -45,7 +44,6 @@ namespace Entities.Capacities
         
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            champion = caster.GetComponent<Champion.Champion>();
             if (champion == null) return false;
             if (champion.isFighter) return false;
             return champion.GetItem(champion.selectedItemIndex) != null;

@@ -29,7 +29,12 @@ namespace Entities.Champion
         
         public void RequestSetCanCast(bool value)
         {
-            photonView.RPC("CastRPC",RpcTarget.MasterClient,value);
+            if (isMaster)
+            {
+                SetCanCastRPC(value);
+                return;
+            }
+            photonView.RPC("SetCanCastRPC", RpcTarget.MasterClient, value);
         }
         
         [PunRPC]
@@ -37,7 +42,12 @@ namespace Entities.Champion
         {
             canCast = value;
             OnSetCanCast?.Invoke(value);
-            photonView.RPC("SyncCastRPC",RpcTarget.All,canCast);
+            if (isOffline)
+            {
+                SyncSetCanCastRPC(value);
+                return;
+            }
+            photonView.RPC("SyncSetCanCastRPC", RpcTarget.All, value);
         }
 
         [PunRPC]
