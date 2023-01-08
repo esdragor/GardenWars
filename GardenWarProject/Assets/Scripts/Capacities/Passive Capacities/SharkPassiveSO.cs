@@ -33,6 +33,9 @@ namespace Entities.Capacities
         protected override void OnAddedEffects(Entity target)
         {
             Debug.Log("Added Shark Passive :)");
+            
+            //Borrow Interface
+            //Request Borrow on timer
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
