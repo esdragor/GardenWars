@@ -14,7 +14,9 @@ namespace Entities.Champion
         [HideInInspector] public ChampionSO currentSo;
         public Enums.ChampionRole role;
         public bool isFighter => role == Enums.ChampionRole.Fighter;
-        public Transform rotateParent;
+        [SerializeField] private Transform rotateParent;
+        public Vector3 forward => rotateParent.forward;
+        public Quaternion rotation => rotateParent.localRotation;
         private Vector3 respawnPos;
         public Rigidbody rb;
 

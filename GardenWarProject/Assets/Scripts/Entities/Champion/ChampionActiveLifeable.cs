@@ -1,3 +1,4 @@
+using System;
 using Photon.Pun;
 
 namespace Entities.Champion
@@ -210,10 +211,10 @@ namespace Entities.Champion
         {
             currentHp += amount;
             if (currentHp > maxHp) currentHp = maxHp;
-            OnIncreaseCurrentHp?.Invoke(amount);
+            OnIncreaseCurrentHp?.Invoke(amount,killerId);
             if (isOffline)
             {
-                OnIncreaseCurrentHpFeedback?.Invoke(amount);
+                OnIncreaseCurrentHpFeedback?.Invoke(amount,killerId);
                 return;
             }
             photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
@@ -223,11 +224,11 @@ namespace Entities.Champion
         public void SyncIncreaseCurrentHpRPC(float amount, int killerId)
         {
             currentHp = amount;
-            OnIncreaseCurrentHpFeedback?.Invoke(amount);
+            OnIncreaseCurrentHpFeedback?.Invoke(amount,killerId);
         }
 
-        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
-        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+        public event Action<float,int> OnIncreaseCurrentHp;
+        public event Action<float,int> OnIncreaseCurrentHpFeedback;
 
         public void RequestDecreaseCurrentHp(float amount, int killerId)
         {
@@ -243,10 +244,10 @@ namespace Entities.Champion
         public void DecreaseCurrentHpRPC(float amount, int killerId)
         {
             currentHp -= amount;
-            OnDecreaseCurrentHp?.Invoke(amount);
+            OnDecreaseCurrentHp?.Invoke(amount,killerId);
             if (isOffline)
             {
-                OnDecreaseCurrentHpFeedback?.Invoke(amount);
+                OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
                 return;
             }
 
@@ -262,10 +263,10 @@ namespace Entities.Champion
                 currentHp = 0;
                 RequestDie(killerId);
             }
-            OnDecreaseCurrentHpFeedback?.Invoke(amount);
+            OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
         }
         
-        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
-        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+        public event Action<float,int> OnDecreaseCurrentHp;
+        public event Action<float,int> OnDecreaseCurrentHpFeedback;
     }
 }

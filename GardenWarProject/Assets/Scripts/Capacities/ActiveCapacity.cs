@@ -14,7 +14,8 @@ namespace Entities.Capacities
         public Champion.Champion champion => caster as Champion.Champion;
         
         public bool isBasicAttack => champion != null && champion.attackAbilityIndex == indexOfSOInCollection;
-        protected Vector3 casterPos => caster.transform.position;
+        protected Transform casterTr => caster.transform;
+        protected Vector3 casterPos => casterTr.position;
 
         public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;

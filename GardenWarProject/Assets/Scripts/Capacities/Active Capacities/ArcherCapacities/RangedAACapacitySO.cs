@@ -7,7 +7,7 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/Ranged Auto Attack", fileName = "new Ranged Auto Attack")]
     public class RangedAACapacitySO : ActiveCapacitySO
     {
-        public OnCollideEffect projectile;
+        public ProjectileOnCollideEffect projectile;
         public float speedFire = 0.1f;
         
         public override Type AssociatedType()
@@ -69,7 +69,7 @@ namespace Entities.Capacities
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             var projectile = Object.Instantiate(so.projectile,casterPos+caster.transform.forward,caster.transform.localRotation);
-            projectile.Init( EntityCollectionManager.GetEntityByIndex(targetEntityIndex));
+            var target = EntityCollectionManager.GetEntityByIndex(targetEntityIndex);
             var projectileTr = projectile.transform;
             float damage = 0;
             var attackable = caster.GetComponent<IAttackable>();
@@ -80,8 +80,8 @@ namespace Entities.Capacities
             
             if (damage == 0) return;
                 
-            projectile.OnEntityCollide += CollideProjectile;
-            projectile.OnEntityCollideFeedback += (entity) => gsm.OnUpdateFeedback -= MoveProjectile;
+            projectile.OnEntityCollide += EntityCollide;
+            projectile.OnEntityCollideFeedback += EntityCollideFeedback;
 
             gsm.OnUpdateFeedback += MoveProjectile;
             
@@ -89,7 +89,7 @@ namespace Entities.Capacities
             {
                 if (!deadableEntity.IsAlive())
                 {
-                    CollideProjectile(null);
+                    EntityCollide(null);
                     return;
                 }
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetedEntity.transform.position + Vector3.up, so.speedFire);
@@ -103,12 +103,24 @@ namespace Entities.Capacities
                 lifeable.DecreaseCurrentHpRPC(damage, caster.entityIndex);
             }
             
-            void CollideProjectile(Entity entity)
+            void EntityCollide(Entity entity)
             {
+                if (entity != target) return;
+                
                 gsm.OnUpdateFeedback -= MoveProjectile;
-                projectile.OnEntityCollide -= CollideProjectile;
+
                 DealDamage(entity);
-                projectile.gameObject.SetActive(false);
+                
+                projectile.DestroyProjectile();
+            }
+            
+            void EntityCollideFeedback(Entity entity)
+            {
+                if (entity != target) return;
+                
+                gsm.OnUpdateFeedback -= MoveProjectile;
+
+                projectile.DestroyProjectile();
             }
         }
     }

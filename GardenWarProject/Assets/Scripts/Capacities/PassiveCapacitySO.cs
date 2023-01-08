@@ -8,8 +8,6 @@ namespace Entities.Capacities
     //[CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO", fileName = "new PassiveCapacitySO")]
     public abstract class PassiveCapacitySO : ScriptableObject
     {
-        [Tooltip("GP Name")] public string referenceName;
-
         [Tooltip("GD Name")] public string descriptionName;
         
         [Tooltip("Capacity Icon")] public Sprite icon;

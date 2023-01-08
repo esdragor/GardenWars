@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   champion: {fileID: 4475987759303325514}
+  championSO: {fileID: 0}
   team: 1
   role: 1
   minion: {fileID: 0}
@@ -207,22 +208,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: fighterThrowCapacitySo
-      value: 
-      objectReference: {fileID: 11400000, guid: 29b90ecf0cd2aad48b6ed54597560c9b, type: 2}
-    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: allActiveCapacities.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: allActiveCapacities.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: 767d664d888b16942a1fd4784c839d9a, type: 2}
-    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: allActiveCapacities.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: 29b90ecf0cd2aad48b6ed54597560c9b, type: 2}
-    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: allActiveCapacities.Array.data[8]
       value: 
       objectReference: {fileID: 11400000, guid: 29b90ecf0cd2aad48b6ed54597560c9b, type: 2}
     - target: {fileID: 8293423625793494612, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}

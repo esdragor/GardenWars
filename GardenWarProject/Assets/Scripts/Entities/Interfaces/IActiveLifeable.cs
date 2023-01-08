@@ -1,4 +1,6 @@
-﻿namespace Entities
+﻿using System;
+
+namespace Entities
 {
     public interface IActiveLifeable
     {
@@ -120,8 +122,8 @@
         /// <param name="amount">the decrease amount</param>
         public void IncreaseCurrentHpRPC(float amount, int source);
 
-        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
-        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+        public event Action<float,int> OnIncreaseCurrentHp;
+        public event Action<float,int> OnIncreaseCurrentHpFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's currentHp.
@@ -139,8 +141,8 @@
         /// <param name="amount">the decrease amount</param>
         public void DecreaseCurrentHpRPC(float amount, int source);
 
-        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
-        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+        public event Action<float,int> OnDecreaseCurrentHp;
+        public event Action<float,int> OnDecreaseCurrentHpFeedback;
     }
 }
 

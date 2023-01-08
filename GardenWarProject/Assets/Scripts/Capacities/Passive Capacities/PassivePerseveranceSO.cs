@@ -83,9 +83,8 @@ namespace Entities.Capacities
             }
         }
 
-        private void ResetTimeSinceLastAttack(float f)
+        private void ResetTimeSinceLastAttack(float _,int __)
         {
-   
             timeSinceLastAttack = 0;
         }
     }

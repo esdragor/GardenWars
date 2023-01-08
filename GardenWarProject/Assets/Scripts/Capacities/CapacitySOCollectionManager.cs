@@ -17,7 +17,6 @@ namespace Entities.Capacities
 
         private void Awake()
         {
-            Debug.Log("Setting Instance");
             if (Instance != null && Instance != this)
             {
                 DestroyImmediate(gameObject);
