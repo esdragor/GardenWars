@@ -10,6 +10,7 @@ public class FighterThrowSO : ActiveCapacitySO
     public GameObject candyBagPrefab;
     public int nbBounce = 5;
     [Range(0.1f, 10f)] public float SpeedOnAir = 1.0f;
+    [Range(0.01f, 2f)] public float timeForOneUnit = 1.0f;
     public float height = 5.0f;
     public int MinCandy = 5;
     public int MaxCandy = 10;
@@ -111,7 +112,7 @@ public class FighterThrow : ActiveCapacity
         var transform = candyBag.transform;
         transform.localScale =  Vector3.one * (!so.ScalebyNbCandy ? so.scaleByCandy * nbCandyStocked : (nbCandyStocked / so.NbCandyPerPalier) * so.scaleAndDamageByNbCandyOnBag);
         targetPosition.y = transform.localScale.y;
-        candyBag.InitBag(targetPosition, distanceCandy, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
+        candyBag.InitBag(targetPosition, so.timeForOneUnit,distanceCandy, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
         candyBag.SetCandyBag(so, nbCandyStocked);
         candyBag.ThrowBag();
         if (UIJauge) UIJauge.gameObject.SetActive(false);

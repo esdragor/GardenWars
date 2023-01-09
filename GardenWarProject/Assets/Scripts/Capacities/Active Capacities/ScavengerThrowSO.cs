@@ -13,6 +13,7 @@ namespace Entities.Capacities
         public GameObject prefabJauge;
         public int nbBounce = 5;
         [Range(0.1f, 10f)] public float SpeedOnAir = 1.0f;
+        [Range(0.01f, 2f)] public float timeForOneUnit = 1.0f;
         public float height = 5.0f;
         public bool RandomizeRebound = false;
         public float RandomizeReboundRadius = 0.5f;
@@ -96,7 +97,7 @@ namespace Entities.Capacities
 
             itemToThrow = champion.PopSelectedItem();
             var itemBag = InitItemBag();
-            itemBag.InitBag(targetPosition, bagSpeed, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
+            itemBag.InitBag(targetPosition, so.timeForOneUnit,bagSpeed, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
             itemBag.SetItemBag(so,itemToThrow.indexOfSOInCollection);
             itemBag.ThrowBag();
             if (UIJauge) UIJauge.gameObject.SetActive(false);

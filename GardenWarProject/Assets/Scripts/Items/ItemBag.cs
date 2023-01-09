@@ -25,7 +25,7 @@ public class ItemBag : Bag
         nbBounce = so.nbBounce;
         height = so.height;
         
-        speedDecreaseInAir = so.SpeedOnAir;
+        moveSpeed = so.SpeedOnAir;
     }
     
     public void SetItemBag(byte _itemSoIndex, Enums.Team _team = Enums.Team.Neutral)
@@ -51,7 +51,7 @@ public class ItemBag : Bag
         nbBounce = 0;
         height = 0;
         
-        speedDecreaseInAir = 0f; 
+        moveSpeed = 0f; 
     }
 
     protected override void  RecoltBag(bool finished, Entity thrower)

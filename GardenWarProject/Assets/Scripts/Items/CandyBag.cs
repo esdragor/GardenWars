@@ -13,7 +13,7 @@ public class CandyBag : Bag
         nbBounce = so.nbBounce;
         height = so.height;
         
-        speedDecreaseInAir = so.SpeedOnAir;
+        moveSpeed = so.SpeedOnAir;
         amount = _amount;
         this.so = so;
     }
@@ -40,7 +40,7 @@ public class CandyBag : Bag
         nbBounce = 0;
         height = 0;
         
-        speedDecreaseInAir = 0f;
+        moveSpeed = 0f;
         amount = 0;
         if (isOffline) return;
         photonView.RPC("ChangeVisualsRPC",RpcTarget.All,false);

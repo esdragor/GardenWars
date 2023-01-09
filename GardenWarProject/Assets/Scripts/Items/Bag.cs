@@ -21,9 +21,11 @@ public abstract class Bag : MonoBehaviourPun
     protected double Animation = 0f;
     protected int nbBounce = 0;
     protected float height = 0;
-    protected float speedDecreaseInAir;
+    protected float moveSpeed;
     protected Vector3 dir = Vector3.zero;
     protected double speed;
+    protected float timeForOneUnit;
+    protected float distanceToDestination;
     protected Vector3 startPosition;
     protected Vector3 endPosition;
     protected bool isRandom = false;
@@ -31,13 +33,14 @@ public abstract class Bag : MonoBehaviourPun
     private bool Finished = false;
     private GameStateMachine gsm => GameStateMachine.Instance;
 
-    public void InitBag(Vector3 targetPosition,double _speed, bool RandomPos, float randomRadius, Entity spawner)
+    public void InitBag(Vector3 targetPosition,float _timeForOneUnit,double _speed, bool RandomPos, float randomRadius, Entity spawner)
     {
         thrower = spawner;
         
         startPosition = transform.position;
         endPosition = targetPosition;
         speed = _speed;
+        timeForOneUnit = _timeForOneUnit;
         isRandom = RandomPos;
         randomRangeRadius = randomRadius;
         canBePickedUp = false;
@@ -47,7 +50,9 @@ public abstract class Bag : MonoBehaviourPun
     {
         dir = (endPosition - startPosition).normalized;
 
-        GameStateMachine.Instance.OnUpdate += MoveBag;
+        distanceToDestination = (Vector3.Distance(endPosition, startPosition));
+
+        gsm.OnUpdate += MoveBag;
         
         if (isOffline)
         {
@@ -56,6 +61,7 @@ public abstract class Bag : MonoBehaviourPun
         }
         
         photonView.RPC("ChangeVisualsRPC",RpcTarget.All,true);
+        
     }
 
     [PunRPC]
@@ -96,17 +102,19 @@ public abstract class Bag : MonoBehaviourPun
                 
                 endPosition = ActiveCapacity.GetClosestValidPoint(endPosition);
                 nbBounce--;
-                speedDecreaseInAir *= 0.9f;
+                moveSpeed *= 0.9f;
             }
             else
             {
-                GameStateMachine.Instance.OnUpdate -= MoveBag;
+                gsm.OnUpdate -= MoveBag;
                 transform.position = new Vector3(transform.position.x, endPosition.y, transform.position.z);
                 Finished = true;
                 return;
             }
         }
-        Animation += (1 / gsm.tickRate) * speedDecreaseInAir;
+        
+        Animation += moveSpeed *(timeForOneUnit / distanceToDestination) * Time.deltaTime ;
+        
         transform.position = ParabolaClass.Parabola(startPosition, endPosition, height, Animation);
     }
     
