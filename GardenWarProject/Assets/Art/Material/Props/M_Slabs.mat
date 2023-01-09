@@ -19,6 +19,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_3bd9d25fff134a318b6c2d5a2b4b3d04:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_5ba7e86dfec548dcabb3d0fa0e97ceff:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_9b9101705b634498a6c1a7a335e9a512:
         m_Texture: {fileID: 2800000, guid: d68bfb770e226d54da0276eb9c082d04, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -88,7 +96,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Boolean_45bfd806efa94603aae97d9df5140c34: 0
+    - Boolean_51c1bef3d67b416ba03005d440da598b: 0
     - Boolean_8367edeb36d64b8a985b40c38f0b54c8: 0
+    - Vector1_03495897e9dc43acbe65ef8b4b1a9dae: 0
+    - Vector1_1ce2b7d091c54abeb863afebaf65c76e: 1
+    - Vector1_4479d42d696b41ac984b92aab6ec64ae: -0.22
+    - Vector1_620a09e6d70145c4bf68e647b0b7195e: 0.782
+    - Vector1_d98db99feb4c44308d67ac49d025d722: 0.571
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -107,12 +122,12 @@ Material:
     - _Metallic: 0
     - _Normals_Sensitivity: 0.5
     - _OcclusionStrength: 1
-    - _Outline: 1
+    - _Outline: 0
     - _Outline_Thickness: 0
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _Ramp_Offset: 0
-    - _Ramp_Smoothness: 0
+    - _Ramp_Offset: 0.2
+    - _Ramp_Smoothness: 0.2
     - _ReceiveShadows: 1
     - _Rimlight: 1
     - _Rimlight_Fresnel: 6.8
