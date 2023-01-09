@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Entities;
 using GameStates;
 using UnityEngine;
@@ -7,6 +8,10 @@ public class Bush : MonoBehaviour
 {
     [SerializeField] private List<BushCollider> bushColliders = new List<BushCollider>();
     [SerializeField] private List<GameObject> objectsToHide = new List<GameObject>();
+    [SerializeField] private Material normalMat;
+    [SerializeField] private Material transparentMat;
+    
+    private List<Renderer> renderers = new List<Renderer>();
 
     private List<Entity> entitiesInside = new List<Entity>();
 
@@ -22,23 +27,35 @@ public class Bush : MonoBehaviour
         {
             bushCollider.LinkWithBush(this);
         }
+
+        foreach (var childRenderer in objectsToHide.SelectMany(go => go.GetComponentsInChildren<Renderer>()))
+        {
+            renderers.Add(childRenderer);
+            childRenderer.material = normalMat;
+        }
     }
     
     public void EntityEnter(Entity entity)
     {
         if(!entitiesInside.Contains(entity)) entitiesInside.Add(entity);
-        foreach (var obj in objectsToHide)
+
+        if (!HideBush()) return;
+        
+        foreach (var childRenderer in renderers)
         {
-            obj.SetActive(!HideBush());
+            childRenderer.material = transparentMat;
         }
     }
     
     public void EntityExit(Entity entity)
     {
         if(entitiesInside.Contains(entity)) entitiesInside.Remove(entity);
-        foreach (var obj in objectsToHide)
+
+        if (HideBush()) return;
+        
+        foreach (var childRenderer in renderers)
         {
-            obj.SetActive(!HideBush());
+            childRenderer.material = normalMat;
         }
     }
 

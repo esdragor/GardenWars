@@ -77,6 +77,10 @@ namespace Entities.Champion
 
             isAlive = false;
             canDie = false;
+
+            canMove = false;
+            canAttack = false;
+            canCast = false;
             
             // TODO - Disable collision, etc...
 
@@ -117,8 +121,12 @@ namespace Entities.Champion
         public void ReviveRPC()
         {
             if (isAlive) return;
+            
             isAlive = true;
             canDie = true;
+            canMove = true;
+            canAttack = true;
+            canCast = true;
             
             SetCurrentHpRPC(maxHp);
             SetCurrentResourceRPC(maxResource);

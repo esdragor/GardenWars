@@ -56,6 +56,10 @@ namespace Entities.Capacities
             targetPositions.y = casterPos.y;
             
             var shotDirection = (targetPositions - casterPos).normalized;
+            
+            champion.LookAt(targetPositions);
+            
+            champion.SetAnimatorTrigger("Ability1");
 
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             

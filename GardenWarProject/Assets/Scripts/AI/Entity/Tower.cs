@@ -19,6 +19,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private ParticleSystem HitFX;
 
     [SerializeField] private GameObject TowerModel;
+    [SerializeField] private GameObject HairDryer;
     [SerializeField] private TowerBT BT;
     [SerializeField] private Animator[] animatorss;
     [SerializeField] private Material[] towersMaterials;
@@ -58,13 +59,24 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestSetCanAttack(bool value)
     {
-        SetCanAttackRPC(value);
+        if (isMaster)
+        {
+            SetCanAttackRPC(value);
+            return;
+        }
+        photonView.RPC("SetCanAttackRPC", RpcTarget.MasterClient, value);
     }
-
+        
     [PunRPC]
     public void SetCanAttackRPC(bool value)
     {
         canAttack = value;
+        OnSetCanAttack?.Invoke(value);
+        if (isOffline)
+        {
+            SyncSetCanAttackRPC(value);
+            return;
+        }
         photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
     }
 
@@ -72,8 +84,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public void SyncSetCanAttackRPC(bool value)
     {
         canAttack = value;
-        OnSetCanAttack?.Invoke(canAttack);
-        OnSetCanAttackFeedback?.Invoke(canAttack);
+        OnSetCanAttackFeedback?.Invoke(value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanAttack;
@@ -367,6 +378,9 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         canView = false;
         enabled = false;
         BT.enabled = false;
+        BT.Poussin.parent = null;
+        gameObject.SetActive(false);
+        HairDryer.SetActive(false);
     }
 
     [PunRPC]

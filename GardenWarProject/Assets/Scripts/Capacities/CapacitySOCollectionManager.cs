@@ -88,12 +88,14 @@ namespace Entities.Capacities
                         return null;
                     }
                     capacity.stackable = so.stackable;
+                    capacity.internalPassiveTimer = so.duration;
                     return capacity;
                 }
             }
             capacity = (PassiveCapacity) Activator.CreateInstance(allPassiveCapacitiesSo[soIndex].AssociatedType());
             capacity.stackable = so.stackable;
             capacity.indexOfSo = soIndex;
+            capacity.internalPassiveTimer = so.duration;
             
             return capacity;
         }

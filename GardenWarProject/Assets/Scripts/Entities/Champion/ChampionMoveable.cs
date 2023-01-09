@@ -39,14 +39,36 @@ namespace Entities.Champion
             return currentMoveSpeed;
         }
 
-        public void RequestSetCanMove(bool value) { }
+        public void RequestSetCanMove(bool value)
+        {
+            if (isMaster)
+            {
+                SetCanMoveRPC(value);
+                return;
+            }
+            photonView.RPC("SetCanMoveRPC", RpcTarget.MasterClient, value);
+        }
 
         [PunRPC]
-        public void SyncSetCanMoveRPC(bool value) { }
+        public void SetCanMoveRPC(bool value)
+        {
+            canMove = value;
+            OnSetCanMove?.Invoke(value);
+            if (isOffline)
+            {
+                SyncSetCanMoveRPC(value);
+                return;
+            }
+            photonView.RPC("SyncSetCanMoveRPC", RpcTarget.All, value);
+        }
 
         [PunRPC]
-        public void SetCanMoveRPC(bool value) { }
-
+        public void SyncSetCanMoveRPC(bool value)
+        {
+            canMove = value;
+            OnSetCanMoveFeedback?.Invoke(value);
+        }
+        
         public event GlobalDelegates.BoolDelegate OnSetCanMove;
         public event GlobalDelegates.BoolDelegate OnSetCanMoveFeedback;
 
