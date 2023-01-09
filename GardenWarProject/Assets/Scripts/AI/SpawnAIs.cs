@@ -6,10 +6,17 @@ using GameStates;
 using Photon.Pun;
 using UnityEngine;
 
+public class RespawnPinata
+{
+    public float delay;
+    public Transform pos;
+}
+
 public class SpawnAIs : MonoBehaviourPun
 {
-    [Header("Wave Management")]
-    public int minionsPerWave = 1;
+    [HideInInspector] public List<RespawnPinata> PinatasRespawned = new List<RespawnPinata>();
+
+    [Header("Wave Management")] public int minionsPerWave = 1;
     public double timeBetweenMinionSpawn = 0.3;
     public double timeBetweenWaves = 30;
     [SerializeField] private double timeBeforeFirstWave = 5;
@@ -19,15 +26,14 @@ public class SpawnAIs : MonoBehaviourPun
     [SerializeField] private Entity minion;
     [SerializeField] private double timer;
 
-    [Header("Towers")]
-    [SerializeField] private Transform[] towerSpawnPoints;
-    
-    [Header("Pinata")]
-    [SerializeField] private Transform[] pinataSpawnPoints;
-    [SerializeField] float timeBeforeSpawnPinata = 0;
+    [Header("Towers")] [SerializeField] private Transform[] towerSpawnPoints;
+
+    [Header("Pinata")] [SerializeField] private Transform[] pinataSpawnPoints;
+    [SerializeField] float timeBeforeSpawnPinata = 4;
+    [SerializeField] float timeBeforeRespawnPinata = 5;
 
     private GameStateMachine gsm => GameStateMachine.Instance;
-    
+
     private readonly List<Entity> towers = new List<Entity>();
     private readonly List<Entity> Pinatas = new List<Entity>();
     private double timerPinata;
@@ -52,7 +58,7 @@ public class SpawnAIs : MonoBehaviourPun
         timerPinata = 0;
         gsm.OnTick += OnTick;
     }
-    
+
     public void Init()
     {
         towers.Clear();
@@ -66,18 +72,18 @@ public class SpawnAIs : MonoBehaviourPun
     {
         SyncTowerData();
     }
-    
+
     public void StartSpawns()
     {
         foreach (var tower in towers)
         {
             tower.GetComponent<TowerBT>().OnStart();
         }
-        
-        timer = timeBetweenWaves-timeBeforeFirstWave;
+
+        timer = timeBetweenWaves - timeBeforeFirstWave;
         gsm.OnTick += SpawnWaves;
         gsm.OnTick += InitPinata;
-
+        gsm.OnTick += RespawnPinata;
     }
 
     private void OnTick()
@@ -94,46 +100,58 @@ public class SpawnAIs : MonoBehaviourPun
             .GetComponent<Entity>();
         var blueTower = PhotonNetwork.Instantiate("NewTower", towerSpawnPoints[1].position, Quaternion.identity)
             .GetComponent<Entity>();
-        
+
         blueTower.SyncInstantiate(Enums.Team.Team1);
         redTower.SyncInstantiate(Enums.Team.Team2);
-        
+
         towers.Add(blueTower);
         towers.Add(redTower);
     }
-    
-    public void SpawnPinata()
+
+    public void SpawnPinata(Transform pos)
     {
-        foreach (Transform pos in pinataSpawnPoints)
-        {
-            var Pinata = PhotonNetwork.Instantiate("Pinata", pos.position, Quaternion.identity)
-                .GetComponent<Entity>();
+        var Pinata = PhotonNetwork.Instantiate("Pinata", pos.position, Quaternion.identity)
+            .GetComponent<Entity>();
 
 
-            Pinatas.Add(Pinata);
-            Pinata.GetComponent<PinataBT>().OnStart();
-            Pinata.SyncInstantiate(Enums.Team.Neutral); 
-        }
-        
-
+        Pinatas.Add(Pinata);
+        Pinata.GetComponent<PinataBT>().OnStart();
+        Pinata.SyncInstantiate(Enums.Team.Neutral);
     }
-    
+
     private void InitPinata()
     {
-        if(timerPinata < timeBeforeSpawnPinata) return;
+        if (timerPinata < timeBeforeSpawnPinata) return;
         gsm.OnTick -= InitPinata;
-        SpawnPinata();
+
+        foreach (Transform pos in pinataSpawnPoints)
+        {
+            SpawnPinata(pos);
+        }
     }
-    
+
+    public void RespawnPinata()
+    {
+        for (int i = 0; i < PinatasRespawned.Count; i++)
+        {
+            PinatasRespawned[i].delay += (float)gsm.increasePerTick;
+            if (PinatasRespawned[i].delay >= timeBeforeRespawnPinata)
+            {
+                SpawnPinata(PinatasRespawned[i].pos);
+                PinatasRespawned.RemoveAt(i);
+            }
+        }
+    }
+
     private void SyncTowerData()
     {
         var towerIds = towers.Select(tower => tower.entityIndex).ToArray();
         var towerTeams = towers.Select(tower => (byte)tower.team).ToArray();
-        photonView.RPC("SyncDataTowerRPC", RpcTarget.All,towerIds,towerTeams);
+        photonView.RPC("SyncDataTowerRPC", RpcTarget.All, towerIds, towerTeams);
     }
-    
+
     [PunRPC]
-    public void SyncDataTowerRPC(int[] towerIndexes,byte[] teams)
+    public void SyncDataTowerRPC(int[] towerIndexes, byte[] teams)
     {
         foreach (var index in towerIndexes)
         {
@@ -148,20 +166,20 @@ public class SpawnAIs : MonoBehaviourPun
     #endregion
 
     #region Minions
-    
+
     private void SpawnWaves()
     {
-        if(timer<timeBetweenWaves) return;
+        if (timer < timeBetweenWaves) return;
         timer = 0;
         for (var i = 0; i < minionsPerWave; i++)
         {
             var spawnTimer = i * timeBetweenMinionSpawn;
 
             gsm.OnTick += TrySpawnMinion;
-            
+
             void TrySpawnMinion()
             {
-                if(timer<spawnTimer) return;
+                if (timer < spawnTimer) return;
                 SpawnMinion();
                 gsm.OnTick -= TrySpawnMinion;
             }

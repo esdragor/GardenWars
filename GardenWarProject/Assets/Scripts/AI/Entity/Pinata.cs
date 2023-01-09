@@ -581,6 +581,12 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             // bag.ChangeVisuals(true);
             // bag.IsCollectible();
                 entity.AddItemRPC(items[0].indexOfSOInCollection);
+
+                RespawnPinata rp = new RespawnPinata();
+                rp.delay = 0;
+                rp.pos = GetComponent<PinataBT>().CampPosition;
+                
+                SpawnAIs.Instance.PinatasRespawned.Add(rp);
         }
 
         
