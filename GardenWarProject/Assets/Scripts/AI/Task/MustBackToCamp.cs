@@ -30,7 +30,7 @@ public class MustBackToCamp : Node
     {
         if (Vector3.Distance(trans.position, Camp) > MaxDist || isBack)
         {
-            lifeable.SetCurrentHpRPC(lifeable.GetMaxHp());
+            //lifeable.SetCurrentHpRPC(lifeable.GetMaxHp());
             agent.SetDestination(Camp);
             trans.LookAt(Camp);
             isBack = (!(Vector3.Distance(trans.position, Camp) < 1));
