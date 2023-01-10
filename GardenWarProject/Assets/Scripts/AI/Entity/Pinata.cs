@@ -26,6 +26,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float currentHp = 100f;
     [SerializeField] private GameObject PinataDieFX;
     [SerializeField] private ParticleSystem HitFX;
+    [SerializeField] private Animator[] Myanimators;
 
 
 
@@ -42,6 +43,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         Mesh.GetComponent<Renderer>().material.color = item.AssociatedItemSO().itemColor;
         RequestAddItem(item.indexOfSOInCollection);
         OnInstantiated();
+        animators = Myanimators;
     }
 
     public override void OnInstantiated()

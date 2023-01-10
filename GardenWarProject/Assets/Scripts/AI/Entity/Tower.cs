@@ -22,7 +22,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private GameObject TowerModel;
     [SerializeField] private GameObject HairDryer;
     [SerializeField] private TowerBT BT;
-    [SerializeField] private Animator[] animatorss;
+    [SerializeField] private Animator[] MyAnimators;
     [SerializeField] private Material[] towersMaterials;
 
     private bool isAlive = true;
@@ -36,7 +36,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     protected override void OnStart()
     {
         CurrentHP = MaxHP;
-        animators = animatorss;
+        animators = MyAnimators;
         if (team == Enums.Team.Team1)
         {
             TowerModel.GetComponent<Renderer>().material = towersMaterials[0];

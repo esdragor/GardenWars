@@ -13,6 +13,7 @@ public class GoToTarget : Node
     private Transform model;
     private NavMeshAgent agent;
     private Node Root;
+    private Entity entity;
 
     public GoToTarget(Node _Root, NavMeshAgent _agent, Transform trans, Transform _model)
     {
@@ -38,6 +39,10 @@ public class GoToTarget : Node
             agent.SetDestination(pos);
             //Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
             //MyTransform.LookAt(model);
+            
+            if (!entity)
+                entity = MyTransform.GetComponent<Entity>();
+            entity.SetAnimatorTrigger("Move");
             state = NodeState.Running;
             return state;
         }
