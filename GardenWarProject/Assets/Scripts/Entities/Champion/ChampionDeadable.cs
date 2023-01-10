@@ -100,6 +100,9 @@ namespace Entities.Champion
                 InputManager.PlayerMap.Capacity.Disable();
                 InputManager.PlayerMap.Inventory.Disable();
                 agent.isStopped = true;
+                agent.ResetPath();
+                agent.ResetPath();
+
             }
 
             rotateParent.gameObject.SetActive(false); 
