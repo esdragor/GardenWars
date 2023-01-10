@@ -4,9 +4,11 @@ using Entities;
 using Entities.Capacities;
 using Entities.FogOfWar;
 using Entities.Inventory;
+using GameStates;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 {
@@ -27,11 +29,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private Material BlueMaterial;
     [SerializeField] private Material RedMaterial;
     [SerializeField] private GameObject Mesh;
+    [SerializeField] private GameObject BagInBag;
+    [SerializeField] private Image SpriteBagInBag;
 
     private float currentMoveSpeed;
     private bool isAlive = true;
     private bool canDie = true;
     private double cooldownHide = 0.2f;
+    private Camera cam;
     
     public void ReachEnemyCamp()
     {
@@ -47,6 +52,28 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     protected override void OnStart()
     {
         currentHp = MaxHP;
+        OnAddItem += ItemAdded;
+        OnRemoveItem += ItemRemoved;
+        cam = Camera.main;
+    }
+    
+    private void ItemAdded(byte itemIndex)
+    {
+        BagInBag.SetActive(true);
+        SpriteBagInBag.sprite = ItemCollectionManager.Instance.GetItemSObyIndex(itemIndex).sprite;
+        GameStateMachine.Instance.OnTick += LookCam;
+    }
+
+    public void LookCam()
+    {
+        SpriteBagInBag.transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
+
+    }
+    
+    private void ItemRemoved(byte itemIndex)
+    {
+        BagInBag.SetActive(false);
+        GameStateMachine.Instance.OnTick -= LookCam;
     }
 
     public override void OnInstantiated()

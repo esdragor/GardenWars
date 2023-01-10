@@ -132,6 +132,8 @@ namespace Controllers.Inputs
                     return;
                 }
 
+                if (selectedEntity is Tower)
+                    return;
                 StartMoveAttack();
                 return;
             }
