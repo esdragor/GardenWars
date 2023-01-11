@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -12,6 +13,9 @@ namespace Entities.Capacities
         public ProjectileOnCollideEffect projectile;
         public float projectileSpeed = 1f;
         public float projectileDamage;
+        public ParticleSystem FXLaunch; 
+        public ParticleSystem FXBurst; 
+ 
 
         public override Type AssociatedType()
         {
@@ -22,6 +26,9 @@ namespace Entities.Capacities
     public class ArcherUlt : ActiveCapacity
     {
         private ArcherUltSO so => (ArcherUltSO) AssociatedActiveCapacitySO();
+        private GameObject FXLaunchGo;
+        private GameObject FXLaunchBurst;
+        
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return true;
@@ -51,11 +58,18 @@ namespace Entities.Capacities
         {
             
         }
-
+        
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             targetPositions.y = casterPos.y;
-            
+            if (!FXLaunchGo)
+            {
+                FXLaunchGo = Object.Instantiate(so.FXLaunch, champion.championMesh.transform).gameObject;
+                FXLaunchGo.transform.localPosition = Vector3.up;
+            }
+            FXLaunchGo.SetActive(false);
+            FXLaunchGo.SetActive(true);
+
             var shotDirection = (targetPositions - casterPos).normalized;
             
             champion.LookAt(targetPositions);
@@ -65,16 +79,25 @@ namespace Entities.Capacities
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
             var projectile = Object.Instantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
+            projectile.gameObject.SetActive(false);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
             
             var projectileTr = projectile.transform;
+            
+            async void LaunchMoveRocket()
+            {
+                await Task.Delay(700);
+                projectile.transform.position = champion.forward + champion.transform.position;
+                projectile.gameObject.SetActive(true);
+                gsm.OnUpdateFeedback += MoveProjectile;
+            }
+            
+                LaunchMoveRocket();
 
-            projectile.OnEntityCollide += EntityCollide;
+                projectile.OnEntityCollide += EntityCollide;
             projectile.OnEntityCollideFeedback += EntityCollideFeedback;
 
-            gsm.OnUpdateFeedback += MoveProjectile;
-            
             void MoveProjectile()
             {
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetPos, so.projectileSpeed * Time.deltaTime);
@@ -108,7 +131,13 @@ namespace Entities.Capacities
             void EntityCollideFeedback(Entity entity)
             {
                 if (!caster.GetEnemyTeams().Contains(entity.team)) return;
-
+                
+                if (!FXLaunchBurst)
+                {
+                    FXLaunchBurst = Object.Instantiate(so.FXBurst, champion.championMesh.transform).gameObject;
+                }
+                FXLaunchBurst.SetActive(false);
+                FXLaunchBurst.SetActive(true);
                 gsm.OnUpdateFeedback -= MoveProjectile;
                 
                 projectile.DestroyProjectile();

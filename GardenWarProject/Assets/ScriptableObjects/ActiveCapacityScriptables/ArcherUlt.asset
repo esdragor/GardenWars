@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b4987d993ca21f41abe245c2f38533f, type: 3}
   m_Name: ArcherUlt
   m_EditorClassIdentifier: 
-  descriptionName: 
+  abilityName: 
   icon: {fileID: 0}
   description: 
   cooldown: 0
   maxRange: 100
   types: 00000000
   shootType: 0
-  indexInCollection: 0
+  indexInCollection: 11
   projectile: {fileID: 4689079691940470199, guid: 3918df71962f5b149b2e159a2fa9f538, type: 3}
-  projectileSpeed: 1
-  projectileDamage: 10
+  projectileSpeed: 7
+  projectileDamage: 1000
+  FXLaunch: {fileID: 7438705932272510266, guid: 7231bbe4c62592a4fb5c60af9db80129, type: 3}
+  FXBurst: {fileID: 6711204043633888654, guid: ba6700ec2899db847ad5c5b43da7d2d2, type: 3}
