@@ -10,6 +10,8 @@ namespace Entities.Capacities
         [Tooltip("In Seconds")] public double dashTime;
         public bool fixedDistance;
         public bool canPassWalls;
+        public ParticleSystem FXDashBlue;
+        public ParticleSystem FXDashRed;
 
         public override Type AssociatedType()
         {
@@ -86,6 +88,14 @@ namespace Entities.Capacities
                 Blink(destination);
                 return;
             }
+            
+            if (!champion.FXDash)
+            {
+                champion.FXDash = champion.team == Enums.Team.Team1 ? so.FXDashBlue : so.FXDashRed;
+                GameObject.Instantiate(champion.FXDash, champion.transform.position, champion.championMesh.transform.rotation, champion.championMesh.transform);
+            // insert rotation selon mesh
+            }
+            champion.FXDash.Play();
 
             StartDash(casterPos, destination);
         }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Entities.Inventory;
 using GameStates;
@@ -10,6 +11,7 @@ namespace Entities.Champion
     public partial class Champion : Entity
     {
         public bool isPlayerChampion => gsm.GetPlayerChampion() == this;
+        
 
         [HideInInspector] public ChampionSO currentSo;
         public Enums.ChampionRole role;
@@ -19,9 +21,13 @@ namespace Entities.Champion
         public Quaternion rotation => rotateParent.localRotation;
         private Vector3 respawnPos;
         public Rigidbody rb;
+        
+        [HideInInspector] public GameObject championMesh;
+        [HideInInspector] public ParticleSystem FXDash;
 
         public CollisionBlocker blocker;
         private static readonly int Speed = Animator.StringToHash("Speed");
+        
 
         protected override void OnStart()
         {
@@ -81,7 +87,7 @@ namespace Entities.Champion
 
             attackAbilityIndex = currentSo.attackAbilityIndex;
             abilitiesIndexes = currentSo.activeCapacitiesIndexes;
-            var championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
+            championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;
 
