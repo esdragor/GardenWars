@@ -30,6 +30,9 @@ namespace Entities.Capacities
         private LayerMask collisionLayers;
         private ParticleSystem FXDash;
         private GameObject FXDashGO;
+        
+        private ArcherPassive _archerPassive;
+        private ArcherPassive archerPassive => _archerPassive ??= champion.GetPassiveCapacity<ArcherPassive>();
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -130,6 +133,8 @@ namespace Entities.Capacities
 
             double timeInDash = 0;
 
+            if (archerPassive != null)  archerPassive.holdStacks = true;
+
             gsm.OnUpdateFeedback += DashTowardsDestination;
 
             void DashTowardsDestination()
@@ -137,9 +142,15 @@ namespace Entities.Capacities
                 timeInDash += Time.deltaTime;
 
                 caster.transform.position = Vector3.Lerp(start, destination, (float) (timeInDash / dashDuration));
+                
                 if (timeInDash < dashDuration) return;
-                champion.agent.enabled = true;
+                
+                if(isMaster) champion.agent.enabled = true;
+                
                 Blink(destination);
+                
+                if (archerPassive != null)  archerPassive.holdStacks = false;
+                
                 gsm.OnUpdateFeedback -= DashTowardsDestination;
             }
         }

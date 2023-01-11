@@ -38,6 +38,8 @@ namespace Entities.Capacities
         private ParticleSystem FXPassive;
         private GameObject FXPassiveGO;
 
+        public bool holdStacks;
+
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
             return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
@@ -52,6 +54,8 @@ namespace Entities.Capacities
             timeToDecrease = so.timeToDecrease;
             
             timer = 0;
+
+            holdStacks = false;
             
             champion.OnDie += ResetStacks;
             
@@ -122,6 +126,7 @@ namespace Entities.Capacities
 
         private void DecreaseStacks()
         {
+            if(holdStacks) return;
             if(currentStacks <= 0) return;
             if(timer < timeToDecrease) return;
             timer = 0;
