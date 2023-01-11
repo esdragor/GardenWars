@@ -13,7 +13,7 @@ namespace Entities.Capacities
 
         public ParticleSystem FXShieldBreakBlue;
         public ParticleSystem FXShieldBreakRed;
-        
+
         public override Type AssociatedType()
         {
             return typeof(ShieldPassive);
@@ -22,8 +22,8 @@ namespace Entities.Capacities
 
     public class ShieldPassive : PassiveCapacity
     {
-        private ShieldPassiveSO so => (ShieldPassiveSO) AssociatedPassiveCapacitySO();
-        
+        private ShieldPassiveSO so => (ShieldPassiveSO)AssociatedPassiveCapacitySO();
+
         private float currentShieldAmount = 0;
         private IActiveLifeable lifeable;
         private IDeadable deadable;
@@ -31,7 +31,7 @@ namespace Entities.Capacities
         private GameObject FXShieldGO;
         private ParticleSystem FXShieldBreak;
         private GameObject FXShieldBreakGO;
-        
+
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
             return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
@@ -43,11 +43,11 @@ namespace Entities.Capacities
 
             lifeable = target.GetComponent<IActiveLifeable>();
             deadable = target.GetComponent<IDeadable>();
-            
-            if(lifeable == null || count > 1) return;
+
+            if (lifeable == null || count > 1) return;
 
             lifeable.OnDecreaseCurrentHp += DecreaseShiedAmount;
-            
+
             deadable?.SetCanDieRPC(false); //Todo - immune to death plus propre
         }
 
@@ -55,14 +55,16 @@ namespace Entities.Capacities
         {
             LaunchShieldFX();
         }
-        
+
         public void LaunchShieldFX()
         {
             if (!FXShield)
             {
                 FXShield = champion.team == Enums.Team.Team1 ? so.FXShieldBlue : so.FXShieldRed;
-                FXShieldGO = Object.Instantiate(FXShield, champion.championMesh.transform).gameObject;
+                FXShieldGO = Object.Instantiate(FXShield, champion.transform).gameObject;
+                FXShieldGO.transform.localPosition = Vector3.up * 0.5f;
             }
+
             FXShieldGO.SetActive(true);
         }
 
@@ -72,46 +74,45 @@ namespace Entities.Capacities
             if (!FXShieldBreak)
             {
                 FXShieldBreak = champion.team == Enums.Team.Team1 ? so.FXShieldBreakBlue : so.FXShieldBreakRed;
-                FXShieldBreakGO = GameObject.Instantiate(FXShieldBreak, champion.championMesh.transform).gameObject;
+                FXShieldBreakGO = GameObject.Instantiate(FXShieldBreak, champion.gameObject.transform).gameObject;
+                FXShieldBreakGO.transform.localPosition = Vector3.up * 0.5f;
             }
+
             FXShieldBreakGO.SetActive(false);
             FXShieldBreakGO.SetActive(true);
         }
 
-        private void DecreaseShiedAmount(float damage,int source)
+        private void DecreaseShiedAmount(float damage, int source)
         {
             currentShieldAmount -= damage;
-            
 
-            lifeable.IncreaseCurrentHpRPC(damage,entity.entityIndex);
+
+            lifeable.IncreaseCurrentHpRPC(damage, entity.entityIndex);
 
             if (currentShieldAmount > 0) return;
-            
+
             LaunchBreakFX();
 
             var overflowDamage = -currentShieldAmount;
-            
+
             entity.RemovePassiveCapacityByIndexRPC(indexOfSo);
-            
+
             deadable.SetCanDieRPC(true);
-            
-            lifeable.DecreaseCurrentHpRPC(overflowDamage,source);
+
+            lifeable.DecreaseCurrentHpRPC(overflowDamage, source);
         }
 
         protected override void OnRemovedEffects(Entity target)
         {
-            if(count > 0)  return;
+            if (count > 0) return;
 
             lifeable.OnDecreaseCurrentHp -= DecreaseShiedAmount;
-            
+
             deadable.SetCanDieRPC(true);
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
-            
         }
     }
 }
-
-
