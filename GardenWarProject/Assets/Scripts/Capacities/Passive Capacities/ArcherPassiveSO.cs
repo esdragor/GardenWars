@@ -71,7 +71,12 @@ namespace Entities.Capacities
                 
             gsm.OnUpdateFeedback += OnUpdate;
         }
-        
+
+        protected override void OnAddedClientEffects(Entity target)
+        {
+            
+        }
+
         private void ResetStacks(int _)
         {
             for (int i = 0; i < currentStacks; i++)
@@ -156,8 +161,10 @@ namespace Entities.Capacities
         {
             if(champion.isPlayerChampion) gsm.OnUpdateFeedback -= OnUpdate;
         }
-        
-        
+
+        protected override void OnRemovedClientEffects(Entity target)
+        {
+        }
     }
 }
 

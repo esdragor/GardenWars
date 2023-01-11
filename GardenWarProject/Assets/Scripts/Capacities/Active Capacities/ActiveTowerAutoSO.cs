@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
 using GameStates;
@@ -57,6 +55,11 @@ public class ActiveTowerAuto : ActiveCapacity
         
     }
 
+    protected override void PressClient(int targetsEntityIndexes, Vector3 targetPositions)
+    {
+        
+    }
+
     protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
     {
         
@@ -67,6 +70,10 @@ public class ActiveTowerAuto : ActiveCapacity
         
     }
 
+    protected override void HoldClient(int targetsEntityIndexes, Vector3 targetPositions)
+    {
+    }
+
     protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
     {
 
@@ -75,5 +82,9 @@ public class ActiveTowerAuto : ActiveCapacity
     protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
     {
         
+    }
+
+    protected override void ReleaseClient(int targetEntityIndex, Vector3 targetPositions)
+    {
     }
 }

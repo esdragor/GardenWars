@@ -39,6 +39,11 @@ namespace Entities.Capacities
             
         }
 
+        protected override void OnAddedClientEffects(Entity target)
+        {
+            
+        }
+
         protected override void OnRemovedEffects(Entity target)
         {
             moveable?.SetCanMoveRPC(true);
@@ -47,6 +52,11 @@ namespace Entities.Capacities
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
+        {
+            
+        }
+
+        protected override void OnRemovedClientEffects(Entity target)
         {
             
         }

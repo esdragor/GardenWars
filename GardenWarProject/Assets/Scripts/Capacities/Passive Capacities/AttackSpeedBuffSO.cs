@@ -32,12 +32,22 @@ namespace Entities.Capacities
             
         }
 
+        protected override void OnAddedClientEffects(Entity target)
+        {
+            
+        }
+
         protected override void OnRemovedEffects(Entity target)
         {
             champion.ChangeAttackSpeedRPC((float)so.timeGained);
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
+        {
+            
+        }
+
+        protected override void OnRemovedClientEffects(Entity target)
         {
             
         }

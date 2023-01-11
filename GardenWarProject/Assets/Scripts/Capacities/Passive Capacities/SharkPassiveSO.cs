@@ -83,7 +83,12 @@ namespace Entities.Capacities
             
             champion.OnDieFeedback += ResetTimer;
         }
-        
+
+        protected override void OnAddedClientEffects(Entity target)
+        {
+            
+        }
+
         private void IncreaseTimeUnBorrowed()
         {
             if(borrowed) return;
@@ -203,6 +208,11 @@ namespace Entities.Capacities
             
             champion.OnDieFeedback -= UnBorrow;
             champion.OnDieFeedback -= ResetTimer;
+        }
+
+        protected override void OnRemovedClientEffects(Entity target)
+        {
+            
         }
     }
 }

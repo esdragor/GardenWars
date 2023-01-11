@@ -14,6 +14,7 @@ namespace Entities
     {
         public static bool isOffline => !PhotonNetwork.IsConnected;
         public static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
+        public bool isClient => gsm.GetPlayerChampion() == this;
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
         protected UIManager uiManager => UIManager.Instance;

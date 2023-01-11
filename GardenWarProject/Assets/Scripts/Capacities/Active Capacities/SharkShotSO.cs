@@ -39,12 +39,22 @@ namespace Entities.Capacities
             
         }
 
+        protected override void PressClient(int targetsEntityIndexes, Vector3 targetPositions)
+        {
+            
+        }
+
         protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
 
         protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
+        {
+            
+        }
+
+        protected override void HoldClient(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
@@ -127,6 +137,11 @@ namespace Entities.Capacities
                 
                 projectile.DestroyProjectile();
             }
+        }
+
+        protected override void ReleaseClient(int targetEntityIndex, Vector3 targetPositions)
+        {
+            
         }
     }
 }

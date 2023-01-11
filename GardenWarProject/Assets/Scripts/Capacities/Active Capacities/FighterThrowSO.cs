@@ -69,6 +69,10 @@ public class FighterThrow : ActiveCapacity
         else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
     }
 
+    protected override void PressClient(int targetsEntityIndexes, Vector3 targetPositions)
+    {
+    }
+
     protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
     {
         if (!HelperDirection) return;
@@ -86,6 +90,10 @@ public class FighterThrow : ActiveCapacity
         if (nbCandyStocked > so.MaxCandy) nbCandyStocked = so.MaxCandy;
         if (nbCandyStocked > champion.currentCandy) nbCandyStocked = champion.currentCandy;
         if (UIJauge) UIJauge.UpdateTextSlider(nbCandyStocked);
+    }
+
+    protected override void HoldClient(int targetsEntityIndexes, Vector3 targetPositions)
+    {
     }
 
     private CandyBag InitCandyBag()
@@ -123,5 +131,9 @@ public class FighterThrow : ActiveCapacity
         champion.PlayThrowAnimation();
         if (HelperDirection) HelperDirection.SetActive(false);
         if (UIJauge) UIJauge.gameObject.SetActive(false);
+    }
+
+    protected override void ReleaseClient(int targetEntityIndex, Vector3 targetPositions)
+    {
     }
 }

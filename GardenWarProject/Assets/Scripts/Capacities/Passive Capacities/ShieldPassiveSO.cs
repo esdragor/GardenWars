@@ -56,6 +56,11 @@ namespace Entities.Capacities
             LaunchShieldFX();
         }
 
+        protected override void OnAddedClientEffects(Entity target)
+        {
+            
+        }
+
         public void LaunchShieldFX()
         {
             if (!FXShield)
@@ -113,6 +118,11 @@ namespace Entities.Capacities
 
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
+        }
+
+        protected override void OnRemovedClientEffects(Entity target)
+        {
+            
         }
     }
 }

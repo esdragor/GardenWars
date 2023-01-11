@@ -11,19 +11,19 @@ namespace Entities.Capacities
         {
             return typeof(PassivePerseverance);
         }
-        
+
         [Range(0, 1)] public float percentage;
         public float timeBeforeHeal;
         public GameObject healEffectPrefab;
     }
-    
-        public class PassivePerseverance : PassiveCapacity
+
+    public class PassivePerseverance : PassiveCapacity
     {
         private double timeSinceLastAttack;
         private double timeSinceLastHeal;
         private PassivePerseveranceSO passiveCapacitySo;
         private IActiveLifeable activeLifeable;
-        
+
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
             return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
@@ -31,7 +31,7 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            passiveCapacitySo = (PassivePerseveranceSO)AssociatedPassiveCapacitySO();
+            passiveCapacitySo = (PassivePerseveranceSO) AssociatedPassiveCapacitySO();
 
             activeLifeable = entity.GetComponent<IActiveLifeable>();
             Debug.Log("addedpassive" + entity.gameObject.name);
@@ -40,6 +40,10 @@ namespace Entities.Capacities
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
+        {
+        }
+
+        protected override void OnAddedClientEffects(Entity target)
         {
             
         }
@@ -53,6 +57,10 @@ namespace Entities.Capacities
 
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
+        }
+
+        protected override void OnRemovedClientEffects(Entity target)
+        {
             
         }
 
@@ -61,33 +69,29 @@ namespace Entities.Capacities
             float maxHP = activeLifeable.GetMaxHp();
             float modAmount = maxHP * passiveCapacitySo.percentage;
             activeLifeable.IncreaseCurrentHpRPC(modAmount, entity.entityIndex);
- 
-          //  PoolLocalManager.Instance.PoolInstantiate(((PassivePerseveranceSO)AssociatedPassiveCapacitySO()).healEffectPrefab, entity.transform.position, Quaternion.identity,
+
+            //  PoolLocalManager.Instance.PoolInstantiate(((PassivePerseveranceSO)AssociatedPassiveCapacitySO()).healEffectPrefab, entity.transform.position, Quaternion.identity,
             //    entity.transform);
         }
 
         private void IncreasePerTick()
         {
-
-            timeSinceLastAttack += GameStateMachine.Instance.tickRate/60;
-            timeSinceLastHeal += GameStateMachine.Instance.tickRate/60;
+            timeSinceLastAttack += GameStateMachine.Instance.tickRate / 60;
+            timeSinceLastHeal += GameStateMachine.Instance.tickRate / 60;
 
             if (timeSinceLastAttack > passiveCapacitySo.timeBeforeHeal)
             {
                 if (timeSinceLastHeal >= 5)
                 {
-              
                     ActiveHealEffect();
                     timeSinceLastHeal = 0;
                 }
             }
         }
 
-        private void ResetTimeSinceLastAttack(float _,int __)
+        private void ResetTimeSinceLastAttack(float _, int __)
         {
             timeSinceLastAttack = 0;
         }
     }
 }
-
-

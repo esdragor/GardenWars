@@ -52,6 +52,12 @@ namespace Entities.Capacities
             entity = target;
             
             OnAddedFeedbackEffects(entity);
+
+            if (entity.isClient)
+            {
+                OnAddedClientEffects(entity);
+                OnAddedClientEffectsCallback?.Invoke(entity);
+            }
             
             OnAddedEffectsFeedbackCallback?.Invoke(entity);
         }
@@ -80,9 +86,11 @@ namespace Entities.Capacities
         }
 
         protected abstract void OnAddedFeedbackEffects(Entity target);
+        protected abstract void OnAddedClientEffects(Entity target);
 
         public event Action<Entity> OnAddedEffectsCallback;
         public event Action<Entity> OnAddedEffectsFeedbackCallback;
+        public event Action<Entity> OnAddedClientEffectsCallback;
         
 
         /// <summary>
@@ -109,12 +117,19 @@ namespace Entities.Capacities
                 subscribedForTimer = false;
             }
             OnRemovedFeedbackEffects(target);
+            if (entity.isClient)
+            {
+                OnRemovedClientEffects(entity);
+                OnRemovedClientsEffectsCallback?.Invoke(target);
+            }
             OnRemovedEffectsFeedbackCallback?.Invoke(target);
         }
         
         protected abstract void OnRemovedFeedbackEffects(Entity target);
+        protected abstract void OnRemovedClientEffects(Entity target);
         
         public event Action<Entity> OnRemovedEffectsCallback;
         public event Action<Entity> OnRemovedEffectsFeedbackCallback;
+        public event Action<Entity> OnRemovedClientsEffectsCallback;
     }
 }

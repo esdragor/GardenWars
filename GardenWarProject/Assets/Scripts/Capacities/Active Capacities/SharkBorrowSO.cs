@@ -38,6 +38,11 @@ namespace Entities.Capacities
             
         }
 
+        protected override void PressClient(int targetsEntityIndexes, Vector3 targetPositions)
+        {
+            
+        }
+
         protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
@@ -46,6 +51,10 @@ namespace Entities.Capacities
         protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
+        }
+
+        protected override void HoldClient(int targetsEntityIndexes, Vector3 targetPositions)
+        {
         }
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
@@ -57,6 +66,10 @@ namespace Entities.Capacities
         {
             Debug.Log("Trying to Borrow");
             sharkPassive.Borrow();
+        }
+
+        protected override void ReleaseClient(int targetEntityIndex, Vector3 targetPositions)
+        {
         }
     }
 }
