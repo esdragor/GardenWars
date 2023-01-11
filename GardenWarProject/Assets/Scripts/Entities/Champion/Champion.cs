@@ -23,7 +23,6 @@ namespace Entities.Champion
         public Rigidbody rb;
         
         [HideInInspector] public GameObject championMesh;
-        [HideInInspector] public ParticleSystem FXDash;
 
         public CollisionBlocker blocker;
         private static readonly int Speed = Animator.StringToHash("Speed");
