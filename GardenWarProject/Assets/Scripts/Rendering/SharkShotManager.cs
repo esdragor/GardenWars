@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameStates;
 using UnityEngine;
 
 public class SharkShotManager : MonoBehaviour
@@ -8,6 +9,6 @@ public class SharkShotManager : MonoBehaviour
 
     public void EnableFXShot(Enums.Team team)
     {
-        (team == Enums.Team.Team1 ? sharkShot[0] : sharkShot[1]).SetActive(true);
+        (team == GameStateMachine.Instance.GetPlayerTeam() ? sharkShot[0] : sharkShot[1]).SetActive(true);
     }
 }

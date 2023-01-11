@@ -10,11 +10,11 @@ public class LineGenerate : MonoBehaviour
     public float lineWidth;
     public Color c1;
     public Color c2;
-
-    // Start is called before the first frame update
+    private LineRenderer lineRenderer;
+    
     void Start()
     {
-        LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.widthMultiplier = lineWidth;
         lineRenderer.startColor = c1;
@@ -24,11 +24,9 @@ public class LineGenerate : MonoBehaviour
         
 
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        LineRenderer lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.SetPosition(0, startPoint.position);
         lineRenderer.SetPosition(1, endPoint.position);
     }

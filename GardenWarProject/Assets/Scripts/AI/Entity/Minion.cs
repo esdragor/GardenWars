@@ -22,7 +22,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float currentHp = 100f;
-    [SerializeField] private Transform FalseFX;
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private GameObject MinionDieFX;
     [SerializeField] private int NbCandyDropOnDeath = 5;
@@ -31,12 +30,15 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private GameObject Mesh;
     [SerializeField] private GameObject BagInBag;
     [SerializeField] private Image SpriteBagInBag;
+    [SerializeField] private Animator[] Myanimators;
+
 
     private float currentMoveSpeed;
     private bool isAlive = true;
     private bool canDie = true;
     private double cooldownHide = 0.2f;
     private Camera cam;
+    public float currentVelocity => agent.velocity.magnitude;
     
     public void ReachEnemyCamp()
     {
@@ -55,6 +57,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnAddItem += ItemAdded;
         OnRemoveItem += ItemRemoved;
         cam = Camera.main;
+        animators = Myanimators;
     }
     
     private void ItemAdded(byte itemIndex)
@@ -116,6 +119,15 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             return;
         }
         photonView.RPC("SetCanMoveRPC", RpcTarget.MasterClient, value);
+    }
+
+    protected override void OnUpdate()
+    {
+        if (!photonView.IsMine) return;
+        foreach (var animator in animators)
+        {
+            animator.SetFloat("Speed", currentVelocity);
+        }
     }
 
     [PunRPC]
@@ -349,7 +361,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         cooldownHide -= gsm.increasePerTick;
         if (cooldownHide > 0f) return;
-        FalseFX.gameObject.SetActive(false);
         gsm.OnTick -= FalseFxHide;
     }
     
@@ -358,7 +369,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         cooldownHide = 0.2f;
         gsm.OnTick += FalseFxHide;
-        FalseFX.gameObject.SetActive(true);
         OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }

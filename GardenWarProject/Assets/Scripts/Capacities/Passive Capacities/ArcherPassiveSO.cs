@@ -137,7 +137,7 @@ namespace Entities.Capacities
             
             if (!FXPassive)
             {
-                FXPassive = champion.team == Enums.Team.Team1 ? so.FXBlue : so.FXRed;
+                FXPassive = champion.team == gsm.GetPlayerTeam() ? so.FXBlue : so.FXRed;
                 FXPassiveGO = Object.Instantiate(FXPassive, champion.championMesh.transform).gameObject;
             }
             FXPassiveGO.SetActive(true);

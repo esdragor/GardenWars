@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameStates;
 using UnityEngine;
 
 public class SharkPassiveManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class SharkPassiveManager : MonoBehaviour
 
     public void EnableFXShot(Enums.Team team)
     {
-        (team == Enums.Team.Team1 ? sharkSPassive[0] : sharkSPassive[1]).SetActive(true);
+        (team == GameStateMachine.Instance.GetPlayerTeam() ? sharkSPassive[0] : sharkSPassive[1]).SetActive(true);
     }
 
     public void HitFx()

@@ -95,7 +95,7 @@ namespace Entities.Capacities
             
             if (!FXDash)
             {
-                FXDash = champion.team == Enums.Team.Team1 ? so.FXDashBlue : so.FXDashRed;
+                FXDash = champion.team == gsm.GetPlayerTeam()? so.FXDashBlue : so.FXDashRed;
                 FXDashGO = Object.Instantiate(FXDash, champion.championMesh.transform).gameObject;
             }
             FXDashGO.SetActive(false);

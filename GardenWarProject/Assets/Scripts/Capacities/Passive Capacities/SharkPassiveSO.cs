@@ -145,7 +145,7 @@ namespace Entities.Capacities
             borrowed = false;
             if (!Unborrow)
             {
-                Unborrow = champion.team == Enums.Team.Team1 ? so.UnborrowBlue : so.UnborrowRed;
+                Unborrow = champion.team == gsm.GetPlayerTeam() ? so.UnborrowBlue : so.UnborrowRed;
                 UnborrowGO = Object.Instantiate(Unborrow, champion.championMesh.transform).gameObject;
             }
             UnborrowGO.SetActive(false);

@@ -29,12 +29,13 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private Animator[] Myanimators;
 
 
-
     private bool canMove;
     private float referenceMoveSpeed;
     private float currentMoveSpeed;
     private bool isAlive = true;
     private bool canDie = true;
+    public float currentVelocity => agent.velocity.magnitude;
+
 
     protected override void OnStart()
     {
@@ -52,6 +53,15 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         currentMoveSpeed = referenceMoveSpeed;
         agent.speed = referenceMoveSpeed;
         UIManager.Instance.InstantiateHealthBarForEntity(this);
+    }
+    
+    protected override void OnUpdate()
+    {
+        if (!photonView.IsMine) return;
+        foreach (var animator in animators)
+        {
+            animator.SetFloat("Speed", currentVelocity);
+        }
     }
 
     private Item AssignRandomItem()

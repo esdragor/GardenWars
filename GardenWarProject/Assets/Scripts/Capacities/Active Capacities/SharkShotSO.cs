@@ -66,7 +66,7 @@ namespace Entities.Capacities
 
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
-            var projectile = Object.Instantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
+            var projectile = Object.Instantiate(so.projectile,projectileSpawnPos, Quaternion.LookRotation(shotDirection));
             projectile.gameObject.GetComponent<SharkShotManager>().EnableFXShot(champion.team);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
