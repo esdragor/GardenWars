@@ -21,6 +21,7 @@ namespace UIComponents
         [Header("Components")]
         [SerializeField] private Image Portrait;
         [SerializeField] private Image healthBar;
+        [SerializeField] private TMP_Text healthBarText;
         [SerializeField] private Image resourceBar;
         [SerializeField] private Image spellPassive;
         [SerializeField] private Image spellOne;
@@ -94,6 +95,7 @@ namespace UIComponents
 
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
             resourceBar.fillAmount = resourceable.GetCurrentResourcePercent();
+            healthBarText.text = $"{lifeable.GetCurrentHp()}/{lifeable.GetMaxHp()}";
             
             handledPassives.Clear();
             
@@ -187,16 +189,21 @@ namespace UIComponents
         private void UpdateFillPercentByPercentHealth(float value)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
+            healthBarText.text = $"{lifeable.GetCurrentHp()}/{lifeable.GetMaxHp()}";
         }
 
         private void UpdateFillPercentHealth(float value)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
+            healthBarText.text = $"{lifeable.GetCurrentHp()}/{lifeable.GetMaxHp()}";
+
         }
         
         private void UpdateFillPercentHealth(float value,int _)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
+            healthBarText.text = $"{lifeable.GetCurrentHp()}/{lifeable.GetMaxHp()}";
+
         }
 
         private void UpdateFillPercentByPercentResource(float value)
