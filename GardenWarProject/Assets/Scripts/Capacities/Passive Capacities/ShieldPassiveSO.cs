@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Entities.Capacities
 {
@@ -7,6 +8,11 @@ namespace Entities.Capacities
     public class ShieldPassiveSO : PassiveCapacitySO
     {
         public float shieldAmount;
+        public ParticleSystem FXShieldBlue;
+        public ParticleSystem FXShieldRed;
+
+        public ParticleSystem FXShieldBreakBlue;
+        public ParticleSystem FXShieldBreakRed;
         
         public override Type AssociatedType()
         {
@@ -21,6 +27,10 @@ namespace Entities.Capacities
         private float currentShieldAmount = 0;
         private IActiveLifeable lifeable;
         private IDeadable deadable;
+        private ParticleSystem FXShield;
+        private GameObject FXShieldGO;
+        private ParticleSystem FXShieldBreak;
+        private GameObject FXShieldBreakGO;
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
@@ -43,16 +53,41 @@ namespace Entities.Capacities
 
         protected override void OnAddedFeedbackEffects(Entity target)
         {
-            
+            LaunchShieldFX();
+        }
+        
+        public void LaunchShieldFX()
+        {
+            if (!FXShield)
+            {
+                FXShield = champion.team == Enums.Team.Team1 ? so.FXShieldBlue : so.FXShieldRed;
+                FXShieldGO = Object.Instantiate(FXShield, champion.championMesh.transform).gameObject;
+            }
+            FXShieldGO.SetActive(true);
+        }
+
+        public void LaunchBreakFX()
+        {
+            FXShieldGO.SetActive(false);
+            if (!FXShieldBreak)
+            {
+                FXShieldBreak = champion.team == Enums.Team.Team1 ? so.FXShieldBreakBlue : so.FXShieldBreakRed;
+                FXShieldBreakGO = GameObject.Instantiate(FXShieldBreak, champion.championMesh.transform).gameObject;
+            }
+            FXShieldBreakGO.SetActive(false);
+            FXShieldBreakGO.SetActive(true);
         }
 
         private void DecreaseShiedAmount(float damage,int source)
         {
             currentShieldAmount -= damage;
+            
 
             lifeable.IncreaseCurrentHpRPC(damage,entity.entityIndex);
 
             if (currentShieldAmount > 0) return;
+            
+            LaunchBreakFX();
 
             var overflowDamage = -currentShieldAmount;
             
