@@ -43,7 +43,7 @@ namespace Entities.Capacities
         {
         }
 
-        protected override void OnAddedClientEffects(Entity target)
+        protected override void OnAddedLocalEffects(Entity target)
         {
             
         }
@@ -59,7 +59,7 @@ namespace Entities.Capacities
         {
         }
 
-        protected override void OnRemovedClientEffects(Entity target)
+        protected override void OnRemovedLocalEffects(Entity target)
         {
             
         }

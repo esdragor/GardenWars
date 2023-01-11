@@ -65,7 +65,7 @@ namespace Entities.Capacities
             else HelperDirection = GameObject.CreatePrimitive(PrimitiveType.Cube);
         }
 
-        protected override void PressClient(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void PressLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
@@ -85,7 +85,7 @@ namespace Entities.Capacities
                     bagSpeed + (Time.time - time_Pressed) * so.HextechFlashSpeedScale + acceleration);
         }
 
-        protected override void HoldClient(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
         }
 
@@ -125,7 +125,7 @@ namespace Entities.Capacities
             if (UIJauge) UIJauge.gameObject.SetActive(false);
         }
 
-        protected override void ReleaseClient(int targetEntityIndex, Vector3 targetPositions)
+        protected override void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions)
         {
         }
     }

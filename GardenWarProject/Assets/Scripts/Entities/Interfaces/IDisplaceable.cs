@@ -1,4 +1,7 @@
-﻿namespace Entities
+﻿using System;
+using UnityEngine;
+
+namespace Entities
 {
     public interface IDisplaceable
     {
@@ -23,17 +26,17 @@
         /// <summary>
         /// Sends an RPC to the master to displace the entity.
         /// </summary>
-        public void RequestDisplace();
+        public void RequestDisplace(Vector3 destination, float time);
         /// <summary>
         /// Sends an RPC to all clients to displace the entity.
         /// </summary>
-        public void SyncDisplaceRPC();
+        public void SyncDisplaceRPC(Vector3 destination, float time);
         /// <summary>
         /// Displaces the entity.
         /// </summary>
-        public void DisplaceRPC();
+        public void DisplaceRPC(Vector3 destination, float time);
 
-        public event GlobalDelegates.NoParameterDelegate OnDisplace;
-        public event GlobalDelegates.NoParameterDelegate OnDisplaceFeedback;
+        public event Action<Vector3,float> OnDisplace;
+        public event Action<Vector3,float> OnDisplaceFeedback;
     }
 }

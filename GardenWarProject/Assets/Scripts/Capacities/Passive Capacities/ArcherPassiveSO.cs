@@ -72,7 +72,7 @@ namespace Entities.Capacities
             gsm.OnUpdateFeedback += OnUpdate;
         }
 
-        protected override void OnAddedClientEffects(Entity target)
+        protected override void OnAddedLocalEffects(Entity target)
         {
             
         }
@@ -162,7 +162,7 @@ namespace Entities.Capacities
             if(champion.isPlayerChampion) gsm.OnUpdateFeedback -= OnUpdate;
         }
 
-        protected override void OnRemovedClientEffects(Entity target)
+        protected override void OnRemovedLocalEffects(Entity target)
         {
         }
     }

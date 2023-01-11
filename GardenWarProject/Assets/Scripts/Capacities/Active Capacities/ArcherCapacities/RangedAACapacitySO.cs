@@ -51,7 +51,7 @@ namespace Entities.Capacities
             
         }
 
-        protected override void PressClient(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void PressLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
             
         }
@@ -66,7 +66,7 @@ namespace Entities.Capacities
             
         }
 
-        protected override void HoldClient(int targetsEntityIndexes, Vector3 targetPositions)
+        protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
         }
 
@@ -149,7 +149,7 @@ namespace Entities.Capacities
             }
         }
 
-        protected override void ReleaseClient(int targetEntityIndex, Vector3 targetPositions)
+        protected override void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions)
         {
         }
     }

@@ -79,44 +79,44 @@ namespace Entities.Capacities
             if(!CanCast(targetsEntityIndexes,targetPositions)) return false;
             if(isMaster) Press(targetsEntityIndexes,targetPositions);
             PressFeedback(targetsEntityIndexes,targetPositions);
-            if (caster.isClient)
+            if (caster.isLocal)
             {
-                PressClient(targetsEntityIndexes,targetPositions);
+                PressLocal(targetsEntityIndexes,targetPositions);
             }
             return true;
         }
         protected abstract void Press(int targetsEntityIndexes, Vector3 targetPositions);
         protected abstract void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions);
-        protected abstract void PressClient(int targetsEntityIndexes, Vector3 targetPositions);
+        protected abstract void PressLocal(int targetsEntityIndexes, Vector3 targetPositions);
 
         public void OnHold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if(isMaster) Hold(targetsEntityIndexes,targetPositions);
             HoldFeedback(targetsEntityIndexes,targetPositions);
-            if (caster.isClient)
+            if (caster.isLocal)
             {
-                HoldClient(targetsEntityIndexes,targetPositions);
+                HoldLocal(targetsEntityIndexes,targetPositions);
             }
         }
 
         protected abstract void Hold(int targetsEntityIndexes, Vector3 targetPositions);
         protected abstract void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions);
-        protected abstract void HoldClient(int targetsEntityIndexes, Vector3 targetPositions);
+        protected abstract void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions);
         public void OnRelease(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if(!CanCast(targetsEntityIndexes,targetPositions)) return;
             if(isMaster) Release(targetsEntityIndexes,targetPositions);
             ReleaseFeedback(targetsEntityIndexes,targetPositions);
-            if (caster.isClient)
+            if (caster.isLocal)
             {
-                ReleaseClient(targetsEntityIndexes,targetPositions);
+                ReleaseLocal(targetsEntityIndexes,targetPositions);
             }
             if(baseCooldown > 0) EnterCooldown(baseCooldown);
         }
 
         protected abstract void Release(int targetsEntityIndexes, Vector3 targetPositions);
         protected abstract void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions);
-        protected abstract void ReleaseClient(int targetEntityIndex, Vector3 targetPositions);
+        protected abstract void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions);
 
         private void EnterCooldown(double timeOnCooldown)
         {

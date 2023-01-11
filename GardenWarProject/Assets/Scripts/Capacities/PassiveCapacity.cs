@@ -53,10 +53,10 @@ namespace Entities.Capacities
             
             OnAddedFeedbackEffects(entity);
 
-            if (entity.isClient)
+            if (entity.isLocal)
             {
-                OnAddedClientEffects(entity);
-                OnAddedClientEffectsCallback?.Invoke(entity);
+                OnAddedLocalEffects(entity);
+                OnAddedLocalEffectsCallback?.Invoke(entity);
             }
             
             OnAddedEffectsFeedbackCallback?.Invoke(entity);
@@ -86,11 +86,11 @@ namespace Entities.Capacities
         }
 
         protected abstract void OnAddedFeedbackEffects(Entity target);
-        protected abstract void OnAddedClientEffects(Entity target);
+        protected abstract void OnAddedLocalEffects(Entity target);
 
         public event Action<Entity> OnAddedEffectsCallback;
         public event Action<Entity> OnAddedEffectsFeedbackCallback;
-        public event Action<Entity> OnAddedClientEffectsCallback;
+        public event Action<Entity> OnAddedLocalEffectsCallback;
         
 
         /// <summary>
@@ -117,19 +117,19 @@ namespace Entities.Capacities
                 subscribedForTimer = false;
             }
             OnRemovedFeedbackEffects(target);
-            if (entity.isClient)
+            if (entity.isLocal)
             {
-                OnRemovedClientEffects(entity);
-                OnRemovedClientsEffectsCallback?.Invoke(target);
+                OnRemovedLocalEffects(entity);
+                OnRemovedLocalEffectsCallback?.Invoke(target);
             }
             OnRemovedEffectsFeedbackCallback?.Invoke(target);
         }
         
         protected abstract void OnRemovedFeedbackEffects(Entity target);
-        protected abstract void OnRemovedClientEffects(Entity target);
+        protected abstract void OnRemovedLocalEffects(Entity target);
         
         public event Action<Entity> OnRemovedEffectsCallback;
         public event Action<Entity> OnRemovedEffectsFeedbackCallback;
-        public event Action<Entity> OnRemovedClientsEffectsCallback;
+        public event Action<Entity> OnRemovedLocalEffectsCallback;
     }
 }

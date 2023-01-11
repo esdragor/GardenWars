@@ -69,7 +69,7 @@ public class FighterThrow : ActiveCapacity
         else UIJauge = Object.Instantiate(so.prefabJauge).GetComponent<UIJauge>();
     }
 
-    protected override void PressClient(int targetsEntityIndexes, Vector3 targetPositions)
+    protected override void PressLocal(int targetsEntityIndexes, Vector3 targetPositions)
     {
     }
 
@@ -92,7 +92,7 @@ public class FighterThrow : ActiveCapacity
         if (UIJauge) UIJauge.UpdateTextSlider(nbCandyStocked);
     }
 
-    protected override void HoldClient(int targetsEntityIndexes, Vector3 targetPositions)
+    protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
     {
     }
 
@@ -133,7 +133,7 @@ public class FighterThrow : ActiveCapacity
         if (UIJauge) UIJauge.gameObject.SetActive(false);
     }
 
-    protected override void ReleaseClient(int targetEntityIndex, Vector3 targetPositions)
+    protected override void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions)
     {
     }
 }
