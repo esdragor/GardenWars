@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Entities.Capacities
 {
@@ -12,6 +13,7 @@ namespace Entities.Capacities
         public bool canPassWalls;
         public ParticleSystem FXDashBlue;
         public ParticleSystem FXDashRed;
+
 
         public override Type AssociatedType()
         {
@@ -26,6 +28,8 @@ namespace Entities.Capacities
         private double dashDuration => so.dashTime;
 
         private LayerMask collisionLayers;
+        private ParticleSystem FXDash;
+        private GameObject FXDashGO;
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -89,13 +93,13 @@ namespace Entities.Capacities
                 return;
             }
             
-            if (!champion.FXDash)
+            if (!FXDash)
             {
-                champion.FXDash = champion.team == Enums.Team.Team1 ? so.FXDashBlue : so.FXDashRed;
-                GameObject.Instantiate(champion.FXDash, champion.transform.position, champion.championMesh.transform.rotation, champion.championMesh.transform);
-            // insert rotation selon mesh
+                FXDash = champion.team == Enums.Team.Team1 ? so.FXDashBlue : so.FXDashRed;
+                FXDashGO = Object.Instantiate(FXDash, champion.championMesh.transform).gameObject;
             }
-            champion.FXDash.Play();
+            FXDashGO.SetActive(false);
+            FXDashGO.SetActive(true);
 
             StartDash(casterPos, destination);
         }

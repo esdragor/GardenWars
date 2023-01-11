@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Entities.Capacities
 {
@@ -9,6 +10,8 @@ namespace Entities.Capacities
         public double timeToIncrease = 1.5f;
         public double timeToDecrease = 0.5f;
         public int maxStacks = 5;
+        public ParticleSystem FXBlue;
+        public ParticleSystem FXRed;
         [SerializeField] private AttackSpeedBuffSO attackSpeedBuffSO;
         public byte attackSpeedBuffSOIndex => attackSpeedBuffSO.indexInCollection;
 
@@ -31,6 +34,9 @@ namespace Entities.Capacities
         private double timer;
 
         private bool isMoving;
+        
+        private ParticleSystem FXPassive;
+        private GameObject FXPassiveGO;
 
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
@@ -116,6 +122,10 @@ namespace Entities.Capacities
             timer = 0;
             
             currentStacks--;
+            if (currentStacks <= 0)
+            {
+                FXPassiveGO.SetActive(false);
+            }
             champion.RequestRemovePassiveCapacityByIndex(so.attackSpeedBuffSOIndex);
         }
         
@@ -124,6 +134,13 @@ namespace Entities.Capacities
             if(currentStacks >= maxStacks) return;
             if(timer < timeToIncrease) return;
             timer = 0;
+            
+            if (!FXPassive)
+            {
+                FXPassive = champion.team == Enums.Team.Team1 ? so.FXBlue : so.FXRed;
+                FXPassiveGO = Object.Instantiate(FXPassive, champion.championMesh.transform).gameObject;
+            }
+            FXPassiveGO.SetActive(true);
             
             currentStacks++;
             champion.RequestAddPassiveCapacityByIndex(so.attackSpeedBuffSOIndex);
