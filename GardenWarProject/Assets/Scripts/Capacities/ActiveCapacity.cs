@@ -45,7 +45,7 @@ namespace Entities.Capacities
                     break;
                 case Enums.CapacityShootType.TargetPosition:
                     targetedPosition = targetPosition;
-                    if (Vector3.Distance(casterPos, targetedPosition) > maxRange)
+                    if (Vector3.Distance(casterPos, targetedPosition) > maxRange && maxRange != 0)
                     {
                         return false;
                     }

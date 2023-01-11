@@ -130,6 +130,16 @@ namespace Entities
         {
             return passiveCapacitiesList.FirstOrDefault(item => item.indexOfSo == soIndex);
         }
+        
+        public T GetPassiveCapacityBySOIndex<T>(byte soIndex) where T : PassiveCapacity
+        {
+            return (T)passiveCapacitiesList.FirstOrDefault(item => item.indexOfSo == soIndex);
+        }
+
+        public T GetPassiveCapacity<T>() where T : PassiveCapacity
+        {
+            return (T)passiveCapacitiesList.FirstOrDefault(item => item.GetType() == typeof(T));
+        }
 
         public virtual void OnInstantiatedFeedback() { }
 

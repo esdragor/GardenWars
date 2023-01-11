@@ -12,7 +12,6 @@ namespace Entities.Inventory
         {
             lifeable = entity.GetComponent<IActiveLifeable>();
             lifeable?.IncreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod, entity.entityIndex);
-            Debug.Log($"Gained {((HealthModItemSO)AssociatedItemSO()).healthMod} hp");
         }
 
         protected override void OnItemAddedEffectsFeedback(Entity entity)

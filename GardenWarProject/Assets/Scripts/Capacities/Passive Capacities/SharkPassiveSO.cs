@@ -87,7 +87,7 @@ namespace Entities.Capacities
             }
         }
 
-        private void Borrow()
+        public void Borrow()
         {
             if(borrowed) return;
             
