@@ -46,6 +46,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
             TowerModel.transform.Rotate(Vector3.back, 90);
             TowerModel.GetComponent<Renderer>().material = towersMaterials[1];
         }
+        UIManager.Instance.InstantiateHealthBarForEntity(this);
+
     }
 
     public override void OnInstantiated()
