@@ -29,6 +29,7 @@ namespace Entities.Capacities
         
         private double timeUnBorrowed;
         public bool borrowed;
+        public float bonusDamage = 0;
 
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
@@ -39,6 +40,7 @@ namespace Entities.Capacities
         {
             timeUnBorrowed = 0;
             borrowed = false;
+            bonusDamage = 0;
             
             aileron = Object.Instantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
                 champion.rotateParent);
@@ -146,6 +148,7 @@ namespace Entities.Capacities
         private void ResetTimer(byte _,int __,Vector3 ___)
         {
             timeUnBorrowed = 0;
+            bonusDamage = 0;
         }
         
         private void ResetTimer(int _)
@@ -159,7 +162,7 @@ namespace Entities.Capacities
             
             var lifeable = entity.GetComponent<IActiveLifeable>();
             
-            lifeable.DecreaseCurrentHpRPC(so.borrowDamage, champion.entityIndex);
+            lifeable.DecreaseCurrentHpRPC(so.borrowDamage+bonusDamage, champion.entityIndex);
         }
 
         protected override void OnRemovedEffects(Entity target)

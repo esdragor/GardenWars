@@ -9,6 +9,7 @@ namespace Entities.Capacities
     public class SharkBorrowSO : ActiveCapacitySO
     {
         public SharkPassiveSO sharkPassive;
+        public float aileronBonusDamage = 10f;
         
         public override Type AssociatedType()
         {
@@ -24,8 +25,6 @@ namespace Entities.Capacities
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            Debug.Log($"Passive : {sharkPassive}");
-            return true;
             return !sharkPassive.borrowed;
         }
 
@@ -51,13 +50,13 @@ namespace Entities.Capacities
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            Debug.Log("Trying to Borrow");
-            sharkPassive.Borrow();
+            sharkPassive.bonusDamage = so.aileronBonusDamage;
         }
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
-            
+            Debug.Log("Trying to Borrow");
+            sharkPassive.Borrow();
         }
     }
 }
