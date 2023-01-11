@@ -1,4 +1,5 @@
 using System;
+using Entities.Capacities;
 using Photon.Pun;
 using UnityEngine;
 
@@ -59,13 +60,53 @@ namespace Entities.Champion
         [PunRPC]
         public void DisplaceRPC(Vector3 destination, float time)
         {
+            if(!canBeDisplaced) return;
             
+            if (isOffline)
+            {
+                SyncDisplaceRPC(destination,time);
+                return;
+            }
+            photonView.RPC("SyncDisplaceRPC", RpcTarget.All, destination,time);
         }
 
         [PunRPC]
         public void SyncDisplaceRPC(Vector3 destination, float time)
         {
+            agent.enabled = false;
+            canMove = false;
+            canBeDisplaced = false;
+
+            var startPos = transform.position;
+            var endPos = ActiveCapacity.GetClosestValidPoint(destination);
+            var timeToDestination = time;
+            float timer = 0;
+
+            gsm.OnUpdateFeedback += MoveToDestination;
             
+            void MoveToDestination()
+            {
+                timer += Time.deltaTime;
+
+                transform.position = Vector3.Lerp(startPos, endPos, timer / timeToDestination);
+                
+                if (timer < timeToDestination) return;
+                
+                canMove = true;
+                canBeDisplaced = true;
+                
+                gsm.OnUpdateFeedback -= MoveToDestination;
+                
+                if(isMaster) OnDisplace?.Invoke(destination,time);
+                OnDisplaceFeedback?.Invoke(destination,time);
+
+                if (isPlayerChampion)
+                {
+                    agent.enabled = true;
+
+                    agent.Warp(endPos);
+                }
+            }
         }
 
         public event Action<Vector3,float> OnDisplace;

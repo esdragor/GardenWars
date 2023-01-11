@@ -94,9 +94,8 @@ namespace Entities.Capacities
 
             void DealDamage(Entity entity)
             {
-                if (!entity) return;
                 var lifeable = entity.GetComponent<IActiveLifeable>();
-                lifeable.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
+                lifeable?.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
             }
             
             void EntityCollide(Entity entity)

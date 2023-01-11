@@ -124,6 +124,7 @@ namespace Entities.Champion
             canAttack = true;
             canCast = true;
             canBeTargeted = true;
+            canBeDisplaced = true;
         }
 
         public void SetupSpawn()

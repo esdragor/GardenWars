@@ -130,6 +130,7 @@ namespace Entities.Champion
             canMove = true;
             canAttack = true;
             canCast = true;
+            canBeDisplaced = true;
             
             SetCurrentHpRPC(maxHp);
             SetCurrentResourceRPC(maxResource);

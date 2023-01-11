@@ -105,8 +105,7 @@ namespace Entities.Capacities
             {
                 var displaceable = entity.GetComponent<IDisplaceable>();
                 
-                // TODO - bouge la cible la
-                // displaceable?.DisplaceRPC(champion.position + champion.forward*so.dragDistance,so.dragTime);
+                displaceable?.DisplaceRPC(champion.position + champion.forward*so.dragDistance,so.dragTime);
             }
             
             void EntityCollide(Entity entity)
@@ -114,6 +113,8 @@ namespace Entities.Capacities
                 if (!caster.GetEnemyTeams().Contains(entity.team)) return;
                 
                 DealDamage(entity);
+                
+                Displace(entity);
                 
                 gsm.OnUpdateFeedback -= MoveProjectile;
                 
