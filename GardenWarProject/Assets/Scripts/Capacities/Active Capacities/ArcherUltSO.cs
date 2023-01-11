@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -104,7 +105,16 @@ namespace Entities.Capacities
                 if (Vector3.Distance(projectileTr.position, targetPos) <= 0.01f)
                 {
                     gsm.OnUpdateFeedback -= MoveProjectile;
-                    
+                    if (!FXLaunchBurst)
+                    {
+                        FXLaunchBurst = Object.Instantiate(so.FXBurst, targetPos, quaternion.identity).gameObject;
+                    }
+                    else
+                    {
+                        FXLaunchBurst.transform.position = targetPos;
+                    }
+                    FXLaunchBurst.SetActive(false);
+                    FXLaunchBurst.SetActive(true);
                     projectile.DestroyProjectile();
                 }
             }

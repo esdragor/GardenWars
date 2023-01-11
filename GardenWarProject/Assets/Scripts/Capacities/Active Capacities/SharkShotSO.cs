@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -11,6 +12,7 @@ namespace Entities.Capacities
         public ShieldPassiveSO shieldPassiveSo;
         public float projectileSpeed = 1f;
         public float projectileDamage;
+        public ParticleSystem FXhit;
 
         public override Type AssociatedType()
         {
@@ -21,6 +23,7 @@ namespace Entities.Capacities
     public class SharkShot : ActiveCapacity
     {
         private SharkShotSO so => (SharkShotSO) AssociatedActiveCapacitySO();
+        private GameObject FXHitGo;
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return true;
@@ -64,6 +67,7 @@ namespace Entities.Capacities
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
             var projectile = Object.Instantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
+            projectile.gameObject.GetComponent<SharkShotManager>().EnableFXShot(champion.team);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
             
@@ -80,7 +84,16 @@ namespace Entities.Capacities
                 if (Vector3.Distance(projectileTr.position, targetPos) <= 0.01f)
                 {
                     gsm.OnUpdateFeedback -= MoveProjectile;
-                    
+                    if (!FXHitGo)
+                    {
+                        FXHitGo = Object.Instantiate(so.FXhit, targetPos, quaternion.identity).gameObject;
+                    }
+                    else
+                    {
+                        FXHitGo.transform.position = targetPos;
+                    }
+                    FXHitGo.SetActive(false);
+                    FXHitGo.SetActive(true);
                     projectile.DestroyProjectile();
                 }
             }
