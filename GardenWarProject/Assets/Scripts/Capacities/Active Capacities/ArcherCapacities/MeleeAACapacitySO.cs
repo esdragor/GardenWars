@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Entities.Capacities
 {
@@ -7,6 +8,7 @@ namespace Entities.Capacities
     public class MeleeAACapacitySO : ActiveCapacitySO
     {
         public double timeUntilAttack;
+        public ParticleSystem FXAttack;
 
         public override Type AssociatedType()
         {
@@ -18,7 +20,8 @@ namespace Entities.Capacities
     {
         private MeleeAACapacitySO so => (MeleeAACapacitySO) AssociatedActiveCapacitySO();
         private IDeadable deadableEntity;
-        
+        public GameObject FXAttack;
+
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if (targetedEntity.GetComponent<IActiveLifeable>() == null) return false;
@@ -61,6 +64,15 @@ namespace Entities.Capacities
             champion.SetAnimatorTrigger("Basic Attack");
             
             var timer = so.timeUntilAttack;
+            if (so.FXAttack)
+            {
+                if (!FXAttack)
+                {
+                    FXAttack = Object.Instantiate(so.FXAttack, champion.championMesh.transform).gameObject;
+                }
+                FXAttack.SetActive(false);
+                FXAttack.SetActive(true);
+            }
 
             gsm.OnUpdate += IncreaseTimer;
 
