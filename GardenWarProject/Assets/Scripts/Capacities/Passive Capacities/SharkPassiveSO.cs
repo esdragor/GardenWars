@@ -13,6 +13,8 @@ namespace Entities.Capacities
         public float knockUpDamage = 20f;
         public ProjectileOnCollideEffect aileron;
         public StunPassiveSO stunPassive;
+        public ParticleSystem UnborrowBlue;
+        public ParticleSystem UnborrowRed;
 
         public override Type AssociatedType()
         {
@@ -22,14 +24,17 @@ namespace Entities.Capacities
 
     public class SharkPassive : PassiveCapacity
     {
+        public bool borrowed;
+        public float bonusDamage = 0;
+        
         private SharkPassiveSO so => (SharkPassiveSO) AssociatedPassiveCapacitySO();
 
         private ProjectileOnCollideEffect aileron;
         private GameObject aileronGo;
         
         private double timeUnBorrowed;
-        public bool borrowed;
-        public float bonusDamage = 0;
+        private ParticleSystem Unborrow;
+        private GameObject UnborrowGO;
 
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
@@ -46,7 +51,7 @@ namespace Entities.Capacities
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
             aileronGo.SetActive(false);
-            
+
             aileron.OnEntityCollide += EntityCollide;
             
             gsm.OnUpdate += IncreaseTimeUnBorrowed;
@@ -66,6 +71,7 @@ namespace Entities.Capacities
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
             aileronGo.SetActive(false);
+
             
             timeUnBorrowed = 0;
             borrowed = false;
@@ -105,6 +111,7 @@ namespace Entities.Capacities
             borrowed = true;
             
             aileronGo.SetActive(true);
+            aileronGo.GetComponent<SharkPassiveManager>().EnableFXShot(champion.team);
         }
 
         private void StunTarget(byte _,int targetId,Vector3 __)
@@ -136,7 +143,14 @@ namespace Entities.Capacities
             champion.rotateParent.localPosition = Vector3.zero;
             
             borrowed = false;
-            
+            if (!Unborrow)
+            {
+                Unborrow = champion.team == Enums.Team.Team1 ? so.UnborrowBlue : so.UnborrowRed;
+                UnborrowGO = Object.Instantiate(Unborrow, champion.championMesh.transform).gameObject;
+            }
+            UnborrowGO.SetActive(false);
+            UnborrowGO.SetActive(true);
+
             aileronGo.SetActive(false);
         }
         
