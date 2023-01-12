@@ -22,10 +22,13 @@ public class TaskAttack : Node
     private byte capacityIndex = 0;
     private Transform model;
     private NavMeshAgent agent;
+    private string soundAttack = null;
+    private FMOD.Studio.EventInstance instance;
+
 
 
     public TaskAttack(Node _Root, Entity entity, Transform _model, byte capaIndex, float _attackSpeed,
-        NavMeshAgent _agent)
+        NavMeshAgent _agent, string _soundAttack = null)
     {
         Root = _Root;
         MyEntity = entity;
@@ -34,6 +37,10 @@ public class TaskAttack : Node
         capacityIndex = capaIndex;
         model = _model;
         agent = _agent;
+        soundAttack = _soundAttack;
+        if (soundAttack == null) return;
+        instance = FMODUnity.RuntimeManager.CreateInstance("event:/" + soundAttack);
+
     }
 
     public override NodeState Evaluate(Node root)
@@ -75,6 +82,12 @@ public class TaskAttack : Node
 
         // if (MyEntity is Tower)
         //     MyEntity.GetComponent<IActiveLifeable>().RequestDecreaseCurrentHp(1000, target.entityIndex);
+
+        if (soundAttack != null)
+        {
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, model.GetComponent<Transform>(), model.GetComponent<Rigidbody>());
+            instance.start();
+        }
 
         attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
         MyEntity.SetAnimatorTrigger("Fire");

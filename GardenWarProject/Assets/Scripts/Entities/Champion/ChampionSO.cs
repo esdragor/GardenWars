@@ -38,6 +38,8 @@ namespace Entities.Champion
         public ActiveCapacitySO[] activeCapacities; 
         [HideInInspector] public byte[] activeCapacitiesIndexes;
 
+        [Header("Sound")] public string EventNameSelectionChampion;
+
         public void SetIndexes()
         {
             // Attack

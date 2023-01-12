@@ -11,6 +11,7 @@ namespace UIComponents.Lobby
         private byte championSOIndex;
         private GameStateMachine gameStateMachine;
         private LobbyUI assignedLobby;
+        private string eventNameSelectionChampion;
 
         public void InitButton(byte index,LobbyUI lobby)
         {
@@ -19,6 +20,7 @@ namespace UIComponents.Lobby
             
             championPortraitImage.sprite = gameStateMachine.allChampionsSo[index].SpriteSelection;
             championSOIndex = index;
+            eventNameSelectionChampion = gameStateMachine.allChampionsSo[index].EventNameSelectionChampion;
             
             button.onClick.AddListener(OnButtonClick);
         }
@@ -26,6 +28,8 @@ namespace UIComponents.Lobby
         private void OnButtonClick()
         {
             assignedLobby.SetChampion(championSOIndex);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + eventNameSelectionChampion);
+
         }
     }
 }
