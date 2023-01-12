@@ -8,6 +8,11 @@ namespace Entities.Champion
         public float maxHp;
         public float currentHp;
 
+        public float maxDef = 40;
+        public float baseDef = 0;
+        public float def = 0;
+        public float actualDef => baseDef + def < maxDef ? baseDef + def : maxDef;
+
         public float GetMaxHp()
         {
             return maxHp;
@@ -243,8 +248,12 @@ namespace Entities.Champion
         [PunRPC]
         public void DecreaseCurrentHpRPC(float amount, int killerId)
         {
+            amount *= (100 - actualDef / 100f);
+            
             currentHp -= amount;
+            
             OnDecreaseCurrentHp?.Invoke(amount,killerId);
+            
             if (isOffline)
             {
                 OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
@@ -268,5 +277,61 @@ namespace Entities.Champion
         
         public event Action<float,int> OnDecreaseCurrentHp;
         public event Action<float,int> OnDecreaseCurrentHpFeedback;
+        
+        public void RequestIncreaseDef(float amount)
+        {
+            if(isMaster)
+            {
+                IncreaseDefRPC(amount);
+                return;
+            }
+            photonView.RPC("IncreaseDefRPC", RpcTarget.MasterClient, amount);
+        }
+
+        [PunRPC]
+        public void IncreaseDefRPC(float amount)
+        {
+            def += amount;
+            if (isOffline)
+            {
+                SyncIncreaseDefRPC(def);
+                return;
+            }
+            photonView.RPC("SyncIncreaseDefRPC", RpcTarget.All, def);
+        }
+
+        [PunRPC]
+        public void SyncIncreaseDefRPC(float newDef)
+        {
+            def = newDef;
+        }
+
+        public void RequestDecreaseDefHp(float amount)
+        {
+            if(isMaster)
+            {
+                DecreaseDefRPC(amount);
+                return;
+            }
+            photonView.RPC("DecreaseDefRPC", RpcTarget.MasterClient, amount);
+        }
+        
+        [PunRPC]
+        public void DecreaseDefRPC(float amount)
+        {
+            def -= amount;
+            if (isOffline)
+            {
+                SyncDecreaseDefRPC(def);
+                return;
+            }
+            photonView.RPC("SyncDecreaseDefRPC", RpcTarget.All, def);
+        }
+
+        [PunRPC]
+        public void SyncDecreaseDefRPC(float newDef)
+        {
+            def = newDef;
+        }
     }
 }

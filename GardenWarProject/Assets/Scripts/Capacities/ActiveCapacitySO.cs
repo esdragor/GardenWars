@@ -15,7 +15,9 @@ namespace Entities.Capacities
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
 
-        [Tooltip("Cooldown in second")] public float cooldown;
+        [Tooltip("In Seconds")] public float cooldown;
+        
+        [Tooltip("In Seconds")] public float castTime;
         
         [Tooltip("Maximum range")] public float maxRange;
 

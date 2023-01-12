@@ -11,11 +11,10 @@ namespace Controllers.Inputs
 
         protected LayerMask layersToHit;
         protected Camera mainCam;
-
-
+        
         protected Vector3 cursorWorldPos;
+        public static Vector3 CursorWorldPos { get; protected set; }
         protected Entity selectedEntity;
-
 
         protected override void OnAwake()
         {
@@ -52,6 +51,7 @@ namespace Controllers.Inputs
         {
             CastCamRay(out var hit);
             cursorWorldPos = hit.point;
+            CursorWorldPos = cursorWorldPos;
             selectedEntity = null;
             if (hit.transform == null)
             {
@@ -62,6 +62,7 @@ namespace Controllers.Inputs
             if (ent == null) return;
             selectedEntity = ent;
             cursorWorldPos = ent.transform.position;
+            CursorWorldPos = cursorWorldPos;
         }
 
         private void CastCamRay(out RaycastHit hit)

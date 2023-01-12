@@ -31,8 +31,8 @@ namespace Entities.Capacities
         private ParticleSystem FXDash;
         private GameObject FXDashGO;
         
-        private ArcherPassive _archerPassive;
-        private ArcherPassive archerPassive => _archerPassive ??= champion.GetPassiveCapacity<ArcherPassive>();
+        private ArcherPassive passive;
+        private ArcherPassive archerPassive => passive ??= champion.GetPassiveCapacity<ArcherPassive>();
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {

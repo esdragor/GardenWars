@@ -14,7 +14,7 @@ namespace Entities
     {
         public static bool isOffline => !PhotonNetwork.IsConnected;
         public static bool isMaster => isOffline || PhotonNetwork.IsMasterClient;
-        public bool isLocal => gsm.GetPlayerChampion() == this;
+        public bool isLocal => isOffline || gsm.GetPlayerChampion() == this;
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
         protected UIManager uiManager => UIManager.Instance;
@@ -315,16 +315,34 @@ namespace Entities
         public void SetAnimatorTrigger(string trigger)
         {
             if (!photonView.IsMine) return; 
-            foreach(Animator animator in animators)
+            foreach(var animator in animators)
             {
                 animator.SetTrigger(trigger);
+            }
+        }
+        
+        public void SetAnimatorBool(string trigger,bool value)
+        {
+            if (!photonView.IsMine) return; 
+            foreach(var animator in animators)
+            {
+                animator.SetBool(trigger,value);
+            }
+        }
+        
+        public void SetAnimatorBool(int id,bool value)
+        {
+            if (!photonView.IsMine) return; 
+            foreach(var animator in animators)
+            {
+                animator.SetBool(id,value);
             }
         }
 
         public void SetAnimatorTrigger(int id)
         {
             if (!photonView.IsMine) return;
-            foreach (Animator animator in animators)
+            foreach (var animator in animators)
             {
                 animator.SetTrigger(id);
             }

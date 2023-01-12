@@ -1,24 +1,24 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Entities.Capacities
 {
-    [CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO/MoveSpeed", fileName = "MoveSpeed")]
-    public class MoveSpeedSO : PassiveCapacitySO
+    [CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO/SharkUltBorrow", fileName = "SharkUltBorrow")]
+    public class SharkUltBorrowSO : PassiveCapacitySO
     {
-        public float moveSpeed = 5f;
+        public float maxBorrowedTime = 1f; 
         
         public override Type AssociatedType()
         {
-            return typeof(MoveSpeed);
+            return typeof(SharkUltBorrow);
         }
     }
 
-    public class MoveSpeed : PassiveCapacity
+    public class SharkUltBorrow : PassiveCapacity
     {
-        private MoveSpeedSO so => (MoveSpeedSO)AssociatedPassiveCapacitySO();
-        private IMoveable moveable;
+        private SharkPassive sharkPassive;
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
@@ -27,12 +27,12 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            moveable = entity.GetComponent<IMoveable>();
-            moveable?.IncreaseCurrentMoveSpeedRPC(so.moveSpeed);
+            
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
         {
+            
         }
 
         protected override void OnAddedLocalEffects(Entity target)
@@ -42,11 +42,12 @@ namespace Entities.Capacities
 
         protected override void OnRemovedEffects(Entity target)
         {
-            moveable?.DecreaseCurrentMoveSpeedRPC(so.moveSpeed);
+            
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
+            
         }
 
         protected override void OnRemovedLocalEffects(Entity target)
@@ -55,3 +56,5 @@ namespace Entities.Capacities
         }
     }
 }
+
+

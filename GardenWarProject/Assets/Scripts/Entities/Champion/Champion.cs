@@ -10,7 +10,7 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
-        public bool isPlayerChampion => gsm.GetPlayerChampion() == this;
+        public bool isPlayerChampion => isOffline || gsm.GetPlayerChampion() == this;
         
 
         [HideInInspector] public ChampionSO currentSo;
@@ -78,11 +78,15 @@ namespace Entities.Champion
             currentResource = currentSo.maxMana;
             baseViewRange = 12.5f;
             viewRange = baseViewRange;
-            referenceMoveSpeed = currentSo.baseMoveSpeed;
-            currentMoveSpeed = referenceMoveSpeed;
+            baseMoveSpeed = currentSo.baseMoveSpeed;
+            bonusMoveSpeed = 0;
             attackDamage = currentSo.attackDamage;
             baseAttackSpeed = currentSo.attackSpeed;
             attackRange = currentSo.attackRange;
+
+            baseDef = currentSo.baseDefense;
+
+            agent.speed = moveSpeed;
 
             attackAbilityIndex = currentSo.attackAbilityIndex;
             abilitiesIndexes = currentSo.activeCapacitiesIndexes;
@@ -106,16 +110,16 @@ namespace Entities.Champion
             animators = linker.animators;
 
             elementsToShow.Add(championMesh);
-
+            
+            so.SetIndexes();
+            
+            foreach (var index in so.passiveCapacitiesIndexes)
+            {
+                AddPassiveCapacityRPC(index);
+            }
+            
             if (!isOffline)
             {
-                so.SetIndexes();
-
-                foreach (var index in so.passiveCapacitiesIndexes)
-                {
-                    AddPassiveCapacityRPC(index);
-                }
-
                 if (gsm.GetPlayerTeam() != team) championMesh.SetActive(false);
             }
 
