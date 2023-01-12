@@ -86,6 +86,7 @@ namespace Entities.Champion
 
             baseDef = currentSo.baseDefense;
 
+            if (!agent) agent = GetComponent<NavMeshAgent>();
             agent.speed = moveSpeed;
 
             attackAbilityIndex = currentSo.attackAbilityIndex;
