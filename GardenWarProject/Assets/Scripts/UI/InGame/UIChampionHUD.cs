@@ -245,11 +245,14 @@ namespace UIComponents
             
             void RemovePassiveIcon(Entity _)
             {
+                if (passiveIcon == null) return;
+                
                 if (passiveIcon.RemovePassive(_))
                 {
                     handledPassives.Remove(capacity);
                     Destroy(passiveIcon.gameObject);
                 }
+
             }
         }
 

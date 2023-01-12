@@ -11,6 +11,9 @@ namespace Entities.Capacities
         public byte indexOfSOInCollection;
         
         public Entity caster;
+        private ICastable castable => caster.GetComponent<ICastable>();
+        private IMoveable moveable => caster.GetComponent<IMoveable>();
+        private IAttackable attackable => caster.GetComponent<IAttackable>();
         public Champion.Champion champion => caster as Champion.Champion;
         
         public bool isBasicAttack => champion != null && champion.attackAbilityIndex == indexOfSOInCollection;
@@ -20,6 +23,9 @@ namespace Entities.Capacities
         public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
         private double cooldownTimer;
+
+        private double castTimeTimer;
+        private double castTime => AssociatedActiveCapacitySO().castTime;
 
         protected Entity targetedEntity;
         protected Vector3 targetedPosition;
@@ -104,15 +110,52 @@ namespace Entities.Capacities
         protected abstract void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions);
         public void OnRelease(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            if(!CanCast(targetsEntityIndexes,targetPositions)) return;
-            if(isMaster) Release(targetsEntityIndexes,targetPositions);
-            ReleaseFeedback(targetsEntityIndexes,targetPositions);
-            if (caster.isLocal)
+            if(champion != null) champion.MoveToPosition(champion.position);
+            
+            castTimeTimer = 0;
+
+            if (castTime == 0)
             {
-                ReleaseLocal(targetsEntityIndexes,targetPositions);
+                ReleaseCapacity();
+                return;
             }
-            if(baseCooldown > 0) EnterCooldown(baseCooldown);
+            
+            castable?.SetCanCastRPC(false);
+            attackable?.SetCanAttackRPC(false);
+            moveable?.SetCanMoveRPC(false);
+
+            gsm.OnUpdate += DecreaseCastTimer;
+            
+            
+            void ReleaseCapacity()
+            {
+                if(!CanCast(targetsEntityIndexes,targetPositions)) return;
+                if(isMaster) Release(targetsEntityIndexes,targetPositions);
+                ReleaseFeedback(targetsEntityIndexes,targetPositions);
+                if (caster.isLocal)
+                {
+                    ReleaseLocal(targetsEntityIndexes,targetPositions);
+                }
+                if(baseCooldown > 0) EnterCooldown(baseCooldown);
+            }
+            
+            void DecreaseCastTimer()
+            {
+                castTimeTimer += Time.deltaTime;
+                
+                if(castTimeTimer < castTime) return;
+                
+                gsm.OnUpdate -= DecreaseCastTimer;
+                
+                castable?.SetCanCastRPC(true);
+                attackable?.SetCanAttackRPC(true);
+                moveable?.SetCanMoveRPC(true);
+                
+                ReleaseCapacity();
+            }
         }
+        
+        
 
         protected abstract void Release(int targetsEntityIndexes, Vector3 targetPositions);
         protected abstract void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions);

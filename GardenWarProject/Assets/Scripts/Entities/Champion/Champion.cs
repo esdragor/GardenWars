@@ -10,7 +10,7 @@ namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
-        public bool isPlayerChampion => gsm.GetPlayerChampion() == this;
+        public bool isPlayerChampion => isOffline || gsm.GetPlayerChampion() == this;
         
 
         [HideInInspector] public ChampionSO currentSo;
