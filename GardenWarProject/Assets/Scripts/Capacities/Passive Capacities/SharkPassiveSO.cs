@@ -105,16 +105,16 @@ namespace Entities.Capacities
             }
         }
 
-        public void Borrow()
+        public void Borrow(bool untargetable = false)
         {
             if(borrowed) return;
-            
-            //champion.SetCanBeTargetedRPC(false);
             
             //champion.rotateParent.localPosition = Vector3.up * -0.75f;
 
             if (Entity.isMaster)
             {
+                if(untargetable) champion.SetCanBeTargetedRPC(false);
+                
                 champion.OnAttack += StunTarget;
             }
 
@@ -142,9 +142,14 @@ namespace Entities.Capacities
             if(target == null) return;
             if(!champion.GetEnemyTeams().Contains(target.team)) return;
             
+            ForceUnBorrow();
+        }
+
+        public void ForceUnBorrow()
+        {
             if(!borrowed) return;
             
-            //champion.SetCanBeTargetedRPC(true);
+            champion.SetCanBeTargetedRPC(true);
 
             if (Entity.isMaster)
             {
@@ -169,7 +174,7 @@ namespace Entities.Capacities
         
         private void UnBorrow(int _)
         {
-            UnBorrow(0,0,Vector3.zero);
+            ForceUnBorrow();
         }
         
         private void ResetTimer(byte _,int __,Vector3 ___)

@@ -164,7 +164,7 @@ namespace Entities.Champion
             {
                 //Debug.Log("In Range");
 
-                agent.ResetPath();
+                if(agent.isOnNavMesh) agent.ResetPath();
                 action.Invoke();
                 return;
             }
