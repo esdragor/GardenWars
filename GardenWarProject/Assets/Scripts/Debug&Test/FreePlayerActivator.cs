@@ -28,7 +28,8 @@ namespace FreePlayer
                 championSo.SetIndexes();
             }
 
-            var soIndex = Array.IndexOf<ChampionSO>(GameStateMachine.Instance.allChampionsSo, championSO);
+            var soIndex = Array.IndexOf(GameStateMachine.Instance.allChampionsSo, championSO);
+            
             champion.ApplyChampionSO((byte)soIndex, team,role);
             
             GameStateMachine.AddOfflinePlayer(champion,team,role);
