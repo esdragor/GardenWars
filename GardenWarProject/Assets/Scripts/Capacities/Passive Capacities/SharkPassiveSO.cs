@@ -8,6 +8,8 @@ namespace Entities.Capacities
     public class SharkPassiveSO : PassiveCapacitySO
     {
         public double timeUntilBorrow = 3;
+        public float borrowTransitionDuration = 1f;
+        public float unBorrowTransitionDuration = 0.683f;
         public float borrowDamage = 10f;
         public double knockUpDuration = 1;
         public float knockUpDamage = 20f;
@@ -26,6 +28,7 @@ namespace Entities.Capacities
     {
         public bool borrowed;
         public float bonusDamage = 0;
+        private bool playedAnim;
         
         private SharkPassiveSO so => (SharkPassiveSO) AssociatedPassiveCapacitySO();
 
@@ -46,7 +49,7 @@ namespace Entities.Capacities
             timeUnBorrowed = 0;
             borrowed = false;
             bonusDamage = 0;
-            
+
             aileron = Object.Instantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
@@ -94,6 +97,8 @@ namespace Entities.Capacities
             if(borrowed) return;
             
             timeUnBorrowed += Time.deltaTime;
+            
+            
             if (timeUnBorrowed >= so.timeUntilBorrow)
             {
                 Borrow();
@@ -106,14 +111,15 @@ namespace Entities.Capacities
             
             //champion.SetCanBeTargetedRPC(false);
             
-            champion.rotateParent.localPosition = Vector3.up * -0.75f;
-            
+            //champion.rotateParent.localPosition = Vector3.up * -0.75f;
+
             if (Entity.isMaster)
             {
                 champion.OnAttack += StunTarget;
             }
 
             borrowed = true;
+            champion.SetAnimatorBool("Borrowed",borrowed);
             
             aileronGo.SetActive(true);
             aileronGo.GetComponent<SharkPassiveManager>().EnableFXShot(champion.team);
@@ -145,9 +151,11 @@ namespace Entities.Capacities
                 champion.OnAttack -= StunTarget;
             }
             
-            champion.rotateParent.localPosition = Vector3.zero;
-            
+            //champion.rotateParent.localPosition = Vector3.zero;
+
             borrowed = false;
+            champion.SetAnimatorBool("Borrowed",borrowed);
+            
             if (!Unborrow)
             {
                 Unborrow = champion.team == gsm.GetPlayerTeam() ? so.UnborrowBlue : so.UnborrowRed;

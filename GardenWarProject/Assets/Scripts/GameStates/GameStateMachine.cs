@@ -326,7 +326,7 @@ namespace GameStates
 
         public Champion GetPlayerChampion()
         {
-            return playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
+            return isOffline ? playerDataDict[-1].champion : playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
         }
 
         #endregion

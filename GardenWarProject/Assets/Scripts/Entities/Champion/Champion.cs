@@ -106,16 +106,16 @@ namespace Entities.Champion
             animators = linker.animators;
 
             elementsToShow.Add(championMesh);
-
+            
+            so.SetIndexes();
+            
+            foreach (var index in so.passiveCapacitiesIndexes)
+            {
+                AddPassiveCapacityRPC(index);
+            }
+            
             if (!isOffline)
             {
-                so.SetIndexes();
-
-                foreach (var index in so.passiveCapacitiesIndexes)
-                {
-                    AddPassiveCapacityRPC(index);
-                }
-
                 if (gsm.GetPlayerTeam() != team) championMesh.SetActive(false);
             }
 
