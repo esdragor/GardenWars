@@ -21,6 +21,7 @@ namespace Entities.Capacities
         public float MinDistanceHFlash = 5.0f;
         public float MaxDistanceHFlash = 5.0f;
         public float accelerationJauge = 1f; //linear (not used lol)
+        public ParticleSystem ThrowDestFx;
 
         public override Type AssociatedType()
         {
@@ -42,6 +43,8 @@ namespace Entities.Capacities
 
         private Item itemToThrow;
         private double acceleration = 0.1;
+        private ParticleSystem ThrowDestFx;
+        private ParticleSystem ThrowDestFxGO;
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -87,6 +90,19 @@ namespace Entities.Capacities
 
         protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            Vector3 goalPos = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * ((float) (Time.time - time_Pressed) * so.HextechFlashSpeedScale));;
+            if (!ThrowDestFx)
+            {
+                ThrowDestFx = so.ThrowDestFx;
+                ThrowDestFxGO = Object.Instantiate(ThrowDestFx, goalPos, Quaternion.identity);
+                ThrowDestFxGO.transform.Rotate(Vector3.right * 90);
+            }
+            else
+            {
+                if (!ThrowDestFxGO.gameObject.activeSelf)
+                    ThrowDestFxGO.gameObject.SetActive(true);
+                ThrowDestFxGO.transform.position = goalPos;
+            }
         }
 
         private ItemBag InitItemBag()
@@ -127,6 +143,7 @@ namespace Entities.Capacities
 
         protected override void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions)
         {
+            ThrowDestFxGO.gameObject.SetActive(false);
         }
     }
 }

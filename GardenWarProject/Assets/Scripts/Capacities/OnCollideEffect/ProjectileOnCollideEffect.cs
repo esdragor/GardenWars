@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Entities;
 using UnityEngine;
 
@@ -29,6 +30,12 @@ public class ProjectileOnCollideEffect : MonoBehaviour
         }
         OnEntityCollideFeedback?.Invoke(hitEntity);
     }
+
+    async void Disparition()
+    {
+        await Task.Delay(700);
+        gameObject.SetActive(false);  
+    }
     
     public void DestroyProjectile()
     {
@@ -38,6 +45,6 @@ public class ProjectileOnCollideEffect : MonoBehaviour
         OnEntityCollide = null;
         OnEntityCollideFeedback = null;
         
-        gameObject.SetActive(false);
+        Disparition();
     }
 }

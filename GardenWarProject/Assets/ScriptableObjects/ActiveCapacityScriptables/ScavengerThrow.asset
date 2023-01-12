@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a79ae4977bfcec458765e960be01835, type: 3}
   m_Name: ScavengerThrow
   m_EditorClassIdentifier: 
-  descriptionName: Item Throw
+  abilityName: 
   icon: {fileID: 0}
   description: 
   cooldown: 1
@@ -32,3 +32,4 @@ MonoBehaviour:
   MinDistanceHFlash: 1
   MaxDistanceHFlash: 300
   accelerationJauge: 10
+  ThrowDestFx: {fileID: 9163181885516752660, guid: 8a7105a30cdf4984bb5516fa131bb19e, type: 3}
