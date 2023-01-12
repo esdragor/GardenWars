@@ -24,8 +24,6 @@ namespace Entities.Capacities
             }
 
             Instance = this;
-            
-
         }
 
         public void SetIndexes()

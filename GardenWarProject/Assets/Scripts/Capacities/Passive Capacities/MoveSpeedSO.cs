@@ -17,7 +17,9 @@ namespace Entities.Capacities
 
     public class MoveSpeed : PassiveCapacity
     {
-        private MoveSpeedSO passiveCapacitySo;
+        private MoveSpeedSO so => (MoveSpeedSO)AssociatedPassiveCapacitySO();
+        private IMoveable moveable;
+        
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
             return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
@@ -25,8 +27,8 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            passiveCapacitySo = (MoveSpeedSO)AssociatedPassiveCapacitySO();
-            target.GetComponent<NavMeshAgent>().speed += passiveCapacitySo.moveSpeed;
+            moveable = entity.GetComponent<IMoveable>();
+            moveable?.IncreaseCurrentMoveSpeedRPC(so.moveSpeed);
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
@@ -40,7 +42,7 @@ namespace Entities.Capacities
 
         protected override void OnRemovedEffects(Entity target)
         {
-            target.GetComponent<NavMeshAgent>().speed -= passiveCapacitySo.moveSpeed;
+            moveable?.DecreaseCurrentMoveSpeedRPC(so.moveSpeed);
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
@@ -53,5 +55,3 @@ namespace Entities.Capacities
         }
     }
 }
-
-

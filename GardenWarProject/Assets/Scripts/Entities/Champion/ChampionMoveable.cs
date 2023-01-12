@@ -9,8 +9,9 @@ namespace Entities.Champion
     [RequireComponent(typeof(NavMeshAgent))]
     public partial class Champion : IMoveable
     {
-        public float referenceMoveSpeed;
-        public float currentMoveSpeed;
+        public float baseMoveSpeed;
+        public float bonusMoveSpeed;
+        public float moveSpeed => baseMoveSpeed + bonusMoveSpeed;
         public bool canMove;
         
         [HideInInspector] public NavMeshAgent agent;
@@ -30,12 +31,12 @@ namespace Entities.Champion
 
         public float GetReferenceMoveSpeed()
         {
-            return referenceMoveSpeed;
+            return baseMoveSpeed;
         }
 
         public float GetCurrentMoveSpeed()
         {
-            return currentMoveSpeed;
+            return moveSpeed;
         }
 
         public void RequestSetCanMove(bool value)
@@ -115,24 +116,72 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeedFeedback;
 
-        public void RequestIncreaseCurrentMoveSpeed(float amount) { }
+        public void RequestIncreaseCurrentMoveSpeed(float amount)
+        {
+            if(isMaster)
+            {
+                IncreaseCurrentMoveSpeedRPC(amount);
+                return;
+            }
+            photonView.RPC("IncreaseCurrentMoveSpeedRPC", RpcTarget.MasterClient, amount);
+        }
+        
+        [PunRPC]
+        public void IncreaseCurrentMoveSpeedRPC(float amount)
+        {
+            bonusMoveSpeed += amount;
+            OnIncreaseCurrentMoveSpeed?.Invoke(amount);
+            if (isOffline)
+            {
+                SyncIncreaseCurrentMoveSpeedRPC(bonusMoveSpeed);
+                return;
+            }
+            photonView.RPC("SyncIncreaseCurrentMoveSpeedRPC", RpcTarget.All, bonusMoveSpeed);
+        }
 
         [PunRPC]
-        public void SyncIncreaseCurrentMoveSpeedRPC(float amount) { }
-
-        [PunRPC]
-        public void IncreaseCurrentMoveSpeedRPC(float amount) { }
+        public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
+        {
+            var gainedMs = amount - bonusMoveSpeed;
+            bonusMoveSpeed = amount;
+            agent.speed = moveSpeed;
+            OnIncreaseCurrentMoveSpeedFeedback?.Invoke(gainedMs);
+        }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeedFeedback;
 
-        public void RequestDecreaseCurrentMoveSpeed(float amount) { }
+        public void RequestDecreaseCurrentMoveSpeed(float amount)
+        {
+            if(isMaster)
+            {
+                DecreaseCurrentMoveSpeedRPC(amount);
+                return;
+            }
+            photonView.RPC("DecreaseCurrentMoveSpeedRPC", RpcTarget.MasterClient, amount);
+        }
+        
+        [PunRPC]
+        public void DecreaseCurrentMoveSpeedRPC(float amount)
+        {
+            bonusMoveSpeed -= amount;
+            OnDecreaseCurrentMoveSpeed?.Invoke(amount);
+            if (isOffline)
+            {
+                SyncDecreaseCurrentMoveSpeedRPC(bonusMoveSpeed);
+                return;
+            }
+            photonView.RPC("SyncDecreaseCurrentMoveSpeedRPC", RpcTarget.All, bonusMoveSpeed);
+        }
 
         [PunRPC]
-        public void SyncDecreaseCurrentMoveSpeedRPC(float amount) { }
-
-        [PunRPC]
-        public void DecreaseCurrentMoveSpeedRPC(float amount) { }
+        public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
+        {
+            var lostMs = amount - bonusMoveSpeed;
+            bonusMoveSpeed = amount;
+            agent.speed = moveSpeed;
+            OnDecreaseCurrentMoveSpeedFeedback?.Invoke(lostMs);
+        }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
