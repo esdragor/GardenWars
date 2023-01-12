@@ -273,6 +273,9 @@ MonoBehaviour:
   selectedItemIndex: 0
   maxHp: 0
   currentHp: 0
+  maxDef: 40
+  baseDef: 0
+  def: 0
   attackAbilityIndex: 0
   canAttack: 0
   attackDamage: 0
@@ -289,8 +292,8 @@ MonoBehaviour:
   canDie: 0
   respawnDuration: 3
   canBeDisplaced: 0
-  referenceMoveSpeed: 10
-  currentMoveSpeed: 10
+  baseMoveSpeed: 0
+  bonusMoveSpeed: 0
   canMove: 0
   agent: {fileID: 0}
   maxResource: 0
