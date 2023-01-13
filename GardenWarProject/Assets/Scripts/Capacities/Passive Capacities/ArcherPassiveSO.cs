@@ -148,7 +148,7 @@ namespace Entities.Capacities
             if (!FXPassive)
             {
                 FXPassive = champion.team == gsm.GetPlayerTeam() ? so.FXBlue : so.FXRed;
-                FXPassiveGO = Object.Instantiate(FXPassive, champion.championMesh.transform).gameObject;
+                FXPassiveGO = LocalPoolManager.PoolInstantiate(FXPassive, champion.championMesh.transform).gameObject;
             }
             FXPassiveGO.SetActive(true);
             

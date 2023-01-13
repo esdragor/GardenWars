@@ -72,7 +72,7 @@ namespace Entities.Capacities
 
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
-            var projectile = Object.Instantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
+            var projectile = LocalPoolManager.PoolInstantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
             Grab grabcs = projectile.GetComponent<Grab>();
             grabcs.StartGrab(caster.transform);
             

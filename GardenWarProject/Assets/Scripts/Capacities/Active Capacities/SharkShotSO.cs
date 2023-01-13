@@ -76,7 +76,7 @@ namespace Entities.Capacities
 
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
-            var projectile = Object.Instantiate(so.projectile,projectileSpawnPos, Quaternion.LookRotation(shotDirection));
+            var projectile = LocalPoolManager.PoolInstantiate(so.projectile,projectileSpawnPos, Quaternion.LookRotation(shotDirection));
             projectile.gameObject.GetComponent<SharkShotManager>().EnableFXShot(champion.team);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
@@ -96,7 +96,7 @@ namespace Entities.Capacities
                     gsm.OnUpdateFeedback -= MoveProjectile;
                     if (!FXHitGo)
                     {
-                        FXHitGo = Object.Instantiate(so.FXhit, targetPos, quaternion.identity).gameObject;
+                        FXHitGo = LocalPoolManager.PoolInstantiate(so.FXhit, targetPos, quaternion.identity).gameObject;
                     }
                     else
                     {

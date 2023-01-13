@@ -66,7 +66,7 @@ namespace Entities.Capacities
             if (!FXShield)
             {
                 FXShield = champion.team == gsm.GetPlayerTeam() ? so.FXShieldBlue : so.FXShieldRed;
-                FXShieldGO = Object.Instantiate(FXShield, champion.transform).gameObject;
+                FXShieldGO = LocalPoolManager.PoolInstantiate(FXShield, champion.transform).gameObject;
                 FXShieldGO.transform.localPosition = Vector3.up * 0.5f;
             }
 
@@ -79,7 +79,7 @@ namespace Entities.Capacities
             if (!FXShieldBreak)
             {
                 FXShieldBreak = champion.team == gsm.GetPlayerTeam() ? so.FXShieldBreakBlue : so.FXShieldBreakRed;
-                FXShieldBreakGO = GameObject.Instantiate(FXShieldBreak, champion.gameObject.transform).gameObject;
+                FXShieldBreakGO = LocalPoolManager.PoolInstantiate(FXShieldBreak, champion.gameObject.transform).gameObject;
                 FXShieldBreakGO.transform.localPosition = Vector3.up * 0.5f;
             }
 
