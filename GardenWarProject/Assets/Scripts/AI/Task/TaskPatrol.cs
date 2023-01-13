@@ -22,8 +22,7 @@ public class TaskPatrol : Node
     private NavMeshAgent agent;
     private Minion minion;
 
-    public TaskPatrol(NavMeshAgent _agent, Minion _minion, Transform _transform, Transform _model, Transform[] _waypoints,
-        float waitingBetweenTwoPoints = 1f)
+    public TaskPatrol(NavMeshAgent _agent, Minion _minion, Transform _transform, Transform _model, Transform[] _waypoints, float waitingBetweenTwoPoints = 1f)
     {
         Mytransform = _transform;
         waypoints = _waypoints;
