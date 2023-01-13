@@ -27,7 +27,7 @@ public class SpawnAIs : MonoBehaviourPun
     [SerializeField] private Transform[] waypointsTeamRed;
     [SerializeField] private Entity minion;
     [SerializeField] private double timer;
-    [SerializeField] private Animator[] animators;
+    [SerializeField] private Animator[] animatorsTraps;
 
     [Header("Towers")] [SerializeField] private Transform[] towerSpawnPoints;
 
@@ -203,8 +203,8 @@ public class SpawnAIs : MonoBehaviourPun
         redBt.enabled = true;
         blueBt.waypoints = waypointsTeamBlue;
         redBt.waypoints = waypointsTeamRed;
-        (blueMinion as Minion).animatorTrap = animators[0];
-        (redMinion as Minion).animatorTrap = animators[1];
+        (blueMinion as Minion).animatorTrap = animatorsTraps[0];
+        (redMinion as Minion).animatorTrap = animatorsTraps[1];
         blueBt.OnStart();
         redBt.OnStart();
     }
