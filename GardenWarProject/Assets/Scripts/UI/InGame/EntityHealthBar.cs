@@ -10,9 +10,11 @@ namespace UIComponents
     public class EntityHealthBar : MonoBehaviour
     {
         [SerializeField] private Image healthBar;
-        [SerializeField] private Color ChampionColor;
-        [SerializeField] private Color AllyColor;
-        [SerializeField] private Color EnemyColor;
+        [SerializeField] private Image backHealthBar;
+        [SerializeField] private Sprite[] ChampionColor;
+        [SerializeField] private Sprite[] AllyColor;
+        [SerializeField] private Sprite[] EnemyColor;
+        [SerializeField] private Sprite[] EnemyChampionColor;
         
         private IActiveLifeable lifeable;
         private Camera cam;
@@ -31,13 +33,31 @@ namespace UIComponents
             lifeable.OnDecreaseMaxHpFeedback += UpdateFillPercent;
 
             cam = Camera.main;
-            if (GameStateMachine.Instance.GetPlayerTeam() != entity.GetTeam())
+            if (entity is Champion)
             {
-                healthBar.color = EnemyColor;
+                if (GameStateMachine.Instance.GetPlayerTeam() == entity.GetTeam())
+                {
+                    healthBar.sprite = ChampionColor[0];
+                    backHealthBar.sprite = ChampionColor[1];
+                }
+                else
+                {
+                    healthBar.sprite = EnemyChampionColor[0];
+                    backHealthBar.sprite = EnemyChampionColor[1];
+                }
             }
             else
             {
-                healthBar.color = (!entity.GetComponent<Champion>()) ? AllyColor : ChampionColor;
+                if (GameStateMachine.Instance.GetPlayerTeam() == entity.GetTeam())
+                {
+                    healthBar.sprite = AllyColor[0];
+                    backHealthBar.sprite = AllyColor[1];
+                }
+                else
+                {
+                    healthBar.sprite = EnemyColor[0];
+                    backHealthBar.sprite = EnemyColor[1];
+                }
             }
         }
 
