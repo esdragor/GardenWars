@@ -13,6 +13,7 @@ using UnityEngine.UI;
 public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 {
     public ActiveMinionAutoSO activeMinionAutoSO;
+    public Animator animatorTrap;
     
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool canAttack = true;
@@ -42,6 +43,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     
     public void ReachEnemyCamp()
     {
+        animatorTrap.SetTrigger("On");
         gsm.IncreaseScore(team);
         DieRPC(entityIndex);
     }
