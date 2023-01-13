@@ -16,15 +16,18 @@ public class SpawnAIs : MonoBehaviourPun
 {
     [HideInInspector] public List<RespawnPinata> PinatasRespawned = new List<RespawnPinata>();
 
-    [Header("Wave Management")] public int minionsPerWave = 1;
+    [Header("Wave Management")] 
+    public int minionsPerWave = 1;
     public double timeBetweenMinionSpawn = 0.3;
     public double timeBetweenWaves = 30;
     [SerializeField] private double timeBeforeFirstWave = 5;
     [SerializeField] private List<Transform> SpawnPoints;
+    [Header("Minions")] 
     [SerializeField] private Transform[] waypointsTeamBlue;
     [SerializeField] private Transform[] waypointsTeamRed;
     [SerializeField] private Entity minion;
     [SerializeField] private double timer;
+    [SerializeField] private Animator[] animators;
 
     [Header("Towers")] [SerializeField] private Transform[] towerSpawnPoints;
 
@@ -200,6 +203,8 @@ public class SpawnAIs : MonoBehaviourPun
         redBt.enabled = true;
         blueBt.waypoints = waypointsTeamBlue;
         redBt.waypoints = waypointsTeamRed;
+        (blueMinion as Minion).animatorTrap = animators[0];
+        (redMinion as Minion).animatorTrap = animators[1];
         blueBt.OnStart();
         redBt.OnStart();
     }
