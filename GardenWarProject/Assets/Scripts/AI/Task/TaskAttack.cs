@@ -88,7 +88,6 @@ public class TaskAttack : Node
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, model.GetComponent<Transform>(), model.GetComponent<Rigidbody>());
             instance.start();
         }
-
         attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
         MyEntity.SetAnimatorTrigger("Fire");
 
