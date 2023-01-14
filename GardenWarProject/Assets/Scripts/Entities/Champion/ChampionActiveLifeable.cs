@@ -248,7 +248,7 @@ namespace Entities.Champion
         [PunRPC]
         public void DecreaseCurrentHpRPC(float amount, int killerId)
         {
-            amount *= (100 - actualDef / 100f);
+            amount *= (1 - actualDef / 100f);
             
             currentHp -= amount;
             

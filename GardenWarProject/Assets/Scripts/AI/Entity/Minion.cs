@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities;
 using Entities.Capacities;
 using Entities.FogOfWar;
@@ -541,10 +542,13 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
     {
         currentHp = amount;
-        //Debug.Log("CurrentHP : " + CurrentHP);
         if (currentHp <= 0)
         {
-            Destroy(Instantiate(MinionDieFX, transform.position, Quaternion.identity), 2f);
+            var fxGo = LocalPoolManager.PoolInstantiate(MinionDieFX, transform.position, Quaternion.identity);
+            HideMinionDieFx(fxGo,2000);
+            
+            //Destroy(Instantiate(MinionDieFX, transform.position, Quaternion.identity), 2f);
+            
             currentHp = 0;
             if(isMaster)DieRPC(killerId);
         }
@@ -553,6 +557,12 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             HitFX.Play();
         }
         OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
+    }
+
+    async void HideMinionDieFx(GameObject fxGo,int delay)
+    {
+        await Task.Delay(delay);
+        if(fxGo != null) fxGo.SetActive(false);
     }
 
     [PunRPC]

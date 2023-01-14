@@ -101,8 +101,7 @@ public class FighterThrow : ActiveCapacity
         return !PhotonNetwork.IsConnected
             ? Object.Instantiate(so.candyBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity)
                 .GetComponent<CandyBag>()
-            : PhotonNetwork
-                .Instantiate(so.candyBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity)
+            : NetworkPoolManager.Instantiate(so.candyBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity)
                 .GetComponent<CandyBag>();
     }
 

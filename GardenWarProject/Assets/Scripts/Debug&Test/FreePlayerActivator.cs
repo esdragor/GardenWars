@@ -23,6 +23,10 @@ namespace FreePlayer
             
             CapacitySOCollectionManager.Instance.SetIndexes();
             
+            LocalPoolManager.Init();
+            
+            NetworkPoolManager.Init();
+            
             foreach (var championSo in GameStateMachine.Instance.allChampionsSo)
             {
                 championSo.SetIndexes();

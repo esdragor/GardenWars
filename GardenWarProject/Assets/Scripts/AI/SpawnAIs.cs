@@ -99,9 +99,9 @@ public class SpawnAIs : MonoBehaviourPun
 
     private void InitTowers()
     {
-        var redTower = PhotonNetwork.Instantiate("NewTower", towerSpawnPoints[0].position, Quaternion.identity)
+        var redTower = NetworkPoolManager.PoolInstantiate("NewTower", towerSpawnPoints[0].position, Quaternion.identity)
             .GetComponent<Entity>();
-        var blueTower = PhotonNetwork.Instantiate("NewTower", towerSpawnPoints[1].position, Quaternion.identity)
+        var blueTower = NetworkPoolManager.PoolInstantiate("NewTower", towerSpawnPoints[1].position, Quaternion.identity)
             .GetComponent<Entity>();
 
         blueTower.SyncInstantiate(Enums.Team.Team1);
@@ -113,7 +113,7 @@ public class SpawnAIs : MonoBehaviourPun
 
     public void SpawnPinata(Transform pos)
     {
-        var Pinata = PhotonNetwork.Instantiate("Pinata", pos.position, Quaternion.identity)
+        var Pinata = NetworkPoolManager.PoolInstantiate("Pinata", pos.position, Quaternion.identity)
             .GetComponent<Entity>();
 
 
@@ -191,10 +191,10 @@ public class SpawnAIs : MonoBehaviourPun
 
     private void SpawnMinion()
     {
-        var blueMinion = PhotonNetwork.Instantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
-            .GetComponent<Entity>();
-        var redMinion = PhotonNetwork.Instantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
-            .GetComponent<Entity>();
+        var blueMinion = NetworkPoolManager.PoolInstantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
+            .GetComponent<Minion>();
+        var redMinion = NetworkPoolManager.PoolInstantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
+            .GetComponent<Minion>();
         blueMinion.SyncInstantiate(Enums.Team.Team1);
         redMinion.SyncInstantiate(Enums.Team.Team2);
         var blueBt = blueMinion.GetComponent<MinionBT>();
@@ -203,8 +203,8 @@ public class SpawnAIs : MonoBehaviourPun
         redBt.enabled = true;
         blueBt.waypoints = waypointsTeamBlue;
         redBt.waypoints = waypointsTeamRed;
-        (blueMinion as Minion).animatorTrap = animatorsTraps[0];
-        (redMinion as Minion).animatorTrap = animatorsTraps[1];
+        blueMinion.animatorTrap = animatorsTraps[0];
+        redMinion.animatorTrap = animatorsTraps[1];
         blueBt.OnStart();
         redBt.OnStart();
     }

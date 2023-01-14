@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class LocalPoolManager : MonoBehaviour
@@ -19,11 +18,11 @@ public class LocalPoolManager : MonoBehaviour
         public uint amount;
     }
 
-    public static LocalPoolManager Instance;
+    private static LocalPoolManager Instance;
 
     [SerializeField] private uint defaultPoolSize = 16;
-    private static uint defaultAmount;
-    private static Transform defaultParent;
+    private static uint defaultAmount => Instance.defaultPoolSize;
+    private static Transform defaultParent => Instance.transform;
 
     [SerializeField] private List<BehaviourData> componentPrefabs = new List<BehaviourData>();
     [SerializeField] private List<GameObjectData> gameObjectsPrefabs = new List<GameObjectData>();
@@ -39,13 +38,11 @@ public class LocalPoolManager : MonoBehaviour
             return;
         }
         Instance = this;
-        defaultAmount = defaultPoolSize;
-        defaultParent = transform;
     }
 
-    private void Start()
+    public static void Init()
     {
-        SetupDictionary();
+        Instance.SetupDictionary();
     }
 
     private void SetupDictionary()

@@ -21,7 +21,7 @@ namespace Entities
         public int entityIndex => photonView.ViewID;
         public Vector3 position => isVisible ? transform.position : lastSeenPosition;
         private Vector3 lastSeenPosition;
-        
+
         [Header("Team")]
         public bool canChangeTeam;
         public Enums.Team team;
@@ -86,7 +86,7 @@ namespace Entities
             OnInstantiated();
             if (isOffline)
             {
-                OnInstantiatedFeedback();
+                SyncInstantiateRPC(transform.position, transform.rotation, (byte) team);
                 return;
             }
             photonView.RPC("SyncInstantiateRPC", RpcTarget.All, transform.position, transform.rotation,(byte)team);
@@ -108,6 +108,8 @@ namespace Entities
 
         public void InitEntity(Enums.Team newTeam)
         {
+            gameObject.SetActive(true);
+            
             EntityCollectionManager.AddEntity(this);
             FogOfWarManager.Instance.AddFOWViewable(this);
             FogOfWarManager.Instance.AddFOWShowable(this);
