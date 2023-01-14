@@ -5,6 +5,7 @@ using GameStates;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace Entities.Champion
 {
@@ -19,6 +20,10 @@ namespace Entities.Champion
         [SerializeField] public Transform rotateParent;
         public Vector3 forward => rotateParent.forward;
         public Quaternion rotation => rotateParent.localRotation;
+        
+        public RawImage emotesImage;
+        public Texture2D emote1;
+
         private Vector3 respawnPos;
         public Rigidbody rb;
         
@@ -26,7 +31,6 @@ namespace Entities.Champion
 
         public CollisionBlocker blocker;
         private static readonly int Speed = Animator.StringToHash("Speed");
-        
 
         protected override void OnStart()
         {
@@ -182,6 +186,7 @@ namespace Entities.Champion
             if (uiManager == null) return;
             uiManager.InstantiateHealthBarForEntity(this);
             uiManager.InstantiateResourceBarForEntity(this);
+            uiManager.InstantiateEmoteForEntity(this);
         }
 
         public void PlayThrowAnimation()
@@ -197,6 +202,46 @@ namespace Entities.Champion
 
         public int selectedItemIndex = 0;
 
+        
+        public void RequestPressEmote(byte indexOfEmote)
+        {
+
+            TextureFormat f = emote1.format;
+            int fz = (int)emote1.format;
+            byte fza = (byte)emote1.format;
+
+            if (isMaster)
+            {
+                PressEmoteRPC(emote1.GetRawTextureData(), emote1.width, emote1.height, (byte)emote1.format);
+                return;
+            }
+
+            photonView.RPC("PressEmoteRPC", RpcTarget.MasterClient, emote1.GetRawTextureData(), emote1.width, emote1.height, (byte)emote1.format);
+        }
+
+        [PunRPC]
+        public void PressEmoteRPC(byte[] TexArray, int height, int width, byte format)
+        {
+            if (isOffline)
+            {
+                SyncPressEmoteRPC(TexArray, height, width, format);
+                return;
+            }
+
+            photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, TexArray, height, width, format);
+        }
+
+        [PunRPC]
+        public void SyncPressEmoteRPC(byte[] TexArray, int height, int width, byte format)
+        {
+            int squareInt = (height <= width) ? height : width;
+            Texture2D tex = new Texture2D(squareInt, squareInt, (TextureFormat)format, false);
+            tex.LoadRawTextureData(TexArray);
+            tex.Apply();
+            emotesImage.texture = tex;
+            emotesImage.gameObject.SetActive(true);
+        }
+        
         public void RequestPressItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
             selectedItemIndex = itemIndexInInventory;

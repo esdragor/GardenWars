@@ -420,6 +420,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Emotes",
+            "id": "14323f0b-b440-4d20-b63e-e4231fd5429d",
+            "actions": [
+                {
+                    "name": "Emote1",
+                    "type": "Button",
+                    "id": "dac54b6b-bfd1-4508-819e-098363e1b0ce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "faa4d7b0-118e-447a-80e3-057b45d0f18d",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Emote1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

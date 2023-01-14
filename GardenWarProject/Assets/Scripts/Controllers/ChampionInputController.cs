@@ -141,6 +141,11 @@ namespace Controllers.Inputs
             champion.CancelMoveToTarget();
             champion.MoveToPosition(cursorWorldPos);
         }
+        
+        private void OnPressEmote1(InputAction.CallbackContext ctx)
+        {
+            champion.RequestPressEmote(0);
+        }
 
         private void StartMoveAttack()
         {
@@ -216,6 +221,8 @@ namespace Controllers.Inputs
 
             inputs.MoveMouse.HoldRightClick.performed += OnHoldRightClick;
             inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
+            
+            inputs.Emotes.Emote1.performed += OnPressEmote1;
         }
 
         private void DebugNavMeshPoint(InputAction.CallbackContext ctx)
