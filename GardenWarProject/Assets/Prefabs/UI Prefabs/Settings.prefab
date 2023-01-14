@@ -435,7 +435,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1525843655043786588}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SoundVolumeManager, Assembly-CSharp
         m_MethodName: UpdateVolume
         m_Mode: 5
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1525843655043786588}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SoundVolumeManager, Assembly-CSharp
         m_MethodName: UpdateVolume
         m_Mode: 5
@@ -883,7 +883,6 @@ GameObject:
   - component: {fileID: 2752571854689465653}
   - component: {fileID: 7892344585998785947}
   - component: {fileID: 6606366736568674454}
-  - component: {fileID: 1525843655043786588}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1010,21 +1009,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1525843655043786588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5851212786638095651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6158b5cd97f07e4438012024ba3a1d15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sliderMaster: {fileID: 8969244431815776857}
-  sliderFX: {fileID: 0}
-  sliderAmbiant: {fileID: 0}
 --- !u!1 &6102914206622036619
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,13 +1130,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 7102028290751633120}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1417,7 +1401,7 @@ GameObject:
   - component: {fileID: 3992508688232484068}
   - component: {fileID: 79952541064006870}
   m_Layer: 5
-  m_Name: Background
+  m_Name: SettingsBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1569,6 +1553,7 @@ GameObject:
   - component: {fileID: 784259312425916259}
   - component: {fileID: 1976899068693643481}
   - component: {fileID: 129957459803813770}
+  - component: {fileID: 4288255202862971787}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -1639,7 +1624,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &129957459803813770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1657,6 +1642,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4288255202862971787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7432613806927712750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6158b5cd97f07e4438012024ba3a1d15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliderMaster: {fileID: 8969244431815776857}
+  sliderFX: {fileID: 9004964924677619379}
+  sliderAmbiant: {fileID: 2571107402037075725}
 --- !u!1 &7433178651031241280
 GameObject:
   m_ObjectHideFlags: 0
@@ -2119,7 +2119,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1525843655043786588}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SoundVolumeManager, Assembly-CSharp
         m_MethodName: UpdateVolume
         m_Mode: 5
