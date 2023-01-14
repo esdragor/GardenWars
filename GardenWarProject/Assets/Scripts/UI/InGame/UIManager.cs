@@ -2,6 +2,8 @@ using GameStates;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 public partial class UIManager : MonoBehaviour
 {
@@ -14,6 +16,10 @@ public partial class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreTextRed;
     [SerializeField] private TextMeshProUGUI timerText;
     
+    [Header("Settings")]
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private Button settingsButton;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -21,6 +27,8 @@ public partial class UIManager : MonoBehaviour
             DestroyImmediate(gameObject);
             return;
         }
+        
+        settingsButton.onClick.AddListener(() => settingsPanel.SetActive(true));
 
         Instance = this;
     }

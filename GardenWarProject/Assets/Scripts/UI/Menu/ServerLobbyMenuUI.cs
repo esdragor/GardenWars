@@ -17,6 +17,7 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
     [SerializeField] private TMP_InputField joinRoomTMPInputField;
     [SerializeField] private Button quitButton;
     
+    [SerializeField] private GameObject creditGO;
     [SerializeField] private GameObject joinLobbyPopUpGo;
     [SerializeField] private GameObject settingsCanvasGo;
 
@@ -37,6 +38,7 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
         joinLobbyButton.onClick.AddListener(JoinRoom);
         
         settingsButton.onClick.AddListener(() => settingsCanvasGo.SetActive(true));
+        creditButton.onClick.AddListener(() => creditGO.SetActive(true));
         
         displayJoinLobbyPopUpButton.onClick.AddListener(() => joinLobbyPopUpGo.SetActive(!joinLobbyPopUpGo.activeSelf));
         
