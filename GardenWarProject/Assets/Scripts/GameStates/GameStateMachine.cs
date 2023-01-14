@@ -600,6 +600,10 @@ namespace GameStates
             LinkChampionSOCapacityIndexes();
 
             ItemCollectionManager.Instance.LinkCapacityIndexes();
+            
+            LocalPoolManager.Init();
+            
+            NetworkPoolManager.Init();
 
             InstantiateChampion();
 
@@ -645,7 +649,9 @@ namespace GameStates
 
         private void InstantiateChampion()
         {
-            var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, Vector3.up, Quaternion.identity);
+            var champion = NetworkPoolManager.PoolInstantiate("NewPlayer", Vector3.up, Quaternion.identity).GetComponent<Champion>();
+            champion.OnInstantiated();
+            champion.OnInstantiatedFeedback();
 
             photonView.RPC("SyncChampionPhotonId", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber,
                 champion.photonView.ViewID);

@@ -9,15 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e1f1358689f63c4490af7bc88feb8a8, type: 3}
-  m_Name: Cerf Auto Attack
+  m_Script: {fileID: 11500000, guid: 6edf4e13c0e93ff488e4aed26f0976c3, type: 3}
+  m_Name: Shark KnockUp
   m_EditorClassIdentifier: 
   descriptionName: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 65f0e363b74cf5845ab8c3fbc14f39ac, type: 3}
   description: 
-  cooldown: 0
-  maxRange: 7.5
-  types: 0000000004000000
-  shootType: 2
-  indexInCollection: 4
-  projectile: {fileID: 4689079691940470199, guid: 3844c48aa8842f64c93372069b84103d, type: 3}
+  stackType: 0
+  duration: 1
+  types: 03000000
+  indexInCollection: 7

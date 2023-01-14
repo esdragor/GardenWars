@@ -95,7 +95,7 @@ namespace Entities.Capacities
                 rotation = Quaternion.LookRotation(castChamp.forward);
             }
             
-            var projectile = Object.Instantiate(so.projectile,spawnPos,rotation);
+            var projectile = LocalPoolManager.PoolInstantiate(so.projectile,spawnPos,rotation);
 
             var projectileTr = projectile.transform;
             

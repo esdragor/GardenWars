@@ -12,8 +12,7 @@ namespace Entities.Capacities
     {
         public ProjectileOnCollideEffect impactArea;
         public StunPassiveSO stun;
-        public SharkUltBorrowSO ultBorrow;
-        
+
         public float animationDuration = 1f;
         public float impactZoneAppearance = 0.9f;
         public float sizeMultiplier = 1.5f;
@@ -84,7 +83,7 @@ namespace Entities.Capacities
         {
             if (damageArea == null)
             {
-                damageArea = Object.Instantiate(so.impactArea,champion.rotateParent);
+                damageArea = LocalPoolManager.PoolInstantiate(so.impactArea,champion.rotateParent);
                 damageArea.transform.localPosition = Vector3.zero;
                 damageAreaGo = damageArea.gameObject;
                 damageAreaGo.SetActive(false);

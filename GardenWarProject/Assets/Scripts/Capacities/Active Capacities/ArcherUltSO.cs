@@ -69,7 +69,7 @@ namespace Entities.Capacities
             targetPositions.y = casterPos.y;
             if (!FXLaunchGo)
             {
-                FXLaunchGo = Object.Instantiate(so.FXLaunch, champion.rotateParent.transform).gameObject;
+                FXLaunchGo = LocalPoolManager.PoolInstantiate(so.FXLaunch, champion.rotateParent.transform).gameObject;
                 FXLaunchGo.transform.localPosition = Vector3.up;
             }
             FXLaunchGo.SetActive(false);
@@ -84,7 +84,7 @@ namespace Entities.Capacities
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
 
             var projectile =
-                Object.Instantiate(so.projectile, projectileSpawnPos, Quaternion.LookRotation(shotDirection));
+                LocalPoolManager.PoolInstantiate(so.projectile, projectileSpawnPos, Quaternion.LookRotation(shotDirection));
             projectile.gameObject.SetActive(false);
 
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
@@ -114,7 +114,7 @@ namespace Entities.Capacities
                     gsm.OnUpdateFeedback -= MoveProjectile;
                     if (!FXLaunchBurst)
                     {
-                        FXLaunchBurst = Object.Instantiate(so.FXBurst, targetPos, quaternion.identity).gameObject;
+                        FXLaunchBurst = LocalPoolManager.PoolInstantiate(so.FXBurst, targetPos, quaternion.identity).gameObject;
                     }
                     else
                     {
@@ -152,7 +152,7 @@ namespace Entities.Capacities
 
                 if (!FXLaunchBurst)
                 {
-                    FXLaunchBurst = Object.Instantiate(so.FXBurst, champion.championMesh.transform).gameObject;
+                    FXLaunchBurst = LocalPoolManager.PoolInstantiate(so.FXBurst, champion.championMesh.transform).gameObject;
                 }
 
                 FXLaunchBurst.SetActive(false);

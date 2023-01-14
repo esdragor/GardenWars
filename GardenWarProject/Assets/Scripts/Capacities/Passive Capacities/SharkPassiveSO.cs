@@ -50,7 +50,7 @@ namespace Entities.Capacities
             borrowed = false;
             bonusDamage = 0;
 
-            aileron = Object.Instantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
+            aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
             aileronGo.SetActive(false);
@@ -70,7 +70,7 @@ namespace Entities.Capacities
         {
             if (Entity.isMaster) return;
 
-            aileron = Object.Instantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
+            aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
             aileronGo.SetActive(false);
@@ -164,7 +164,7 @@ namespace Entities.Capacities
             if (!Unborrow)
             {
                 Unborrow = champion.team == gsm.GetPlayerTeam() ? so.UnborrowBlue : so.UnborrowRed;
-                UnborrowGO = Object.Instantiate(Unborrow, champion.championMesh.transform).gameObject;
+                UnborrowGO = LocalPoolManager.PoolInstantiate(Unborrow, champion.championMesh.transform).gameObject;
             }
             UnborrowGO.SetActive(false);
             UnborrowGO.SetActive(true);

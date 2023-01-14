@@ -7,9 +7,7 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Auto Attack Pinata", fileName = "AI Auto Attack for Pinata")]
     public class ActivePinataAutoSO : ActiveCapacitySO
     {
-        
         public int AtkValue;
-        public GameObject ItemBagPrefab;
         public float Speed = 2.5f;
         public override Type AssociatedType()
         {

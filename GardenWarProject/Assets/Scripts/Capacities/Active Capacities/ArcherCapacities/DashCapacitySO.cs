@@ -108,7 +108,7 @@ namespace Entities.Capacities
             if (!FXDash)
             {
                 FXDash = champion.team == gsm.GetPlayerTeam()? so.FXDashBlue : so.FXDashRed;
-                FXDashGO = Object.Instantiate(FXDash, champion.championMesh.transform).gameObject;
+                FXDashGO = LocalPoolManager.PoolInstantiate(FXDash, champion.championMesh.transform).gameObject;
             }
             FXDashGO.SetActive(false);
             FXDashGO.SetActive(true);

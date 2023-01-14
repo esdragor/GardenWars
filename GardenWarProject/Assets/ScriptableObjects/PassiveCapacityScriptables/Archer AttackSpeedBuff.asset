@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6edf4e13c0e93ff488e4aed26f0976c3, type: 3}
-  m_Name: SharkKnockUp
+  m_Script: {fileID: 11500000, guid: a02a257f105dd6e4c9d3b0243df7e1f3, type: 3}
+  m_Name: Archer AttackSpeedBuff
   m_EditorClassIdentifier: 
   descriptionName: 
-  icon: {fileID: 21300000, guid: 65f0e363b74cf5845ab8c3fbc14f39ac, type: 3}
+  icon: {fileID: 21300000, guid: 92b204cca46037444ab18ba6701f86f7, type: 3}
   description: 
-  stackType: 0
-  duration: 1
-  types: 03000000
-  indexInCollection: 7
+  stackType: 1
+  duration: 0
+  types: 02000000
+  indexInCollection: 4
+  timeGained: 0.1

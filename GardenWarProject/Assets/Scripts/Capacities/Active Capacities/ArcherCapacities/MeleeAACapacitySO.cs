@@ -77,7 +77,7 @@ namespace Entities.Capacities
             {
                 if (!FXAttack)
                 {
-                    FXAttack = Object.Instantiate(so.FXAttack, champion.championMesh.transform).gameObject;
+                    FXAttack = LocalPoolManager.PoolInstantiate(so.FXAttack, champion.championMesh.transform).gameObject;
                 }
                 FXAttack.SetActive(false);
                 FXAttack.SetActive(true);

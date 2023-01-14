@@ -9,14 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a02a257f105dd6e4c9d3b0243df7e1f3, type: 3}
-  m_Name: ArcherAttackSpeedBuff
+  m_Script: {fileID: 11500000, guid: 3e1f1358689f63c4490af7bc88feb8a8, type: 3}
+  m_Name: Archer AA
   m_EditorClassIdentifier: 
   descriptionName: 
-  icon: {fileID: 21300000, guid: 92b204cca46037444ab18ba6701f86f7, type: 3}
+  icon: {fileID: 0}
   description: 
-  stackType: 1
-  duration: 0
-  types: 02000000
+  cooldown: 0
+  maxRange: 7.5
+  types: 0000000004000000
+  shootType: 2
   indexInCollection: 4
-  timeGained: 0.1
+  projectile: {fileID: 4689079691940470199, guid: 3844c48aa8842f64c93372069b84103d, type: 3}

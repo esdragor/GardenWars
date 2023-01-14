@@ -110,8 +110,7 @@ namespace Entities.Capacities
             return !PhotonNetwork.IsConnected
                 ? Object.Instantiate(so.itemBagPrefab, caster.transform.position + Vector3.up, Quaternion.identity)
                     .GetComponent<ItemBag>()
-                : PhotonNetwork
-                    .Instantiate(so.itemBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity)
+                : NetworkPoolManager.Instantiate(so.itemBagPrefab.name, caster.transform.position + Vector3.up, Quaternion.identity)
                     .GetComponent<ItemBag>();
         }
 
