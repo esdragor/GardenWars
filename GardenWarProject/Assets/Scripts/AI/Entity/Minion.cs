@@ -89,7 +89,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         agent.speed = referenceMoveSpeed;
 
         UIManager.Instance.InstantiateHealthBarForEntity(this);
-        Mesh.GetComponent<Renderer>().material = team == Enums.Team.Team1 ? BlueMaterial : RedMaterial;
+        Mesh.GetComponent<Renderer>().material = team == gsm.GetPlayerTeam() ? BlueMaterial : RedMaterial;
     }
 
     public override List<Enums.Team> GetEnemyTeams()

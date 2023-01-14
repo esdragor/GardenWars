@@ -99,15 +99,9 @@ namespace Entities.Champion
             role = newRole;
 
             var linker = championMesh.GetComponent<ChampionMeshLinker>();
-            switch (team)
-            {
-                case Enums.Team.Team1:
-                    linker.LinkTeamColor(currentSo.materialsBlueTeam);
-                    break;
-                case Enums.Team.Team2:
-                    linker.LinkTeamColor(currentSo.materialsRedTeam);
-                    break;
-            }
+            var teamMat = team == gsm.GetPlayerTeam() ? currentSo.materialsBlueTeam : currentSo.materialsRedTeam;
+            linker.LinkTeamColor(teamMat);
+
             animators = linker.animators;
 
             elementsToShow.Add(championMesh);
