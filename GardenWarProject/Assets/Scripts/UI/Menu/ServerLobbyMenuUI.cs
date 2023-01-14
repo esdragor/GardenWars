@@ -12,12 +12,15 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
     [SerializeField] private Button createLobbyButton;
     [SerializeField] private Button displayJoinLobbyPopUpButton;
     [SerializeField] private Button joinLobbyButton;
+    
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button creditButton;
+    
     [SerializeField] private TMP_InputField joinRoomTMPInputField;
     [SerializeField] private Button quitButton;
     
     [SerializeField] private GameObject joinLobbyPopUpGo;
-    
-    
+    [SerializeField] private GameObject settingsCanvasGo;
     
     [Header("Debug")]
     [SerializeField] private TMP_InputField createRoomTMPInputField;
@@ -28,11 +31,14 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
     public void Start()
     {
         joinLobbyPopUpGo.SetActive(false);
+        settingsCanvasGo.SetActive(false);
         
         createLobbyButton.onClick.AddListener(CreateRoom);
         joinLobbyButton.onClick.AddListener(JoinRoom);
         
-        displayJoinLobbyPopUpButton.onClick.AddListener(TogglePopUp);
+        settingsButton.onClick.AddListener(() => settingsCanvasGo.SetActive(true));
+        
+        displayJoinLobbyPopUpButton.onClick.AddListener(() => joinLobbyPopUpGo.SetActive(!joinLobbyPopUpGo.activeSelf));
         
         quitButton.onClick.AddListener(QuitGame);
     }
@@ -45,7 +51,7 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
 
     private void TogglePopUp()
     {
-        joinLobbyPopUpGo.SetActive(!joinLobbyPopUpGo.activeSelf);
+        
     }
 
     public void CreateRoom()
