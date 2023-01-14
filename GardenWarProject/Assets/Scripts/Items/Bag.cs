@@ -7,6 +7,18 @@ using Photon.Pun;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+public static class ParabolaClass
+{
+    public static Vector3 Parabola(Vector3 start, Vector3 end, float height, double t)
+    {
+        Func<float, float> f = x => -4 * height * x * x + 4 * height * x;
+
+        var mid = Vector3.Lerp(start, end, (float)t);
+
+        return new Vector3(mid.x, f((float)t) + Mathf.Lerp(start.y, end.y, (float)t), mid.z);
+    }
+}
+
 public abstract class Bag : MonoBehaviourPun
 {
     protected static bool isOffline => !PhotonNetwork.IsConnected;
@@ -71,18 +83,6 @@ public abstract class Bag : MonoBehaviourPun
     }
 
     public abstract void ChangeVisuals(bool show);
-
-    private class ParabolaClass
-    {
-        public static Vector3 Parabola(Vector3 start, Vector3 end, float height, double t)
-        {
-            Func<float, float> f = x => -4 * height * x * x + 4 * height * x;
-
-            var mid = Vector3.Lerp(start, end, (float)t);
-
-            return new Vector3(mid.x, f((float)t) + Mathf.Lerp(start.y, end.y, (float)t), mid.z);
-        }
-    }
 
     private void MoveBag()
     {

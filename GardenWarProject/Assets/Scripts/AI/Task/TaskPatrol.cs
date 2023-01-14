@@ -69,9 +69,7 @@ public class TaskPatrol : Node
            
            Vector3 pos = waypoints[CurrentWaypointIndex].position;
            pos.y = MyPos.y;
-           Debug.Log(Vector3.Distance(MyPos, pos));
-            
-            if (Vector3.Distance(MyPos, pos) < 0.3f)
+           if (Vector3.Distance(MyPos, pos) < 0.3f)
             {
                 waitCounter = 0f;
                 waiting = true;

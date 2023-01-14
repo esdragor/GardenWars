@@ -120,7 +120,7 @@ namespace Entities.Capacities
                    return;
                 }
 
-                var targetPos = targetedEntity.transform.position + Vector3.up;
+                var targetPos = targetedEntity.transform.position;
                 
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position,targetPos, so.speedFire);
                 

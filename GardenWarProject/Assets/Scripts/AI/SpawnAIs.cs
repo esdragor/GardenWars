@@ -28,6 +28,7 @@ public class SpawnAIs : MonoBehaviourPun
     [SerializeField] private Entity minion;
     [SerializeField] private double timer;
     [SerializeField] private Animator[] animatorsTraps;
+    [SerializeField] private Transform[] BasketGoal;
 
     [Header("Towers")] [SerializeField] private Transform[] towerSpawnPoints;
 
@@ -65,10 +66,10 @@ public class SpawnAIs : MonoBehaviourPun
     public void Init()
     {
         towers.Clear();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            InitTowers();
-        }
+         if (PhotonNetwork.IsMasterClient)
+         {
+             InitTowers();
+         }
     }
 
     public void Sync()
@@ -78,15 +79,15 @@ public class SpawnAIs : MonoBehaviourPun
 
     public void StartSpawns()
     {
-        foreach (var tower in towers)
-        {
-            tower.GetComponent<TowerBT>().OnStart();
-        }
+         foreach (var tower in towers)
+         {
+             tower.GetComponent<TowerBT>().OnStart();
+         }
 
         timer = timeBetweenWaves - timeBeforeFirstWave;
         gsm.OnTick += SpawnWaves;
-        gsm.OnTick += InitPinata;
-        gsm.OnTick += RespawnPinata;
+         gsm.OnTick += InitPinata;
+         gsm.OnTick += RespawnPinata;
     }
 
     private void OnTick()
@@ -174,7 +175,7 @@ public class SpawnAIs : MonoBehaviourPun
     {
         if (timer < timeBetweenWaves) return;
         timer = 0;
-        for (var i = 0; i < minionsPerWave; i++)
+        for (var i = 0; i < 1; i++)
         {
             var spawnTimer = i * timeBetweenMinionSpawn;
 
@@ -193,8 +194,8 @@ public class SpawnAIs : MonoBehaviourPun
     {
         var blueMinion = NetworkPoolManager.PoolInstantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
             .GetComponent<Minion>();
-        var redMinion = NetworkPoolManager.PoolInstantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
-            .GetComponent<Minion>();
+         var redMinion = NetworkPoolManager.PoolInstantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
+             .GetComponent<Minion>();
         blueMinion.SyncInstantiate(Enums.Team.Team1);
         redMinion.SyncInstantiate(Enums.Team.Team2);
         var blueBt = blueMinion.GetComponent<MinionBT>();
@@ -205,6 +206,8 @@ public class SpawnAIs : MonoBehaviourPun
         redBt.waypoints = waypointsTeamRed;
         blueMinion.animatorTrap = animatorsTraps[0];
         redMinion.animatorTrap = animatorsTraps[1];
+        blueMinion.BasketGoal = BasketGoal[0];
+        redMinion.BasketGoal = BasketGoal[1];
         blueBt.OnStart();
         redBt.OnStart();
     }

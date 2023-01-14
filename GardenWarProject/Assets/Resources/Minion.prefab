@@ -236,7 +236,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 3.5
+  m_Speed: 7
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 999
@@ -323,6 +323,7 @@ MonoBehaviour:
   fogOfWarStartDetection: {fileID: 8048183381747634080}
   activeMinionAutoSO: {fileID: 11400000, guid: 56200ad2b07b5ff43a416c1a288af400, type: 2}
   animatorTrap: {fileID: 0}
+  BasketGoal: {fileID: 0}
   canMove: 1
   canAttack: 1
   attackValue: 5
@@ -341,6 +342,8 @@ MonoBehaviour:
   SpriteBagInBag: {fileID: 7462776643135157377}
   Myanimators:
   - {fileID: 3257107067805905496}
+  SpeedAnimationGoal: 2
+  BT: {fileID: -8139420828089391152}
   references:
     version: 1
 --- !u!208 &8682732196991000772

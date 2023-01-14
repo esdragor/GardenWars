@@ -15,7 +15,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 {
     public ActiveMinionAutoSO activeMinionAutoSO;
     public Animator animatorTrap;
-    
+    public Transform BasketGoal;
+
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 5f;
@@ -33,6 +34,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private GameObject BagInBag;
     [SerializeField] private Image SpriteBagInBag;
     [SerializeField] private Animator[] Myanimators;
+    [SerializeField] private float SpeedAnimationGoal = 1f;
+    [SerializeField] private MinionBT BT;
 
 
     private float currentMoveSpeed;
@@ -41,14 +44,28 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     private double cooldownHide = 0.2f;
     private Camera cam;
     public float currentVelocity => agent.velocity.magnitude;
-    
+
+
     public void ReachEnemyCamp()
     {
+        agent.enabled = false;
+        BT.enabled = false;
+        Vector3 startPos = transform.position;
         animatorTrap.SetTrigger("On");
-        gsm.IncreaseScore(team);
-        DieRPC(entityIndex);
+        float t = 0;
+        gsm.OnUpdate += AnimationGoal;
+
+        void AnimationGoal()
+        {
+            transform.position = ParabolaClass.Parabola(startPos, BasketGoal.position, 6f, t);
+            t += Time.deltaTime * SpeedAnimationGoal;
+            if (t < 1f) return;
+            gsm.IncreaseScore(team);
+            DieRPC(entityIndex);
+            gsm.OnUpdate -= AnimationGoal;
+        }
     }
-    
+
     public float GetAttackSpeed()
     {
         return attackSpeed;
@@ -62,7 +79,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         cam = Camera.main;
         animators = Myanimators;
     }
-    
+
     private void ItemAdded(byte itemIndex)
     {
         BagInBag.SetActive(true);
@@ -72,10 +89,10 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void LookCam()
     {
-        SpriteBagInBag.transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
-
+        SpriteBagInBag.transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward,
+            cam.transform.rotation * Vector3.up);
     }
-    
+
     private void ItemRemoved(byte itemIndex)
     {
         BagInBag.SetActive(false);
@@ -121,6 +138,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             SetCanMoveRPC(value);
             return;
         }
+
         photonView.RPC("SetCanMoveRPC", RpcTarget.MasterClient, value);
     }
 
@@ -143,6 +161,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             SyncSetCanMoveRPC(value);
             return;
         }
+
         photonView.RPC("SyncSetCanMoveRPC", RpcTarget.All, value);
     }
 
@@ -160,6 +179,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("SetReferenceMoveSpeedRPC", RpcTarget.MasterClient, value);
     }
+
     [PunRPC]
     public void SyncSetReferenceMoveSpeedRPC(float value)
     {
@@ -167,6 +187,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnSetReferenceMoveSpeed?.Invoke(referenceMoveSpeed);
         OnSetReferenceMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
     }
+
     [PunRPC]
     public void SetReferenceMoveSpeedRPC(float value)
     {
@@ -181,6 +202,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("IncreaseReferenceMoveSpeedRPC", RpcTarget.MasterClient, amount);
     }
+
     [PunRPC]
     public void SyncIncreaseReferenceMoveSpeedRPC(float amount)
     {
@@ -189,6 +211,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnIncreaseReferenceMoveSpeed?.Invoke(referenceMoveSpeed);
         OnIncreaseReferenceMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
     }
+
     [PunRPC]
     public void IncreaseReferenceMoveSpeedRPC(float amount)
     {
@@ -203,6 +226,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("DecreaseReferenceMoveSpeedRPC", RpcTarget.MasterClient, amount);
     }
+
     [PunRPC]
     public void SyncDecreaseReferenceMoveSpeedRPC(float amount)
     {
@@ -210,6 +234,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnDecreaseReferenceMoveSpeed?.Invoke(referenceMoveSpeed);
         OnDecreaseReferenceMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
     }
+
     [PunRPC]
     public void DecreaseReferenceMoveSpeedRPC(float amount)
     {
@@ -224,6 +249,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("SetCurrentMoveSpeedRPC", RpcTarget.MasterClient, value);
     }
+
     [PunRPC]
     public void SyncSetCurrentMoveSpeedRPC(float value)
     {
@@ -232,6 +258,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnSetCurrentMoveSpeed?.Invoke(referenceMoveSpeed);
         OnSetCurrentMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
     }
+
     [PunRPC]
     public void SetCurrentMoveSpeedRPC(float value)
     {
@@ -247,6 +274,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("IncreaseCurrentMoveSpeedRPC", RpcTarget.MasterClient, amount);
     }
+
     [PunRPC]
     public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
     {
@@ -255,6 +283,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnIncreaseCurrentMoveSpeed?.Invoke(referenceMoveSpeed);
         OnIncreaseCurrentMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
     }
+
     [PunRPC]
     public void IncreaseCurrentMoveSpeedRPC(float amount)
     {
@@ -270,6 +299,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("DecreaseCurrentMoveSpeedRPC", RpcTarget.MasterClient, amount);
     }
+
     [PunRPC]
     public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
     {
@@ -278,6 +308,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnDecreaseCurrentMoveSpeed?.Invoke(referenceMoveSpeed);
         OnDecreaseCurrentMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
     }
+
     [PunRPC]
     public void DecreaseCurrentMoveSpeedRPC(float amount)
     {
@@ -303,9 +334,10 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             SetCanAttackRPC(value);
             return;
         }
+
         photonView.RPC("SetCanAttackRPC", RpcTarget.MasterClient, value);
     }
-        
+
     [PunRPC]
     public void SetCanAttackRPC(bool value)
     {
@@ -316,6 +348,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             SyncSetCanAttackRPC(value);
             return;
         }
+
         photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
     }
 
@@ -338,6 +371,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         SetAttackDamageRPC(value);
     }
+
     [PunRPC]
     public void SyncSetAttackDamageRPC(float value)
     {
@@ -345,6 +379,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnSetAttackDamage?.Invoke(attackValue);
         OnSetAttackDamageFeedback?.Invoke(attackValue);
     }
+
     [PunRPC]
     public void SetAttackDamageRPC(float value)
     {
@@ -359,14 +394,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
     }
-    
+
     private void FalseFxHide()
     {
         cooldownHide -= gsm.increasePerTick;
         if (cooldownHide > 0f) return;
         gsm.OnTick -= FalseFxHide;
     }
-    
+
     [PunRPC]
     public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
     {
@@ -375,10 +410,12 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
         OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
     }
+
     [PunRPC]
     public void AttackRPC(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
     {
-        attackValue = ((ActiveMinionAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex)).AtkValue;
+        attackValue = ((ActiveMinionAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex))
+            .AtkValue;
         var entity = EntityCollectionManager.GetEntityByIndex(targetedEntities);
         entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue, entityIndex);
         photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
@@ -407,6 +444,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         SetMaxHpRPC(value);
     }
+
     [PunRPC]
     public void SyncSetMaxHpRPC(float value)
     {
@@ -414,6 +452,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnSetMaxHp?.Invoke(MaxHP);
         OnSetMaxHpFeedback?.Invoke(MaxHP);
     }
+
     [PunRPC]
     public void SetMaxHpRPC(float value)
     {
@@ -428,6 +467,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         IncreaseMaxHpRPC(amount, killerId);
     }
+
     [PunRPC]
     public void SyncIncreaseMaxHpRPC(float amount, int killerId)
     {
@@ -435,6 +475,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnIncreaseMaxHp?.Invoke(MaxHP);
         OnIncreaseMaxHpFeedback?.Invoke(MaxHP);
     }
+
     [PunRPC]
     public void IncreaseMaxHpRPC(float amount, int killerId)
     {
@@ -449,6 +490,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         DecreaseMaxHpRPC(amount, killerId);
     }
+
     [PunRPC]
     public void SyncDecreaseMaxHpRPC(float amount, int killerId)
     {
@@ -456,6 +498,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnDecreaseMaxHp?.Invoke(MaxHP);
         OnDecreaseMaxHpFeedback?.Invoke(MaxHP);
     }
+
     [PunRPC]
     public void DecreaseMaxHpRPC(float amount, int killerId)
     {
@@ -470,6 +513,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         SetCurrentHpRPC(value);
     }
+
     [PunRPC]
     public void SyncSetCurrentHpRPC(float value)
     {
@@ -477,6 +521,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnSetCurrentHp?.Invoke(currentHp);
         OnSetCurrentHpFeedback?.Invoke(currentHp);
     }
+
     [PunRPC]
     public void SetCurrentHpRPC(float value)
     {
@@ -491,6 +536,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         SetCurrentHpPercentRPC(value);
     }
+
     [PunRPC]
     public void SyncSetCurrentHpPercentRPC(float value)
     {
@@ -498,6 +544,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         OnSetCurrentHpPercent?.Invoke(currentHp);
         OnSetCurrentHpPercentFeedback?.Invoke(currentHp);
     }
+
     [PunRPC]
     public void SetCurrentHpPercentRPC(float value)
     {
@@ -517,7 +564,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public void SyncIncreaseCurrentHpRPC(float amount, int killerId)
     {
         currentHp = amount;
-        OnIncreaseCurrentHpFeedback?.Invoke(amount,killerId);
+        OnIncreaseCurrentHpFeedback?.Invoke(amount, killerId);
     }
 
     [PunRPC]
@@ -525,17 +572,17 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         currentHp += amount;
         if (currentHp > MaxHP) currentHp = MaxHP;
-        OnIncreaseCurrentHp?.Invoke(amount,killerId);
-        
-        photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
+        OnIncreaseCurrentHp?.Invoke(amount, killerId);
+
+        photonView.RPC("SyncIncreaseCurrentHpRPC", RpcTarget.All, currentHp, killerId);
     }
 
-    public event Action<float,int> OnIncreaseCurrentHp;
-    public event Action<float,int> OnIncreaseCurrentHpFeedback;
+    public event Action<float, int> OnIncreaseCurrentHp;
+    public event Action<float, int> OnIncreaseCurrentHpFeedback;
 
     public void RequestDecreaseCurrentHp(float amount, int killerId)
     {
-        photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount, killerId);
+        photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount, killerId);
     }
 
     [PunRPC]
@@ -545,41 +592,43 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         if (currentHp <= 0)
         {
             var fxGo = LocalPoolManager.PoolInstantiate(MinionDieFX, transform.position, Quaternion.identity);
-            HideMinionDieFx(fxGo,2000);
-            
+            HideMinionDieFx(fxGo, 2000);
+
             //Destroy(Instantiate(MinionDieFX, transform.position, Quaternion.identity), 2f);
-            
+
             currentHp = 0;
-            if(isMaster)DieRPC(killerId);
+            if (isMaster) DieRPC(killerId);
         }
         else
         {
             HitFX.Play();
         }
-        OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
+
+        OnDecreaseCurrentHpFeedback?.Invoke(amount, killerId);
     }
 
-    async void HideMinionDieFx(GameObject fxGo,int delay)
+    async void HideMinionDieFx(GameObject fxGo, int delay)
     {
         await Task.Delay(delay);
-        if(fxGo != null) fxGo.SetActive(false);
+        if (fxGo != null) fxGo.SetActive(false);
     }
 
     [PunRPC]
     public void DecreaseCurrentHpRPC(float amount, int killerId)
     {
         currentHp -= amount;
-        OnDecreaseCurrentHp?.Invoke(amount,killerId);
+        OnDecreaseCurrentHp?.Invoke(amount, killerId);
         if (isOffline)
         {
             SyncDecreaseCurrentHpRPC(currentHp, killerId);
             return;
         }
-        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
+
+        photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHp, killerId);
     }
 
-    public event Action<float,int> OnDecreaseCurrentHp;
-    public event Action<float,int> OnDecreaseCurrentHpFeedback;
+    public event Action<float, int> OnDecreaseCurrentHp;
+    public event Action<float, int> OnDecreaseCurrentHpFeedback;
 
     public bool IsAlive()
     {
@@ -593,7 +642,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestSetCanDie(bool value)
     {
-        photonView.RPC("SetCanDieRPC",RpcTarget.MasterClient,value);
+        photonView.RPC("SetCanDieRPC", RpcTarget.MasterClient, value);
     }
 
     public void SyncSetCanDieRPC(bool value)
@@ -603,8 +652,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void SetCanDieRPC(bool value)
     {
-       canDie = value;
-         photonView.RPC("SyncSetCanDieRPC",RpcTarget.All,value);
+        canDie = value;
+        photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;
@@ -614,7 +663,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("DieRPC", RpcTarget.MasterClient, KillerID);
     }
-    
+
     [PunRPC]
     public void DieRPC(int KillerID)
     {
@@ -622,19 +671,21 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         if (entity)
         {
             var candyScript = entity.GetComponent<ICandyable>();
-            if(candyScript != null && GetEnemyTeams().Contains(entity.team))candyScript.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+            if (candyScript != null && GetEnemyTeams().Contains(entity.team))
+                candyScript.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
         }
 
-        
+
         if (isOffline)
         {
             SyncDieRPC(KillerID);
-            
+
             return;
         }
+
         photonView.RPC("SyncDieRPC", RpcTarget.All, KillerID);
     }
-    
+
     [PunRPC]
     public void SyncDieRPC(int KillerID)
     {
@@ -649,17 +700,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void RequestRevive()
     {
-        
     }
 
     public void SyncReviveRPC()
     {
-       
     }
 
     public void ReviveRPC()
     {
-        
     }
 
     public event GlobalDelegates.NoParameterDelegate OnRevive;
