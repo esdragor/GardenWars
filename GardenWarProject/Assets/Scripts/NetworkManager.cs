@@ -32,7 +32,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        SceneManager.LoadScene("ServeurLobby");
+        SceneManager.LoadScene(1);
     }
 
     public void CreateRoom(string roomName)
@@ -44,14 +44,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void JoinRoom(string roomName)
     {
         Debug.Log($"Joining Room {roomName}");
-        PhotonNetwork.JoinRoom(roomName);
+        PhotonNetwork.JoinOrCreateRoom(roomName,null,null);
     }
 
     public override void OnJoinedRoom()
     {
         currentRoomName = PhotonNetwork.CurrentRoom.Name;
         Debug.Log($"Joined Room {currentRoomName}");
-        PhotonNetwork.LoadLevel("LobbyScene");
+        PhotonNetwork.LoadLevel(2);
     }
 
     public override void OnLeftRoom()
