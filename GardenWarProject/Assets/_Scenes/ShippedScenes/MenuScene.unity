@@ -855,7 +855,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: ad65fab44700ee04385e4f194e86a573, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: _MainTex
@@ -872,7 +872,7 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 0
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 0
+  m_Looping: 1
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
@@ -1003,6 +1003,10 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3007105632971472076, guid: 99c67bd579f11404880202477e0a295a, type: 3}
+      propertyPath: test
+      value: 
+      objectReference: {fileID: 330492613}
     - target: {fileID: 3726745165254063072, guid: 99c67bd579f11404880202477e0a295a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
