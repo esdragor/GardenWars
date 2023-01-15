@@ -19,6 +19,6 @@ public partial class UIManager
         entity.elementsToShow.Add(canvasEmotes);
         entity.emotesImage = canvasEmotes.transform.GetChild(0).GetComponent<RawImage>();
         entity.emotesImage.gameObject.SetActive(false);
-        gsm.OnUpdate += () =>{ entity.emotesImage.transform.LookAt(Camera.main.transform); };
+        gsm.OnUpdateFeedback += () =>{ entity.emotesImage.transform.LookAt(Camera.main.transform); };
     }
 }

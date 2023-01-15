@@ -205,30 +205,13 @@ namespace Entities.Champion
         
         public void RequestPressEmote(byte indexOfEmote)
         {
-
-            TextureFormat f = emote1.format;
-            int fz = (int)emote1.format;
-            byte fza = (byte)emote1.format;
-
-            if (isMaster)
-            {
-                PressEmoteRPC(emote1.GetRawTextureData(), emote1.width, emote1.height, (byte)emote1.format);
-                return;
-            }
-
-            photonView.RPC("PressEmoteRPC", RpcTarget.MasterClient, emote1.GetRawTextureData(), emote1.width, emote1.height, (byte)emote1.format);
-        }
-
-        [PunRPC]
-        public void PressEmoteRPC(byte[] TexArray, int height, int width, byte format)
-        {
             if (isOffline)
             {
-                SyncPressEmoteRPC(TexArray, height, width, format);
+                SyncPressEmoteRPC(emote1.GetRawTextureData(), emote1.width, emote1.height, (byte)emote1.format);
                 return;
             }
 
-            photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, TexArray, height, width, format);
+            photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, emote1.GetRawTextureData(), emote1.width, emote1.height, (byte)emote1.format);
         }
 
         [PunRPC]
@@ -240,6 +223,7 @@ namespace Entities.Champion
             tex.Apply();
             emotesImage.texture = tex;
             emotesImage.gameObject.SetActive(true);
+            Debug.Log($"length of array: {TexArray.Length}");
         }
         
         public void RequestPressItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
