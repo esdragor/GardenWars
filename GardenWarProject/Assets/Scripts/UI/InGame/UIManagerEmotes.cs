@@ -9,16 +9,27 @@ using UnityEngine.UI;
 public partial class UIManager
 {
     [Header("Emotes Elements")] [SerializeField]
-    private GameObject EmotesPanel;
+    private GameObject emotesPanel;
 
+    [SerializeField] private Transform emotesParent;
+    [SerializeField] private Vector3 offset = new Vector3(0, 0, 0);
+
+private Transform entity;
     public void InstantiateEmoteForEntity(Champion entity)
     {
+        cam = Camera.main;
         if (entity == null) return;
-        var canvasEmotes = Instantiate(EmotesPanel, entity.uiTransform.position + entity.uiOffset + Vector3.up * 2f,
-            Quaternion.identity, entity.uiTransform);
+        var canvasEmotes = Instantiate(emotesPanel, entity.uiTransform.position + entity.uiOffset + Vector3.up * 2f,
+            Quaternion.identity, emotesParent);
         entity.elementsToShow.Add(canvasEmotes);
         entity.emotesImage = canvasEmotes.transform.GetChild(0).GetComponent<RawImage>();
         entity.emotesImage.gameObject.SetActive(false);
-        gsm.OnUpdateFeedback += () =>{ entity.emotesImage.transform.LookAt(Camera.main.transform); };
+        this.entity = entity.transform;
+        gsm.OnUpdateFeedback += UpdateEmotesPosition;
+    }
+
+    private void UpdateEmotesPosition()
+    {
+        emotesPanel.transform.position = cam.WorldToScreenPoint(entity.position) + offset;
     }
 }
