@@ -123,7 +123,8 @@ namespace Entities.Champion
             }
             photonView.RPC("SyncChangeActiveAbility",RpcTarget.All,index,abilityId);
         }
-
+        
+        [PunRPC]
         private void SyncChangeActiveAbility(int index,byte abilityId)
         {
             if(index<0 || index >=3) return;
@@ -134,7 +135,9 @@ namespace Entities.Champion
                 isCasting = false,
                 capacity = CapacitySOCollectionManager.CreateActiveCapacity(abilityId,this)
             };
-            capacityDict.Add(abilityId,newCapacity);
+
+            if (capacityDict.ContainsKey(abilityId)) capacityDict[abilityId] = newCapacity;
+            else capacityDict.Add(abilityId,newCapacity);
             
             OnChangedAbilityFeedback?.Invoke(index,newCapacity.capacity);
         }

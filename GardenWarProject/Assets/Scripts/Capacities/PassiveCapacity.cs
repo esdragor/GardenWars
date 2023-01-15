@@ -13,7 +13,10 @@ namespace Entities.Capacities
         public bool stackable;
         public int count; //Amount of Stacks
 
+        public double duration => AssociatedPassiveCapacitySO().duration;
         public double internalPassiveTimer;
+        public bool isOnCooldown { get; private set; }
+
         private bool subscribedForTimer = false;
 
         public abstract PassiveCapacitySO AssociatedPassiveCapacitySO();
@@ -65,6 +68,7 @@ namespace Entities.Capacities
         private void SetupTimer(double time)
         {
             internalPassiveTimer = time;
+            isOnCooldown = true;
 
             gsm.OnTickFeedback += DecreaseTimer;
             subscribedForTimer = true;
@@ -78,6 +82,7 @@ namespace Entities.Capacities
                 
             gsm.OnTickFeedback -= DecreaseTimer;
             subscribedForTimer = false;
+            isOnCooldown = false;
                 
             if (Entity.isMaster)
             {
@@ -115,6 +120,7 @@ namespace Entities.Capacities
             {
                 gsm.OnTickFeedback -= DecreaseTimer;
                 subscribedForTimer = false;
+                isOnCooldown = false;
             }
             OnRemovedFeedbackEffects(target);
             if (entity.isLocal)

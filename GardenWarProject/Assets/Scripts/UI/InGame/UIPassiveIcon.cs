@@ -10,15 +10,28 @@ public class UIPassiveIcon : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Image backGroundImage;
-    [SerializeField] private Image image;
+    [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI stackCount;
+    [SerializeField] private Image overlayImage;
+
     [Header("Config")]
     [SerializeField] private Color positiveColor;
     [SerializeField] private Color negativeColor;
     
-    
     private PassiveCapacity linkedCapacity;
     private Champion linkedChampion;
+
+    private void Start()
+    {
+        overlayImage.fillAmount = 0;
+    }
+
+    private void Update()
+    {
+        if(!(linkedCapacity is {isOnCooldown: true})) return;
+
+        overlayImage.fillAmount = (float)linkedCapacity.internalPassiveTimer / (float)linkedCapacity.duration;
+    }
 
     public void LinkWithChampion(Champion champion, PassiveCapacity capacity, Action<Entity> removedCallback)
     {
@@ -47,10 +60,10 @@ public class UIPassiveIcon : MonoBehaviour
     {
         backGroundImage.color =
             linkedCapacity.AssociatedPassiveCapacitySO().types.Contains(Enums.CapacityType.Positive) ? positiveColor : negativeColor;
-        var icon = linkedCapacity.AssociatedPassiveCapacitySO().icon;
+        var iconSprite = linkedCapacity.AssociatedPassiveCapacitySO().icon;
 
-        if (icon != null) image.sprite = icon;
-        image.color = icon != null ? Color.white : TransparentColor();
+        if (iconSprite != null) icon.sprite = iconSprite;
+        icon.color = iconSprite != null ? Color.white : TransparentColor();
         
         stackCount.text = linkedCapacity.stackable ? $"{linkedCapacity.count}" : "";
     }
