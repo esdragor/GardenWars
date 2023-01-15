@@ -20,7 +20,7 @@ public partial class UIManager : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Button settingsButton;
     
-    private Camera cam = Camera.main;
+    private Camera cam;
     
     private void Awake()
     {

@@ -19,7 +19,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: eu
+    FixedRegion: 
     Server: 
     Port: 0
     ProxyServer: 
@@ -257,6 +257,7 @@ MonoBehaviour:
   - SyncIncreaseDefRPC
   - DisableOnInstantiated
   - SyncChangeActiveAbility
+  - SyncPressEmoteRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
