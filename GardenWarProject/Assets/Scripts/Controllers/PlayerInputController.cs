@@ -15,6 +15,8 @@ namespace Controllers.Inputs
         protected Vector3 cursorWorldPos;
         public static Vector3 CursorWorldPos { get; protected set; }
         protected Entity selectedEntity;
+        
+        public static Vector2 mousePos { get; protected set; }
 
         protected override void OnAwake()
         {

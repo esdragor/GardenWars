@@ -13,7 +13,6 @@ namespace Controllers.Inputs
     {
         private Champion champion;
         
-        private Vector2 mousePos;
         private bool isRightClicking;
         private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
 
