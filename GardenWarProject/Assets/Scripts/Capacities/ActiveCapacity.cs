@@ -32,7 +32,7 @@ namespace Entities.Capacities
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
 
-        protected ActiveCapacitySO AssociatedActiveCapacitySO()
+        public ActiveCapacitySO AssociatedActiveCapacitySO()
         {
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }

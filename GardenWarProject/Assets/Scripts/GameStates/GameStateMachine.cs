@@ -597,7 +597,10 @@ namespace GameStates
         {
             CapacitySOCollectionManager.Instance.SetIndexes();
 
-            LinkChampionSOCapacityIndexes();
+            foreach (var championSo in allChampionsSo)
+            {
+                championSo.SetIndexes();
+            }
 
             ItemCollectionManager.Instance.LinkCapacityIndexes();
             
@@ -619,8 +622,11 @@ namespace GameStates
         public void LateLoad()
         {
             SyncEntitySpawner();
-
-            LinkLoadChampionData();
+            
+            foreach (var playerData in playerDataDict.Values)
+            {
+                ApplyChampionSoData(playerData);
+            }
             
             SetupUI();
 
@@ -637,14 +643,6 @@ namespace GameStates
             champion.SetupNavMesh();
             champion.SetupUI();
             if (isMaster) champion.SyncInstantiate(champion.team);
-        }
-
-        private void LinkChampionSOCapacityIndexes()
-        {
-            foreach (var championSo in allChampionsSo)
-            {
-                championSo.SetIndexes();
-            }
         }
 
         private void InstantiateChampion()
@@ -668,14 +666,6 @@ namespace GameStates
             playerDataDict[photonId].champion = champion.GetComponent<Champion>();
 
             champion.name = $"Player ID : {photonId}";
-        }
-
-        private void LinkLoadChampionData()
-        {
-            foreach (var playerData in playerDataDict.Values)
-            {
-                ApplyChampionSoData(playerData);
-            }
         }
 
         private void LinkController(Champion champion)

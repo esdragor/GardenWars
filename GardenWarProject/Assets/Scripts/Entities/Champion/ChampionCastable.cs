@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
@@ -9,12 +10,12 @@ namespace Entities.Champion
     public partial class Champion : ICastable
     {
         public byte[] abilitiesIndexes = new byte[3];
-        private readonly Dictionary<byte, CastingAbility> capacityDict = new Dictionary<byte, CastingAbility>();
+        public Dictionary<byte, CastingAbility> capacityDict { get; private set; } = new Dictionary<byte, CastingAbility>();
 
         public int targetedEntities;
         public Vector3 targetedPositions;
 
-        private class CastingAbility
+        public class CastingAbility
         {
             public bool isCasting = false;
             public ActiveCapacity capacity;
@@ -112,6 +113,33 @@ namespace Entities.Champion
             }
             capacityDict[capacityIndex].capacity.OnPress(targetedEntities,targetedPositions);
         }
+
+        public void ChangeActiveAbility(int index,byte abilityId)
+        {
+            if (isOffline)
+            {
+                SyncChangeActiveAbility(index, abilityId);
+                return;
+            }
+            photonView.RPC("SyncChangeActiveAbility",RpcTarget.All,index,abilityId);
+        }
+
+        private void SyncChangeActiveAbility(int index,byte abilityId)
+        {
+            if(index<0 || index >=3) return;
+            abilitiesIndexes[index] = abilityId;
+            
+            var newCapacity = new CastingAbility
+            {
+                isCasting = false,
+                capacity = CapacitySOCollectionManager.CreateActiveCapacity(abilityId,this)
+            };
+            capacityDict.Add(abilityId,newCapacity);
+            
+            OnChangedAbilityFeedback?.Invoke(index,newCapacity.capacity);
+        }
+
+        public event Action<int, ActiveCapacity> OnChangedAbilityFeedback;
 
         private void CastHeldCapacities()
         {
