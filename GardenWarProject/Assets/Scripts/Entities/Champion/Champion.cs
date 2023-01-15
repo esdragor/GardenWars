@@ -90,7 +90,14 @@ namespace Entities.Champion
             agent.speed = moveSpeed;
 
             attackAbilityIndex = currentSo.attackAbilityIndex;
-            abilitiesIndexes = currentSo.activeCapacitiesIndexes;
+
+            abilitiesIndexes = new byte[3];
+            
+            for (byte i = 0; i < currentSo.activeCapacitiesIndexes.Length; i++)
+            {
+                ChangeActiveAbility(i, currentSo.activeCapacitiesIndexes[i]);
+            }
+            
             championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;

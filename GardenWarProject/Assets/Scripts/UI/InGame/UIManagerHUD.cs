@@ -10,10 +10,7 @@ public partial class UIManager
         var champion = gsm.GetPlayerChampion();
         if (champion == null) return;
         
-        var canvasIndex = champion.currentSo.canvasIndex;
-        if (canvasIndex >= championOverlays.Length) canvasIndex = 0;
-        
-        var canvasChampion = Instantiate(championOverlays[canvasIndex], transform);
+        var canvasChampion = Instantiate(championOverlays[0], transform);
         canvasChampion.InitHUD(champion);
     }
 }

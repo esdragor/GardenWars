@@ -1,3 +1,4 @@
+using System;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Entities.Capacities
 
         public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
-        private double cooldownTimer;
+        public double cooldownTimer { get; private set; }
 
         private double castTimeTimer;
         private double castTime => AssociatedActiveCapacitySO().castTime;
@@ -32,7 +33,7 @@ namespace Entities.Capacities
         
         protected GameStateMachine gsm => GameStateMachine.Instance;
 
-        protected ActiveCapacitySO AssociatedActiveCapacitySO()
+        public ActiveCapacitySO AssociatedActiveCapacitySO()
         {
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }
@@ -175,17 +176,11 @@ namespace Entities.Capacities
                 
                 if(cooldownTimer > 0) return;
                 isOnCooldown = false;
+                OnCooldownEnded?.Invoke();
                 gsm.OnTickFeedback -= DecreaseCooldown;
             }
         }
-
-        public bool isInRange(Vector3 position)
-        {
-            float distance = Vector3.Distance(caster.transform.position, position);
-            if ( distance > AssociatedActiveCapacitySO().maxRange) return false;
-            
-            return true;
-        }
+        public event Action OnCooldownEnded; 
 
         public static Vector3 GetClosestValidPoint(Vector3 position)
         {

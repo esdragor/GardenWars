@@ -2,6 +2,7 @@ using System;
 using Controllers.Inputs;
 using Entities.Capacities;
 using Entities.Champion;
+using Entities.Inventory;
 using GameStates;
 using UnityEngine;
 
@@ -18,32 +19,36 @@ namespace FreePlayer
         private void Start()
         {
             var controller = champion.GetComponent<PlayerInputController>();
+            var soIndex = Array.IndexOf(GameStateMachine.Instance.allChampionsSo, championSO);
+            
+            GameStateMachine.AddOfflinePlayer(champion,team,role);
+
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
             
             CapacitySOCollectionManager.Instance.SetIndexes();
             
-            LocalPoolManager.Init();
-            
-            NetworkPoolManager.Init();
-            
             foreach (var championSo in GameStateMachine.Instance.allChampionsSo)
             {
                 championSo.SetIndexes();
             }
-
-            var soIndex = Array.IndexOf(GameStateMachine.Instance.allChampionsSo, championSO);
+            
+            ItemCollectionManager.Instance.LinkCapacityIndexes();
+            
+            LocalPoolManager.Init();
+            
+            NetworkPoolManager.Init();
             
             champion.ApplyChampionSO((byte)soIndex, team,role);
             
-            GameStateMachine.AddOfflinePlayer(champion,team,role);
-
-            GameStateMachine.SetupChampion(champion);
-            
             UIManager.Instance.InstantiateChampionHUD();
             
+            //UIManager.Instance.SetupTopBar();
+
             UIManager.Instance.AssignInventory(-1);
             
+            GameStateMachine.SetupChampion(champion);
+
             if(minion != null) minion.InitEntity(Enums.Team.Neutral);
         }
         
