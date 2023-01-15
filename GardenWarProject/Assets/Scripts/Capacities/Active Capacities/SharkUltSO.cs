@@ -41,6 +41,7 @@ namespace Entities.Capacities
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
+        if(true)
             return true;
         }
 
