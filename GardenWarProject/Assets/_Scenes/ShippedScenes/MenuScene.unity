@@ -1006,7 +1006,7 @@ PrefabInstance:
     - target: {fileID: 3007105632971472076, guid: 99c67bd579f11404880202477e0a295a, type: 3}
       propertyPath: test
       value: 
-      objectReference: {fileID: 330492613}
+      objectReference: {fileID: 0}
     - target: {fileID: 3726745165254063072, guid: 99c67bd579f11404880202477e0a295a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -1045,6 +1045,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4859361162702148946, guid: 99c67bd579f11404880202477e0a295a, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621473337175996524, guid: 99c67bd579f11404880202477e0a295a, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7102028290751633120, guid: 99c67bd579f11404880202477e0a295a, type: 3}
@@ -1768,6 +1772,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787302897}
   m_CullTransparentMesh: 1
+--- !u!114 &936257192 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8406986521731824444, guid: 99c67bd579f11404880202477e0a295a, type: 3}
+  m_PrefabInstance: {fileID: 377728001}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1218136569
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,6 +2378,50 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7102028290751633120, guid: 99c67bd579f11404880202477e0a295a, type: 3}
   m_PrefabInstance: {fileID: 377728001}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1467559869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1467559871}
+  - component: {fileID: 1467559870}
+  m_Layer: 0
+  m_Name: EmotesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1467559870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467559869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8d4f8e733ccfb4b982d784ec48cde1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldEmote1: {fileID: 936257192}
+--- !u!4 &1467559871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467559869}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 247.51712, y: 111.68426, z: -5.972828}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1470847602
 GameObject:
   m_ObjectHideFlags: 0

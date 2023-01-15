@@ -442,6 +442,34 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Emotes"",
+            ""id"": ""14323f0b-b440-4d20-b63e-e4231fd5429d"",
+            ""actions"": [
+                {
+                    ""name"": ""Emote1"",
+                    ""type"": ""Button"",
+                    ""id"": ""dac54b6b-bfd1-4508-819e-098363e1b0ce"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""faa4d7b0-118e-447a-80e3-057b45d0f18d"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Emote1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -475,6 +503,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_MoveMouse_ActiveButton = m_MoveMouse.FindAction("ActiveButton", throwIfNotFound: true);
         m_MoveMouse_LeftClick = m_MoveMouse.FindAction("LeftClick", throwIfNotFound: true);
         m_MoveMouse_HoldRightClick = m_MoveMouse.FindAction("HoldRightClick", throwIfNotFound: true);
+        // Emotes
+        m_Emotes = asset.FindActionMap("Emotes", throwIfNotFound: true);
+        m_Emotes_Emote1 = m_Emotes.FindAction("Emote1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -816,6 +847,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public MoveMouseActions @MoveMouse => new MoveMouseActions(this);
+
+    // Emotes
+    private readonly InputActionMap m_Emotes;
+    private IEmotesActions m_EmotesActionsCallbackInterface;
+    private readonly InputAction m_Emotes_Emote1;
+    public struct EmotesActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public EmotesActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Emote1 => m_Wrapper.m_Emotes_Emote1;
+        public InputActionMap Get() { return m_Wrapper.m_Emotes; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EmotesActions set) { return set.Get(); }
+        public void SetCallbacks(IEmotesActions instance)
+        {
+            if (m_Wrapper.m_EmotesActionsCallbackInterface != null)
+            {
+                @Emote1.started -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmote1;
+                @Emote1.performed -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmote1;
+                @Emote1.canceled -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmote1;
+            }
+            m_Wrapper.m_EmotesActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Emote1.started += instance.OnEmote1;
+                @Emote1.performed += instance.OnEmote1;
+                @Emote1.canceled += instance.OnEmote1;
+            }
+        }
+    }
+    public EmotesActions @Emotes => new EmotesActions(this);
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -850,5 +914,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnActiveButton(InputAction.CallbackContext context);
         void OnLeftClick(InputAction.CallbackContext context);
         void OnHoldRightClick(InputAction.CallbackContext context);
+    }
+    public interface IEmotesActions
+    {
+        void OnEmote1(InputAction.CallbackContext context);
     }
 }

@@ -1,17 +1,21 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Entities.Inventory;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace Entities.Champion
 {
     public partial class Champion : Entity
     {
         public bool isPlayerChampion => isOffline || gsm.GetPlayerChampion() == this;
-        
+
 
         [HideInInspector] public ChampionSO currentSo;
         public Enums.ChampionRole role;
@@ -19,14 +23,17 @@ namespace Entities.Champion
         [SerializeField] public Transform rotateParent;
         public Vector3 forward => rotateParent.forward;
         public Quaternion rotation => rotateParent.localRotation;
+
+        public RawImage emotesImage;
+        private List<byte> bufferbyte = new List<byte>();
+
         private Vector3 respawnPos;
         public Rigidbody rb;
-        
+
         [HideInInspector] public GameObject championMesh;
 
         public CollisionBlocker blocker;
         private static readonly int Speed = Animator.StringToHash("Speed");
-        
 
         protected override void OnStart()
         {
@@ -112,14 +119,14 @@ namespace Entities.Champion
             animators = linker.animators;
 
             elementsToShow.Add(championMesh);
-            
+
             so.SetIndexes();
-            
+
             foreach (var index in so.passiveCapacitiesIndexes)
             {
                 AddPassiveCapacityRPC(index);
             }
-            
+
             if (!isOffline)
             {
                 if (gsm.GetPlayerTeam() != team) championMesh.SetActive(false);
@@ -189,6 +196,7 @@ namespace Entities.Champion
             if (uiManager == null) return;
             uiManager.InstantiateHealthBarForEntity(this);
             uiManager.InstantiateResourceBarForEntity(this);
+            uiManager.InstantiateEmoteForEntity(this);
         }
 
         public void PlayThrowAnimation()
@@ -203,6 +211,67 @@ namespace Entities.Champion
         }
 
         public int selectedItemIndex = 0;
+
+        private void AddBuffEmote(byte[] buff)
+        {
+            bufferbyte.AddRange(buff);
+        }
+
+        public async void RequestPressEmote(byte indexOfEmote)
+        {
+            Texture2D emote = EmotesManager.instance.GetEmoteAtLocation(indexOfEmote);
+            byte[] bytes = emote.GetRawTextureData();
+            int max = 75000;
+            if (bytes.Length <= max)
+            {
+                photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, bytes, emote.width, emote.height, (byte)emote.format,
+                    (byte)0);
+                photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, Array.Empty<byte>(), emote.width, emote.height,
+                    (byte)emote.format, (byte)2);
+                return;
+            }
+
+            int length = max;
+            Debug.Log("Loading");
+            for (int i = 0; i < bytes.Length; i += length)
+            {
+                if (!Application.isPlaying) return;
+                length = max;
+                if (i + max > bytes.Length)
+                {
+                    length = bytes.Length - i;
+                }
+
+                byte[] buff = new byte[length];
+                Array.Copy(bytes, i, buff, 0, length);
+                if (i == 0)
+                    photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, buff, emote.width, emote.height,
+                        (byte)emote.format, (byte)0);
+                else if (i + length >= bytes.Length)
+                    photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, buff, emote.width, emote.height,
+                        (byte)emote.format, (byte)2);
+                else
+                    photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, buff, emote.width, emote.height,
+                        (byte)emote.format, (byte)1);
+                await Task.Delay(500);
+            }
+        }
+
+        [PunRPC]
+        public void SyncPressEmoteRPC(byte[] TexArray, int height, int width, byte format, byte position)
+        {
+            if (position == 0)
+                bufferbyte.Clear();
+            AddBuffEmote(TexArray);
+            if (position != 2) return;
+            int squareInt = (height <= width) ? height : width;
+            Texture2D tex = new Texture2D(squareInt, squareInt, (TextureFormat)format, false);
+            tex.LoadRawTextureData(bufferbyte.ToArray());
+            tex.Apply();
+            emotesImage.texture = tex;
+            emotesImage.gameObject.SetActive(true);
+            Debug.Log($"length of array: {tex.EncodeToPNG().Length}");
+        }
 
         public void RequestPressItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
