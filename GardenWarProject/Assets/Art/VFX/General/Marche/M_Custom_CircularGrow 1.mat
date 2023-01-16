@@ -7,26 +7,20 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_SmokeCloud 1
+  m_Name: M_Custom_CircularGrow 1
   m_Shader: {fileID: -6465566751694194690, guid: 26c5792975d71c4448f2af90030f318e, type: 3}
-  m_ShaderKeywords: _FADING_ON _SOFTPARTICLES_ON
-  m_LightmapFlags: 4
+  m_ShaderKeywords: 
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses:
-  - SHADOWCASTER
-  - DepthOnly
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_4f715668d0234f75bf4d430dcb9812aa:
-        m_Texture: {fileID: 2800000, guid: eb2e5679734f5604d8effe87ded43ac4, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: e16300ed0ab1f6348b3d658d25d8973b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 289e6fd5d73d26247922d315b76a61ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -46,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 289e6fd5d73d26247922d315b76a61ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -65,16 +59,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_7912e22e36b14bbfaa1b2c140337fe32_Texture_1:
-        m_Texture: {fileID: 2800000, guid: e16300ed0ab1f6348b3d658d25d8973b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
-        m_Texture: {fileID: 2800000, guid: e16300ed0ab1f6348b3d658d25d8973b, type: 3}
+        m_Texture: {fileID: 2800000, guid: f3b281f7644178045ad9ee114649a6f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -90,10 +80,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_170a2c91e1d94a9c991eaa3319a78e12: 0.83
-    - Vector1_3d43745ef3b44e258c427b00953ed594: 0.44
-    - Vector1_a521d8a0a4f54509ad41f906f8ce9eb3: 3
-    - Vector1_af1fa927147e409a861dccf8fa76501c: 0.57
     - _AlphaClip: 0
     - _Blend: 0
     - _BlendOp: 0
@@ -104,7 +90,7 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ColorMode: 0
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -123,12 +109,13 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 1
-    - _SoftParticlesFarFadeDistance: 0.09
+    - _SoftParticlesEnabled: 0
+    - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
@@ -136,18 +123,15 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - Color_448eabd193364dd590e8cde83b51f749: {r: 0.6037736, g: 0.46422216, b: 0.46422216, a: 0}
-    - Color_bf3b040f6cc146549ca900c6cc4924e6: {r: 1, g: 1, b: 1, a: 0}
-    - Color_f7d7add40e3b439b9e0f5a7c720a4985: {r: 0.74105555, g: 0.7588488, b: 0.8584906, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.66448265, b: 0.5613208, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SoftParticleFadeParams: {r: 0, g: 11.111111, b: 0, a: 0}
+    - _Color: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
+    - _EmissionColor: {r: 5.3403134, g: 0.94042027, b: 0, a: 1}
+    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &7555500113276932268
+--- !u!114 &6844100575178407092
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
