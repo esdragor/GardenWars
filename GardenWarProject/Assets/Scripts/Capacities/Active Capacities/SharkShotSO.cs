@@ -104,7 +104,7 @@ namespace Entities.Capacities
                     }
                     FXHitGo.SetActive(false);
                     FXHitGo.SetActive(true);
-                    projectile.DestroyProjectile();
+                    projectile.DestroyProjectile(true);
                 }
             }
 
