@@ -1,4 +1,3 @@
-using System;
 using Entities.Champion;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +39,7 @@ public partial class UIManager
         
         void UpdateIconPosition()
         {
+            if(icon.associatedChampion == null) return;
             icon.rectTransform.localPosition = (Vector2)minimapCamera.WorldToScreenPoint(icon.associatedChampion.position) - minimapSize/2;
         }
     }

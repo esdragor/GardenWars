@@ -30,6 +30,7 @@ public partial class UIManager
         
         void UpdateEmotesPosition()
         {
+            if(entityTr == null) return;
             panelTransform.position = cam.WorldToScreenPoint(entityTr.position) + offset;
         }
     }

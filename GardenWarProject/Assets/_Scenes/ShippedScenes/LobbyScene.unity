@@ -336,6 +336,67 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1161577721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 166142745878382476, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_Name
+      value: GameStateMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382478, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
 --- !u!1 &1388502770
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,67 +566,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1001 &166142744509632448
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 166142745878382476, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_Name
-      value: GameStateMachine
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382478, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: sceneViewId
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 166142745878382479, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
 --- !u!1001 &5692163462049506333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -579,7 +579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 245756412483710715, guid: d48e9213d82746746b715ef59e284f52, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 245756412483710715, guid: d48e9213d82746746b715ef59e284f52, type: 3}
       propertyPath: m_LocalPosition.x

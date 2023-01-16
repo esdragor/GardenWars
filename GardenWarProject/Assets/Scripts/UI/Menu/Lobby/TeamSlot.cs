@@ -30,7 +30,7 @@ namespace UIComponents.Lobby
         private Enums.Team assignedTeam;
         private LobbyUI assignedLobby;
 
-        public void InitSlot(Color color, byte team,LobbyUI lobby)
+        public void InitSlot(byte team,LobbyUI lobby)
         {
             assignedLobby = lobby;
             gameStateMachine = GameStateMachine.Instance;
@@ -48,9 +48,7 @@ namespace UIComponents.Lobby
             championNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
             playerNameTransform.localPosition = new Vector3(side*4, -25, 1);
             playerNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
-            
-            backgroundImage.color = color;
-            
+
             UpdateSlot(null,false);
             
             joinButton.onClick.AddListener(OnButtonClick);

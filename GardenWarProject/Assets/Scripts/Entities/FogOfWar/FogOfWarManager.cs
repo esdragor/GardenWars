@@ -93,6 +93,7 @@ namespace Entities.FogOfWar
             foreach (var viewable in allyViewables)
             {
                 viewable.seenShowables.Clear();
+                if(viewable == null) continue;
                 var fromPosition = viewable.fogOfWarStartDetection.position;
                 foreach (var enemy in enemyShowables.Where(enemy => Vector3.Distance(fromPosition,enemy.transform.position) <= viewable.viewRange))
                 {
@@ -111,7 +112,7 @@ namespace Entities.FogOfWar
         
         private void RenderFOW()
         {
-            foreach (var viewable in allyViewables)
+            foreach (var viewable in allyViewables.Where(ent => ent != null))
             {
                 DrawFieldOfView(viewable);
             }

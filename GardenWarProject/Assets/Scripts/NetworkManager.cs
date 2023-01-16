@@ -1,5 +1,6 @@
 using GameStates;
 using Photon.Pun;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,14 +11,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        if (Instance != null)
+        if(Instance != null && Instance != this)
         {
-            DestroyImmediate(gameObject);
-            return;
+            Destroy(gameObject);
         }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+    public static void Destroy()
+    {
+        Destroy(Instance.gameObject);
+        Instance = null;
     }
 
     private void Start()
@@ -38,6 +46,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void CreateRoom(string roomName)
     {
         Debug.Log($"Creating Room {roomName}");
+        GUIUtility.systemCopyBuffer = roomName;
         PhotonNetwork.CreateRoom(roomName);
     }
 
@@ -52,6 +61,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         currentRoomName = PhotonNetwork.CurrentRoom.Name;
         Debug.Log($"Joined Room {currentRoomName}");
         PhotonNetwork.LoadLevel(2);
+    }
+    
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
     }
 
     public override void OnLeftRoom()

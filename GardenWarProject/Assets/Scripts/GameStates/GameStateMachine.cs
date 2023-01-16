@@ -7,6 +7,7 @@ using Entities.Champion;
 using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameStates
 {
@@ -32,15 +33,13 @@ namespace GameStates
         public uint expectedPlayerCount = 4;
 
         [Header("Collections")] public ChampionSO[] allChampionsSo;
-        public TeamColor[] teamColors;
         public Role[] roles;
         public List<int> allPlayersIDs = new List<int>();
 
         private readonly Dictionary<int, PlayerData> playerDataDict =
             new Dictionary<int, PlayerData>();
 
-        [Header("InGameData")]
-        public Enums.Team winner = Enums.Team.Neutral;
+        [Header("InGameData")] public Enums.Team winner = Enums.Team.Neutral;
         private List<int> scores = new List<int>();
         [SerializeField] private int scoreToWin = 10;
         [HideInInspector] public double startTime;
@@ -53,20 +52,20 @@ namespace GameStates
         }
 
         [Serializable]
-        public struct TeamColor
-        {
-            public Enums.Team team;
-            public Color color;
-        }
-
-        [Serializable]
         public class PlayerData
         {
+            public bool isReady;
+
+            //pre lobby
             public string name;
+            public List<byte[]> emotesArrays = new List<byte[]>();
+
+            //lobby
             public Enums.Team team;
             public byte championSOIndex;
             public Enums.ChampionRole role;
-            public bool isReady;
+
+            //in game
             public int championPhotonViewId;
             public Champion champion;
         }
@@ -87,11 +86,16 @@ namespace GameStates
             gamesStates[1] = new LoadingState(this);
             gamesStates[2] = new InGameState(this);
             gamesStates[3] = new PostGameState(this);
-
+            
             DontDestroyOnLoad(gameObject);
         }
 
         private void Start()
+        {
+            OnSceneLoad();   
+        }
+
+        private void OnSceneLoad()
         {
             if (isMaster)
             {
@@ -101,6 +105,14 @@ namespace GameStates
             {
                 RequestStartCurrentState();
             }
+            
+            OnUpdate = null;
+            OnUpdateFeedback = null;
+            OnTick = null;
+            OnTickFeedback = null;
+            OnTeamIncreaseScore = null;
+            OnTeamIncreaseScoreFeedBack = null;
+            OnDataDictUpdated = null;
         }
 
         private void Update()
@@ -108,7 +120,7 @@ namespace GameStates
             currentState?.UpdateState();
         }
 
-        private void InitState()
+        public void InitState()
         {
             currentState = gamesStates[0];
             if (isOffline) currentState = gamesStates[2];
@@ -222,6 +234,8 @@ namespace GameStates
             {
                 var playerData = new PlayerData
                 {
+                    // TODO - Get emote list and player name
+
                     isReady = false,
                     team = Enums.Team.Neutral,
                     role = Enums.ChampionRole.Fighter,
@@ -254,19 +268,30 @@ namespace GameStates
 
         public void RequestRemovePlayer()
         {
+            if (isMaster)
+            {
+                photonView.RPC("SyncRemovePlayerRPC", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, true);
+                return;
+            }
+
             photonView.RPC("RemovePlayerRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         [PunRPC]
         private void RemovePlayerRPC(int actorNumber)
         {
-            Debug.Log($"Trying to remove actor {actorNumber}");
-            photonView.RPC("SyncRemovePlayerRPC", RpcTarget.All, actorNumber);
+            Debug.Log($"Trying to remove actor {actorNumber} (Master is {PhotonNetwork.MasterClient.ActorNumber})");
+            photonView.RPC("SyncRemovePlayerRPC", RpcTarget.All, actorNumber, actorNumber == PhotonNetwork.MasterClient.ActorNumber);
         }
 
         [PunRPC]
-        private void SyncRemovePlayerRPC(int actorNumber)
-        {
+        private void SyncRemovePlayerRPC(int actorNumber,bool forceDisconnect)
+        { if(PhotonNetwork.LocalPlayer.ActorNumber == actorNumber || forceDisconnect)
+            {
+                SceneManager.LoadSceneAsync(5);
+                return;
+            }
+            
             if (!playerDataDict.ContainsKey(actorNumber)) return;
             playerDataDict.Remove(actorNumber);
             allPlayersIDs.Remove(actorNumber);
@@ -326,7 +351,9 @@ namespace GameStates
 
         public Champion GetPlayerChampion()
         {
-            return isOffline ? playerDataDict[-1].champion : playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
+            return isOffline
+                ? playerDataDict[-1].champion
+                : playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
         }
 
         #endregion
@@ -603,9 +630,9 @@ namespace GameStates
             }
 
             ItemCollectionManager.Instance.LinkCapacityIndexes();
-            
+
             LocalPoolManager.Init();
-            
+
             NetworkPoolManager.Init();
 
             InstantiateChampion();
@@ -622,12 +649,12 @@ namespace GameStates
         public void LateLoad()
         {
             SyncEntitySpawner();
-            
+
             foreach (var playerData in playerDataDict.Values)
             {
                 ApplyChampionSoData(playerData);
             }
-            
+
             SetupUI();
 
             foreach (var champion in playerDataDict.Select(kvp => kvp.Value).Select(value => value.champion))
@@ -647,7 +674,8 @@ namespace GameStates
 
         private void InstantiateChampion()
         {
-            var champion = NetworkPoolManager.PoolInstantiate("NewPlayer", Vector3.up, Quaternion.identity).GetComponent<Champion>();
+            var champion = NetworkPoolManager.PoolInstantiate("NewPlayer", Vector3.up, Quaternion.identity)
+                .GetComponent<Champion>();
             champion.OnInstantiated();
             champion.OnInstantiatedFeedback();
 
@@ -699,7 +727,7 @@ namespace GameStates
             if (UIManager.Instance == null) return;
 
             UIManager.Instance.InstantiateChampionHUD();
-            
+
             UIManager.Instance.SetupTopBar();
 
             foreach (var actorNumber in playerDataDict)
@@ -751,7 +779,7 @@ namespace GameStates
         {
             return scores[(int)team];
         }
-        
+
         public void IncreaseScore(Enums.Team team)
         {
             if (!isMaster || isOffline) return;
@@ -774,7 +802,7 @@ namespace GameStates
             OnTeamIncreaseScoreFeedBack?.Invoke(team);
             Debug.Log($"increase score of team {team} ({scores[team]})");
         }
-        
+
         public event Action<byte> OnTeamIncreaseScore;
         public event Action<byte> OnTeamIncreaseScoreFeedBack;
     }

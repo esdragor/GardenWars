@@ -7,19 +7,22 @@ using UnityEngine.UI;
 
 public class EmotesManager : MonoBehaviour
 {
-    public static EmotesManager instance;
+    public static EmotesManager Instance;
 
     [SerializeField] private InputField fieldEmote1;
     private Texture2D[] emotes = new Texture2D[6];
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
         else
-            Destroy(this);
-        
-        DontDestroyOnLoad(this);
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     // IEnumerator Load(int index, string url)

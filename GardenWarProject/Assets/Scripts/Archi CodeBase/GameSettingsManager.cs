@@ -5,13 +5,20 @@ using UnityEngine;
 
 public class GameSettingsManager : MonoBehaviour
 {
-    private static GameSettingsManager instance;
+    private static GameSettingsManager Instance;
     
     private void Awake()
     {
-        if(!instance) instance = this;
-        else Destroy(gameObject);
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        
         Application.targetFrameRate = 60;
-        DontDestroyOnLoad(gameObject);
     }
 }
