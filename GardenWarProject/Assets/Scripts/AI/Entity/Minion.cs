@@ -81,6 +81,16 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         animators = Myanimators;
     }
 
+    private void OnEnable()
+    {
+        currentHp = MaxHP;
+        canDie = true;
+        isAlive = true;
+        agent.enabled = true;
+        agent.speed = referenceMoveSpeed;
+        BT.enabled = true;
+    }
+
     private void ItemAdded(byte itemIndex)
     {
         BagInBag.SetActive(true);

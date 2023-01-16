@@ -22,6 +22,7 @@ public class CheckEnemyInPOVRange : Node
         Root = _Root;
         MyEntity = entity;
     }
+
     public override NodeState Evaluate(Node root)
     {
         if (Root == null) Root = root;
@@ -38,19 +39,24 @@ public class CheckEnemyInPOVRange : Node
                     var entity = coll.GetComponent<Entity>();
                     if (!entity) continue;
                     if (!entity.isVisible) continue;
-                    if(Physics.Raycast(MyTransform.position, (entity.transform.position -MyTransform.position).normalized , out var hit, MyEntity.viewRange,
-                           layerTargetFogOfWar))
+                    if (Physics.Raycast(MyTransform.position,
+                            (entity.transform.position - MyTransform.position).normalized, out var hit,
+                            MyEntity.viewRange,
+                            layerTargetFogOfWar))
                     {
-                        if(hit.collider.gameObject.layer != 29) continue;
+                        if (hit.collider.gameObject.layer != 29) continue;
                     }
 
                     if (!MyEntity.GetEnemyTeams().Contains(entity.team) || entity.team == Enums.Team.Neutral) continue;
 
                     IAttackable attackable = coll.GetComponent<IAttackable>();
                     if (attackable == null) continue;
-                    
+
+                    IDeadable deadable = coll.GetComponent<IDeadable>();
+                    if (deadable == null) continue;
+                    if (!deadable.IsAlive()) continue;
+
                     Root.SetDataInBlackboard("target", entity);
-                    //animator.SetBool("Walking", true);
                     MyEntity.SetAnimatorTrigger("SpotEnemy");
                     state = NodeState.Success;
                     return state;
@@ -60,15 +66,25 @@ public class CheckEnemyInPOVRange : Node
             }
         }
 
-        if (t != null && !t.gameObject.activeSelf)
-        {
-            Root.ClearData("target");
-            state = NodeState.Failure;
-        }
-        if (t != null && Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV)
-            return NodeState.Success;
-        if (t != null) Root.ClearData("target");
-        state = NodeState.Failure;
+        // if (t != null)
+        // {
+            // if (!t.gameObject.activeSelf)
+            // {
+            //     Root.ClearData("target");
+            //     state = NodeState.Failure;
+            // }
+
+            if (t != null && Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV)
+                return NodeState.Success;
+            // IDeadable deadable = t.GetComponent<IDeadable>();
+            // if (deadable != null && !deadable.IsAlive())
+            // {
+            //     Root.ClearData("target");
+            //     return NodeState.Failure;
+            // }
+        //}
+        Root.ClearData("target");
+        return NodeState.Failure;
         return state;
     }
 }

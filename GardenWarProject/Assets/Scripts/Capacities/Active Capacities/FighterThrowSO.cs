@@ -25,6 +25,7 @@ public class FighterThrowSO : ActiveCapacitySO
     public int damageCandyScale = 1; // damage if not palier, damage * (scaleByCandy * nbCandy)
     public int NbCandyTriggerDamage = 1; // nb candy need to trigger damage
     public GameObject prefabJauge;
+    public ParticleSystem ThrowDestFx;
 
     public override Type AssociatedType()
     {
@@ -46,6 +47,9 @@ public class FighterThrow : ActiveCapacity
 
     private double acceleration = 0.1;
     private float distanceCandy = 10f;
+    private ParticleSystem ThrowDestFx;
+    private ParticleSystem ThrowDestFxGO;
+
 
     protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
     {
@@ -94,6 +98,19 @@ public class FighterThrow : ActiveCapacity
 
     protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
     {
+        Vector3 goalPos = GetClosestValidPoint(targetPositions);
+        if (!ThrowDestFx)
+        {
+            ThrowDestFx = so.ThrowDestFx;
+            ThrowDestFxGO = Object.Instantiate(ThrowDestFx, goalPos, Quaternion.identity);
+            ThrowDestFxGO.transform.Rotate(Vector3.right * 90);
+        }
+        else
+        {
+            if (!ThrowDestFxGO.gameObject.activeSelf)
+                ThrowDestFxGO.gameObject.SetActive(true);
+            ThrowDestFxGO.transform.position = goalPos;
+        }
     }
 
     private CandyBag InitCandyBag()

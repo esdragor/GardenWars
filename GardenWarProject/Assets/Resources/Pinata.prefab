@@ -153,7 +153,6 @@ GameObject:
   - component: {fileID: 5121303772905984998}
   - component: {fileID: 5121303772905984997}
   - component: {fileID: 5121303772905984996}
-  - component: {fileID: 5121303772905985003}
   - component: {fileID: 5121303772905985002}
   - component: {fileID: 4435092801337144789}
   m_Layer: 29
@@ -267,29 +266,6 @@ MonoBehaviour:
   - {fileID: 6627919626819506626}
   references:
     version: 1
---- !u!114 &5121303772905985003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121303772905985001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c6a750f0b026584cb1b1db987c6c657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CampPosition: {fileID: 5121303772905984994}
-  MaxDistanceToCamp: 3
-  agent: {fileID: 5121303772905985002}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 536870912
-  entity: {fileID: 5121303772905984996}
-  AtkRange: 1
-  FOVRange: 5
-  atkDelay: 0.3
-  Model: {fileID: 5121303772905984994}
 --- !u!195 &5121303772905985002
 NavMeshAgent:
   m_ObjectHideFlags: 0

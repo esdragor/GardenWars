@@ -48,6 +48,8 @@ public class TaskPatrol : Node
         {
             Vector3 MyPos = Mytransform.position;
             
+            if (CurrentWaypointIndex < waypoints.Length)
+            model.transform.LookAt(new Vector3(waypoints[CurrentWaypointIndex].position.x, MyPos.y, waypoints[CurrentWaypointIndex].position.z));
 
 
             if (CurrentWaypointIndex + 1 < waypoints.Length)
