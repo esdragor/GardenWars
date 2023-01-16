@@ -9,6 +9,7 @@ namespace Entities.Champion
     [RequireComponent(typeof(NavMeshAgent))]
     public partial class Champion : IMoveable
     {
+        [Header("Movable")]
         public float baseMoveSpeed;
         public float bonusMoveSpeed;
         public float moveSpeed => baseMoveSpeed + bonusMoveSpeed;
@@ -193,7 +194,7 @@ namespace Entities.Champion
             //CancelMoveToTarget();
             
             position = ActiveCapacity.GetClosestValidPoint(position);
-
+            
             agent.SetDestination(position);
             OnMove?.Invoke(position);
 
@@ -220,6 +221,7 @@ namespace Entities.Champion
             }
 
             agent.SetDestination(targetPos);
+            
             OnMove?.Invoke(targetPos);
             
             targetPos.y = rotateParent.position.y;

@@ -131,6 +131,8 @@ public class LocalPoolManager : MonoBehaviour
         
         tr.SetParent(parent);
         
+        go.SetActive(false);
+        
         go.SetActive(true);
         
         if(requeue) componentDict[prefab].Enqueue(component);

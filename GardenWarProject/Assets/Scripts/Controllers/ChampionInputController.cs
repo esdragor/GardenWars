@@ -12,6 +12,8 @@ namespace Controllers.Inputs
 {
     public class ChampionInputController : PlayerInputController
     {
+        [SerializeField] private ParticleSystem clicFx;
+        
         private Champion champion;
         
         private bool isRightClicking;
@@ -146,6 +148,7 @@ namespace Controllers.Inputs
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
             champion.CancelMoveToTarget();
+            
             if (selectedEntity != null)
             {
                 if (champion != selectedEntity && selectedEntity.team == champion.team)
@@ -154,13 +157,14 @@ namespace Controllers.Inputs
                     return;
                 }
 
-                if (selectedEntity is Tower)
-                    return;
+                if (selectedEntity is Tower) return;
                 StartMoveAttack();
                 return;
             }
             
             champion.MoveToPosition(cursorWorldPos);
+            
+            LocalPoolManager.PoolInstantiate(clicFx,ActiveCapacity.GetClosestValidPoint(cursorWorldPos),clicFx.transform.rotation);
         }
         
         private void OnPressEmote1(InputAction.CallbackContext ctx)

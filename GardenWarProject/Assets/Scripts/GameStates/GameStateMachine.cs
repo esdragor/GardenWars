@@ -494,6 +494,18 @@ namespace GameStates
 
         private bool CanChangeState()
         {
+            if (playerDataDict[PhotonNetwork.MasterClient.ActorNumber].team == Enums.Team.Neutral)
+            {
+                Debug.Log($"Master is in team {playerDataDict[PhotonNetwork.MasterClient.ActorNumber].team}");
+                return false;
+            }
+
+            var neutralPlayersIds = playerDataDict.Where(kvp => kvp.Value.team == Enums.Team.Neutral).Select(kvp => kvp.Key);
+            foreach (var key in neutralPlayersIds)
+            {
+                playerDataDict.Remove(key);
+            }
+            
             if (isInDebugMode)
             {
                 foreach (var data in playerDataDict.Select(kvp => kvp.Value))
