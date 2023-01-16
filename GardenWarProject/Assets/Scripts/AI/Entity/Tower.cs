@@ -310,6 +310,9 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
     {
+        if (EntityCollectionManager.GetEntityByIndex(killerId) is Champion)
+            return;
+        
         CurrentHP = amount;
         //Debug.Log("CurrentHP : " + CurrentHP);
         if (CurrentHP <= 0)
