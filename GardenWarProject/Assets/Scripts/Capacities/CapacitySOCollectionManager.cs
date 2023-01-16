@@ -50,6 +50,7 @@ namespace Entities.Capacities
             var active = (ActiveCapacity) Activator.CreateInstance(Instance.allActiveCapacities[soIndex].AssociatedType());
             active.indexOfSOInCollection = soIndex;
             active.caster = caster;
+            active.level = 1;
             return active;
         }
 

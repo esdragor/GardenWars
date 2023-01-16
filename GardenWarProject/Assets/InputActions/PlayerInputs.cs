@@ -470,6 +470,34 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UpgradeCapacity"",
+            ""id"": ""d961dcde-4da8-42c3-8008-4e732187f491"",
+            ""actions"": [
+                {
+                    ""name"": ""Upgrade"",
+                    ""type"": ""Button"",
+                    ""id"": ""d00588e9-6fe3-4dc7-b334-96b01c21fc25"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e5453578-efd9-4c2c-a937-8dcd4628b472"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Upgrade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -506,6 +534,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // Emotes
         m_Emotes = asset.FindActionMap("Emotes", throwIfNotFound: true);
         m_Emotes_Emote1 = m_Emotes.FindAction("Emote1", throwIfNotFound: true);
+        // UpgradeCapacity
+        m_UpgradeCapacity = asset.FindActionMap("UpgradeCapacity", throwIfNotFound: true);
+        m_UpgradeCapacity_Upgrade = m_UpgradeCapacity.FindAction("Upgrade", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -880,6 +911,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public EmotesActions @Emotes => new EmotesActions(this);
+
+    // UpgradeCapacity
+    private readonly InputActionMap m_UpgradeCapacity;
+    private IUpgradeCapacityActions m_UpgradeCapacityActionsCallbackInterface;
+    private readonly InputAction m_UpgradeCapacity_Upgrade;
+    public struct UpgradeCapacityActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public UpgradeCapacityActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Upgrade => m_Wrapper.m_UpgradeCapacity_Upgrade;
+        public InputActionMap Get() { return m_Wrapper.m_UpgradeCapacity; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UpgradeCapacityActions set) { return set.Get(); }
+        public void SetCallbacks(IUpgradeCapacityActions instance)
+        {
+            if (m_Wrapper.m_UpgradeCapacityActionsCallbackInterface != null)
+            {
+                @Upgrade.started -= m_Wrapper.m_UpgradeCapacityActionsCallbackInterface.OnUpgrade;
+                @Upgrade.performed -= m_Wrapper.m_UpgradeCapacityActionsCallbackInterface.OnUpgrade;
+                @Upgrade.canceled -= m_Wrapper.m_UpgradeCapacityActionsCallbackInterface.OnUpgrade;
+            }
+            m_Wrapper.m_UpgradeCapacityActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Upgrade.started += instance.OnUpgrade;
+                @Upgrade.performed += instance.OnUpgrade;
+                @Upgrade.canceled += instance.OnUpgrade;
+            }
+        }
+    }
+    public UpgradeCapacityActions @UpgradeCapacity => new UpgradeCapacityActions(this);
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -918,5 +982,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IEmotesActions
     {
         void OnEmote1(InputAction.CallbackContext context);
+    }
+    public interface IUpgradeCapacityActions
+    {
+        void OnUpgrade(InputAction.CallbackContext context);
     }
 }

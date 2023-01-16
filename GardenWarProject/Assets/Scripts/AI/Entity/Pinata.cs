@@ -459,6 +459,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     {
         SetCurrentHpPercentRPC(value);
     }
+    
     [PunRPC]
     public void SyncSetCurrentHpPercentRPC(float value)
     {
@@ -584,21 +585,21 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         var entity = EntityCollectionManager.GetEntityByIndex(KillerID);
         if (entity && entity is Champion)
         {
-            
-
-            
             // GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
             // ItemBag bag = item.GetComponent<ItemBag>();
             // bag.SetItemBag(items[0].indexOfSOInCollection, EntityCollectionManager.GetEntityByIndex(killerId).team);
             // bag.ChangeVisuals(true);
             // bag.IsCollectible();
-                entity.AddItemRPC(items[0].indexOfSOInCollection);
+            entity.AddItemRPC(items[0].indexOfSOInCollection);
 
-                RespawnPinata rp = new RespawnPinata();
-                rp.delay = 0;
-                rp.pos = GetComponent<PinataBT>().CampPosition;
-                
-                SpawnAIs.Instance.PinatasRespawned.Add(rp);
+            RespawnPinata rp = new RespawnPinata
+            {
+                delay = 0,
+                pos = GetComponent<PinataBT>().CampPosition
+            };
+
+            SpawnAIs.Instance.PinatasRespawned.Add(rp);
+            
         }
 
         

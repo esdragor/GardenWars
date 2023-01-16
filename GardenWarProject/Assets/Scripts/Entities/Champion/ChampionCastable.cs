@@ -15,6 +15,8 @@ namespace Entities.Champion
         public int targetedEntities;
         public Vector3 targetedPositions;
 
+        private int upgradeCount = 0;
+
         public class CastingAbility
         {
             public bool isCasting = false;
@@ -199,5 +201,41 @@ namespace Entities.Champion
             
             OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
+
+        public void RequestUpgrade(int index)
+        {
+            if (isMaster)
+            {
+                UpgradeRPC(index);
+                return;
+            }
+            photonView.RPC("UpgradeRPC", RpcTarget.MasterClient, index);
+        }
+        
+        [PunRPC]
+        public void UpgradeRPC(int index)
+        {
+            if(upgradeCount <= 0) return;
+            
+            if(!capacityDict[abilitiesIndexes[index]].capacity.canBeUpgraded) return;
+            
+            if (isOffline)
+            {
+                SyncUpgradeRPC(index);
+                return;
+            }
+            photonView.RPC("SyncUpgradeRPC",RpcTarget.All,index);
+        }
+        
+        [PunRPC]
+        private void SyncUpgradeRPC(int index)
+        {
+            Debug.Log($"Upgrade capacity at index {index} ({capacityDict[abilitiesIndexes[index]].capacity.AssociatedActiveCapacitySO().capacityName}) (now level {capacityDict[abilitiesIndexes[index]].capacity.level})");
+            upgradeCount--;
+            capacityDict[abilitiesIndexes[index]].capacity.level++;
+            OnAbilityUpgraded?.Invoke();
+        }
+
+        public event Action OnAbilityUpgraded;
     }
 }

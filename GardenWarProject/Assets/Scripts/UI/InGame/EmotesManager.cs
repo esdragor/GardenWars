@@ -71,7 +71,7 @@ public class EmotesManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("File not found");
+            Debug.LogWarning("File not found");
         }
     }
 

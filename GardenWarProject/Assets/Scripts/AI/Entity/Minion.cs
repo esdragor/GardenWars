@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entities;
 using Entities.Capacities;
+using Entities.Champion;
 using Entities.FogOfWar;
 using Entities.Inventory;
 using GameStates;
@@ -670,9 +671,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         var entity = EntityCollectionManager.GetEntityByIndex(KillerID);
         if (entity)
         {
-            var candyScript = entity.GetComponent<ICandyable>();
-            if (candyScript != null && GetEnemyTeams().Contains(entity.team))
-                candyScript.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+            var champion = entity.GetComponent<Champion>();
+            if (champion != null)
+            {
+                if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
+                {
+                    champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+                }
+            }
         }
 
 

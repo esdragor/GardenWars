@@ -30,7 +30,10 @@ namespace Entities.Capacities
 
         protected Entity targetedEntity;
         protected Vector3 targetedPosition;
-        
+
+        public int level;
+        public bool canBeUpgraded => level < AssociatedActiveCapacitySO().maxLevel;
+
         protected GameStateMachine gsm => GameStateMachine.Instance;
 
         public ActiveCapacitySO AssociatedActiveCapacitySO()
@@ -132,6 +135,7 @@ namespace Entities.Capacities
             {
                 if(!CanCast(targetsEntityIndexes,targetPositions)) return;
                 if(isMaster) Release(targetsEntityIndexes,targetPositions);
+                Debug.Log($"SpellLevel : {level}");
                 ReleaseFeedback(targetsEntityIndexes,targetPositions);
                 if (caster.isLocal)
                 {

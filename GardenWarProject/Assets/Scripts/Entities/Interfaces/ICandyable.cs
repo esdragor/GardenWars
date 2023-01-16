@@ -128,7 +128,7 @@ public interface ICandyable
     /// Sends an RPC to all clients to increase the entity's currentCandy.
     /// </summary>
     /// <param name="amount">the increase amount</param>
-    public void SyncIncreaseCurrentCandyRPC(int amount);
+    public void SyncIncreaseCurrentCandyRPC(int amount,int upgrade);
 
     /// <summary>
     /// Increases the entity's currentCandy.

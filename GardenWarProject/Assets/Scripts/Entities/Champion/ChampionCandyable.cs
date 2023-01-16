@@ -5,8 +5,11 @@ namespace Entities.Champion
 {
     public partial class Champion : ICandyable
     {
-        public int maxCandy;
-        public int currentCandy;
+        [Header("Candy")]
+        [SerializeField] private int maxCandy;
+        public int currentCandy { get; private set; }
+
+        [SerializeField] private int candyPerLevel;
 
         public int GetMaxCandy()
         {
@@ -220,6 +223,20 @@ namespace Entities.Champion
         public void IncreaseCurrentCandyRPC(int amount)
         {
             currentCandy += amount;
+            
+            if (!isFighter)
+            {
+                while (currentCandy >= candyPerLevel)
+                {
+                    currentCandy -= candyPerLevel;
+                    upgradeCount++;
+                }
+            }
+            else
+            {
+                upgradeCount = 0;
+            }
+            
             if (currentCandy > maxCandy) currentCandy = maxCandy;
             OnIncreaseCurrentCandy?.Invoke(amount);
             if (isOffline)
@@ -228,13 +245,15 @@ namespace Entities.Champion
                 return;
             }
 
-            photonView.RPC("SyncIncreaseCurrentCandyRPC", RpcTarget.All, currentCandy);
+            photonView.RPC("SyncIncreaseCurrentCandyRPC", RpcTarget.All, currentCandy,upgradeCount);
         }
 
         [PunRPC]
-        public void SyncIncreaseCurrentCandyRPC(int amount)
+        public void SyncIncreaseCurrentCandyRPC(int amount,int upgrades)
         {
             currentCandy = amount;
+            upgradeCount = upgrades;
+            Debug.Log($"Current Candy is now : {currentCandy} Upgrade Count : {upgradeCount})");
             OnIncreaseCurrentCandyFeedback?.Invoke(amount);
         }
 

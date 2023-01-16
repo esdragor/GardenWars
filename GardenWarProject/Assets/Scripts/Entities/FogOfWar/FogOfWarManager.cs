@@ -37,8 +37,7 @@ namespace Entities.FogOfWar
         [Header("Camera and Scene Setup")]
         public Camera cameraFog;
         public Camera cameraMinimap;
-        public Camera cameraMinimapLevel;
-        
+
         public List<string> sceneToRenderFog;
 
         [Header("Fog Of War Parameter")] [Tooltip("Color for the area where the player can't see")]

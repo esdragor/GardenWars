@@ -6,6 +6,7 @@ using Entities.Champion;
 using Entities.Inventory;
 using Microsoft.Win32.SafeHandles;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.Interactions;
 
 namespace Controllers.Inputs
 {
@@ -14,6 +15,9 @@ namespace Controllers.Inputs
         private Champion champion;
         
         private bool isRightClicking;
+
+        private bool isUpgrading;
+        
         private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
 
         private void Update()
@@ -45,31 +49,49 @@ namespace Controllers.Inputs
 
         private void OnPressCapacity0(InputAction.CallbackContext ctx)
         {
+            if(isUpgrading) return;
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[0]);
         }
 
         private void OnPressCapacity1(InputAction.CallbackContext ctx)
         {
+            if(isUpgrading) return;
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[1]);
         }
 
         private void OnPressCapacity2(InputAction.CallbackContext ctx)
         {
+            if(isUpgrading) return;
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[2]);
         }
 
         private void OnReleaseCapacity0(InputAction.CallbackContext ctx)
         {
+            if (isUpgrading)
+            {
+                champion.RequestUpgrade(0);
+                return;
+            }
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[0]);
         }
 
         private void OnReleaseCapacity1(InputAction.CallbackContext ctx)
         {
+            if (isUpgrading)
+            {
+                champion.RequestUpgrade(1);
+                return;
+            }
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[1]);
         }
 
         private void OnReleaseCapacity2(InputAction.CallbackContext ctx)
         {
+            if (isUpgrading)
+            {
+                champion.RequestUpgrade(2);
+                return;
+            }
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[2]);
         }
 
@@ -182,6 +204,16 @@ namespace Controllers.Inputs
         {
             isRightClicking = false;
         }
+        
+        private void OnHoldUpgrade(InputAction.CallbackContext ctx)
+        {
+            isUpgrading = true;
+        }
+
+        private void OnReleaseUpgrade(InputAction.CallbackContext ctx)
+        {
+            isUpgrading = false;
+        }
 
         protected override void Link(Entity entity)
         {
@@ -220,6 +252,9 @@ namespace Controllers.Inputs
 
             inputs.MoveMouse.HoldRightClick.performed += OnHoldRightClick;
             inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
+
+            inputs.UpgradeCapacity.Upgrade.performed += OnHoldUpgrade;
+            inputs.UpgradeCapacity.Upgrade.canceled += OnReleaseUpgrade;
             
             inputs.Emotes.Emote1.performed += OnPressEmote1;
         }
@@ -258,6 +293,10 @@ namespace Controllers.Inputs
             inputs.Inventory.ActivateItem2.canceled -= OnReleaseItem2;
 
             inputs.MoveMouse.HoldRightClick.performed -= OnHoldRightClick;
+            inputs.MoveMouse.HoldRightClick.canceled -= OnReleaseRightClick;
+            
+            inputs.UpgradeCapacity.Upgrade.performed -= OnHoldUpgrade;
+            inputs.UpgradeCapacity.Upgrade.canceled -= OnReleaseUpgrade;
 
             CameraController.Instance.UnLinkCamera();
 
