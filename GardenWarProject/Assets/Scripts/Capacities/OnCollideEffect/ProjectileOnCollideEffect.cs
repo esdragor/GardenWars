@@ -15,36 +15,37 @@ public class ProjectileOnCollideEffect : MonoBehaviour
         if (Entity.isMaster)
         {
             OnCollide?.Invoke(other);
-            
         }
+
         OnCollideFeedback?.Invoke(other);
-        
+
         var hitEntity = other.gameObject.GetComponent<Entity>();
-        
-        if(hitEntity == null) return;
-        
+
+        if (hitEntity == null) return;
+
         if (Entity.isMaster)
         {
             OnEntityCollide?.Invoke(hitEntity);
-            
         }
+
         OnEntityCollideFeedback?.Invoke(hitEntity);
     }
 
-    async void Disparition()
+    async void Disparition(bool immediate)
     {
-        await Task.Delay(700);
-        gameObject.SetActive(false);  
+        if (!immediate)
+            await Task.Delay(700);
+        gameObject.SetActive(false);
     }
-    
-    public void DestroyProjectile()
+
+    public void DestroyProjectile(bool immediate = false)
     {
         OnCollide = null;
         OnCollideFeedback = null;
-        
+
         OnEntityCollide = null;
         OnEntityCollideFeedback = null;
-        
-        Disparition();
+
+        Disparition(immediate);
     }
 }
