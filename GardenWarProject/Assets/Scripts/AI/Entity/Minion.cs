@@ -58,7 +58,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
         void AnimationGoal()
         {
-            transform.position = ParabolaClass.Parabola(startPos, BasketGoal.position, 6f, t);
+            transform.position = ParabolaClass.Parabola(startPos, BasketGoal.position, 3f, t);
             t += Time.deltaTime * SpeedAnimationGoal;
             if (t < 1f) return;
             gsm.IncreaseScore(team);
