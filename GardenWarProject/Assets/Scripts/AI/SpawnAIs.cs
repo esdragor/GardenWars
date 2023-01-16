@@ -16,14 +16,12 @@ public class SpawnAIs : MonoBehaviourPun
 {
     [HideInInspector] public List<RespawnPinata> PinatasRespawned = new List<RespawnPinata>();
 
-    [Header("Wave Management")] 
-    public int minionsPerWave = 1;
+    [Header("Wave Management")] public int minionsPerWave = 1;
     public double timeBetweenMinionSpawn = 0.3;
     public double timeBetweenWaves = 30;
     [SerializeField] private double timeBeforeFirstWave = 5;
     [SerializeField] private List<Transform> SpawnPoints;
-    [Header("Minions")] 
-    [SerializeField] private Transform[] waypointsTeamBlue;
+    [Header("Minions")] [SerializeField] private Transform[] waypointsTeamBlue;
     [SerializeField] private Transform[] waypointsTeamRed;
     [SerializeField] private Entity minion;
     [SerializeField] private double timer;
@@ -66,10 +64,10 @@ public class SpawnAIs : MonoBehaviourPun
     public void Init()
     {
         towers.Clear();
-         if (PhotonNetwork.IsMasterClient)
-         {
-             InitTowers();
-         }
+        if (PhotonNetwork.IsMasterClient)
+        {
+            InitTowers();
+        }
     }
 
     public void Sync()
@@ -79,15 +77,15 @@ public class SpawnAIs : MonoBehaviourPun
 
     public void StartSpawns()
     {
-         foreach (var tower in towers)
-         {
-             tower.GetComponent<TowerBT>().OnStart();
-         }
+        foreach (var tower in towers)
+        {
+            tower.GetComponent<TowerBT>().OnStart();
+        }
 
         timer = timeBetweenWaves - timeBeforeFirstWave;
         gsm.OnTick += SpawnWaves;
-         gsm.OnTick += InitPinata;
-         gsm.OnTick += RespawnPinata;
+        gsm.OnTick += InitPinata;
+        gsm.OnTick += RespawnPinata;
     }
 
     private void OnTick()
@@ -102,7 +100,8 @@ public class SpawnAIs : MonoBehaviourPun
     {
         var redTower = NetworkPoolManager.PoolInstantiate("NewTower", towerSpawnPoints[0].position, Quaternion.identity)
             .GetComponent<Entity>();
-        var blueTower = NetworkPoolManager.PoolInstantiate("NewTower", towerSpawnPoints[1].position, Quaternion.identity)
+        var blueTower = NetworkPoolManager
+            .PoolInstantiate("NewTower", towerSpawnPoints[1].position, Quaternion.identity)
             .GetComponent<Entity>();
 
         blueTower.SyncInstantiate(Enums.Team.Team1);
@@ -135,9 +134,10 @@ public class SpawnAIs : MonoBehaviourPun
 
     public void RespawnPinata()
     {
+        return;
         for (int i = 0; i < PinatasRespawned.Count; i++)
         {
-            PinatasRespawned[i].delay += (float)gsm.increasePerTick;
+            PinatasRespawned[i].delay += (float) gsm.increasePerTick;
             if (PinatasRespawned[i].delay >= timeBeforeRespawnPinata)
             {
                 SpawnPinata(PinatasRespawned[i].pos);
@@ -149,7 +149,7 @@ public class SpawnAIs : MonoBehaviourPun
     private void SyncTowerData()
     {
         var towerIds = towers.Select(tower => tower.entityIndex).ToArray();
-        var towerTeams = towers.Select(tower => (byte)tower.team).ToArray();
+        var towerTeams = towers.Select(tower => (byte) tower.team).ToArray();
         photonView.RPC("SyncDataTowerRPC", RpcTarget.All, towerIds, towerTeams);
     }
 
@@ -191,10 +191,12 @@ public class SpawnAIs : MonoBehaviourPun
 
     private void SpawnMinion()
     {
-        var blueMinion = NetworkPoolManager.PoolInstantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
+        var blueMinion = NetworkPoolManager
+            .PoolInstantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
             .GetComponent<Minion>();
-         var redMinion = NetworkPoolManager.PoolInstantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
-             .GetComponent<Minion>();
+        var redMinion = NetworkPoolManager
+            .PoolInstantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
+            .GetComponent<Minion>();
         blueMinion.SyncInstantiate(Enums.Team.Team1);
         redMinion.SyncInstantiate(Enums.Team.Team2);
         var blueBt = blueMinion.GetComponent<MinionBT>();

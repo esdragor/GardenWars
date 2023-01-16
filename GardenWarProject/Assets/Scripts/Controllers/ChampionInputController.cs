@@ -145,6 +145,7 @@ namespace Controllers.Inputs
 
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
+            champion.CancelMoveToTarget();
             if (selectedEntity != null)
             {
                 if (champion != selectedEntity && selectedEntity.team == champion.team)
@@ -158,8 +159,7 @@ namespace Controllers.Inputs
                 StartMoveAttack();
                 return;
             }
-
-            champion.CancelMoveToTarget();
+            
             champion.MoveToPosition(cursorWorldPos);
         }
         

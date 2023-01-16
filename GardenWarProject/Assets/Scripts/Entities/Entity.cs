@@ -122,7 +122,6 @@ namespace Entities
             canView = true;
 
             UpdateShow();
-            ChangeColor();
         }
 
         public abstract void OnInstantiated();
@@ -298,21 +297,6 @@ namespace Entities
         
         public event Action<PassiveCapacity> OnPassiveCapacityRemoved;
         public event Action<PassiveCapacity> OnPassiveCapacityRemovedFeedback;
-        
-
-        public void ChangeColor()
-        {
-            foreach (var material in renderers.Select(xd => xd.material))
-            {
-                material.color = team switch
-                {
-                    Enums.Team.Neutral => Color.white,
-                    Enums.Team.Team1 => Color.blue,
-                    Enums.Team.Team2 => Color.red,
-                    _ => material.color
-                };
-            }
-        }
 
         public void SetAnimatorTrigger(string trigger)
         {

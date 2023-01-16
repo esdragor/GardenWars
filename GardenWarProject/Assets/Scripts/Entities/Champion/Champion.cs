@@ -83,7 +83,7 @@ namespace Entities.Champion
             currentHp = maxHp;
             maxResource = currentSo.maxMana;
             currentResource = currentSo.maxMana;
-            baseViewRange = 12.5f;
+            baseViewRange = 6f;
             viewRange = baseViewRange;
             baseMoveSpeed = currentSo.baseMoveSpeed;
             bonusMoveSpeed = 0;

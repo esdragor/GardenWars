@@ -38,6 +38,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void CreateRoom(string roomName)
     {
         Debug.Log($"Creating Room {roomName}");
+        GUIUtility.systemCopyBuffer = roomName;
         PhotonNetwork.CreateRoom(roomName);
     }
 

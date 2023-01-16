@@ -189,7 +189,9 @@ namespace Entities.Champion
         public void MoveToPosition(Vector3 position)
         {
             if(!canMove) return;
-            CancelMoveToTarget();
+            
+            //CancelMoveToTarget();
+            
             position = ActiveCapacity.GetClosestValidPoint(position);
 
             agent.SetDestination(position);
@@ -209,10 +211,9 @@ namespace Entities.Champion
         private void MoveToTarget(Vector3 targetPos,float rangeToAction,Action action)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
+            Debug.Log($"Distance left : {distanceToTarget}");
             if (distanceToTarget <= rangeToAction)
             {
-                //Debug.Log("In Range");
-
                 if(agent.isOnNavMesh) agent.ResetPath();
                 action.Invoke();
                 return;
@@ -228,7 +229,12 @@ namespace Entities.Champion
         public void StartMoveToTarget(Entity targetEntity, float rangeToAction, Action action)
         {
             if (!targetEntity) return;
-            MoveToTargetAction += () => MoveToTarget(targetEntity.position, rangeToAction, action);
+            MoveToTargetAction += TargetAction;
+
+            void TargetAction()
+            {
+                MoveToTarget(targetEntity.position, rangeToAction, action);
+            }
         }
 
         public void CancelMoveToTarget()

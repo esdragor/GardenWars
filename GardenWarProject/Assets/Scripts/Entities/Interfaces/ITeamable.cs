@@ -24,9 +24,7 @@ namespace Entities
         /// Sets the entity's team.
         /// </summary>
         public void ChangeTeamRPC(byte team);
-
-        public void ChangeColor();
-
+        
         public event GlobalDelegates.BoolDelegate OnChangeTeam;
         public event GlobalDelegates.BoolDelegate OnChangeTeamFeedback;
     }
