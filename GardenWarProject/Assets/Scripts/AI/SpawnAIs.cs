@@ -119,7 +119,6 @@ public class SpawnAIs : MonoBehaviourPun
 
 
         Pinatas.Add(Pinata);
-        Pinata.GetComponent<PinataBT>().OnStart();
         Pinata.SyncInstantiate(Enums.Team.Neutral);
     }
 
