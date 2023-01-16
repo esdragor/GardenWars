@@ -12,19 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a79ae4977bfcec458765e960be01835, type: 3}
   m_Name: Throw Scavenger
   m_EditorClassIdentifier: 
-  abilityName: 
+  capacityName: 
   icon: {fileID: 0}
   description: 
+  maxLevel: 3
   cooldown: 1
+  castTime: 0
   maxRange: 20
   types: 
   shootType: 0
-  indexInCollection: 6
+  indexInCollection: 14
   itemBagPrefab: {fileID: 302393227357116420, guid: f79802c43b3c38742ae23400332292d7, type: 3}
   prefabJauge: {fileID: 6645909902074301461, guid: bbb99d4f72a480e46af474515bfba2c7, type: 3}
-  nbBounce: 2
-  SpeedOnAir: 5.84
-  timeForOneUnit: 1
+  nbBounce: 1
+  SpeedOnAir: 5.6
+  timeForOneUnit: 1.7
   height: 2.5
   RandomizeRebound: 1
   RandomizeReboundRadius: 2
