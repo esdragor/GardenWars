@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingCanvas: {fileID: 615575538139965151}
+  maxBytePackSize: 75000
   gameSceneName: InGameScene
   isInDebugMode: 0
   ticksPerSecond: 10
@@ -142,7 +143,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 32767
   m_TargetDisplay: 0
 --- !u!114 &3608808964602135322
 MonoBehaviour:

@@ -212,22 +212,26 @@ namespace Entities.Champion
 
         public int selectedItemIndex = 0;
 
-        private void AddBuffEmote(byte[] buff)
-        {
-            bufferbyte.AddRange(buff);
-        }
-
-        public async void RequestPressEmote(byte indexOfEmote)
+        public void RequestPressEmote(byte indexOfEmote)
         {
             if(indexOfEmote >= 6 ) return;
             
             Debug.Log($"Displaying emote {indexOfEmote}");
             
-            // TODO - sync display emote sur tout les clients
-            
-            emotesImage.texture = gsm.GetPlayerEmotes()[indexOfEmote];
+            photonView.RPC("SyncDisplayEmoteRPC", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, indexOfEmote);
+        }
+
+        [PunRPC]
+        private void SyncDisplayEmoteRPC(int actorNumber,byte indexOfEmote)
+        {
+            emotesImage.texture = gsm.GetPlayerEmotes(actorNumber)[indexOfEmote];
             emotesImage.gameObject.SetActive(true);
 
+           HideEmote(); // TODO - emote animation
+        }
+
+        private async void HideEmote()
+        {
             await Task.Delay(3000);
 
             emotesImage.gameObject.SetActive(false);
