@@ -99,7 +99,7 @@ public class FighterThrow : ActiveCapacity
     protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
     {
         Vector3 goalPos = GetClosestValidPoint(targetPositions);
-        if (!ThrowDestFx)
+        if (!ThrowDestFx && so.ThrowDestFx)
         {
             ThrowDestFx = so.ThrowDestFx;
             ThrowDestFxGO = Object.Instantiate(ThrowDestFx, goalPos, Quaternion.identity);
