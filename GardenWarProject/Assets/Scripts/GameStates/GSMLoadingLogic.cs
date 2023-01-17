@@ -12,6 +12,14 @@ namespace GameStates
 {
     public partial class GameStateMachine
     {
+        [Header("Loading")]
+        [SerializeField] private GameObject loadingCanvas;
+
+        public void ShowLoadingCanvas(bool value)
+        {
+            loadingCanvas.SetActive(value);
+        }
+        
         public void StartLoadingMap()
         {
             SwitchState(1);

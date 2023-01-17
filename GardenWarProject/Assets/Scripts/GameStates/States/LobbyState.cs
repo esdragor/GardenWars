@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Entities;
 
 namespace GameStates.States
@@ -25,6 +26,15 @@ namespace GameStates.States
 
         public override void OnAllPlayerReady()
         {
+            sm.ShowLoadingCanvas(true);
+            
+            SomeDelay();
+        }
+
+        async void SomeDelay()
+        {
+            await Task.Delay(3000);
+            
             sm.StartLoadingMap();
         }
     }

@@ -100,6 +100,8 @@ namespace GameStates
             {
                 RequestStartCurrentState();
             }
+            
+            ShowLoadingCanvas(false);
         }
 
         private void Update()

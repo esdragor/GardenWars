@@ -22,7 +22,7 @@ namespace GameStates.States
             
             sm.StartEntitySpawner();
 
-            UIManager.Instance.ShowLoadingCanvas(false);
+            sm.ShowLoadingCanvas(false);
         }
 
         public override void UpdateState()
