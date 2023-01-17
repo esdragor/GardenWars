@@ -85,8 +85,6 @@ namespace Entities.Capacities
 
             if (caster is Champion.Champion castChamp)
             {
-                Debug.Log("casted");
-                
                 castChamp.LookAt(target.position);
                 
                 castChamp.SetAnimatorTrigger("Basic Attack");

@@ -135,7 +135,6 @@ namespace Entities.Capacities
             {
                 if(!CanCast(targetsEntityIndexes,targetPositions)) return;
                 if(isMaster) Release(targetsEntityIndexes,targetPositions);
-                Debug.Log($"SpellLevel : {level}");
                 ReleaseFeedback(targetsEntityIndexes,targetPositions);
                 if (caster.isLocal)
                 {

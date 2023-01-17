@@ -207,8 +207,6 @@ public class SpawnAIs : MonoBehaviourPun
     private void OnPinataDie(int _)
     {
         pinataTimer = timeBetweenPinataLevelUp - timeBeforeRespawnPinata;
-        
-        Debug.Log($"Current Pinata died, timer set to {pinataTimer}");
     }
 
     #endregion

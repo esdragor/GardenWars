@@ -300,9 +300,6 @@ namespace GameStates
         private void InitEntitySpawner()
         {
             if (!isMaster || isOffline) return;
-            
-            Debug.Log("Initiating Spawner");
-            
             SpawnAIs.Instance.Init();
         }
         
