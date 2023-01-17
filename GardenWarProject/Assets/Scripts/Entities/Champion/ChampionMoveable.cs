@@ -269,7 +269,6 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncIsMovingRPC(int actorNumber, bool isMoving)
         {
-            Debug.Log($"entity {actorNumber} is moving {isMoving}");
             (EntityCollectionManager.GetEntityByIndex(actorNumber) as Champion)?.ModifyMoving(isMoving);
         }
 

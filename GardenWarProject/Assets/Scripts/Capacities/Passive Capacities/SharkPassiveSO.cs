@@ -50,7 +50,7 @@ namespace Entities.Capacities
             borrowed = false;
             bonusDamage = 0;
 
-            aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
+            aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position, champion.rotation,
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
             aileronGo.SetActive(false);
@@ -70,7 +70,7 @@ namespace Entities.Capacities
         {
             if (Entity.isMaster) return;
 
-            aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position+Vector3.up * 0.75f, champion.rotation,
+            aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position, champion.rotation,
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
             aileronGo.SetActive(false);
@@ -119,6 +119,17 @@ namespace Entities.Capacities
             }
 
             borrowed = true;
+            
+            
+            
+            Debug.Log($"is borrowed : {borrowed}");
+            
+            
+            
+            
+            
+            
+
             champion.SetAnimatorBool("Borrowed",borrowed);
             
             aileronGo.SetActive(true);

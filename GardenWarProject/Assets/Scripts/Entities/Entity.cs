@@ -309,7 +309,6 @@ namespace Entities
         
         public void SetAnimatorBool(string trigger,bool value)
         {
-            if (!photonView.IsMine) return; 
             foreach(var animator in animators)
             {
                 animator.SetBool(trigger,value);
