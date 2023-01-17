@@ -67,15 +67,16 @@ namespace Entities.Capacities
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             targetPositions.y = casterPos.y;
+            var shotDirection = (targetPositions - casterPos).normalized;
             if (!FXLaunchGo)
             {
                 FXLaunchGo = LocalPoolManager.PoolInstantiate(so.FXLaunch, champion.rotateParent.transform).gameObject;
-                FXLaunchGo.transform.localPosition = Vector3.up;
+                FXLaunchGo.transform.localPosition = new Vector3(0f, 1, shotDirection.z);
+                FXLaunchGo.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             }
             FXLaunchGo.SetActive(false);
             FXLaunchGo.SetActive(true);
 
-            var shotDirection = (targetPositions - casterPos).normalized;
             
             champion.LookAt(targetPositions);
 
