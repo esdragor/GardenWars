@@ -172,16 +172,12 @@ namespace Controllers.Inputs
         private void OnPressEmote(InputAction.CallbackContext ctx)
         {
             uim.ShowWheel(mousePos);
-            return;
-            champion.RequestPressEmote(0);
         }
         
         private void OnReleaseEmote(InputAction.CallbackContext ctx)
         {
             uim.HideWheel();
             champion.RequestPressEmote(uim.emoteIndex);
-            return;
-            champion.RequestPressEmote(0);
         }
 
         private void StartMoveAttack()
