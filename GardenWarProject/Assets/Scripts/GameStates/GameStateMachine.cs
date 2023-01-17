@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Controllers.Inputs;
-using Entities.Capacities;
 using Entities.Champion;
-using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
 

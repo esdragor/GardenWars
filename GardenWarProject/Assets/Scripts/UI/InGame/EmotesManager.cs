@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,7 +39,7 @@ public class EmotesManager : MonoBehaviour
         {
             emoteFileExplorers[i].Init(i);
 
-            var emote = defaultEmotes[i].EncodeToJPG();
+            var emote = defaultEmotes[i].EncodeToPNG();
 
             GameSettingsManager.SetEmoteTexture(i,emote);
         }
