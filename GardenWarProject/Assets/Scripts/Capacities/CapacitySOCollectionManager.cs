@@ -28,8 +28,6 @@ namespace Entities.Capacities
 
         public void SetIndexes()
         {
-            Debug.Log("Setting capacity indexes");
-            
             for (byte i = 0; i < allActiveCapacities.Count; i++)
             {
                 allActiveCapacities[i].indexInCollection = i;

@@ -215,9 +215,7 @@ namespace Entities.Champion
         public void RequestPressEmote(byte indexOfEmote)
         {
             if(indexOfEmote >= 6 ) return;
-            
-            Debug.Log($"Displaying emote {indexOfEmote}");
-            
+
             photonView.RPC("SyncDisplayEmoteRPC", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, indexOfEmote);
         }
 

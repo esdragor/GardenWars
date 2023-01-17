@@ -8,7 +8,6 @@ namespace GameStates.States
 
         public override void StartState()
         {
-            Debug.Log("LoadingState Start");
             if (GameStateMachine.isOffline) return;
             sm.LoadEmotes();
             sm.ResetScore();
@@ -19,7 +18,6 @@ namespace GameStates.States
 
         public override void ExitState()
         {
-            Debug.Log("LoadingState Exit");
             sm.LateLoad();
         }
 

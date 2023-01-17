@@ -192,35 +192,20 @@ namespace GameStates
         /// </summary>
         public void LoadMap()
         {
-            Debug.Log("LoadMap");
-            
-            Debug.Log($"UI Manager Instance : {UIManager.Instance}");
-
-            Debug.Log($"CapacitySOCollectionManager Instance : {CapacitySOCollectionManager.Instance}");
-
             CapacitySOCollectionManager.Instance.SetIndexes();
             
             UIManager.Instance.SetupEmoteWheel();
             
             UIManager.Instance.HideSettings();
-            
-            Debug.Log("UI preload done");
 
             foreach (var championSo in allChampionsSo)
             {
-                Debug.Log($"So : {championSo}");
                 championSo.SetIndexes();
             }
 
-            Debug.Log($"ItemCollectionManager Instance : {ItemCollectionManager.Instance}");
-            
             ItemCollectionManager.Instance.LinkCapacityIndexes();
             
-            Debug.Log($"Calling Local Pool");
-            
             LocalPoolManager.Init();
-            
-            Debug.Log($"Calling Network Pool");
             
             NetworkPoolManager.Init();
             
@@ -228,9 +213,6 @@ namespace GameStates
 
             InitEntitySpawner();
 
-            
-            Debug.Log("LoadMap Done");
-            
             RequestSetReady(true);
         }
 
@@ -239,8 +221,6 @@ namespace GameStates
         /// </summary>
         public void LateLoad()
         {
-            Debug.Log("Late Load");
-            
             SyncEntitySpawner();
             
             foreach (var playerData in playerDataDict.Values)
@@ -255,8 +235,6 @@ namespace GameStates
                 SetupChampion(champion);
                 UIManager.Instance.InitPlayerIcon(champion);
             }
-            
-            Debug.Log("Late Load Over");
         }
 
         public static void SetupChampion(Champion champion)
@@ -269,8 +247,6 @@ namespace GameStates
 
         private void InstantiateChampion()
         {
-            Debug.Log($"Instantiating champion");
-            
             var champion = NetworkPoolManager.PoolInstantiate("NewPlayer", Vector3.up, Quaternion.identity).GetComponent<Champion>();
             champion.OnInstantiated();
             champion.OnInstantiatedFeedback();
@@ -294,11 +270,8 @@ namespace GameStates
 
         private void LinkController(Champion champion)
         {
-            Debug.Log($"Linking Controller");
-            
             var controller = champion.GetComponent<PlayerInputController>();
 
-            // We set local parameters
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
         }
@@ -347,9 +320,6 @@ namespace GameStates
         private void SyncEntitySpawner()
         {
             if (!isMaster || isOffline) return;
-            
-            Debug.Log("Syncing with Ai");
-            
             SpawnAIs.Instance.Sync();
         }
 

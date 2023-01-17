@@ -11,8 +11,6 @@ namespace UIComponents
 
         public void InitWheel()
         {
-            Debug.Log("Initialising the wheel (this)");
-            
             gameObject.SetActive(false);
 
             for (int i = 0; i < 6; i++)

@@ -52,7 +52,6 @@ public class SpawnAIs : MonoBehaviourPun
         }
         
         Instance = this;
-        Debug.Log("Ai spawn instance was set");
     }
 
     private void Start()

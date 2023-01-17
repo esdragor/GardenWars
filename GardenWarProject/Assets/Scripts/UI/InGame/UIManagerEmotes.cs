@@ -23,8 +23,6 @@ public partial class UIManager
 
     public void SetupEmoteWheel()
     {
-        Debug.Log("Init wheel");
-        
         emoteWheel.InitWheel();
     }
 
@@ -35,7 +33,6 @@ public partial class UIManager
 
     public void SetEmoteIndex(byte indexOfEmote)
     {
-        Debug.Log($"Index Set to {indexOfEmote}");
         emoteIndex = indexOfEmote;
     }
     
@@ -46,7 +43,6 @@ public partial class UIManager
         var panel = Instantiate(emotesPanelPrefab, entity.uiTransform.position + entity.uiOffset + Vector3.up * 2f,
             Quaternion.identity, emotesParent);
         entity.emotesImage = panel.GetComponent<RawImage>();
-        Debug.Log(entity.name);
         panel.SetActive(false);
         var entityTr = entity.transform;
         var panelTransform = panel.transform;
