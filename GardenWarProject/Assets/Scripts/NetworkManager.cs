@@ -37,21 +37,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom(string roomName)
     {
-        Debug.Log($"Creating Room {roomName}");
         GUIUtility.systemCopyBuffer = roomName;
         PhotonNetwork.CreateRoom(roomName);
     }
 
     public void JoinRoom(string roomName)
     {
-        Debug.Log($"Joining Room {roomName}");
         PhotonNetwork.JoinOrCreateRoom(roomName,null,null);
     }
 
     public override void OnJoinedRoom()
     {
         currentRoomName = PhotonNetwork.CurrentRoom.Name;
-        Debug.Log($"Joined Room {currentRoomName}");
         PhotonNetwork.LoadLevel(2);
     }
 

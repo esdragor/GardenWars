@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace GameStates.States
 {
     public class LoadingState : GameState
@@ -7,8 +9,8 @@ namespace GameStates.States
         public override void StartState()
         {
             if (GameStateMachine.isOffline) return;
+            sm.LoadEmotes();
             sm.ResetScore();
-            sm.MoveToGameScene();
             sm.winner = Enums.Team.Neutral;
         }
 

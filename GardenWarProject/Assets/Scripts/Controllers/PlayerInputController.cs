@@ -38,7 +38,6 @@ namespace Controllers.Inputs
             if (!controlledEntity.photonView.IsMine) return;
             SetupInputMap();
             minimapRect = UIManager.Instance.GetMinimapRect();
-            Debug.Log($"MinimapRect is {minimapRect}");
             mainCam = Camera.main;
             Link(controlledEntity);
         }

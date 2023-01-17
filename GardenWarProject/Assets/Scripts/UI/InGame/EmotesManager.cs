@@ -10,37 +10,48 @@ public class EmotesManager : MonoBehaviour
     public static EmotesManager instance;
 
     [SerializeField] private InputField fieldEmote1;
-    private Texture2D[] emotes = new Texture2D[6];
+    [SerializeField] private Texture2D[] defaultEmotes = new Texture2D[6];
+    [SerializeField] private UIEmoteFileExplorer[] emoteFileExplorers = new UIEmoteFileExplorer[6];
+    public Texture2D[] EmotesTexture2Ds => defaultEmotes;
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance == null && instance != this)
+        {
             instance = this;
+        }
         else
-            Destroy(this);
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
         
         DontDestroyOnLoad(this);
     }
-
-    // IEnumerator Load(int index, string url)
-    // {
-    //
-    //     
-    //     using (WWW www = new WWW(url))
-    //     {
-    //         yield return www;
-    //         Texture2D tex = new Texture2D(100, 100, TextureFormat.DXT1, false);
-    //         www.LoadImageIntoTexture(tex);
-    //         emotes[index] = tex;
-    //     }
-    // }
     
-    void Start()
+    private void Start()
+    {
+        if(fieldEmote1 != null) AddListenerToField();
+        
+        LinkEmoteExplorers();
+    }
+
+    private void LinkEmoteExplorers()
+    {
+        for (byte i = 0; i < emoteFileExplorers.Length; i++)
+        {
+            emoteFileExplorers[i].Init(i);
+
+            var emote = defaultEmotes[i].EncodeToJPG();
+
+            GameSettingsManager.SetEmoteTexture(i,emote);
+        }
+    }
+
+    private void AddListenerToField()
     {
         fieldEmote1.onEndEdit.AddListener(delegate
         {
-            //StartCoroutine(Load(0, fieldEmote1.text));
-            Debug.Log(fieldEmote1.text);
             if (File.Exists(fieldEmote1.text))
             {
                 byte[] fileData;
@@ -48,7 +59,7 @@ public class EmotesManager : MonoBehaviour
                 Debug.Log(fileData.Length);
                 Texture2D tex = new Texture2D(2, 2);
                 tex.LoadImage(fileData);
-                emotes[0] = tex;
+                defaultEmotes[0] = tex;
                 Debug.Log(tex.EncodeToPNG().Length);
             }
             else
@@ -66,7 +77,7 @@ public class EmotesManager : MonoBehaviour
             Debug.Log(fileData.Length);
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(fileData);
-            emotes[0] = tex;
+            defaultEmotes[0] = tex;
             Debug.Log(tex.EncodeToPNG().Length);
         }
         else
@@ -75,13 +86,8 @@ public class EmotesManager : MonoBehaviour
         }
     }
 
-    public Texture2D[] GetEmotes()
-    {
-        return emotes;
-    }
-    
     public Texture2D GetEmoteAtLocation(int index)
     {
-        return emotes[index];
+        return defaultEmotes[index];
     }
 }

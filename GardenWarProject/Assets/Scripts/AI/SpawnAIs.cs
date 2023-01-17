@@ -50,7 +50,7 @@ public class SpawnAIs : MonoBehaviourPun
             DestroyImmediate(gameObject);
             return;
         }
-
+        
         Instance = this;
     }
 

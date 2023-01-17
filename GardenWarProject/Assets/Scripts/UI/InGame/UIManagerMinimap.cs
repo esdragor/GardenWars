@@ -14,18 +14,7 @@ public partial class UIManager
     [SerializeField] private MinimapPlayerIcon playerIconPrefab;
     [SerializeField] private Camera minimapCamera;
     private Vector2 minimapSize;
-
-    private void Start()
-    {
-        minimapSize = miniMapRenderImage.GetComponent<RectTransform>().sizeDelta;
-        minimapRenderTransform = miniMapRenderImage.rectTransform;
-    }
-
-    public void SetupMinimap()
-    {
-        
-    }
-
+    
     public void InitPlayerIcon(Champion champion)
     {
         var icon = Instantiate(playerIconPrefab, playerIconsParent);

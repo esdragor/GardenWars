@@ -14,7 +14,6 @@ public class Tooltip : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"tr:{tr}");
         gameObject.SetActive(false);
     }
     

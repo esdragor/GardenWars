@@ -2,7 +2,6 @@ using GameStates;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
 public partial class UIManager : MonoBehaviour
@@ -19,7 +18,7 @@ public partial class UIManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Button settingsButton;
-    
+
     private Camera cam;
     
     private void Awake()
@@ -33,6 +32,12 @@ public partial class UIManager : MonoBehaviour
         settingsButton.onClick.AddListener(() => settingsPanel.SetActive(true));
 
         Instance = this;
+    }
+
+    private void Start()
+    {
+        minimapSize = miniMapRenderImage.GetComponent<RectTransform>().sizeDelta;
+        minimapRenderTransform = miniMapRenderImage.rectTransform;
     }
 
     public void SetupTopBar()

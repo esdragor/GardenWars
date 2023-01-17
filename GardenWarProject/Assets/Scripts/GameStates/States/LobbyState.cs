@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Entities;
 
 namespace GameStates.States
@@ -19,13 +20,14 @@ namespace GameStates.States
         public override void ExitState()
         {
             sm.ResetPlayerReady();
+
             InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(false);
         }
 
         public override void OnAllPlayerReady()
         {
-            sm.StartLoadingMap();
+            sm.SwitchState(1);
         }
     }
 }
