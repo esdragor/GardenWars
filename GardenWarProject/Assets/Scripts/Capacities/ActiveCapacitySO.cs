@@ -27,6 +27,8 @@ namespace Entities.Capacities
 
         public Enums.CapacityShootType shootType;
         
+        public bool showMaxRangeIfSkillShot;
+        
         public abstract Type AssociatedType();
 
         [HideInInspector] public byte indexInCollection;

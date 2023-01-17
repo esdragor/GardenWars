@@ -41,6 +41,9 @@ namespace Entities.Champion
             obstacle.enabled = true;
             rb.isKinematic = true;
             agent.enabled = true;
+
+            rangeIndicatorTr = rangeIndicatorGo.transform;
+            HideRangeIndicator();
         }
 
         protected override void OnUpdate()

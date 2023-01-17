@@ -36,6 +36,8 @@ namespace Entities.Capacities
 
         protected GameStateMachine gsm => GameStateMachine.Instance;
 
+        private ActiveCapacitySO _so => AssociatedActiveCapacitySO();
+
         public ActiveCapacitySO AssociatedActiveCapacitySO()
         {
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
@@ -47,9 +49,8 @@ namespace Entities.Capacities
             {
                 return false;
             }
-            var so = AssociatedActiveCapacitySO();
-            var maxRange = isBasicAttack ? champion.attackRange : so.maxRange;
-            switch (so.shootType)
+            var maxRange = isBasicAttack ? champion.attackRange : _so.maxRange;
+            switch (_so.shootType)
             {
                 case Enums.CapacityShootType.Skillshot:
                     break;
@@ -77,6 +78,8 @@ namespace Entities.Capacities
                         if (!targetable.CanBeTargeted()) return false;
                     }
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             return AdditionalCastConditions(targetsEntityIndex, targetPosition);
@@ -89,10 +92,25 @@ namespace Entities.Capacities
             if(!CanCast(targetsEntityIndexes,targetPositions)) return false;
             if(isMaster) Press(targetsEntityIndexes,targetPositions);
             PressFeedback(targetsEntityIndexes,targetPositions);
-            if (caster.isLocal)
+            
+            if (!caster.isLocal) return true;
+            
+            switch (_so.shootType)
             {
-                PressLocal(targetsEntityIndexes,targetPositions);
+                case Enums.CapacityShootType.Skillshot:
+                    if(_so.showMaxRangeIfSkillShot) champion.ShowRangeIndicator(_so.maxRange);
+                    break;
+                case Enums.CapacityShootType.TargetPosition:
+                    champion.ShowRangeIndicator(_so.maxRange);
+                    break;
+                case Enums.CapacityShootType.TargetEntity:
+                    champion.ShowRangeIndicator(_so.maxRange);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+
+            PressLocal(targetsEntityIndexes,targetPositions);
             return true;
         }
         protected abstract void Press(int targetsEntityIndexes, Vector3 targetPositions);
@@ -138,6 +156,21 @@ namespace Entities.Capacities
                 ReleaseFeedback(targetsEntityIndexes,targetPositions);
                 if (caster.isLocal)
                 {
+                    switch (_so.shootType)
+                    {
+                        case Enums.CapacityShootType.Skillshot:
+                            champion.HideRangeIndicator();
+                            break;
+                        case Enums.CapacityShootType.TargetPosition:
+                            champion.HideRangeIndicator();
+                            break;
+                        case Enums.CapacityShootType.TargetEntity:
+                            champion.HideRangeIndicator();
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    
                     ReleaseLocal(targetsEntityIndexes,targetPositions);
                 }
                 if(baseCooldown > 0) EnterCooldown(baseCooldown);
