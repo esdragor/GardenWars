@@ -71,7 +71,8 @@ namespace Entities.Capacities
 
         protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            
+            champion.ShowAreaIndicator(targetPositions,2);
+            champion.ShowMaxRangeIndicator(so.maxRange);
         }
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
@@ -134,7 +135,7 @@ namespace Entities.Capacities
             {
                 if (isMaster)
                 {
-                    champion.SetCanCastRPC(true);
+                    //champion.SetCanCastRPC(true);
                     champion.SetCanMoveRPC(true);
                 }
                 
@@ -146,8 +147,15 @@ namespace Entities.Capacities
             void IncreaseTimerPart2()
             {
                 timer += Time.deltaTime;
+
+                var pos = GetClosestValidPoint(PlayerInputController.CursorWorldPos);
+                champion.ShowAreaIndicator(pos,2);
+                champion.ShowMaxRangeIndicator(so.maxRange);
                 
                 if(timer <= so.borrowDuration) return;
+                
+                champion.HideAreaIndicator();
+                champion.HideMaxRangeIndicator();
                 
                 ExitUltBorrow();
             }
@@ -222,8 +230,6 @@ namespace Entities.Capacities
                 destination = GetClosestValidPoint(destination);
             }
             
-            Debug.Log($"Leaping to {destination} (cursor is at {PlayerInputController.CursorWorldPos})");
-            
             champion.SetAnimatorTrigger("Ability3");
             champion.rotateParent.localScale = Vector3.one * so.sizeMultiplier;
             
@@ -237,7 +243,7 @@ namespace Entities.Capacities
 
         protected override void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions)
         {
-            
+            champion.HideAreaIndicator();
         }
     }
     

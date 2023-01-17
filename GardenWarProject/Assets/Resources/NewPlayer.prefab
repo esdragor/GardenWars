@@ -186,6 +186,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clicFx: {fileID: 7693268287233030321, guid: b437201971136e044a549aac04cc6f9f, type: 3}
+  allyColor: {r: 0, g: 1, b: 1, a: 1}
+  enemyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!195 &3480681341667345173
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -248,6 +250,8 @@ MonoBehaviour:
   items: []
   canChangeTeam: 0
   team: 0
+  baseOutlineThickness: 3
+  baseOutlineColor: {r: 0, g: 0, b: 0, a: 1}
   canAddPassiveCapacity: 1
   canRemovePassiveCapacity: 1
   uiTransform: {fileID: 3480681342087303708}
@@ -286,6 +290,10 @@ MonoBehaviour:
   attackRange: 0
   maxCandy: 100
   candyPerLevel: 1
+  areaIndicatorPrefab: {fileID: 4165990556748168839, guid: 191ad9fadcc2c454e824d97847130b26, type: 3}
+  maxRangeMat: {fileID: 2100000, guid: f8a2ee1652cc1754c80551ec05cd89b0, type: 2}
+  areaMat: {fileID: 2100000, guid: 95ff396ba021a9243bdf6bec9dffa9d3, type: 2}
+  rangeScaleFactor: 0.25
   abilitiesIndexes: 00
   targetedEntities: 0
   targetedPositions: {x: 0, y: 0, z: 0}

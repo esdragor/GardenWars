@@ -9,6 +9,19 @@ namespace Entities.Champion
 {
     public partial class Champion : ICastable
     {
+        [Header("Range Indicator")]
+        [SerializeField] private GameObject areaIndicatorPrefab;
+
+        [SerializeField] private Material maxRangeMat;
+        [SerializeField] private Material areaMat;
+        
+        private GameObject maxRangeIndicatorGo;
+        private GameObject areaIndicatorGo;
+        private Transform maxRangeIndicatorTr;
+        
+        private Transform areaIndicatorTr;
+        [SerializeField] private float rangeScaleFactor = 0.25f;
+        
         public byte[] abilitiesIndexes = new byte[3];
         public Dictionary<byte, CastingAbility> capacityDict { get; private set; } = new Dictionary<byte, CastingAbility>();
 
@@ -237,5 +250,33 @@ namespace Entities.Champion
         }
 
         public event Action OnAbilityUpgraded;
+
+        public void ShowMaxRangeIndicator(float range)
+        {
+            maxRangeIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
+            if (maxRangeIndicatorGo.activeSelf) return;
+            maxRangeIndicatorGo.SetActive(true);
+            
+        }
+
+        public void HideMaxRangeIndicator()
+        {
+            maxRangeIndicatorGo.SetActive(false);
+        }
+        
+        public void ShowAreaIndicator(Vector3 pos,float range)
+        {
+            if(!areaIndicatorGo.activeSelf) areaIndicatorGo.SetActive(true);
+            areaIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
+            pos.y = 0.01f;
+            areaIndicatorTr.transform.position = pos;
+        }
+
+        public void HideAreaIndicator()
+        {
+            areaIndicatorGo.SetActive(false);
+        }
+        
+        
     }
 }

@@ -498,6 +498,34 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""ShowMaxRange"",
+            ""id"": ""e1568d58-24c3-433b-a624-2f6df04e2a2d"",
+            ""actions"": [
+                {
+                    ""name"": ""Show"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b9ca180-dacc-474e-924d-9fb3c12ff46a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ba70edc9-047b-47fb-ab57-89373e1a1dd3"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Show"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -537,6 +565,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // UpgradeCapacity
         m_UpgradeCapacity = asset.FindActionMap("UpgradeCapacity", throwIfNotFound: true);
         m_UpgradeCapacity_Upgrade = m_UpgradeCapacity.FindAction("Upgrade", throwIfNotFound: true);
+        // ShowMaxRange
+        m_ShowMaxRange = asset.FindActionMap("ShowMaxRange", throwIfNotFound: true);
+        m_ShowMaxRange_Show = m_ShowMaxRange.FindAction("Show", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -944,6 +975,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public UpgradeCapacityActions @UpgradeCapacity => new UpgradeCapacityActions(this);
+
+    // ShowMaxRange
+    private readonly InputActionMap m_ShowMaxRange;
+    private IShowMaxRangeActions m_ShowMaxRangeActionsCallbackInterface;
+    private readonly InputAction m_ShowMaxRange_Show;
+    public struct ShowMaxRangeActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public ShowMaxRangeActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Show => m_Wrapper.m_ShowMaxRange_Show;
+        public InputActionMap Get() { return m_Wrapper.m_ShowMaxRange; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShowMaxRangeActions set) { return set.Get(); }
+        public void SetCallbacks(IShowMaxRangeActions instance)
+        {
+            if (m_Wrapper.m_ShowMaxRangeActionsCallbackInterface != null)
+            {
+                @Show.started -= m_Wrapper.m_ShowMaxRangeActionsCallbackInterface.OnShow;
+                @Show.performed -= m_Wrapper.m_ShowMaxRangeActionsCallbackInterface.OnShow;
+                @Show.canceled -= m_Wrapper.m_ShowMaxRangeActionsCallbackInterface.OnShow;
+            }
+            m_Wrapper.m_ShowMaxRangeActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Show.started += instance.OnShow;
+                @Show.performed += instance.OnShow;
+                @Show.canceled += instance.OnShow;
+            }
+        }
+    }
+    public ShowMaxRangeActions @ShowMaxRange => new ShowMaxRangeActions(this);
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -986,5 +1050,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IUpgradeCapacityActions
     {
         void OnUpgrade(InputAction.CallbackContext context);
+    }
+    public interface IShowMaxRangeActions
+    {
+        void OnShow(InputAction.CallbackContext context);
     }
 }

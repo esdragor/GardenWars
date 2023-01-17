@@ -241,7 +241,7 @@ namespace Controllers.Inputs
             }
         }
 
-        private void OnHoldRightClick(InputAction.CallbackContext ctx)
+        private void OnPressRightClick(InputAction.CallbackContext ctx)
         {
             isRightClicking = true;
         }
@@ -251,7 +251,7 @@ namespace Controllers.Inputs
             isRightClicking = false;
         }
 
-        private void OnHoldUpgrade(InputAction.CallbackContext ctx)
+        private void OnPressUpgrade(InputAction.CallbackContext ctx)
         {
             isUpgrading = true;
         }
@@ -259,6 +259,16 @@ namespace Controllers.Inputs
         private void OnReleaseUpgrade(InputAction.CallbackContext ctx)
         {
             isUpgrading = false;
+        }
+        
+        private void OnPressShowRange(InputAction.CallbackContext ctx)
+        {
+            champion.ShowMaxRangeIndicator(champion.attackRange);
+        }
+
+        private void OnReleaseShowRange(InputAction.CallbackContext ctx)
+        {
+            champion.HideMaxRangeIndicator();
         }
 
         protected override void Link(Entity entity)
@@ -296,14 +306,17 @@ namespace Controllers.Inputs
             inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
             inputs.MoveMouse.LeftClick.performed += DebugNavMeshPoint;
 
-            inputs.MoveMouse.HoldRightClick.performed += OnHoldRightClick;
+            inputs.MoveMouse.HoldRightClick.performed += OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
 
-            inputs.UpgradeCapacity.Upgrade.performed += OnHoldUpgrade;
+            inputs.UpgradeCapacity.Upgrade.performed += OnPressUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled += OnReleaseUpgrade;
 
             inputs.Emotes.Emote1.performed += OnPressEmote;
             inputs.Emotes.Emote1.canceled += OnReleaseEmote;
+
+            inputs.ShowMaxRange.Show.performed += OnPressShowRange;
+            inputs.ShowMaxRange.Show.canceled += OnReleaseShowRange;
         }
 
         private void DebugNavMeshPoint(InputAction.CallbackContext ctx)
@@ -339,14 +352,17 @@ namespace Controllers.Inputs
             inputs.Inventory.ActivateItem1.canceled -= OnReleaseItem1;
             inputs.Inventory.ActivateItem2.canceled -= OnReleaseItem2;
 
-            inputs.MoveMouse.HoldRightClick.performed -= OnHoldRightClick;
+            inputs.MoveMouse.HoldRightClick.performed -= OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled -= OnReleaseRightClick;
 
-            inputs.UpgradeCapacity.Upgrade.performed -= OnHoldUpgrade;
+            inputs.UpgradeCapacity.Upgrade.performed -= OnPressUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled -= OnReleaseUpgrade;
 
             inputs.Emotes.Emote1.performed -= OnPressEmote;
             inputs.Emotes.Emote1.canceled -= OnReleaseEmote;
+            
+            inputs.ShowMaxRange.Show.performed -= OnPressShowRange;
+            inputs.ShowMaxRange.Show.canceled -= OnReleaseShowRange;
 
             CameraController.Instance.UnLinkCamera();
 

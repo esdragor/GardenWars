@@ -36,6 +36,8 @@ namespace Entities.Capacities
 
         protected GameStateMachine gsm => GameStateMachine.Instance;
 
+        private ActiveCapacitySO _so => AssociatedActiveCapacitySO();
+
         public ActiveCapacitySO AssociatedActiveCapacitySO()
         {
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
@@ -45,11 +47,12 @@ namespace Entities.Capacities
         {
             if (isOnCooldown)
             {
+                if(champion != null) champion.HideAreaIndicator();
                 return false;
             }
-            var so = AssociatedActiveCapacitySO();
-            var maxRange = isBasicAttack ? champion.attackRange : so.maxRange;
-            switch (so.shootType)
+            var maxRange = isBasicAttack ? champion.attackRange : _so.maxRange;
+            var canCast = true;
+            switch (_so.shootType)
             {
                 case Enums.CapacityShootType.Skillshot:
                     break;
@@ -57,29 +60,39 @@ namespace Entities.Capacities
                     targetedPosition = targetPosition;
                     if (Vector3.Distance(casterPos, targetedPosition) > maxRange && maxRange != 0)
                     {
-                        return false;
+                        canCast = false;
                     }
                     break;
                 case Enums.CapacityShootType.TargetEntity:
                     targetedEntity = EntityCollectionManager.GetEntityByIndex(targetsEntityIndex);
                     if (targetedEntity == null)
                     {
-                        return false;
+                        canCast = false;
                     }
                     if (Vector3.Distance(casterPos, targetedEntity.position) > maxRange)
                     {
-                        return false;
+                        canCast = false;
                     }
 
                     var targetable = targetedEntity.GetComponent<ITargetable>();
                     if (targetable != null)
                     {
-                        if (!targetable.CanBeTargeted()) return false;
+                        if (!targetable.CanBeTargeted())
+                        {
+                            canCast = false;
+                        }
                     }
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            return AdditionalCastConditions(targetsEntityIndex, targetPosition);
+            if (canCast || champion == null) return AdditionalCastConditions(targetsEntityIndex, targetPosition);
+            
+            champion.HideAreaIndicator();
+            champion.HideMaxRangeIndicator();
+            
+            return false;
         }
 
         protected abstract bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions);
@@ -89,10 +102,25 @@ namespace Entities.Capacities
             if(!CanCast(targetsEntityIndexes,targetPositions)) return false;
             if(isMaster) Press(targetsEntityIndexes,targetPositions);
             PressFeedback(targetsEntityIndexes,targetPositions);
-            if (caster.isLocal)
+            
+            if (!caster.isLocal) return true;
+            
+            switch (_so.shootType)
             {
-                PressLocal(targetsEntityIndexes,targetPositions);
+                case Enums.CapacityShootType.Skillshot:
+                    if(_so.showMaxRangeIfSkillShot) champion.ShowMaxRangeIndicator(_so.maxRange);
+                    break;
+                case Enums.CapacityShootType.TargetPosition:
+                    champion.ShowMaxRangeIndicator(_so.maxRange);
+                    break;
+                case Enums.CapacityShootType.TargetEntity:
+                    champion.ShowMaxRangeIndicator(_so.maxRange);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+
+            PressLocal(targetsEntityIndexes,targetPositions);
             return true;
         }
         protected abstract void Press(int targetsEntityIndexes, Vector3 targetPositions);
@@ -138,6 +166,21 @@ namespace Entities.Capacities
                 ReleaseFeedback(targetsEntityIndexes,targetPositions);
                 if (caster.isLocal)
                 {
+                    switch (_so.shootType)
+                    {
+                        case Enums.CapacityShootType.Skillshot:
+                            champion.HideMaxRangeIndicator();
+                            break;
+                        case Enums.CapacityShootType.TargetPosition:
+                            champion.HideMaxRangeIndicator();
+                            break;
+                        case Enums.CapacityShootType.TargetEntity:
+                            champion.HideMaxRangeIndicator();
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    
                     ReleaseLocal(targetsEntityIndexes,targetPositions);
                 }
                 if(baseCooldown > 0) EnterCooldown(baseCooldown);
