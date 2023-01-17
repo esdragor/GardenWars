@@ -45,6 +45,7 @@ namespace Entities.Champion
 
         protected override void OnUpdate()
         {
+            ChangingStateMoving();
             CastHeldCapacities();
             CastHeldItems();
             UpdateAnimators();
