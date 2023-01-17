@@ -27,7 +27,6 @@ public class SpawnAIs : MonoBehaviourPun
     [SerializeField] private Transform[] waypointsTeamBlue;
     [SerializeField] private Transform[] waypointsTeamRed;
     [SerializeField] private Entity minion;
-    [SerializeField] private double timer;
     [SerializeField] private Animator[] animatorsTraps;
     [SerializeField] private Transform[] BasketGoal;
 
@@ -36,9 +35,14 @@ public class SpawnAIs : MonoBehaviourPun
 
     [Header("Pinata")]
     [SerializeField] private Transform[] pinataSpawnPoints;
-    [SerializeField] float timeBeforeSpawnPinata = 4;
-    [SerializeField] float timeBeforeRespawnPinata = 5;
-    [SerializeField] float timeBetweenPinataLevelUp = 5;
+    [SerializeField] private float timeBeforeSpawnPinata = 4;
+    [SerializeField] private float timeBeforeRespawnPinata = 5;
+    [SerializeField] private float timeBetweenPinataLevelUp = 5;
+    [SerializeField] private int pinataLevel;
+    
+    [Header("Timers")]
+    [SerializeField] private double minionTimer;
+    [SerializeField] private double pinataTimer;
     
     private Pinata currentPinata;
     private Transform previousSpawnPos;
@@ -46,8 +50,6 @@ public class SpawnAIs : MonoBehaviourPun
     private GameStateMachine gsm => GameStateMachine.Instance;
 
     private readonly List<Entity> towers = new List<Entity>();
-    private double timerPinata;
-
 
     public static SpawnAIs Instance;
 
@@ -62,16 +64,14 @@ public class SpawnAIs : MonoBehaviourPun
         Instance = this;
     }
 
-    private void Start()
-    {
-        timer = 0;
-        timerPinata = 0;
-        gsm.OnTick += OnTick;
-    }
-
     public void Init()
     {
         towers.Clear();
+        
+        minionTimer = 0;
+        pinataTimer = 0;
+        pinataLevel = 0;
+        
         if (PhotonNetwork.IsMasterClient)
         {
             InitTowers();
@@ -90,59 +90,127 @@ public class SpawnAIs : MonoBehaviourPun
             tower.GetComponent<TowerBT>().OnStart();
         }
 
-        timer = timeBetweenWaves - timeBeforeFirstWave;
+        minionTimer = timeBetweenWaves - timeBeforeFirstWave;
+        pinataTimer = timeBetweenPinataLevelUp - timeBeforeSpawnPinata;
+
+        currentPinata = null;
         
-        gsm.OnTick += SpawnWaves;
-        gsm.OnTick += InitPinata;
-        gsm.OnTick += RespawnPinata;
+        gsm.OnTick += IncreaseTimers;
     }
 
-    private void OnTick()
+    private void IncreaseTimers()
     {
-        timer += gsm.increasePerTick;
-        timerPinata += gsm.increasePerTick;
+        minionTimer += gsm.increasePerTick;
+        pinataTimer += gsm.increasePerTick;
+        
+        SpawnMinionWaves();
+        
+        SpawnPinatas();
     }
+    
+    #region Minions
+
+    private void SpawnMinionWaves()
+    {
+        if (minionTimer < timeBetweenWaves) return;
+        minionTimer = 0;
+        
+        for (var i = 0; i < minionsPerWave; i++)
+        {
+            var spawnTimer = i * timeBetweenMinionSpawn;
+
+            gsm.OnTick += TrySpawnMinion;
+
+            void TrySpawnMinion()
+            {
+                if (minionTimer < spawnTimer) return;
+                SpawnMinion();
+                gsm.OnTick -= TrySpawnMinion;
+            }
+        }
+    }
+
+    private void SpawnMinion()
+    {
+        var blueMinion = NetworkPoolManager
+            .PoolInstantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
+            .GetComponent<Minion>();
+        var redMinion = NetworkPoolManager
+            .PoolInstantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
+            .GetComponent<Minion>();
+        blueMinion.SyncInstantiate(Enums.Team.Team1);
+        redMinion.SyncInstantiate(Enums.Team.Team2);
+        var blueBt = blueMinion.GetComponent<MinionBT>();
+        var redBt = redMinion.GetComponent<MinionBT>();
+        blueBt.enabled = true;
+        redBt.enabled = true;
+        blueBt.waypoints = waypointsTeamBlue;
+        redBt.waypoints = waypointsTeamRed;
+        blueMinion.animatorTrap = animatorsTraps[0];
+        redMinion.animatorTrap = animatorsTraps[1];
+        blueMinion.BasketGoal = BasketGoal[0];
+        redMinion.BasketGoal = BasketGoal[1];
+        blueBt.OnStart();
+        redBt.OnStart();
+    }
+
+    #endregion
 
     #region Pinata
-
-    public void SpawnPinata(Transform tr)
+    
+    private void SpawnPinatas()
     {
-        previousSpawnPos = tr;
+        if(pinataTimer < timeBetweenPinataLevelUp) return;
+        
+        pinataTimer = 0;
+        
+        SpawnPinata(NextSpawnPoint());
+    }
+    
+    private void SpawnPinata(Transform tr)
+    {
+        pinataLevel++;
+        Debug.Log($"Spawning Pinata at {tr.position} (level {pinataLevel})");
+        
+        if (currentPinata != null)
+        {
+            currentPinata.OnDie -= OnPinataDie;
+            currentPinata.DieRPC(currentPinata.entityIndex);
+        }
+        
         currentPinata = NetworkPoolManager.PoolInstantiate("Pinata", tr.position, Quaternion.identity).GetComponent<Pinata>();
         currentPinata.SyncInstantiate(Enums.Team.Neutral);
-    }
-
-    private void InitPinata()
-    {
-        if (timerPinata < timeBeforeSpawnPinata) return;
+            
+        currentPinata.OnDie += OnPinataDie;
         
-        gsm.OnTick -= InitPinata;
-        
-        SpawnPinata(pinataSpawnPoints[0]);
     }
 
     private Transform NextSpawnPoint()
     {
-        var tr = pinataSpawnPoints[Random.Range(0, pinataSpawnPoints.Length)];
-        return tr != previousSpawnPos ? tr : NextSpawnPoint();
+        if (currentPinata == null)
+        {
+            previousSpawnPos = pinataSpawnPoints[0];
+            return previousSpawnPos;
+        }
+        
+        var tr = previousSpawnPos;
+        while (tr == previousSpawnPos)
+        {
+            tr = pinataSpawnPoints[Random.Range(0, pinataSpawnPoints.Length)];
+        }
+
+        previousSpawnPos = tr;
+        return previousSpawnPos;
     }
-    
-    
 
-    public void RespawnPinata()
+    private void OnPinataDie(int _)
     {
-        if(timerPinata < timeBetweenPinataLevelUp) return;
         
-        timer = 0;
-        
-        
-
-        // TODO - Level Up Pinata
     }
 
     #endregion
-    
-    
+
+
     #region Towers
 
     private void InitTowers()
@@ -179,53 +247,6 @@ public class SpawnAIs : MonoBehaviourPun
                 towers.Add(entity);
             }
         }
-    }
-
-    #endregion
-
-    #region Minions
-
-    private void SpawnWaves()
-    {
-        if (timer < timeBetweenWaves) return;
-        timer = 0;
-        for (var i = 0; i < minionsPerWave; i++)
-        {
-            var spawnTimer = i * timeBetweenMinionSpawn;
-
-            gsm.OnTick += TrySpawnMinion;
-
-            void TrySpawnMinion()
-            {
-                if (timer < spawnTimer) return;
-                SpawnMinion();
-                gsm.OnTick -= TrySpawnMinion;
-            }
-        }
-    }
-
-    private void SpawnMinion()
-    {
-        var blueMinion = NetworkPoolManager
-            .PoolInstantiate(minion.gameObject.name, SpawnPoints[0].position, Quaternion.identity)
-            .GetComponent<Minion>();
-        var redMinion = NetworkPoolManager
-            .PoolInstantiate(minion.gameObject.name, SpawnPoints[1].position, Quaternion.identity)
-            .GetComponent<Minion>();
-        blueMinion.SyncInstantiate(Enums.Team.Team1);
-        redMinion.SyncInstantiate(Enums.Team.Team2);
-        var blueBt = blueMinion.GetComponent<MinionBT>();
-        var redBt = redMinion.GetComponent<MinionBT>();
-        blueBt.enabled = true;
-        redBt.enabled = true;
-        blueBt.waypoints = waypointsTeamBlue;
-        redBt.waypoints = waypointsTeamRed;
-        blueMinion.animatorTrap = animatorsTraps[0];
-        redMinion.animatorTrap = animatorsTraps[1];
-        blueMinion.BasketGoal = BasketGoal[0];
-        redMinion.BasketGoal = BasketGoal[1];
-        blueBt.OnStart();
-        redBt.OnStart();
     }
 
     #endregion
