@@ -24,6 +24,9 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private TowerBT BT;
     [SerializeField] private Animator[] MyAnimators;
     [SerializeField] private Material[] towersMaterials;
+    [SerializeField] private Material[] chickMaterials;
+    [SerializeField] private Material[] dryerMaterials;
+    [SerializeField] private Renderer[] renderTowerAndChick;
 
     private bool isAlive = true;
     private bool canDie = true;
@@ -39,12 +42,16 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         animators = MyAnimators;
         if (team == Enums.Team.Team1)
         {
-            TowerModel.GetComponent<Renderer>().material = towersMaterials[0];
+            renderTowerAndChick[0].material = towersMaterials[0];
+            renderTowerAndChick[1].material = chickMaterials[0];
+            renderTowerAndChick[2].material = dryerMaterials[0];
         }
         else
         {
             TowerModel.transform.Rotate(Vector3.back, 90);
-            TowerModel.GetComponent<Renderer>().material = towersMaterials[1];
+            renderTowerAndChick[0].material = towersMaterials[1];
+            renderTowerAndChick[1].material = chickMaterials[1];
+            renderTowerAndChick[2].material = dryerMaterials[1];
         }
         UIManager.Instance.InstantiateHealthBarForEntity(this);
 
