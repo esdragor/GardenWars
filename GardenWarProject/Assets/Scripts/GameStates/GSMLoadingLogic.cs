@@ -67,7 +67,6 @@ namespace GameStates
 
         private async void SendEmote(byte[] bytes,int actorNumber,int index)
         {
-            
             int max = maxBytePackSize;
             if (bytes.Length <= max)
             {
@@ -76,9 +75,6 @@ namespace GameStates
                 return;
             }
 
-            
-            Debug.Log($"over {max}");
-            
             int length;
             for (int i = 0; i < bytes.Length; i += length)
             {

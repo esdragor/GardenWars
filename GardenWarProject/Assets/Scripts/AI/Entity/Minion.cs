@@ -693,20 +693,34 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     }
 
     [PunRPC]
-    public void DieRPC(int KillerID)
+    public void DieRPC(int killerId)
     {
+        var entity = EntityCollectionManager.GetEntityByIndex(killerId);
+        if (entity)
+        {
+            var champion = entity.GetComponent<Champion>();
+            if (champion != null)
+            {
+                if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
+                {
+                    champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+                }
+            }
+        }
+
+
         if (isOffline)
         {
-            SyncDieRPC(KillerID);
+            SyncDieRPC(killerId);
 
             return;
         }
 
-        photonView.RPC("SyncDieRPC", RpcTarget.All, KillerID);
+        photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
     }
 
     [PunRPC]
-    public void SyncDieRPC(int KillerID)
+    public void SyncDieRPC(int killerId)
     {
         isAlive = false;
         FogOfWarManager.Instance.RemoveFOWViewable(this);

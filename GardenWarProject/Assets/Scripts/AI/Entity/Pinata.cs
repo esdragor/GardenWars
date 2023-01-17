@@ -12,11 +12,10 @@ using UnityEngine.AI;
 using Object = System.Object;
 using Random = UnityEngine.Random;
 
-public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
+public class Pinata : Entity, IAttackable, IActiveLifeable, IDeadable
 {
     public ActivePinataAutoSO activePinataAutoSO;
     
-    [SerializeField] private NavMeshAgent agent;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 5f;
     [SerializeField] private Transform FalseFX;
@@ -27,19 +26,13 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private GameObject PinataDieFX;
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private Animator[] Myanimators;
-
-
-    private bool canMove;
-    private float referenceMoveSpeed;
-    private float currentMoveSpeed;
+    
     private bool isAlive = true;
     private bool canDie = true;
-    public float currentVelocity => agent.velocity.magnitude;
 
 
     protected override void OnStart()
     {
-        canMove = true;
         Item item = AssignRandomItem();
         Mesh.GetComponent<Renderer>().material.color = item.AssociatedItemSO().itemColor;
         RequestAddItem(item.indexOfSOInCollection);
@@ -49,19 +42,15 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public override void OnInstantiated()
     {
-        referenceMoveSpeed = activePinataAutoSO.Speed;
-        currentMoveSpeed = referenceMoveSpeed;
-        agent.speed = referenceMoveSpeed;
+        currentHp = MaxHP;
+        isAlive = true;
+        
         UIManager.Instance.InstantiateHealthBarForEntity(this);
     }
     
     protected override void OnUpdate()
     {
-        if (!photonView.IsMine) return;
-        foreach (var animator in animators)
-        {
-            animator.SetFloat("Speed", currentVelocity);
-        }
+        
     }
 
     private Item AssignRandomItem()
@@ -72,202 +61,7 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         return im.CreateItem((byte)randomItem, this);
     }
 
-    public bool CanMove()
-    {
-        return canMove;
-    }
-
-    public float GetReferenceMoveSpeed()
-    {
-        return referenceMoveSpeed;
-    }
-
-    public float GetCurrentMoveSpeed()
-    {
-        return currentMoveSpeed;
-    }
-
-    public void RequestSetCanMove(bool value)
-    {
-        if (isMaster)
-        {
-            SetCanMoveRPC(value);
-            return;
-        }
-        photonView.RPC("SetCanMoveRPC", RpcTarget.MasterClient, value);
-    }
-
-    [PunRPC]
-    public void SetCanMoveRPC(bool value)
-    {
-        canMove = value;
-        OnSetCanMove?.Invoke(value);
-        if (isOffline)
-        {
-            SyncSetCanMoveRPC(value);
-            return;
-        }
-        photonView.RPC("SyncSetCanMoveRPC", RpcTarget.All, value);
-    }
-
-    [PunRPC]
-    public void SyncSetCanMoveRPC(bool value)
-    {
-        canMove = value;
-        OnSetCanMoveFeedback?.Invoke(value);
-    }
-
-    public event GlobalDelegates.BoolDelegate OnSetCanMove;
-    public event GlobalDelegates.BoolDelegate OnSetCanMoveFeedback;
-
-    public void RequestSetReferenceMoveSpeed(float value)
-    {
-        photonView.RPC("SetReferenceMoveSpeedRPC", RpcTarget.MasterClient, value);
-    }
-
-    [PunRPC]
-    public void SyncSetReferenceMoveSpeedRPC(float value)
-    {
-        referenceMoveSpeed = value;
-        OnSetReferenceMoveSpeed?.Invoke(referenceMoveSpeed);
-        OnSetReferenceMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
-    }
-
-    [PunRPC]
-    public void SetReferenceMoveSpeedRPC(float value)
-    {
-        referenceMoveSpeed = value;
-        photonView.RPC("SyncSetReferenceMoveSpeedRPC", RpcTarget.All, value);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeed;
-    public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeedFeedback;
-
-    public void RequestIncreaseReferenceMoveSpeed(float amount)
-    {
-        photonView.RPC("IncreaseReferenceMoveSpeedRPC", RpcTarget.MasterClient, amount);
-    }
-
-    [PunRPC]
-    public void SyncIncreaseReferenceMoveSpeedRPC(float amount)
-    {
-        referenceMoveSpeed += amount;
-
-        OnIncreaseReferenceMoveSpeed?.Invoke(referenceMoveSpeed);
-        OnIncreaseReferenceMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
-    }
-
-    [PunRPC]
-    public void IncreaseReferenceMoveSpeedRPC(float amount)
-    {
-        referenceMoveSpeed += amount;
-        photonView.RPC("SyncIncreaseReferenceMoveSpeedRPC", RpcTarget.All, amount);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeed;
-    public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeedFeedback;
-
-    public void RequestDecreaseReferenceMoveSpeed(float amount)
-    {
-        photonView.RPC("DecreaseReferenceMoveSpeedRPC", RpcTarget.MasterClient, amount);
-    }
-
-    [PunRPC]
-    public void SyncDecreaseReferenceMoveSpeedRPC(float amount)
-    {
-        referenceMoveSpeed -= amount;
-        OnDecreaseReferenceMoveSpeed?.Invoke(referenceMoveSpeed);
-        OnDecreaseReferenceMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
-    }
-
-    [PunRPC]
-    public void DecreaseReferenceMoveSpeedRPC(float amount)
-    {
-        referenceMoveSpeed -= amount;
-        photonView.RPC("SyncDecreaseReferenceMoveSpeedRPC", RpcTarget.All, amount);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeed;
-    public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeedFeedback;
-
-    public void RequestSetCurrentMoveSpeed(float value)
-    {
-        photonView.RPC("SetCurrentMoveSpeedRPC", RpcTarget.MasterClient, value);
-    }
-
-    [PunRPC]
-    public void SyncSetCurrentMoveSpeedRPC(float value)
-    {
-        currentMoveSpeed = value;
-        agent.speed = currentMoveSpeed;
-        OnSetCurrentMoveSpeed?.Invoke(referenceMoveSpeed);
-        OnSetCurrentMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
-    }
-
-    [PunRPC]
-    public void SetCurrentMoveSpeedRPC(float value)
-    {
-        currentMoveSpeed = value;
-        agent.speed = currentMoveSpeed;
-        photonView.RPC("SyncSetCurrentMoveSpeedRPC", RpcTarget.All, value);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeed;
-    public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeedFeedback;
-
-    public void RequestIncreaseCurrentMoveSpeed(float amount)
-    {
-        photonView.RPC("IncreaseCurrentMoveSpeedRPC", RpcTarget.MasterClient, amount);
-    }
-
-    [PunRPC]
-    public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
-    {
-        currentMoveSpeed += amount;
-        agent.speed = currentMoveSpeed;
-        OnIncreaseCurrentMoveSpeed?.Invoke(referenceMoveSpeed);
-        OnIncreaseCurrentMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
-    }
-
-    [PunRPC]
-    public void IncreaseCurrentMoveSpeedRPC(float amount)
-    {
-        currentMoveSpeed += amount;
-        agent.speed = currentMoveSpeed;
-        photonView.RPC("SyncIncreaseCurrentMoveSpeedRPC", RpcTarget.All, amount);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
-    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeedFeedback;
-
-    public void RequestDecreaseCurrentMoveSpeed(float amount)
-    {
-        photonView.RPC("DecreaseCurrentMoveSpeedRPC", RpcTarget.MasterClient, amount);
-    }
-
-    [PunRPC]
-    public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
-    {
-        currentMoveSpeed -= amount;
-        agent.speed = currentMoveSpeed;
-        OnDecreaseCurrentMoveSpeed?.Invoke(referenceMoveSpeed);
-        OnDecreaseCurrentMoveSpeedFeedback?.Invoke(referenceMoveSpeed);
-    }
-
-    [PunRPC]
-    public void DecreaseCurrentMoveSpeedRPC(float amount)
-    {
-        currentMoveSpeed -= amount;
-        agent.speed = currentMoveSpeed;
-        photonView.RPC("SyncDecreaseCurrentMoveSpeedRPC", RpcTarget.All, amount);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
-    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
-    public event GlobalDelegates.Vector3Delegate OnMove;
-    public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
-   
-     public bool CanAttack()
+    public bool CanAttack()
     {
         return canAttack;
     }
@@ -580,9 +374,9 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     }
     
     [PunRPC]
-    public void DieRPC(int KillerID)
+    public void DieRPC(int killerId)
     {
-        var entity = EntityCollectionManager.GetEntityByIndex(KillerID);
+        var entity = EntityCollectionManager.GetEntityByIndex(killerId);
         if (entity && entity is Champion)
         {
             // GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
@@ -600,19 +394,20 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             SpawnAIs.Instance.PinatasRespawned.Add(rp);
             
         }
-
+        
+        OnDie?.Invoke(killerId);
         
         if (isOffline)
         {
-            SyncDieRPC(KillerID);
+            SyncDieRPC(killerId);
             
             return;
         }
-        photonView.RPC("SyncDieRPC", RpcTarget.All, KillerID);
+        photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
     }
     
     [PunRPC]
-    public void SyncDieRPC(int KillerID)
+    public void SyncDieRPC(int killerId)
     {
         isAlive = false;
         FogOfWarManager.Instance.RemoveFOWViewable(this);
@@ -621,6 +416,8 @@ public class Pinata : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         SetAnimatorTrigger("Death");
 
         gameObject.SetActive(false);
+        
+        OnDieFeedback?.Invoke(killerId);
     }
 
     public event Action<int> OnDie;

@@ -43,7 +43,6 @@ public class GameSettingsManager : MonoBehaviour
     {
         if(index >= 6) return;
         instance.emoteBytes[index] = bytes;
-        Debug.Log($"Set texture at index {index} to new array ({bytes.Length} bytes)");
     }
     
     

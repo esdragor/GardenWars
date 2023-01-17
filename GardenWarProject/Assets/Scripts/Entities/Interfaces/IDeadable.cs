@@ -32,11 +32,11 @@ namespace Entities
         /// <summary>
         /// Sends an RPC to all clients to kill the entity.
         /// </summary>
-        public void SyncDieRPC(int source);
+        public void SyncDieRPC(int killerId);
         /// <summary>
         /// Kills the entity.
         /// </summary>
-        public void DieRPC(int source);
+        public void DieRPC(int killerId);
 
         public event Action<int> OnDie;
         public event Action<int> OnDieFeedback;
