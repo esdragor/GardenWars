@@ -120,16 +120,6 @@ namespace Entities.Capacities
 
             borrowed = true;
             
-            
-            
-            Debug.Log($"is borrowed : {borrowed}");
-            
-            
-            
-            
-            
-            
-
             champion.SetAnimatorBool("Borrowed",borrowed);
             
             aileronGo.SetActive(true);

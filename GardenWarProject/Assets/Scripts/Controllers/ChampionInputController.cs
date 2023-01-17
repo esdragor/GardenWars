@@ -165,7 +165,7 @@ namespace Controllers.Inputs
             }
             
             champion.MoveToPosition(cursorWorldPos);
-            
+            if(!isRightClicking)
             LocalPoolManager.PoolInstantiate(clicFx,ActiveCapacity.GetClosestValidPoint(cursorWorldPos),clicFx.transform.rotation);
         }
         
