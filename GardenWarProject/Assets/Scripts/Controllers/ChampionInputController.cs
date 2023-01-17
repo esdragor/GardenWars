@@ -150,7 +150,7 @@ namespace Controllers.Inputs
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
             champion.CancelMoveToTarget();
-            
+            if (!champion.isAlive) return;
             if (selectedEntity != null)
             {
                 if (champion != selectedEntity && selectedEntity.team == champion.team)

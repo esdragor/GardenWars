@@ -104,9 +104,8 @@ namespace Entities.Champion
                 agent.ResetPath();
 
             }
-
+            isAlive = false;
             SetAnimatorTrigger("Death");
-            //rotateParent.gameObject.SetActive(false); 
             uiTransform.gameObject.SetActive(false);
             FogOfWarManager.Instance.RemoveFOWViewable(this);
 
@@ -153,6 +152,7 @@ namespace Entities.Champion
                 agent.isStopped = false;
                 agent.destination = transform.position;
             }
+            isAlive = true;
             FogOfWarManager.Instance.AddFOWViewable(this);
             rotateParent.gameObject.SetActive(true);
             uiTransform.gameObject.SetActive(true);
