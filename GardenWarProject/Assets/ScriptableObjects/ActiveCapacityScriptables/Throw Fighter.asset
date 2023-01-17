@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b9dd92be1229f41b372eb0aaf899bf, type: 3}
   m_Name: Throw Fighter
   m_EditorClassIdentifier: 
-  descriptionName: 
+  capacityName: 
   icon: {fileID: 0}
   description: 
+  maxLevel: 3
   cooldown: 0
+  castTime: 0
   maxRange: 0
   types: 
   shootType: 0
-  indexInCollection: 7
+  indexInCollection: 13
   candyBagPrefab: {fileID: 302393227357116420, guid: 1c845a85e73f83647a13ee404104dafa, type: 3}
   nbBounce: 1
   SpeedOnAir: 5
@@ -38,3 +40,4 @@ MonoBehaviour:
   damageCandyScale: 100
   NbCandyTriggerDamage: 1
   prefabJauge: {fileID: 6645909902074301461, guid: bbb99d4f72a480e46af474515bfba2c7, type: 3}
+  ThrowDestFx: {fileID: 9163181885516752660, guid: 8a7105a30cdf4984bb5516fa131bb19e, type: 3}
