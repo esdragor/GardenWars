@@ -2,6 +2,7 @@ using System;
 using Controllers.Inputs;
 using Entities.Capacities;
 using Entities.Champion;
+using Entities.FogOfWar;
 using Entities.Inventory;
 using GameStates;
 using UnityEngine;
@@ -26,7 +27,12 @@ namespace FreePlayer
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
             
+            //LoadMap
             CapacitySOCollectionManager.Instance.SetIndexes();
+            
+            UIManager.Instance.SetupEmoteWheel();
+            
+            UIManager.Instance.HideSettings();
             
             foreach (var championSo in GameStateMachine.Instance.allChampionsSo)
             {
@@ -39,6 +45,7 @@ namespace FreePlayer
             
             NetworkPoolManager.Init();
             
+            //Late Load
             champion.ApplyChampionSO((byte)soIndex, team,role);
             
             UIManager.Instance.InstantiateChampionHUD();
@@ -50,6 +57,8 @@ namespace FreePlayer
             GameStateMachine.SetupChampion(champion);
 
             if(minion != null) minion.InitEntity(Enums.Team.Neutral);
+            
+            FogOfWarManager.RunFog();
         }
         
         

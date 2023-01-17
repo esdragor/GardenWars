@@ -245,7 +245,7 @@ namespace Entities.Champion
                 {
                     animator.SetBool("IsMoving", isMoving);
                 }
-                photonView.RPC("SyncIsMovingRPC", RpcTarget.All, entityIndex, isMoving);
+                if(!isOffline) photonView.RPC("SyncIsMovingRPC", RpcTarget.All, entityIndex, isMoving);
             }
             else if (currentVelocity < 0.1f && isMoving)
             {
@@ -254,11 +254,11 @@ namespace Entities.Champion
                 {
                     animator.SetBool("IsMoving", isMoving);
                 }
-                photonView.RPC("SyncIsMovingRPC", RpcTarget.All, entityIndex, isMoving);
+                if(!isOffline) photonView.RPC("SyncIsMovingRPC", RpcTarget.All, entityIndex, isMoving);
             }
         }
 
-        public void ModifyMoving(bool move)
+        private void ModifyMoving(bool move)
         {
             foreach (var animator in animators)
             {

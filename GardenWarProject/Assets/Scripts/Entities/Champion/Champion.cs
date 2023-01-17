@@ -115,6 +115,11 @@ namespace Entities.Champion
             var teamMat = team == gsm.GetPlayerTeam() ? currentSo.materialsBlueTeam : currentSo.materialsRedTeam;
             linker.LinkTeamColor(teamMat);
 
+            foreach (var rend in linker.renderers)
+            {
+                AddRender(rend);
+            }
+            
             animators = linker.animators;
 
             elementsToShow.Add(championMesh);
