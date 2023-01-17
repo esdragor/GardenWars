@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
@@ -15,13 +16,13 @@ namespace Controllers.Inputs
         [SerializeField] private ParticleSystem clicFx;
 
         private UIManager uim => UIManager.Instance;
-        
+
         private Champion champion;
-        
+
         private bool isRightClicking;
 
         private bool isUpgrading;
-        
+
         private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
 
         private void Update()
@@ -53,19 +54,19 @@ namespace Controllers.Inputs
 
         private void OnPressCapacity0(InputAction.CallbackContext ctx)
         {
-            if(isUpgrading) return;
+            if (isUpgrading) return;
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[0]);
         }
 
         private void OnPressCapacity1(InputAction.CallbackContext ctx)
         {
-            if(isUpgrading) return;
+            if (isUpgrading) return;
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[1]);
         }
 
         private void OnPressCapacity2(InputAction.CallbackContext ctx)
         {
-            if(isUpgrading) return;
+            if (isUpgrading) return;
             champion.RequestOnCastCapacity(champion.abilitiesIndexes[2]);
         }
 
@@ -76,6 +77,7 @@ namespace Controllers.Inputs
                 champion.RequestUpgrade(0);
                 return;
             }
+
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[0]);
         }
 
@@ -86,6 +88,7 @@ namespace Controllers.Inputs
                 champion.RequestUpgrade(1);
                 return;
             }
+
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[1]);
         }
 
@@ -96,6 +99,7 @@ namespace Controllers.Inputs
                 champion.RequestUpgrade(2);
                 return;
             }
+
             champion.RequestOnReleaseCapacity(champion.abilitiesIndexes[2]);
         }
 
@@ -147,6 +151,12 @@ namespace Controllers.Inputs
             UpdateTargets();
         }
 
+        private async void requeueClick(ParticleSystem fx)
+        {
+            await Task.Delay(450);
+            fx.gameObject.SetActive(false);
+        }
+
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
             champion.CancelMoveToTarget();
@@ -163,17 +173,18 @@ namespace Controllers.Inputs
                 StartMoveAttack();
                 return;
             }
-            
+
             champion.MoveToPosition(cursorWorldPos);
-            if(!isRightClicking)
-            LocalPoolManager.PoolInstantiate(clicFx,ActiveCapacity.GetClosestValidPoint(cursorWorldPos),clicFx.transform.rotation);
+            if (!isRightClicking)
+                requeueClick(LocalPoolManager.PoolInstantiate(clicFx,
+                    ActiveCapacity.GetClosestValidPoint(cursorWorldPos), clicFx.transform.rotation));
         }
-        
+
         private void OnPressEmote(InputAction.CallbackContext ctx)
         {
             uim.ShowWheel(mousePos);
         }
-        
+
         private void OnReleaseEmote(InputAction.CallbackContext ctx)
         {
             uim.HideWheel();
@@ -196,7 +207,7 @@ namespace Controllers.Inputs
         private void StartMoveGetItem()
         {
             if (!selectedEntity) return;
-            
+
             champion.StartMoveToTarget(selectedEntity, champion.recupItemRange, RequestGetItem);
 
             void RequestGetItem()
@@ -216,7 +227,7 @@ namespace Controllers.Inputs
         {
             isRightClicking = false;
         }
-        
+
         private void OnHoldUpgrade(InputAction.CallbackContext ctx)
         {
             isUpgrading = true;
@@ -267,7 +278,7 @@ namespace Controllers.Inputs
 
             inputs.UpgradeCapacity.Upgrade.performed += OnHoldUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled += OnReleaseUpgrade;
-            
+
             inputs.Emotes.Emote1.performed += OnPressEmote;
             inputs.Emotes.Emote1.canceled += OnReleaseEmote;
         }
@@ -307,10 +318,10 @@ namespace Controllers.Inputs
 
             inputs.MoveMouse.HoldRightClick.performed -= OnHoldRightClick;
             inputs.MoveMouse.HoldRightClick.canceled -= OnReleaseRightClick;
-            
+
             inputs.UpgradeCapacity.Upgrade.performed -= OnHoldUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled -= OnReleaseUpgrade;
-            
+
             inputs.Emotes.Emote1.performed -= OnPressEmote;
             inputs.Emotes.Emote1.canceled -= OnReleaseEmote;
 
