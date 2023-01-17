@@ -11,6 +11,9 @@
         },
         {
             "m_Id": "ae08706f5a314fd49aa967c3dea2ee8a"
+        },
+        {
+            "m_Id": "3ffd4b42ecdd4bbf87f294fa66270628"
         }
     ],
     "m_Keywords": [],
@@ -233,6 +236,20 @@
             },
             "m_InputSlot": {
                 "m_Node": {
+                    "m_Id": "79ee81ab7fdb42aabaaf0ce92b8280d1"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "504b4e64e8af40ecbeab3dd77a61d762"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
                     "m_Id": "bd9fdbd3f157456f8088954cd1d544bc"
                 },
                 "m_SlotId": 0
@@ -290,20 +307,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "507b1662e8f144ee8879c2a6b17b4613"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "91a34db1e86245c68b7d4c5a733a84b1"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "79ee81ab7fdb42aabaaf0ce92b8280d1"
                 },
                 "m_SlotId": 0
             }
@@ -451,8 +454,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 0.0,
-            "y": 0.0
+            "x": 1048.0,
+            "y": 4.0000128746032719
         },
         "m_Blocks": [
             {
@@ -468,8 +471,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 0.0,
-            "y": 200.0
+            "x": 1048.0,
+            "y": 203.99996948242188
         },
         "m_Blocks": [
             {
@@ -1465,6 +1468,24 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
+    "m_ObjectId": "3ffd4b42ecdd4bbf87f294fa66270628",
+    "m_Guid": {
+        "m_GuidSerialized": "e27d2153-79d0-4219-bb58-6a4f6f2124d4"
+    },
+    "m_Name": "Circular",
+    "m_DefaultReferenceName": "Boolean_3ffd4b42ecdd4bbf87f294fa66270628",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": false
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "409b383b271041b08052b9dd43e42e06",
     "m_Id": 4,
@@ -1918,7 +1939,7 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "r": 0.0,
+        "r": 1.0,
         "g": 0.0,
         "b": 0.0,
         "a": 0.0
