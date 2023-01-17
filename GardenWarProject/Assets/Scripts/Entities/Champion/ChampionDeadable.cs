@@ -102,7 +102,8 @@ namespace Entities.Champion
                 agent.isStopped = true;
                 agent.ResetPath();
                 agent.ResetPath();
-
+                
+                HideRangeIndicator();
             }
             isAlive = false;
             SetAnimatorTrigger("Death");

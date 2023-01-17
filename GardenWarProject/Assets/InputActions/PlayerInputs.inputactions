@@ -476,6 +476,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "ShowMaxRange",
+            "id": "e1568d58-24c3-433b-a624-2f6df04e2a2d",
+            "actions": [
+                {
+                    "name": "Show",
+                    "type": "Button",
+                    "id": "0b9ca180-dacc-474e-924d-9fb3c12ff46a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ba70edc9-047b-47fb-ab57-89373e1a1dd3",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
