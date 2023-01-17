@@ -13,8 +13,12 @@ namespace Controllers.Inputs
 {
     public class ChampionInputController : PlayerInputController
     {
+        [Header("Feedbacks")]
         [SerializeField] private ParticleSystem clicFx;
 
+        [SerializeField] private Color allyColor = Color.cyan;
+        [SerializeField] private Color enemyColor = Color.yellow;
+        
         private UIManager uim => UIManager.Instance;
 
         private Champion champion;
@@ -24,6 +28,8 @@ namespace Controllers.Inputs
         private bool isUpgrading;
 
         private InputAction.CallbackContext nullCtx = new InputAction.CallbackContext();
+
+        private Entity previousSelected;
 
         private void Update()
         {
@@ -151,7 +157,7 @@ namespace Controllers.Inputs
             UpdateTargets();
         }
 
-        private async void requeueClick(ParticleSystem fx)
+        private async void RequeueClick(ParticleSystem fx)
         {
             await Task.Delay(450);
             fx.gameObject.SetActive(false);
@@ -161,22 +167,39 @@ namespace Controllers.Inputs
         {
             champion.CancelMoveToTarget();
             if (!champion.isAlive) return;
+            
             if (selectedEntity != null)
             {
                 if (champion != selectedEntity && selectedEntity.team == champion.team)
                 {
                     StartMoveGetItem();
+                    
+                    if(previousSelected != null) previousSelected.Deselect();
+                    selectedEntity.Select(allyColor);
+                    previousSelected = selectedEntity;
                     return;
                 }
 
                 if (selectedEntity is Tower) return;
+                
                 StartMoveAttack();
+                
+                if(previousSelected != null) previousSelected.Deselect();
+                
+                if(champion != selectedEntity) selectedEntity.Select(enemyColor);
+                
+                previousSelected = selectedEntity;
+                
                 return;
             }
 
             champion.MoveToPosition(cursorWorldPos);
+            
+            if(previousSelected != null) previousSelected.Deselect();
+            previousSelected = null;
+            
             if (!isRightClicking)
-                requeueClick(LocalPoolManager.PoolInstantiate(clicFx,
+                RequeueClick(LocalPoolManager.PoolInstantiate(clicFx,
                     ActiveCapacity.GetClosestValidPoint(cursorWorldPos), clicFx.transform.rotation));
         }
 

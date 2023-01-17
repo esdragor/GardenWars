@@ -1,4 +1,4 @@
-using GameStates;
+using System;
 using Photon.Pun;
 using UnityEngine;
 
@@ -6,16 +6,10 @@ namespace Entities.Champion
 {
     public class ChampionMeshLinker : MonoBehaviourPun
     {
-        public Animator[] animators = new Animator[0];
-        [SerializeField] private SkinnedMeshRenderer[] teamColorfulParts = new SkinnedMeshRenderer[0];
-        private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
-        private GameStateMachine gsm;
-
-        private void Start()
-        {
-            gsm = GameStateMachine.Instance;
-        }
-
+        public Animator[] animators = Array.Empty<Animator>();
+        [SerializeField] private SkinnedMeshRenderer[] teamColorfulParts = Array.Empty<SkinnedMeshRenderer>();
+        public SkinnedMeshRenderer[] renderers => teamColorfulParts;
+        
         public void LinkTeamColor(Material[] mats)
         {
             if (teamColorfulParts.Length <= 0) return;
@@ -25,5 +19,6 @@ namespace Entities.Champion
                 teamColorfulParts[i].material = mats[i];
             }
         }
+        
     }
 }

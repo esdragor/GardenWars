@@ -25,6 +25,11 @@ namespace Entities
         [Header("Team")]
         public bool canChangeTeam;
         public Enums.Team team;
+
+        [Header("Outline")]
+        [SerializeField] private float baseOutlineThickness = 3;
+        [SerializeField] private Color baseOutlineColor = Color.black;
+        
         public bool isEnemyOfPlayer => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
 
         /// <summary>
@@ -57,6 +62,8 @@ namespace Entities
         [SerializeField] private List<Renderer> renderers = new List<Renderer>();
 
         protected Animator[] animators = Array.Empty<Animator>();
+        private static readonly int OutlineThickness = Shader.PropertyToID("_Outline_Thickness");
+        private static readonly int OutlineColor = Shader.PropertyToID("_Outline_Color");
 
         private void Start()
         {
@@ -103,6 +110,7 @@ namespace Entities
                 InitEntity((Enums.Team)newTeam);
                 OnInstantiated();
             }
+            Deselect();
             OnInstantiatedFeedback();
         }
 
@@ -331,6 +339,33 @@ namespace Entities
             {
                 animator.SetTrigger(id);
             }
+        }
+
+        public void Select(Color highlightColor)
+        {
+            foreach (var rend in renderers)
+            {
+                var mat = rend.material;
+                mat.SetFloat(OutlineThickness,4);
+                mat.SetColor(OutlineColor,highlightColor);
+                rend.material = mat;
+            }
+        }
+
+        public void Deselect()
+        {
+            foreach (var rend in renderers)
+            {
+                var mat = rend.material;
+                mat.SetFloat(OutlineThickness,baseOutlineThickness);
+                mat.SetColor(OutlineColor,baseOutlineColor);
+                rend.material = mat;
+            }
+        }
+
+        protected void AddRender(Renderer rend)
+        {
+            renderers.Add(rend);
         }
     }
 }
