@@ -23,35 +23,36 @@ public class PinataBT : Tree
     
     protected override Node InitTree()
     {
-        origin = new Selector(new List<Node>
-        {
-            new Sequence(new List<Node>
-            {
-                new CheckCanMove(entity),
-                new MustBackToCamp(origin, transform, CampPosition.position, MaxDistanceToCamp, agent, entity)
-            }),
-            new Sequence(new List<Node>
-            {
-                new CheckEnemyInPOVRange(origin, entity,enemyMask, FOVRange),
-                new Selector(new List<Node>
-                {
-                    new Sequence(new List<Node>
-                    {
-                        new CheckEnemyInAttackRange(origin, transform, AtkRange),
-                        new TaskAttack(origin, entity, Model, entity.activePinataAutoSO.indexInCollection, atkDelay, agent),
-                    }),
-                    new Sequence(new List<Node>
-                    {
-                        new CheckCanMove(entity),
-                        new GoToTarget(origin, agent, transform, Model)
-                    })
-                }),
-            }),
+        // origin = new Selector(new List<Node>
+        // {
+        //     new Sequence(new List<Node>
+        //     {
+        //         new CheckCanMove(entity),
+        //         new MustBackToCamp(origin, transform, CampPosition.position, MaxDistanceToCamp, agent, entity)
+        //     }),
+        //     new Sequence(new List<Node>
+        //     {
+        //         new CheckEnemyInPOVRange(origin, entity,enemyMask, FOVRange),
+        //         new Selector(new List<Node>
+        //         {
+        //             new Sequence(new List<Node>
+        //             {
+        //                 new CheckEnemyInAttackRange(origin, transform, AtkRange),
+        //                 new TaskAttack(origin, entity, Model, entity.activePinataAutoSO.indexInCollection, atkDelay, agent),
+        //             }),
+        //             new Sequence(new List<Node>
+        //             {
+        //                 new CheckCanMove(entity),
+        //                 new GoToTarget(origin, agent, transform, Model)
+        //             })
+        //         }),
+        //     }),
+        //
+        //
+        // });
 
-
-        });
-
-        return origin;
+        //return origin;*
+        return null;
     }
 
 }

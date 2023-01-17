@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using BehaviourTree;
 using Entities;
 using UnityEngine;
+using Tree = BehaviourTree.Tree;
 
 public class CheckEnemyInAttackRange : Node
 {
     private Transform trans;
     private float atkRange;
-    private Node Root;
+    private Tree Root;
     
-    public CheckEnemyInAttackRange(Node _Root, Transform transform, float AttackRange)
+    public CheckEnemyInAttackRange(Tree _Root, Transform transform, float AttackRange)
     {
         trans = transform;
         atkRange = AttackRange;
@@ -18,13 +19,10 @@ public class CheckEnemyInAttackRange : Node
     }
     public override NodeState Evaluate(Node _Root)
     {
-        if (Root == null) Root = _Root;
-        Entity target = (Entity)Root.GetData("target");
+        Entity target = (Entity)Root.getOrigin().GetData("target");
         
         if (target == null) return NodeState.Failure;
-
-        float Debug = Vector3.Distance(trans.position,
-            new Vector3(target.transform.position.x, trans.position.y, target.transform.position.z));
+        
        if (Vector3.Distance(trans.position, new Vector3(target.transform.position.x, trans.position.y, target.transform.position.z)) < atkRange)
            return NodeState.Success;
 

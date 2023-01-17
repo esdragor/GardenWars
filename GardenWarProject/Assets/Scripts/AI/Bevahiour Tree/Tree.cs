@@ -5,7 +5,7 @@ namespace BehaviourTree
     public abstract class Tree : MonoBehaviour
     {
 
-        private Node origin = null;
+        protected Node origin = null;
 
 
         // private void Start()
@@ -22,6 +22,11 @@ namespace BehaviourTree
         {
             if (origin != null)
                 origin.Evaluate(origin);
+        }
+        
+        public Node getOrigin()
+        {
+            return origin;
         }
 
         protected abstract Node InitTree();

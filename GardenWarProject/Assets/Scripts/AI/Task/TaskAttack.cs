@@ -8,6 +8,7 @@ using GameStates;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
+using Tree = BehaviourTree.Tree;
 
 public class TaskAttack : Node
 {
@@ -17,8 +18,7 @@ public class TaskAttack : Node
     private double CurrentAtkTime = 0f;
     private Entity PreviousTarget;
     private Vector3 Previouspos = Vector3.zero * 999;
-    private GameStateMachine sm => GameStateMachine.Instance;
-    private Node Root;
+    private Tree Root;
     private byte capacityIndex = 0;
     private Transform model;
     private NavMeshAgent agent;
@@ -27,7 +27,7 @@ public class TaskAttack : Node
 
 
 
-    public TaskAttack(Node _Root, Entity entity, Transform _model, byte capaIndex, float _attackSpeed,
+    public TaskAttack(Tree _Root, Entity entity, Transform _model, byte capaIndex, float _attackSpeed,
         NavMeshAgent _agent, string _soundAttack = null)
     {
         Root = _Root;
@@ -52,6 +52,12 @@ public class TaskAttack : Node
         Entity target = (Entity)root.GetData("target");
 
         if (target == null) return NodeState.Failure;
+
+        if (target.gameObject.activeSelf == false)
+        {
+            Root.getOrigin().ClearData("target");
+            return NodeState.Failure;
+        }
 
         if (PreviousTarget != target)
         {

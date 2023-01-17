@@ -5,22 +5,19 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using Tree = UnityEngine.Tree;
 using Vector3 = UnityEngine.Vector3;
 
 public class GoToTarget : Node
 {
     private Transform MyTransform;
-    private Transform model;
     private NavMeshAgent agent;
-    private Node Root;
     private Entity entity;
 
-    public GoToTarget(Node _Root, NavMeshAgent _agent, Transform trans, Transform _model)
+    public GoToTarget(NavMeshAgent _agent, Transform trans)
     {
         MyTransform = trans;
         agent = _agent;
-        Root = _Root;
-        model = _model;
     }
 
     public override NodeState Evaluate(Node Root)

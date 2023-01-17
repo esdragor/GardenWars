@@ -2,6 +2,7 @@ using BehaviourTree;
 using Entities;
 using GameStates;
 using UnityEngine;
+using Tree = BehaviourTree.Tree;
 
 public class CheckEnemyInPOVRange : Node
 {
@@ -11,9 +12,9 @@ public class CheckEnemyInPOVRange : Node
     private float rangeFOV = 5f;
     private int layerTargetFogOfWar = 1 << 29 | 1 << 30;
 
-    private Node Root;
+    private Tree Root;
 
-    public CheckEnemyInPOVRange(Node _Root, Entity entity, int enemyMaskByFunct, float _rangeFOV = 5f)
+    public CheckEnemyInPOVRange(Tree _Root, Entity entity, int enemyMaskByFunct, float _rangeFOV = 5f)
     {
         if (entity == null) return;
         MyTransform = entity.transform;
@@ -25,8 +26,7 @@ public class CheckEnemyInPOVRange : Node
 
     public override NodeState Evaluate(Node root)
     {
-        if (Root == null) Root = root;
-        Entity t = (Entity)Root.GetData("target");
+        Entity t = (Entity)Root.getOrigin().GetData("target");
         if (t == null)
         {
             Collider[] colliders = Physics.OverlapSphere(MyTransform.position, rangeFOV, EnemyLayerMaskF);
@@ -56,7 +56,7 @@ public class CheckEnemyInPOVRange : Node
                     if (deadable == null) continue;
                     if (!deadable.IsAlive()) continue;
 
-                    Root.SetDataInBlackboard("target", entity);
+                    Root.getOrigin().SetDataInBlackboard("target", entity);
                     MyEntity.SetAnimatorTrigger("SpotEnemy");
                     state = NodeState.Success;
                     return state;
@@ -83,7 +83,7 @@ public class CheckEnemyInPOVRange : Node
             //     return NodeState.Failure;
             // }
         //}
-        Root.ClearData("target");
+        Root.getOrigin().ClearData("target");
         return NodeState.Failure;
         return state;
     }

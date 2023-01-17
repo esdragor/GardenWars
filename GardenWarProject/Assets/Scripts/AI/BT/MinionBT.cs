@@ -18,8 +18,6 @@ public class MinionBT : Tree
     [SerializeField] private float FOVRange;
     [SerializeField] private float atkDelay = 15;
     [SerializeField] private Transform Model;
-
-    private Node origin;
     
     protected override Node InitTree()
     {
@@ -27,18 +25,18 @@ public class MinionBT : Tree
         {
             new Sequence(new List<Node>
             {
-                new CheckEnemyInPOVRange(origin, entity,enemyMask, FOVRange),
+                new CheckEnemyInPOVRange(this, entity,enemyMask, FOVRange),
                 new Selector(new List<Node>
                 {
                     new Sequence(new List<Node>
                     {
-                        new CheckEnemyInAttackRange(origin, transform, AtkRange),
-                        new TaskAttack(origin, entity, Model, entity.activeMinionAutoSO.indexInCollection, atkDelay, agent),
+                        new CheckEnemyInAttackRange(this, transform, AtkRange),
+                        new TaskAttack(this, entity, Model, entity.activeMinionAutoSO.indexInCollection, atkDelay, agent),
                     }),
                     new Sequence(new List<Node>
                     {
                         new CheckCanMove(entity),
-                        new GoToTarget(origin, agent, transform, Model)
+                        new GoToTarget(agent, transform)
                     })
                 }),
             }),
