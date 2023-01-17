@@ -18,6 +18,9 @@ public partial class UIManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Button settingsButton;
+
+    [Header("Loading")]
+    [SerializeField] private GameObject loadingCanvas;
     
     private Camera cam;
     
@@ -33,11 +36,18 @@ public partial class UIManager : MonoBehaviour
 
         Instance = this;
     }
+
+    public void ShowLoadingCanvas(bool value)
+    {
+        loadingCanvas.SetActive(value);
+    }
     
     private void Start()
     {
         minimapSize = miniMapRenderImage.GetComponent<RectTransform>().sizeDelta;
         minimapRenderTransform = miniMapRenderImage.rectTransform;
+        
+        loadingCanvas.SetActive(true);
     }
 
     public void SetupTopBar()

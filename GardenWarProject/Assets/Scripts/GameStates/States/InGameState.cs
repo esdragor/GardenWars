@@ -21,6 +21,8 @@ namespace GameStates.States
             sm.startTime = currentTime;
             
             sm.StartEntitySpawner();
+
+            UIManager.Instance.ShowLoadingCanvas(false);
         }
 
         public override void UpdateState()
