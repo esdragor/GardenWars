@@ -38,7 +38,7 @@ public class ProjectileOnCollideEffect : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void DestroyProjectile(bool immediate = false)
+    public void DestroyProjectile(bool immediate)
     {
         OnCollide = null;
         OnCollideFeedback = null;

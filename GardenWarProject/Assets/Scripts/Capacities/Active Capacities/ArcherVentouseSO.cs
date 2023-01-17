@@ -92,7 +92,7 @@ namespace Entities.Capacities
                 {
                     gsm.OnUpdateFeedback -= MoveProjectile;
                     
-                    projectile.DestroyProjectile();
+                    projectile.DestroyProjectile(false);
                 }
             }
 
@@ -122,7 +122,7 @@ namespace Entities.Capacities
                 
                 grabcs.Catch();
                 
-                projectile.DestroyProjectile();
+                projectile.DestroyProjectile(false);
             }
             
             void EntityCollideFeedback(Entity entity)
@@ -131,7 +131,7 @@ namespace Entities.Capacities
 
                 gsm.OnUpdateFeedback -= MoveProjectile;
                 
-                projectile.DestroyProjectile();
+                projectile.DestroyProjectile(false);
             }
         }
 

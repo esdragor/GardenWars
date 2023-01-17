@@ -122,10 +122,6 @@ namespace Entities.Capacities
                 if (!caster.GetEnemyTeams().Contains(entity.team)) return;
                 
                 DealDamage(entity);
-                
-                gsm.OnUpdateFeedback -= MoveProjectile;
-                
-                projectile.DestroyProjectile();
             }
             
             void EntityCollideFeedback(Entity entity)
@@ -134,7 +130,7 @@ namespace Entities.Capacities
 
                 gsm.OnUpdateFeedback -= MoveProjectile;
                 
-                projectile.DestroyProjectile();
+                projectile.DestroyProjectile(true);
             }
         }
 

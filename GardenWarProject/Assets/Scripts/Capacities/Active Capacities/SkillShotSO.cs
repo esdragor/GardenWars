@@ -87,7 +87,7 @@ namespace Entities.Capacities
                     
                     gsm.OnUpdateFeedback -= MoveProjectile;
                     
-                    projectile.DestroyProjectile();
+                    projectile.DestroyProjectile(true);
                     
                 }
             }
@@ -106,7 +106,7 @@ namespace Entities.Capacities
                 
                 gsm.OnUpdateFeedback -= MoveProjectile;
                 
-                projectile.DestroyProjectile();
+                projectile.DestroyProjectile(true);
             }
         }
 

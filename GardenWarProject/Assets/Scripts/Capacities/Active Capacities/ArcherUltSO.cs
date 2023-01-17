@@ -124,7 +124,7 @@ namespace Entities.Capacities
 
                     FXLaunchBurst.SetActive(false);
                     FXLaunchBurst.SetActive(true);
-                    projectile.DestroyProjectile();
+                    projectile.DestroyProjectile(true);
                 }
             }
 
@@ -143,8 +143,6 @@ namespace Entities.Capacities
                 DealDamage(entity);
 
                 gsm.OnUpdateFeedback -= MoveProjectile;
-
-                projectile.DestroyProjectile();
             }
 
             void EntityCollideFeedback(Entity entity)
@@ -160,7 +158,7 @@ namespace Entities.Capacities
                 FXLaunchBurst.SetActive(true);
                 gsm.OnUpdateFeedback -= MoveProjectile;
 
-                projectile.DestroyProjectile();
+                projectile.DestroyProjectile(true);
             }
         }
 
