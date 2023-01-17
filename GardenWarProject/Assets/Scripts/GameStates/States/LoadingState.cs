@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace GameStates.States
 {
     public class LoadingState : GameState
@@ -6,9 +8,10 @@ namespace GameStates.States
 
         public override void StartState()
         {
+            Debug.Log("LoadingState Start");
             if (GameStateMachine.isOffline) return;
+            sm.LoadEmotes();
             sm.ResetScore();
-            sm.MoveToGameScene();
             sm.winner = Enums.Team.Neutral;
         }
 
@@ -16,6 +19,7 @@ namespace GameStates.States
 
         public override void ExitState()
         {
+            Debug.Log("LoadingState Exit");
             sm.LateLoad();
         }
 

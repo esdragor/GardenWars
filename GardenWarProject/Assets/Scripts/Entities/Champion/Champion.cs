@@ -223,60 +223,14 @@ namespace Entities.Champion
             
             Debug.Log($"Displaying emote {indexOfEmote}");
             
-            return;
+            // TODO - sync display emote sur tout les clients
             
-            Texture2D emote = EmotesManager.instance.GetEmoteAtLocation(indexOfEmote);
-            byte[] bytes = emote.GetRawTextureData();
-            int max = 75000;
-            if (bytes.Length <= max)
-            {
-                photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, bytes, emote.width, emote.height, (byte)emote.format,
-                    (byte)0);
-                photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, Array.Empty<byte>(), emote.width, emote.height,
-                    (byte)emote.format, (byte)2);
-                return;
-            }
-
-            int length = max;
-            Debug.Log("Loading");
-            for (int i = 0; i < bytes.Length; i += length)
-            {
-                if (!Application.isPlaying) return;
-                length = max;
-                if (i + max > bytes.Length)
-                {
-                    length = bytes.Length - i;
-                }
-
-                byte[] buff = new byte[length];
-                Array.Copy(bytes, i, buff, 0, length);
-                if (i == 0)
-                    photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, buff, emote.width, emote.height,
-                        (byte)emote.format, (byte)0);
-                else if (i + length >= bytes.Length)
-                    photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, buff, emote.width, emote.height,
-                        (byte)emote.format, (byte)2);
-                else
-                    photonView.RPC("SyncPressEmoteRPC", RpcTarget.All, buff, emote.width, emote.height,
-                        (byte)emote.format, (byte)1);
-                await Task.Delay(500);
-            }
-        }
-
-        [PunRPC]
-        public void SyncPressEmoteRPC(byte[] TexArray, int height, int width, byte format, byte position)
-        {
-            if (position == 0)
-                bufferbyte.Clear();
-            AddBuffEmote(TexArray);
-            if (position != 2) return;
-            int squareInt = (height <= width) ? height : width;
-            Texture2D tex = new Texture2D(squareInt, squareInt, (TextureFormat)format, false);
-            tex.LoadRawTextureData(bufferbyte.ToArray());
-            tex.Apply();
-            emotesImage.texture = tex;
+            emotesImage.texture = gsm.GetPlayerEmotes()[indexOfEmote];
             emotesImage.gameObject.SetActive(true);
-            Debug.Log($"length of array: {tex.EncodeToPNG().Length}");
+
+            await Task.Delay(3000);
+
+            emotesImage.gameObject.SetActive(false);
         }
 
         public void RequestPressItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions)

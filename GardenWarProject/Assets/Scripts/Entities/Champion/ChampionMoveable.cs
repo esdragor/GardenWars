@@ -195,7 +195,7 @@ namespace Entities.Champion
             
             position = ActiveCapacity.GetClosestValidPoint(position);
             
-            agent.SetDestination(position);
+            if(agent.isOnNavMesh) agent.SetDestination(position);
             OnMove?.Invoke(position);
 
             position.y = rotateParent.position.y;
@@ -212,7 +212,6 @@ namespace Entities.Champion
         private void MoveToTarget(Vector3 targetPos,float rangeToAction,Action action)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
-            Debug.Log($"Distance left : {distanceToTarget}");
             if (distanceToTarget <= rangeToAction)
             {
                 if(agent.isOnNavMesh) agent.ResetPath();
@@ -220,7 +219,7 @@ namespace Entities.Champion
                 return;
             }
 
-            agent.SetDestination(targetPos);
+            if(agent.isOnNavMesh) agent.SetDestination(targetPos);
             
             OnMove?.Invoke(targetPos);
             

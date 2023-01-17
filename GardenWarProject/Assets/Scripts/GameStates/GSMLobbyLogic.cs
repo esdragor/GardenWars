@@ -127,10 +127,20 @@ namespace GameStates
                 isReady = isReady,
                 team = (Enums.Team)team,
                 role = (Enums.ChampionRole)role,
-                championSOIndex = championSOindex
+                championSOIndex = championSOindex,
+                    
+                emoteByteBuffer = new List<byte>[6],
+                emotesTextures = new Texture2D[6]
             };
+            
+            for (var index = 0; index < 6; index++)
+            {
+                data.emoteByteBuffer[index] = new List<byte>();
+            }
+            
             if (!playerDataDict.ContainsKey(actorNumber)) playerDataDict.Add(actorNumber, data);
             else playerDataDict[actorNumber] = data;
+            if(!allPlayersIDs.Contains(actorNumber)) allPlayersIDs.Add(actorNumber);
             OnDataDictUpdated?.Invoke(actorNumber, data);
         }
 
@@ -162,11 +172,12 @@ namespace GameStates
             foreach (var key in neutralPlayersIds)
             {
                 playerDataDict.Remove(key);
+                allPlayersIDs.Remove(key);
             }
             
             if (isInDebugMode)
             {
-                foreach (var data in playerDataDict.Select(kvp => kvp.Value))
+                foreach (var data in playerDataDict.Values)
                 {
                     if (!data.isReady)
                     {
@@ -193,7 +204,7 @@ namespace GameStates
 
             var team1 = new List<PlayerData>();
             var team2 = new List<PlayerData>();
-            foreach (var data in playerDataDict.Select(kvp => kvp.Value))
+            foreach (var data in playerDataDict.Values)
             {
                 if (!data.isReady)
                 {
@@ -240,7 +251,7 @@ namespace GameStates
 
         public void ResetPlayerReady()
         {
-            foreach (var data in playerDataDict.Select(kvp => kvp.Value))
+            foreach (var data in playerDataDict.Values)
             {
                 data.isReady = false;
             }

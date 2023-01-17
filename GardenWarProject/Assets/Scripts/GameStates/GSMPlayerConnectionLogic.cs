@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Entities.Champion;
 using Photon.Pun;
 using UnityEngine;
@@ -47,8 +48,17 @@ namespace GameStates
                     championSOIndex = 255,
                     championPhotonViewId = -1,
                     champion = null,
-                    name = playerName
+                    name = playerName,
+                    
+                    emoteByteBuffer = new List<byte>[6],
+                    emotesTextures = new Texture2D[6]
                 };
+                
+                for (var index = 0; index < 6; index++)
+                {
+                    playerData.emoteByteBuffer[index] = new List<byte>();
+                }
+                
                 playerDataDict.Add(actorNumber, playerData);
                 allPlayersIDs.Add(actorNumber);
             }
@@ -65,8 +75,17 @@ namespace GameStates
                 championSOIndex = 255,
                 championPhotonViewId = -1,
                 champion = champion,
-                name = $"Offline Player"
+                name = $"Offline Player",
+                
+                emoteByteBuffer = new List<byte>[6],
+                emotesTextures = new Texture2D[6]
             };
+
+            for (var index = 0; index < 6; index++)
+            {
+                playerData.emoteByteBuffer[index] = new List<byte>();
+            }
+
             Instance.playerDataDict.Add(-1, playerData);
             Instance.allPlayersIDs.Add(-1);
         }

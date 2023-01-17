@@ -58,16 +58,19 @@ namespace GameStates
 
             //pre lobby
             public string name;
-            public byte[][] emotesArrays = new byte[6][];
 
             //lobby
             public Enums.Team team;
             public byte championSOIndex;
             public Enums.ChampionRole role;
+            
+            //loading
+            public List<byte>[] emoteByteBuffer;
 
             //in game
             public int championPhotonViewId;
             public Champion champion;
+            public Texture2D[] emotesTextures;
         }
 
         private void Awake()
@@ -241,6 +244,16 @@ namespace GameStates
             return isOffline ? playerDataDict[-1].champion : playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
         }
 
+        public Texture2D[] GetPlayerEmotes()
+        {
+            return playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].emotesTextures;
+        }
+        
+        public Texture2D[] GetPlayerEmotes(int actorNumber)
+        {
+            return playerDataDict[actorNumber].emotesTextures;
+        }
+        
         #endregion
         
 

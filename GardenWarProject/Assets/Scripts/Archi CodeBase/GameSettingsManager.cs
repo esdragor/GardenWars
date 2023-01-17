@@ -8,10 +8,12 @@ public class GameSettingsManager : MonoBehaviour
     private static GameSettingsManager instance;
 
     private string pName;
+    private Texture2D[] emoteTex;
     private byte[][] emotes;
 
     public static string playerName => instance.pName;
     public static byte[][] emoteBytes => instance.emotes;
+    public static Texture2D[] emoteTextures => instance.emoteTex;
     
     private void Awake()
     {
@@ -31,6 +33,8 @@ public class GameSettingsManager : MonoBehaviour
         {
             SetPlayerName("Player");
         }
+
+        emoteTex = new Texture2D[6];
         emotes = new byte[6][];
     }
 
@@ -44,6 +48,7 @@ public class GameSettingsManager : MonoBehaviour
     public static void SetEmoteTexture(byte index, Texture2D tex)
     {
         if(index >= 6) return;
+        instance.emoteTex[index] = tex;
         instance.emotes[index] = tex.GetRawTextureData();
     }
     

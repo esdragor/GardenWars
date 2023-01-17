@@ -20,22 +20,14 @@ namespace GameStates.States
         public override void ExitState()
         {
             sm.ResetPlayerReady();
+
             InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(false);
         }
 
         public override void OnAllPlayerReady()
         {
-            sm.ShowLoadingCanvas(true);
-            
-            SomeDelay();
-        }
-
-        async void SomeDelay()
-        {
-            await Task.Delay(3000);
-            
-            sm.StartLoadingMap();
+            sm.SwitchState(1);
         }
     }
 }

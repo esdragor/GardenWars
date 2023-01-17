@@ -50,8 +50,9 @@ public class SpawnAIs : MonoBehaviourPun
             DestroyImmediate(gameObject);
             return;
         }
-
+        
         Instance = this;
+        Debug.Log("Ai spawn instance was set");
     }
 
     private void Start()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 public partial class UIManager
 {
@@ -8,6 +7,8 @@ public partial class UIManager
 
     public void HideSettings()
     {
+        Debug.Log("Hiding settings");
+        
         foreach (var go in settingsToHideInGame)
         {
             go.SetActive(false);

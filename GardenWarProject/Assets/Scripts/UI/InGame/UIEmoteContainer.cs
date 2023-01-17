@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameStates;
 using UIComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,23 +11,19 @@ namespace UIComponents
 {
     public class UIEmoteContainer : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler
     {
-        private UIEmoteWheel wheel;
+        [SerializeField] private RawImage image;
         
+        private UIEmoteWheel wheel;
+
         private byte index;
 
-        public RawImage image { get; private set; }
         public Texture texture => image.texture;
-
-        private void Start()
-        {
-            image = GetComponent<RawImage>();
-        }
 
         public void LinkToWheel(UIEmoteWheel wheel,int i)
         {
             this.wheel = wheel;
             index = (byte)i;
-            image.texture = EmotesManager.instance.EmotesTexture2Ds[i];
+            image.texture = GameStateMachine.Instance.GetPlayerEmotes()[i];
         }
 
         public void OnPointerEnter(PointerEventData eventData)
