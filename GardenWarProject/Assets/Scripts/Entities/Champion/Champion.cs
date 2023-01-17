@@ -218,6 +218,8 @@ namespace Entities.Champion
 
         public void RequestPressEmote(byte indexOfEmote)
         {
+            if(isOffline) return;
+            
             if(indexOfEmote >= 6 ) return;
 
             photonView.RPC("SyncDisplayEmoteRPC", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, indexOfEmote);
