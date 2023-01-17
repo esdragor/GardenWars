@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Entities;
 using Entities.Champion;
 using UIComponents;
 using UnityEngine;
@@ -8,15 +5,45 @@ using UnityEngine.UI;
 
 public partial class UIManager
 {
-    [Header("Emotes Elements")] [SerializeField]
+    [Header("Emotes Elements")]
+    [SerializeField]
+    private UIEmoteWheel emoteWheelGo;
+
+    public byte emoteIndex { get; private set; }
+
     private GameObject emotesPanelPrefab;
 
     [SerializeField] private Transform emotesParent;
     [SerializeField] private Vector3 offset = new Vector3(0, 0, 0);
+
+    public void ShowWheel(Vector2 position)
+    {
+        emoteWheelGo.Show(position);
+        emoteIndex = 6;
+    }
+
+    public void SetupEmoteWheel()
+    {
+        emoteWheelGo.InitWheel();
+    }
+
+    public void HideWheel()
+    {
+        emoteWheelGo.Hide();
+    }
+
+    public void SetEmoteIndex(byte indexOfEmote)
+    {
+        Debug.Log($"Index Set to {indexOfEmote}");
+        emoteIndex = indexOfEmote;
+    }
+    
+    
     
 
     public void InstantiateEmoteForEntity(Champion entity)
     {
+        return;
         cam = Camera.main;
         if (entity == null) return;
         var panel = Instantiate(emotesPanelPrefab, entity.uiTransform.position + entity.uiOffset + Vector3.up * 2f,

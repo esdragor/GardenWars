@@ -2,7 +2,6 @@ using GameStates;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
 public partial class UIManager : MonoBehaviour

@@ -609,6 +609,8 @@ namespace GameStates
         {
             CapacitySOCollectionManager.Instance.SetIndexes();
 
+            UIManager.Instance.SetupEmoteWheel();
+
             foreach (var championSo in allChampionsSo)
             {
                 championSo.SetIndexes();

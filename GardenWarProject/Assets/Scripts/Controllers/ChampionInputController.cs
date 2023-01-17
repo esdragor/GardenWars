@@ -13,6 +13,8 @@ namespace Controllers.Inputs
     public class ChampionInputController : PlayerInputController
     {
         [SerializeField] private ParticleSystem clicFx;
+
+        private UIManager uim => UIManager.Instance;
         
         private Champion champion;
         
@@ -167,8 +169,18 @@ namespace Controllers.Inputs
             LocalPoolManager.PoolInstantiate(clicFx,ActiveCapacity.GetClosestValidPoint(cursorWorldPos),clicFx.transform.rotation);
         }
         
-        private void OnPressEmote1(InputAction.CallbackContext ctx)
+        private void OnPressEmote(InputAction.CallbackContext ctx)
         {
+            uim.ShowWheel(mousePos);
+            return;
+            champion.RequestPressEmote(0);
+        }
+        
+        private void OnReleaseEmote(InputAction.CallbackContext ctx)
+        {
+            uim.HideWheel();
+            champion.RequestPressEmote(uim.emoteIndex);
+            return;
             champion.RequestPressEmote(0);
         }
 
@@ -260,7 +272,8 @@ namespace Controllers.Inputs
             inputs.UpgradeCapacity.Upgrade.performed += OnHoldUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled += OnReleaseUpgrade;
             
-            inputs.Emotes.Emote1.performed += OnPressEmote1;
+            inputs.Emotes.Emote1.performed += OnPressEmote;
+            inputs.Emotes.Emote1.canceled += OnReleaseEmote;
         }
 
         private void DebugNavMeshPoint(InputAction.CallbackContext ctx)
@@ -301,6 +314,9 @@ namespace Controllers.Inputs
             
             inputs.UpgradeCapacity.Upgrade.performed -= OnHoldUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled -= OnReleaseUpgrade;
+            
+            inputs.Emotes.Emote1.performed -= OnPressEmote;
+            inputs.Emotes.Emote1.canceled -= OnReleaseEmote;
 
             CameraController.Instance.UnLinkCamera();
 

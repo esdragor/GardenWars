@@ -219,6 +219,12 @@ namespace Entities.Champion
 
         public async void RequestPressEmote(byte indexOfEmote)
         {
+            if(indexOfEmote >= 6 ) return;
+            
+            Debug.Log($"Displaying emote {indexOfEmote}");
+            
+            return;
+            
             Texture2D emote = EmotesManager.instance.GetEmoteAtLocation(indexOfEmote);
             byte[] bytes = emote.GetRawTextureData();
             int max = 75000;
