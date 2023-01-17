@@ -109,6 +109,8 @@ namespace Entities.Capacities
             {
                 FXDash = champion.team == gsm.GetPlayerTeam()? so.FXDashBlue : so.FXDashRed;
                 FXDashGO = LocalPoolManager.PoolInstantiate(FXDash, champion.championMesh.transform).gameObject;
+                FXDashGO.transform.localPosition = Vector3.zero;
+                FXDashGO.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
             }
             FXDashGO.SetActive(false);
             FXDashGO.SetActive(true);
