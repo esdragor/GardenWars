@@ -105,7 +105,8 @@ namespace Entities.Champion
 
             }
 
-            rotateParent.gameObject.SetActive(false); 
+            SetAnimatorTrigger("Death");
+            //rotateParent.gameObject.SetActive(false); 
             uiTransform.gameObject.SetActive(false);
             FogOfWarManager.Instance.RemoveFOWViewable(this);
 
