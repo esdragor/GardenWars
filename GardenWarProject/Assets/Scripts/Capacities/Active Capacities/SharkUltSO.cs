@@ -149,6 +149,12 @@ namespace Entities.Capacities
                 timer += Time.deltaTime;
 
                 var pos = GetClosestValidPoint(PlayerInputController.CursorWorldPos);
+                if (Vector3.Distance(pos, casterPos) > so.maxRange)
+                {
+                    var shotDirection = (pos - casterPos).normalized;
+                    pos = casterPos + shotDirection * so.maxRange;
+                }
+                
                 champion.ShowAreaIndicator(pos,2);
                 champion.ShowMaxRangeIndicator(so.maxRange);
                 
