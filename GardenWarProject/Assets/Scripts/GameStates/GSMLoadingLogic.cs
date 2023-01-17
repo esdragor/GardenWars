@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Controllers.Inputs;
 using Entities.Capacities;
 using Entities.Champion;
+using Entities.FogOfWar;
 using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
@@ -44,7 +45,7 @@ namespace GameStates
             ShowLoadingCanvas(true);
             
             expectedEmotes = playerDataDict.Count * 6;
-            receivedEmotes = 6;
+            receivedEmotes = 0;
 
             emoteLoadingDict.Clear();
             foreach (var actorNumber in playerDataDict.Keys)
@@ -52,8 +53,6 @@ namespace GameStates
                 emoteLoadingDict.Add(actorNumber,false);
             }
 
-            playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].emotesTextures = GameSettingsManager.emoteTextures;
-            
             SendEmoteData();
         }
         
@@ -61,21 +60,20 @@ namespace GameStates
         {
             for (int i = 0; i < 6; i++)
             {
-                var tex = GameSettingsManager.emoteTextures[i];
-                var bytes = tex.GetRawTextureData();
-                SendEmote(tex,bytes,PhotonNetwork.LocalPlayer.ActorNumber,i);
+                var bytes = GameSettingsManager.bytes[i];
+                SendEmote(bytes,PhotonNetwork.LocalPlayer.ActorNumber,i);
             }
         }
 
-        private async void SendEmote(Texture2D emote,byte[] bytes,int actorNumber,int index)
+        private async void SendEmote(byte[] bytes,int actorNumber,int index)
         {
-            Debug.Log($"Sending Emote : {emote.name} ({bytes.Length} bytes)");
+            Debug.Log($"Sending Emote ({bytes.Length} bytes)");
             
             int max = maxBytePackSize;
             if (bytes.Length <= max)
             {
-                photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, bytes, emote.width, emote.height, (byte)emote.format, (byte)0,actorNumber,index);
-                photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, Array.Empty<byte>(), emote.width, emote.height, (byte)emote.format, (byte)2,actorNumber,index);
+                photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, bytes, (byte)0,actorNumber,index);
+                photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, Array.Empty<byte>(), (byte)2,actorNumber,index);
                 return;
             }
 
@@ -96,15 +94,15 @@ namespace GameStates
                 Array.Copy(bytes, i, buff, 0, length);
                 if (i == 0)
                 {
-                    photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, buff, emote.width, emote.height, (byte)emote.format, (byte)0,actorNumber,index);
+                    photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, buff,(byte)0,actorNumber,index);
                 }
                 else if (i + length >= bytes.Length)
                 {
-                    photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, buff, emote.width, emote.height, (byte)emote.format, (byte)2,actorNumber,index);
+                    photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, buff,(byte)2,actorNumber,index);
                 }
                 else
                 {
-                    photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, buff, emote.width, emote.height, (byte)emote.format, (byte)1,actorNumber,index);
+                    photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, buff,(byte)1,actorNumber,index);
                 }
                 
                 await Task.Delay(500);
@@ -112,24 +110,19 @@ namespace GameStates
         }
         
         [PunRPC]
-        public void SyncSendEmoteRPC(byte[] bytes, int height, int width, byte format, byte position,int actorNumber,int index)
+        public void SyncSendEmoteRPC(byte[] bytes, byte position,int actorNumber,int index)
         {
-            if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
-            {
-                OnReceivedEmote();
-                return;
-            }
-            
             if (position == 0) playerDataDict[actorNumber].emoteByteBuffer[index].Clear();
             
             playerDataDict[actorNumber].emoteByteBuffer[index].AddRange(bytes);
             
             if (position != 2) return;
             
-            int squareInt = (height <= width) ? height : width;
-            Texture2D tex = new Texture2D(squareInt, squareInt, (TextureFormat)format, false);
+            Texture2D tex = new Texture2D(2, 2);
             
-            tex.LoadRawTextureData(playerDataDict[actorNumber].emoteByteBuffer[index].ToArray());
+            tex.LoadImage(playerDataDict[actorNumber].emoteByteBuffer[index].ToArray());
+            
+            //tex.LoadRawTextureData(playerDataDict[actorNumber].emoteByteBuffer[index].ToArray());
             
             tex.Apply();
             
@@ -235,6 +228,8 @@ namespace GameStates
                 SetupChampion(champion);
                 UIManager.Instance.InitPlayerIcon(champion);
             }
+            
+            FogOfWarManager.RunFog();
         }
 
         public static void SetupChampion(Champion champion)

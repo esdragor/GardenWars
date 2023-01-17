@@ -41,8 +41,10 @@ public class EmotesManager : MonoBehaviour
         for (byte i = 0; i < emoteFileExplorers.Length; i++)
         {
             emoteFileExplorers[i].Init(i);
-            
-            GameSettingsManager.SetEmoteTexture(i,defaultEmotes[i]);
+
+            var emote = defaultEmotes[i].EncodeToJPG();
+
+            GameSettingsManager.SetEmoteTexture(i,emote);
         }
     }
 
@@ -50,8 +52,6 @@ public class EmotesManager : MonoBehaviour
     {
         fieldEmote1.onEndEdit.AddListener(delegate
         {
-            //StartCoroutine(Load(0, fieldEmote1.text));
-            Debug.Log(fieldEmote1.text);
             if (File.Exists(fieldEmote1.text))
             {
                 byte[] fileData;

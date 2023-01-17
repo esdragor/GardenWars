@@ -9,6 +9,7 @@ namespace Entities.FogOfWar
     public class FogOfWarManager : MonoBehaviourPun
     {
         private static FogOfWarManager _instance;
+        private bool run;
 
         public static FogOfWarManager Instance
         {
@@ -80,9 +81,14 @@ namespace Entities.FogOfWar
             if (allShowables.Contains(viewable)) allShowables.Remove(viewable);
         }
 
-
+        public static void RunFog()
+        {
+            _instance.run = true;
+        }
+        
         private void Update()
         {
+            if(!run) return;
             TrySeeEnemies();
             RenderFOW();
             UpdateShowableElements();
