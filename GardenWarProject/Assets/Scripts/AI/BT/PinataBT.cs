@@ -21,10 +21,12 @@ public class PinataBT : Tree
 
     private Node origin;
     
+    
     protected override Node InitTree()
     {
         origin = new Selector(new List<Node>
         {
+            /*
             new Sequence(new List<Node>
             {
                 new CheckCanMove(entity),
@@ -48,10 +50,11 @@ public class PinataBT : Tree
                 }),
             }),
 
-
+            */
         });
 
         return origin;
+        
     }
 
 }

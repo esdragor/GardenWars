@@ -447,7 +447,6 @@ MonoBehaviour:
   - {fileID: 2757688150166552352}
   - {fileID: 53936279}
   minion: {fileID: 3301582452771090266, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
-  timer: 0
   animatorsTraps: []
   BasketGoal: []
   towerSpawnPoints:
@@ -457,6 +456,10 @@ MonoBehaviour:
   - {fileID: 5146283350326915587}
   timeBeforeSpawnPinata: 4
   timeBeforeRespawnPinata: 5
+  timeBetweenPinataLevelUp: 30
+  pinataLevel: 0
+  minionTimer: 0
+  pinataTimer: 0
 --- !u!114 &7151993561122712228
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -37,7 +37,7 @@ public class SpawnAIs : MonoBehaviourPun
     [SerializeField] private Transform[] pinataSpawnPoints;
     [SerializeField] private float timeBeforeSpawnPinata = 4;
     [SerializeField] private float timeBeforeRespawnPinata = 5;
-    [SerializeField] private float timeBetweenPinataLevelUp = 5;
+    [SerializeField] private float timeBetweenPinataLevelUp = 30;
     [SerializeField] private int pinataLevel;
     
     [Header("Timers")]
@@ -175,7 +175,8 @@ public class SpawnAIs : MonoBehaviourPun
         if (currentPinata != null)
         {
             currentPinata.OnDie -= OnPinataDie;
-            currentPinata.DieRPC(currentPinata.entityIndex);
+            
+            if(currentPinata.IsAlive()) currentPinata.DieRPC(currentPinata.entityIndex);
         }
         
         currentPinata = NetworkPoolManager.PoolInstantiate("Pinata", tr.position, Quaternion.identity).GetComponent<Pinata>();
@@ -205,7 +206,9 @@ public class SpawnAIs : MonoBehaviourPun
 
     private void OnPinataDie(int _)
     {
+        pinataTimer = timeBetweenPinataLevelUp - timeBeforeRespawnPinata;
         
+        Debug.Log($"Current Pinata died, timer set to {pinataTimer}");
     }
 
     #endregion
