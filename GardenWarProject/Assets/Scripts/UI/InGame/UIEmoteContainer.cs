@@ -26,6 +26,7 @@ namespace UIComponents
         {
             this.wheel = wheel;
             index = (byte)i;
+            image.texture = EmotesManager.instance.EmotesTexture2Ds[i];
         }
 
         public void OnPointerEnter(PointerEventData eventData)
