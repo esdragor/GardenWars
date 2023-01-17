@@ -608,7 +608,24 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             //Destroy(Instantiate(MinionDieFX, transform.position, Quaternion.identity), 2f);
 
             currentHp = 0;
-            if (isMaster) DieRPC(killerId);
+            if (isMaster)
+            {
+                var entity = EntityCollectionManager.GetEntityByIndex(killerId);
+                if (entity)
+                {
+                    var champion = entity.GetComponent<Champion>();
+
+                    if (champion != null)
+                    {
+                        if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
+                        {
+                            champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+                        }
+                    }
+                }
+
+                DieRPC(killerId);
+            }
         }
         else
         {
@@ -678,20 +695,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void DieRPC(int KillerID)
     {
-        var entity = EntityCollectionManager.GetEntityByIndex(KillerID);
-        if (entity)
-        {
-            var champion = entity.GetComponent<Champion>();
-            if (champion != null)
-            {
-                if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
-                {
-                    champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
-                }
-            }
-        }
-
-
         if (isOffline)
         {
             SyncDieRPC(KillerID);
