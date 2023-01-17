@@ -103,7 +103,7 @@ namespace Entities.Champion
                 agent.ResetPath();
                 agent.ResetPath();
                 
-                HideRangeIndicator();
+                HideMaxRangeIndicator();
             }
             isAlive = false;
             SetAnimatorTrigger("Death");

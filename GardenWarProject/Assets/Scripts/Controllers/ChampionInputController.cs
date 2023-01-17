@@ -263,12 +263,12 @@ namespace Controllers.Inputs
         
         private void OnPressShowRange(InputAction.CallbackContext ctx)
         {
-            champion.ShowRangeIndicator(champion.attackRange);
+            champion.ShowMaxRangeIndicator(champion.attackRange);
         }
 
         private void OnReleaseShowRange(InputAction.CallbackContext ctx)
         {
-            champion.HideRangeIndicator();
+            champion.HideMaxRangeIndicator();
         }
 
         protected override void Link(Entity entity)

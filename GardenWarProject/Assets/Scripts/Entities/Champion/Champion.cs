@@ -42,8 +42,16 @@ namespace Entities.Champion
             rb.isKinematic = true;
             agent.enabled = true;
 
-            rangeIndicatorTr = rangeIndicatorGo.transform;
-            HideRangeIndicator();
+            maxRangeIndicatorGo = Instantiate(areaIndicatorPrefab, transform);
+            maxRangeIndicatorGo.GetComponent<Renderer>().material = maxRangeMat;
+            maxRangeIndicatorTr = maxRangeIndicatorGo.transform;
+            maxRangeIndicatorTr.localPosition = Vector3.up * 0.01f;
+
+            areaIndicatorGo = Instantiate(areaIndicatorPrefab);
+            areaIndicatorGo.GetComponent<Renderer>().material = areaMat;
+            areaIndicatorTr = areaIndicatorGo.transform;
+            
+            HideMaxRangeIndicator();
         }
 
         protected override void OnUpdate()

@@ -47,9 +47,11 @@ namespace Entities.Capacities
         {
             if (isOnCooldown)
             {
+                if(champion != null) champion.HideAreaIndicator();
                 return false;
             }
             var maxRange = isBasicAttack ? champion.attackRange : _so.maxRange;
+            var canCast = true;
             switch (_so.shootType)
             {
                 case Enums.CapacityShootType.Skillshot:
@@ -58,31 +60,39 @@ namespace Entities.Capacities
                     targetedPosition = targetPosition;
                     if (Vector3.Distance(casterPos, targetedPosition) > maxRange && maxRange != 0)
                     {
-                        return false;
+                        canCast = false;
                     }
                     break;
                 case Enums.CapacityShootType.TargetEntity:
                     targetedEntity = EntityCollectionManager.GetEntityByIndex(targetsEntityIndex);
                     if (targetedEntity == null)
                     {
-                        return false;
+                        canCast = false;
                     }
                     if (Vector3.Distance(casterPos, targetedEntity.position) > maxRange)
                     {
-                        return false;
+                        canCast = false;
                     }
 
                     var targetable = targetedEntity.GetComponent<ITargetable>();
                     if (targetable != null)
                     {
-                        if (!targetable.CanBeTargeted()) return false;
+                        if (!targetable.CanBeTargeted())
+                        {
+                            canCast = false;
+                        }
                     }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            return AdditionalCastConditions(targetsEntityIndex, targetPosition);
+            if (canCast || champion == null) return AdditionalCastConditions(targetsEntityIndex, targetPosition);
+            
+            champion.HideAreaIndicator();
+            champion.HideMaxRangeIndicator();
+            
+            return false;
         }
 
         protected abstract bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions);
@@ -98,13 +108,13 @@ namespace Entities.Capacities
             switch (_so.shootType)
             {
                 case Enums.CapacityShootType.Skillshot:
-                    if(_so.showMaxRangeIfSkillShot) champion.ShowRangeIndicator(_so.maxRange);
+                    if(_so.showMaxRangeIfSkillShot) champion.ShowMaxRangeIndicator(_so.maxRange);
                     break;
                 case Enums.CapacityShootType.TargetPosition:
-                    champion.ShowRangeIndicator(_so.maxRange);
+                    champion.ShowMaxRangeIndicator(_so.maxRange);
                     break;
                 case Enums.CapacityShootType.TargetEntity:
-                    champion.ShowRangeIndicator(_so.maxRange);
+                    champion.ShowMaxRangeIndicator(_so.maxRange);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -159,13 +169,13 @@ namespace Entities.Capacities
                     switch (_so.shootType)
                     {
                         case Enums.CapacityShootType.Skillshot:
-                            champion.HideRangeIndicator();
+                            champion.HideMaxRangeIndicator();
                             break;
                         case Enums.CapacityShootType.TargetPosition:
-                            champion.HideRangeIndicator();
+                            champion.HideMaxRangeIndicator();
                             break;
                         case Enums.CapacityShootType.TargetEntity:
-                            champion.HideRangeIndicator();
+                            champion.HideMaxRangeIndicator();
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

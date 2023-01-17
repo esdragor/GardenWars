@@ -10,8 +10,16 @@ namespace Entities.Champion
     public partial class Champion : ICastable
     {
         [Header("Range Indicator")]
-        [SerializeField] private GameObject rangeIndicatorGo;
-        private Transform rangeIndicatorTr;
+        [SerializeField] private GameObject areaIndicatorPrefab;
+
+        [SerializeField] private Material maxRangeMat;
+        [SerializeField] private Material areaMat;
+        
+        private GameObject maxRangeIndicatorGo;
+        private GameObject areaIndicatorGo;
+        private Transform maxRangeIndicatorTr;
+        
+        private Transform areaIndicatorTr;
         [SerializeField] private float rangeScaleFactor = 0.25f;
         
         public byte[] abilitiesIndexes = new byte[3];
@@ -243,15 +251,32 @@ namespace Entities.Champion
 
         public event Action OnAbilityUpgraded;
 
-        public void ShowRangeIndicator(float range)
+        public void ShowMaxRangeIndicator(float range)
         {
-            if(!rangeIndicatorGo.activeSelf) rangeIndicatorGo.SetActive(true);
-            rangeIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
+            maxRangeIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
+            if (maxRangeIndicatorGo.activeSelf) return;
+            maxRangeIndicatorGo.SetActive(true);
+            
         }
 
-        public void HideRangeIndicator()
+        public void HideMaxRangeIndicator()
         {
-            rangeIndicatorGo.SetActive(false);
+            maxRangeIndicatorGo.SetActive(false);
         }
+        
+        public void ShowAreaIndicator(Vector3 pos,float range)
+        {
+            if(!areaIndicatorGo.activeSelf) areaIndicatorGo.SetActive(true);
+            areaIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
+            pos.y = 0.01f;
+            areaIndicatorTr.transform.position = pos;
+        }
+
+        public void HideAreaIndicator()
+        {
+            areaIndicatorGo.SetActive(false);
+        }
+        
+        
     }
 }
