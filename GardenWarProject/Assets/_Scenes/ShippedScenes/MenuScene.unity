@@ -626,6 +626,8 @@ MonoBehaviour:
   creditGO: {fileID: 1942451510}
   joinLobbyPopUpGo: {fileID: 2098045543}
   settingsCanvasGo: {fileID: 1466743242}
+  settingsToHideInGame: []
+  playerNameField: {fileID: 377728009}
   createRoomTMPInputField: {fileID: 1829626082}
   connectionStatusText: {fileID: 274719737}
 --- !u!1 &274719735
@@ -1154,6 +1156,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c58ef1144e582f94ba8822acb8bd40c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &377728009 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3861436032562490148, guid: 99c67bd579f11404880202477e0a295a, type: 3}
+  m_PrefabInstance: {fileID: 377728001}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &552243612
@@ -2166,7 +2179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Join
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2870a568caa792641bf4000797f3d667, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2870a568caa792641bf4000797f3d667, type: 2}

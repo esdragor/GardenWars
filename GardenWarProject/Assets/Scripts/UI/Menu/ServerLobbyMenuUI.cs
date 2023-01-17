@@ -21,7 +21,9 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
     [SerializeField] private GameObject joinLobbyPopUpGo;
     [SerializeField] private GameObject settingsCanvasGo;
 
-    
+    [Header("Settings")]
+    [SerializeField] private GameObject[] settingsToHideInGame;
+    [SerializeField] private TMP_InputField playerNameField;
     
     [Header("Debug")]
     [SerializeField] private TMP_InputField createRoomTMPInputField;
@@ -30,6 +32,21 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
     private List<string> unavailableRooms = new List<string>();
 
     public void Start()
+    {
+        AddListeners();
+        
+        Debug.Log($"Player Name is {GameSettingsManager.playerName}");
+        
+        playerNameField.text = GameSettingsManager.playerName;
+    }
+    
+    private void Update()
+    {
+        connectionStatusText.text = $"Is connected and ready : {PhotonNetwork.IsConnectedAndReady}" +
+                                    $"\nStatus : {PhotonNetwork.NetworkClientState}";
+    }
+    
+    private void AddListeners()
     {
         joinLobbyPopUpGo.SetActive(false);
         settingsCanvasGo.SetActive(false);
@@ -45,16 +62,13 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
         quitButton.onClick.AddListener(QuitGame);
         
         quitButton.onClick.AddListener(QuitGame);
-    }
-    
-    private void Update()
-    {
-        connectionStatusText.text = $"Is connected and ready : {PhotonNetwork.IsConnectedAndReady}" +
-                                    $"\nStatus : {PhotonNetwork.NetworkClientState}";
+        
+        playerNameField.onEndEdit.AddListener(ApplyPlayerName);
     }
 
-    private void TogglePopUp()
+    private void ApplyPlayerName(string newName)
     {
+        GameSettingsManager.SetPlayerName(newName);
     }
 
     public void CreateRoom()

@@ -32,7 +32,6 @@ namespace GameStates
         public uint expectedPlayerCount = 4;
 
         [Header("Collections")] public ChampionSO[] allChampionsSo;
-        public TeamColor[] teamColors;
         public Role[] roles;
         public List<int> allPlayersIDs = new List<int>();
 
@@ -53,20 +52,20 @@ namespace GameStates
         }
 
         [Serializable]
-        public struct TeamColor
-        {
-            public Enums.Team team;
-            public Color color;
-        }
-
-        [Serializable]
         public class PlayerData
         {
+            public bool isReady;
+
+            //pre lobby
             public string name;
+            public byte[][] emotesArrays = new byte[6][];
+
+            //lobby
             public Enums.Team team;
             public byte championSOIndex;
             public Enums.ChampionRole role;
-            public bool isReady;
+
+            //in game
             public int championPhotonViewId;
             public Champion champion;
         }
@@ -192,27 +191,27 @@ namespace GameStates
         {
             if (isMaster)
             {
-                AddPlayerRPC(PhotonNetwork.LocalPlayer.ActorNumber);
+                AddPlayerRPC(PhotonNetwork.LocalPlayer.ActorNumber,GameSettingsManager.playerName);
                 return;
             }
 
-            photonView.RPC("AddPlayerRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber);
+            photonView.RPC("AddPlayerRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber,GameSettingsManager.playerName);
         }
 
         [PunRPC]
-        private void AddPlayerRPC(int actorNumber)
+        private void AddPlayerRPC(int actorNumber,string playerName)
         {
             if (isOffline)
             {
-                SyncAddPlayerRPC(actorNumber);
+                SyncAddPlayerRPC(actorNumber,playerName);
                 return;
             }
 
-            photonView.RPC("SyncAddPlayerRPC", RpcTarget.All, actorNumber);
+            photonView.RPC("SyncAddPlayerRPC", RpcTarget.All, actorNumber,playerName);
         }
 
         [PunRPC]
-        private void SyncAddPlayerRPC(int actorNumber)
+        private void SyncAddPlayerRPC(int actorNumber,string playerName)
         {
             if (playerDataDict.ContainsKey(actorNumber))
             {
@@ -228,7 +227,7 @@ namespace GameStates
                     championSOIndex = 255,
                     championPhotonViewId = -1,
                     champion = null,
-                    name = $"Player {actorNumber}"
+                    name = playerName
                 };
                 playerDataDict.Add(actorNumber, playerData);
                 allPlayersIDs.Add(actorNumber);
@@ -608,8 +607,10 @@ namespace GameStates
         public void LoadMap()
         {
             CapacitySOCollectionManager.Instance.SetIndexes();
-
+            
             UIManager.Instance.SetupEmoteWheel();
+            
+            UIManager.Instance.HideSettings();
 
             foreach (var championSo in allChampionsSo)
             {

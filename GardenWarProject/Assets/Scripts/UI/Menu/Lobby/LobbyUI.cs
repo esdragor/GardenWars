@@ -73,20 +73,17 @@ namespace UIComponents
 
         private void InitializeTeamSlots()
         {
-            foreach (var tc in gameStateMachine.teamColors)
-            {
-                var team = tc.team;
-                teamSlotsQueues.Add(team, new Stack<TeamSlot>());
-            }
+            teamSlotsQueues.Add(Enums.Team.Team1, new Stack<TeamSlot>());
+            teamSlotsQueues.Add(Enums.Team.Team2, new Stack<TeamSlot>());
 
             for (int i = 0; i < GameStateMachine.Instance.expectedPlayerCount / 2; i++)
             {
                 var slot = Instantiate(teamSlotPrefab, Vector3.zero, Quaternion.identity, team1SlotsParent);
-                slot.InitSlot(gameStateMachine.teamColors[0].color, (byte) gameStateMachine.teamColors[0].team,this);
-                teamSlotsQueues[gameStateMachine.teamColors[0].team].Push(slot);
+                slot.InitSlot((byte) Enums.Team.Team1,this);
+                teamSlotsQueues[Enums.Team.Team1].Push(slot);
                 slot = Instantiate(teamSlotPrefab, Vector3.zero, Quaternion.identity, team2SlotsParent);
-                slot.InitSlot(gameStateMachine.teamColors[1].color, (byte) gameStateMachine.teamColors[1].team,this);
-                teamSlotsQueues[gameStateMachine.teamColors[1].team].Push(slot);
+                slot.InitSlot((byte) Enums.Team.Team2,this);
+                teamSlotsQueues[Enums.Team.Team2].Push(slot);
             }
 
             for (var i = 0; i < team1SlotsParent.childCount - 1; i++)

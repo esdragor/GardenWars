@@ -7,8 +7,11 @@ public class GameSettingsManager : MonoBehaviour
 {
     private static GameSettingsManager instance;
 
-    public string playerName { get; private set; }
-    public byte[][] emotes { get; private set; }
+    private string pName;
+    private byte[][] emotes;
+
+    public static string playerName => instance.pName;
+    public static byte[][] emoteBytes => instance.emotes;
     
     private void Awake()
     {
@@ -20,21 +23,28 @@ public class GameSettingsManager : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("playerName")) playerName = PlayerPrefs.GetString("playerName");
+        if (PlayerPrefs.HasKey("playerName"))
+        {
+            pName = PlayerPrefs.GetString("playerName");
+        }
+        else
+        {
+            SetPlayerName("Player");
+        }
         emotes = new byte[6][];
     }
 
     public static void SetPlayerName(string newName)
     {
-        instance.playerName = newName;
-        PlayerPrefs.SetString("playerName",newName);
+        instance.pName = newName;
+        PlayerPrefs.SetString("playerName",instance.pName );
+        Debug.Log($"Player name set to : {instance.pName }");
     }
 
     public static void SetEmoteTexture(byte index, Texture2D tex)
     {
         if(index >= 6) return;
         instance.emotes[index] = tex.GetRawTextureData();
-        Debug.Log($"Set textures for index {index} ({instance.emotes[index].Length})");
     }
     
     
