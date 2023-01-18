@@ -195,7 +195,7 @@ namespace Entities.Capacities
             
             var lifeable = entity.GetComponent<IActiveLifeable>();
             
-            lifeable.DecreaseCurrentHpRPC(so.borrowDamage+bonusDamage, champion.entityIndex);
+            lifeable?.DecreaseCurrentHpRPC(so.borrowDamage+bonusDamage, champion.entityIndex);
         }
 
         protected override void OnRemovedEffects(Entity target)

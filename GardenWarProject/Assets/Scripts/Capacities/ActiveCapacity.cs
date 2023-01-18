@@ -131,6 +131,7 @@ namespace Entities.Capacities
 
         public void OnHold(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            if(isOnCooldown) return;
             if(isMaster) Hold(targetsEntityIndexes,targetPositions);
             HoldFeedback(targetsEntityIndexes,targetPositions);
             
@@ -219,6 +220,8 @@ namespace Entities.Capacities
 
         private void EnterCooldown(double timeOnCooldown)
         {
+            Debug.Log($"Entering cooldown ({timeOnCooldown})");
+            
             isOnCooldown = true;
             
             cooldownTimer = timeOnCooldown;

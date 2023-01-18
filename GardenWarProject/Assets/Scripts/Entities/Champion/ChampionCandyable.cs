@@ -253,7 +253,6 @@ namespace Entities.Champion
         {
             currentCandy = amount;
             upgradeCount = upgrades;
-            Debug.Log($"Current Candy is now : {currentCandy} Upgrade Count : {upgradeCount})");
             OnIncreaseCurrentCandyFeedback?.Invoke(amount);
         }
 

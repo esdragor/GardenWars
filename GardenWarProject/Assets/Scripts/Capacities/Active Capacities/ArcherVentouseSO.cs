@@ -73,10 +73,12 @@ namespace Entities.Capacities
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
             var projectile = LocalPoolManager.PoolInstantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
-            Grab grabcs = projectile.GetComponent<Grab>();
+            var grabcs = projectile.GetComponent<Grab>();
             grabcs.StartGrab(caster.transform);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
+
+            var displacementDestination = champion.position + champion.forward * so.dragDistance;
             
             var projectileTr = projectile.transform;
 
@@ -107,7 +109,7 @@ namespace Entities.Capacities
             {
                 var displaceable = entity.GetComponent<IDisplaceable>();
                 
-                displaceable?.DisplaceRPC(champion.position + champion.forward*so.dragDistance,so.dragTime);
+                displaceable?.DisplaceRPC(displacementDestination,so.dragTime);
             }
             
             void EntityCollide(Entity entity)
