@@ -133,6 +133,7 @@ namespace Entities.Capacities
             HoldFeedback(targetsEntityIndexes,targetPositions);
             if (caster.isLocal)
             {
+                if(_so.shootType == Enums.CapacityShootType.Skillshot) champion.ShowSkillShotIndicator(targetPositions,_so.maxRange);
                 HoldLocal(targetsEntityIndexes,targetPositions);
             }
         }
@@ -170,6 +171,7 @@ namespace Entities.Capacities
                     {
                         case Enums.CapacityShootType.Skillshot:
                             champion.HideMaxRangeIndicator();
+                            champion.HideSkillShotIndicator();
                             break;
                         case Enums.CapacityShootType.TargetPosition:
                             champion.HideMaxRangeIndicator();

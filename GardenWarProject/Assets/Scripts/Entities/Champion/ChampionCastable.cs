@@ -15,6 +15,9 @@ namespace Entities.Champion
         [SerializeField] private Material maxRangeMat;
         [SerializeField] private Material areaMat;
         [SerializeField] private float indicatorHeight = 0.01f;
+
+        [SerializeField] private GameObject skillShotIndicatorGo;
+        private Transform skillShotIndicatorTr;
         
         private GameObject maxRangeIndicatorGo;
         private GameObject areaIndicatorGo;
@@ -276,6 +279,24 @@ namespace Entities.Champion
         public void HideAreaIndicator()
         {
             areaIndicatorGo.SetActive(false);
+        }
+
+        public void ShowSkillShotIndicator(Vector3 pos, float range)
+        {
+            var dir = (pos - position).normalized;
+
+            skillShotIndicatorTr.localRotation = Quaternion.LookRotation(dir);
+            
+            dir = position + dir * range;
+            dir.y = position.y + indicatorHeight;
+            skillShotIndicatorTr.position = dir;
+            
+            skillShotIndicatorGo.SetActive(true);
+        }
+
+        public void HideSkillShotIndicator()
+        {
+            skillShotIndicatorGo.SetActive(false);
         }
         
         
