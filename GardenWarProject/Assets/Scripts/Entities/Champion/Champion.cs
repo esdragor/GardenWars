@@ -45,7 +45,7 @@ namespace Entities.Champion
             maxRangeIndicatorGo = Instantiate(areaIndicatorPrefab, transform);
             maxRangeIndicatorGo.GetComponent<Renderer>().material = maxRangeMat;
             maxRangeIndicatorTr = maxRangeIndicatorGo.transform;
-            maxRangeIndicatorTr.localPosition = Vector3.up * 0.01f;
+            maxRangeIndicatorTr.localPosition = Vector3.up * indicatorHeight;
 
             areaIndicatorGo = Instantiate(areaIndicatorPrefab);
             areaIndicatorGo.GetComponent<Renderer>().material = areaMat;

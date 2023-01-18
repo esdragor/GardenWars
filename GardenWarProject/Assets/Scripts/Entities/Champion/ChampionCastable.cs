@@ -14,6 +14,7 @@ namespace Entities.Champion
 
         [SerializeField] private Material maxRangeMat;
         [SerializeField] private Material areaMat;
+        [SerializeField] private float indicatorHeight = 0.01f;
         
         private GameObject maxRangeIndicatorGo;
         private GameObject areaIndicatorGo;
@@ -268,7 +269,7 @@ namespace Entities.Champion
         {
             if(!areaIndicatorGo.activeSelf) areaIndicatorGo.SetActive(true);
             areaIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
-            pos.y = 0.01f;
+            pos.y = position.y + indicatorHeight;
             areaIndicatorTr.transform.position = pos;
         }
 
