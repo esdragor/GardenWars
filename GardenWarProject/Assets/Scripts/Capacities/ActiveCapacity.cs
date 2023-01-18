@@ -159,9 +159,9 @@ namespace Entities.Capacities
                 castable?.SetCanCastRPC(false);
                 attackable?.SetCanAttackRPC(false);
                 moveable?.SetCanMoveRPC(false);
-                
-                gsm.OnUpdate += DecreaseCastTimer;
             }
+            
+            gsm.OnUpdateFeedback += DecreaseCastTimer;
 
             
             void ReleaseCapacity()
@@ -198,11 +198,14 @@ namespace Entities.Capacities
                 
                 if(castTimeTimer < castTime) return;
                 
-                gsm.OnUpdate -= DecreaseCastTimer;
+                gsm.OnUpdateFeedback -= DecreaseCastTimer;
                 
-                castable?.SetCanCastRPC(true);
-                attackable?.SetCanAttackRPC(true);
-                moveable?.SetCanMoveRPC(true);
+                if (isMaster)
+                {
+                    castable?.SetCanCastRPC(true);
+                    attackable?.SetCanAttackRPC(true);
+                    moveable?.SetCanMoveRPC(true);
+                }
                 
                 ReleaseCapacity();
             }
