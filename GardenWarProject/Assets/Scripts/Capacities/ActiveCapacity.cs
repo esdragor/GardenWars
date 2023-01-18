@@ -91,6 +91,7 @@ namespace Entities.Capacities
             
             champion.HideAreaIndicator();
             champion.HideMaxRangeIndicator();
+            champion.HideSkillShotIndicator();
             
             return false;
         }
@@ -129,6 +130,7 @@ namespace Entities.Capacities
 
         public void OnHold(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            if(isOnCooldown) return;
             if(isMaster) Hold(targetsEntityIndexes,targetPositions);
             HoldFeedback(targetsEntityIndexes,targetPositions);
             if (caster.isLocal)
