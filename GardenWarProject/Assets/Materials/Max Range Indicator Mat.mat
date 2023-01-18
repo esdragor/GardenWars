@@ -7,21 +7,24 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: cat-bed-laying-lazy-dzekas
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Name: Max Range Indicator Mat
+  m_Shader: {fileID: -6465566751694194690, guid: fe703442f12834043aef41b702a0ef90, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_ae08706f5a314fd49aa967c3dea2ee8a:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: f30867580ee8dc042a55bc07f0412c8c, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -60,7 +63,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_0428f08c508146748d1e55b444e70e3f_Texture_1:
+        m_Texture: {fileID: 2800000, guid: e3da81efeae2b4c4380170c7927b8640, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_d2eb17d9d8d54cd9a4437eb435e783d6_Texture_1:
+        m_Texture: {fileID: 2800000, guid: c23d7f8d5b1fde846a07dd8aead206ed, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_8dfb243270d74429b4e4c78354ea5458_Out_0:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -77,6 +92,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Boolean_3ffd4b42ecdd4bbf87f294fa66270628: 1
+    - Vector1_3856c6c2ecc649e98cee6856244e4df0: -24.1
+    - Vector1_4726fc13afb84f4da0851965245c2a29: 0.002
+    - Vector1_ad0069e91d924e32b6c9caecae5a4406: 0.6
+    - Vector1_d3e039f4354b4b63b29d2d66f852dfa2: 0
+    - Vector1_d540eaa790cf4e12929f41436b769a0a: 0.6
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -104,12 +125,15 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_6ae890784e7b441783f03cdec0acb7be: {r: 0, g: 0.8117647, b: 1, a: 1}
+    - Vector2_0c4c02596e834bb6aa9503c639f05bf3: {r: 0, g: 1, b: 0, a: 0}
+    - Vector3_0e12986a92d24af18f82364e91bc1d89: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &5127801770743263464
+--- !u!114 &9183660927914850113
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
