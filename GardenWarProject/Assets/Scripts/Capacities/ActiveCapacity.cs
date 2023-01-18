@@ -23,7 +23,7 @@ namespace Entities.Capacities
 
         public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
-        public double cooldownTimer { get; private set; }
+        public double cooldownTimer { get; protected set; }
 
         private double castTimeTimer;
         private double castTime => AssociatedActiveCapacitySO().castTime;
@@ -220,8 +220,6 @@ namespace Entities.Capacities
 
         private void EnterCooldown(double timeOnCooldown)
         {
-            Debug.Log($"Entering cooldown ({timeOnCooldown})");
-            
             isOnCooldown = true;
             
             cooldownTimer = timeOnCooldown;

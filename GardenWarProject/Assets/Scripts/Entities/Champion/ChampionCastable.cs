@@ -37,7 +37,7 @@ namespace Entities.Champion
         public int targetedEntities;
         public Vector3 targetedPositions;
 
-        private int upgradeCount = 0;
+        private int upgradeCount = 10;
 
         public class CastingAbility
         {

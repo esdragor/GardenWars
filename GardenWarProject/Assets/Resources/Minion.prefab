@@ -235,14 +235,14 @@ MonoBehaviour:
   activeMinionAutoSO: {fileID: 11400000, guid: 56200ad2b07b5ff43a416c1a288af400, type: 2}
   animatorTrap: {fileID: 0}
   BasketGoal: {fileID: 0}
+  attackValue: 10
+  attackSpeed: 10
+  MaxHP: 30
+  currentHp: 30
   canMove: 1
   canAttack: 1
-  attackValue: 5
   referenceMoveSpeed: 3.5
   agent: {fileID: 2077910377}
-  attackSpeed: 10
-  MaxHP: 100
-  currentHp: 100
   HitFX: {fileID: 557445818242320917}
   MinionDieFX: {fileID: 55932162552029174, guid: dc9c800c2d45ce4469490addebe62230, type: 3}
   NbCandyDropOnDeath: 5

@@ -118,13 +118,19 @@ namespace Entities.Capacities
                 timer += Time.deltaTime;
                 
                 if (timer / so.animationDuration <= so.impactZoneAppearance) return;
-                
-                if(!damageAreaGo.activeSelf) damageAreaGo.SetActive(true);
+
+                if (!damageAreaGo.activeSelf)
+                {
+                    Debug.Log("Damage Zone");
+                    damageAreaGo.SetActive(true);
+                }
 
                 if (timer <= so.animationDuration) return;
 
                 timer = 0;
 
+                damageAreaGo.SetActive(false);
+                
                 UltBorrow();
                     
                 gsm.OnUpdateFeedback -= IncreaseTimerPart1;
@@ -190,8 +196,12 @@ namespace Entities.Capacities
                 timer += Time.deltaTime;
                     
                 if (timer / so.animationDuration <= so.impactZoneAppearance) return;
-                
-                if(!damageAreaGo.activeSelf) damageAreaGo.SetActive(true);
+
+                if (!damageAreaGo.activeSelf)
+                {
+                    Debug.Log("Damage Zone");
+                    damageAreaGo.SetActive(true);
+                }
 
                 if (timer <= so.animationDuration) return;
 

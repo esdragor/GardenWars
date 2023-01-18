@@ -170,7 +170,6 @@ public class SpawnAIs : MonoBehaviourPun
     private void SpawnPinata(Transform tr)
     {
         pinataLevel++;
-        Debug.Log($"Spawning Pinata at {tr.position} (level {pinataLevel})");
         
         if (currentPinata != null)
         {

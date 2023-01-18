@@ -27,6 +27,8 @@ namespace Entities.Capacities
         private bool isBlink => so.isBlink;
         private double dashDuration => so.dashTime;
 
+        private int charges = -1;
+
         private LayerMask collisionLayers;
         private ParticleSystem FXDash;
         private GameObject FXDashGO;
@@ -90,12 +92,15 @@ namespace Entities.Capacities
 
             destination = casterPos + direction * distance;
 
-
-            if (Physics.Raycast(casterPos, direction, out var hit, distance, collisionLayers) && !so.canPassWalls &&
-                !isBlink)
+            if (level == 1)
             {
-                destination = hit.point;
+                if (Physics.Raycast(casterPos, direction, out var hit, distance, collisionLayers) && !so.canPassWalls &&
+                    !isBlink)
+                {
+                    destination = hit.point;
+                }
             }
+            
 
             destination = GetClosestValidPoint(destination);
 
@@ -127,6 +132,35 @@ namespace Entities.Capacities
             if (champion == null) return;
             champion.agent.Warp(destination);
             champion.canMove = true;
+
+            if(level <3) return;
+            
+            charges--;
+            if(charges <= -2) StartStackingDashes();
+            if (charges > 0)
+            {
+                cooldownTimer = 0;
+            }
+        }
+
+        private void StartStackingDashes()
+        {
+            charges = 2;
+
+            var chargeTimer = so.cooldown;
+
+            gsm.OnUpdateFeedback += GainCharge;
+
+            void GainCharge()
+            {
+                if(isOnCooldown || charges >= 3) return;
+                
+                chargeTimer -= Time.deltaTime;
+                
+                if(chargeTimer > 0) return;
+                chargeTimer = so.cooldown;
+                charges++;
+            }
         }
 
         private void StartDash(Vector3 start, Vector3 destination)

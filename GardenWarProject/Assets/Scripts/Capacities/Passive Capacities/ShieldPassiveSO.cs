@@ -91,17 +91,14 @@ namespace Entities.Capacities
         {
             currentShieldAmount -= damage;
 
+            entity.RemovePassiveCapacityByIndexRPC(indexOfSo);
 
             lifeable.IncreaseCurrentHpRPC(damage, entity.entityIndex);
 
             if (currentShieldAmount > 0) return;
-
-            LaunchBreakFX();
-
+            
             var overflowDamage = -currentShieldAmount;
-
-            entity.RemovePassiveCapacityByIndexRPC(indexOfSo);
-
+            
             deadable.SetCanDieRPC(true);
 
             lifeable.DecreaseCurrentHpRPC(overflowDamage, source);
@@ -111,6 +108,8 @@ namespace Entities.Capacities
         {
             if (count > 0) return;
 
+            LaunchBreakFX();
+            
             lifeable.OnDecreaseCurrentHp -= DecreaseShiedAmount;
 
             deadable.SetCanDieRPC(true);
