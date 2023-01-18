@@ -101,6 +101,7 @@ namespace Entities.Capacities
         public bool OnPress(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if(!CanCast(targetsEntityIndexes,targetPositions)) return false;
+
             if(isMaster) Press(targetsEntityIndexes,targetPositions);
             PressFeedback(targetsEntityIndexes,targetPositions);
             
@@ -130,14 +131,12 @@ namespace Entities.Capacities
 
         public void OnHold(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            if(isOnCooldown) return;
             if(isMaster) Hold(targetsEntityIndexes,targetPositions);
             HoldFeedback(targetsEntityIndexes,targetPositions);
-            if (caster.isLocal)
-            {
-                if(_so.shootType == Enums.CapacityShootType.Skillshot) champion.ShowSkillShotIndicator(targetPositions,_so.maxRange);
-                HoldLocal(targetsEntityIndexes,targetPositions);
-            }
+            
+            if (!caster.isLocal) return;
+            if(_so.shootType == Enums.CapacityShootType.Skillshot) champion.ShowSkillShotIndicator(targetPositions,_so.maxRange);
+            HoldLocal(targetsEntityIndexes,targetPositions);
         }
 
         protected abstract void Hold(int targetsEntityIndexes, Vector3 targetPositions);
@@ -154,13 +153,16 @@ namespace Entities.Capacities
                 ReleaseCapacity();
                 return;
             }
-            
-            castable?.SetCanCastRPC(false);
-            attackable?.SetCanAttackRPC(false);
-            moveable?.SetCanMoveRPC(false);
 
-            gsm.OnUpdate += DecreaseCastTimer;
-            
+            if (isMaster)
+            {
+                castable?.SetCanCastRPC(false);
+                attackable?.SetCanAttackRPC(false);
+                moveable?.SetCanMoveRPC(false);
+                
+                gsm.OnUpdate += DecreaseCastTimer;
+            }
+
             
             void ReleaseCapacity()
             {

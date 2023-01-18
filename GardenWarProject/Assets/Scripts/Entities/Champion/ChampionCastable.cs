@@ -197,6 +197,8 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncOnReleaseCapacityRPC(byte capacityIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
+            if(!capacityDict[capacityIndex].isCasting) return;
+            
             targetedEntities = newTargetedEntities;
             targetedPositions = newTargetedPositions;
             if (capacityDict.ContainsKey(capacityIndex))
@@ -296,7 +298,26 @@ namespace Entities.Champion
 
         public void HideSkillShotIndicator()
         {
+            skillShotIndicatorTr.localPosition = Vector3.zero;
             skillShotIndicatorGo.SetActive(false);
+        }
+
+        public bool CancelCast()
+        {
+            var casting = capacityDict.Values.Where(ability => ability.isCasting);
+            
+            if (!casting.Any(ability => ability.isCasting)) return false;
+            
+            foreach (var ability in capacityDict.Values.Where(ability => ability.isCasting))
+            {
+                ability.isCasting = false;
+            }
+            
+            HideSkillShotIndicator();
+            HideMaxRangeIndicator();
+            HideAreaIndicator();
+
+            return true;
         }
         
         

@@ -165,6 +165,11 @@ namespace Controllers.Inputs
 
         private void OnMouseClick(InputAction.CallbackContext ctx)
         {
+            if (champion.CancelCast())
+            {
+                return;
+            }
+            
             champion.CancelMoveToTarget();
             if (!champion.isAlive) return;
             
