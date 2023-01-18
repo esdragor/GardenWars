@@ -28,6 +28,7 @@ namespace UIComponents.Lobby
         private void OnButtonClick()
         {
             assignedLobby.SetChampion(championSOIndex);
+            assignedLobby.SetRole((Enums.ChampionRole)championSOIndex);
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + eventNameSelectionChampion);
 
         }

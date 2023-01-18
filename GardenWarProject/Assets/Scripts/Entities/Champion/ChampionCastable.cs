@@ -302,11 +302,9 @@ namespace Entities.Champion
             skillShotIndicatorGo.SetActive(false);
         }
 
-        public bool CancelCast()
+        public void CancelCast()
         {
-            var casting = capacityDict.Values.Where(ability => ability.isCasting);
-            
-            if (!casting.Any(ability => ability.isCasting)) return false;
+            if (!capacityDict.Values.Any(ability => ability.isCasting)) return;
             
             foreach (var ability in capacityDict.Values.Where(ability => ability.isCasting))
             {
@@ -316,8 +314,6 @@ namespace Entities.Champion
             HideSkillShotIndicator();
             HideMaxRangeIndicator();
             HideAreaIndicator();
-
-            return true;
         }
         
         

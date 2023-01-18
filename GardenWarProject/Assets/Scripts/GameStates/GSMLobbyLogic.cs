@@ -75,6 +75,7 @@ namespace GameStates
             if (!playerDataDict.ContainsKey(actorNumber)) return;
 
             playerDataDict[actorNumber].role = (Enums.ChampionRole) role;
+            
             OnDataDictUpdated?.Invoke(actorNumber, playerDataDict[actorNumber]);
         }
 

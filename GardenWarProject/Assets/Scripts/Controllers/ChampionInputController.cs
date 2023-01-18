@@ -37,7 +37,7 @@ namespace Controllers.Inputs
             UpdateTargets();
             champion.targetedEntities = (selectedEntity) ? selectedEntity.entityIndex : -1;
             champion.targetedPositions = cursorWorldPos;
-            if (isRightClicking) OnMouseClick(nullCtx);
+            if (isRightClicking) OnRightClick(nullCtx);
         }
 
         /// <summary>
@@ -163,13 +163,8 @@ namespace Controllers.Inputs
             fx.gameObject.SetActive(false);
         }
 
-        private void OnMouseClick(InputAction.CallbackContext ctx)
+        private void OnRightClick(InputAction.CallbackContext ctx)
         {
-            if (champion.CancelCast())
-            {
-                return;
-            }
-            
             champion.CancelMoveToTarget();
             if (!champion.isAlive) return;
             
@@ -206,6 +201,11 @@ namespace Controllers.Inputs
             if (!isRightClicking)
                 RequeueClick(LocalPoolManager.PoolInstantiate(clicFx,
                     ActiveCapacity.GetClosestValidPoint(cursorWorldPos), clicFx.transform.rotation));
+        }
+
+        private void OnLeftClick(InputAction.CallbackContext ctx)
+        {
+            champion.CancelCast();
         }
 
         private void OnPressEmote(InputAction.CallbackContext ctx)
@@ -294,7 +294,7 @@ namespace Controllers.Inputs
             inputs.Capacity.ThrowCapacity.canceled += OnReleaseThrowCapacity;
 
             champion.GetComponent<NavMeshAgent>().enabled = true;
-            inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
+            inputs.MoveMouse.ActiveButton.performed += OnRightClick;
             champion.rb.isKinematic = true;
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
@@ -309,7 +309,9 @@ namespace Controllers.Inputs
             inputs.Inventory.ShowHideInventory.started += context => UIManager.Instance.ShowHideInventory(true);
             inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
             inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
+            
             inputs.MoveMouse.LeftClick.performed += DebugNavMeshPoint;
+            inputs.MoveMouse.LeftClick.performed += OnLeftClick;
 
             inputs.MoveMouse.HoldRightClick.performed += OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
@@ -346,7 +348,7 @@ namespace Controllers.Inputs
 
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
 
-            inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;
+            inputs.MoveMouse.ActiveButton.performed -= OnRightClick;
 
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;
 
@@ -356,6 +358,8 @@ namespace Controllers.Inputs
             inputs.Inventory.ActivateItem0.canceled -= OnReleaseItem0;
             inputs.Inventory.ActivateItem1.canceled -= OnReleaseItem1;
             inputs.Inventory.ActivateItem2.canceled -= OnReleaseItem2;
+            
+            inputs.MoveMouse.LeftClick.performed -= OnLeftClick;
 
             inputs.MoveMouse.HoldRightClick.performed -= OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled -= OnReleaseRightClick;
