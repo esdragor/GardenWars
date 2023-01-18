@@ -35,6 +35,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CancelMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca7f4080-26b9-4377-8429-685d79c3fa0a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b7cc26a-ff6b-4dd1-a818-633a43407343"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -533,6 +553,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
+        m_Movement_CancelMove = m_Movement.FindAction("CancelMove", throwIfNotFound: true);
         // Attack
         m_Attack = asset.FindActionMap("Attack", throwIfNotFound: true);
         m_Attack_Attack = m_Attack.FindAction("Attack", throwIfNotFound: true);
@@ -628,11 +649,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Movement;
     private IMovementActions m_MovementActionsCallbackInterface;
     private readonly InputAction m_Movement_Move;
+    private readonly InputAction m_Movement_CancelMove;
     public struct MovementActions
     {
         private @PlayerInputs m_Wrapper;
         public MovementActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Movement_Move;
+        public InputAction @CancelMove => m_Wrapper.m_Movement_CancelMove;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -645,6 +668,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
+                @CancelMove.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
+                @CancelMove.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
+                @CancelMove.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
             }
             m_Wrapper.m_MovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -652,6 +678,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @CancelMove.started += instance.OnCancelMove;
+                @CancelMove.performed += instance.OnCancelMove;
+                @CancelMove.canceled += instance.OnCancelMove;
             }
         }
     }
@@ -1011,6 +1040,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnCancelMove(InputAction.CallbackContext context);
     }
     public interface IAttackActions
     {

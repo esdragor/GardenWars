@@ -208,6 +208,15 @@ namespace Controllers.Inputs
             champion.CancelCast();
         }
 
+        private void CancelMovement(InputAction.CallbackContext ctx)
+        {
+            if(previousSelected != null) previousSelected.Deselect();
+            previousSelected = null;
+
+            champion.CancelMoveToTarget();
+            champion.MoveToPosition(champion.position);
+        }
+
         private void OnPressEmote(InputAction.CallbackContext ctx)
         {
             uim.ShowWheel(mousePos);
@@ -230,8 +239,7 @@ namespace Controllers.Inputs
                 champion.RequestAttack(champion.attackAbilityIndex, entityToMoveTo.entityIndex, cursorWorldPos);
             }
         }
-
-        // ReSharper disable Unity.PerformanceAnalysis
+        
         private void StartMoveGetItem()
         {
             if (!selectedEntity) return;
@@ -279,6 +287,9 @@ namespace Controllers.Inputs
         protected override void Link(Entity entity)
         {
             champion = controlledEntity as Champion;
+            
+            if(champion == null) return;
+            
             base.Link(entity);
 
             inputs.Attack.Attack.performed += OnAttack;
@@ -315,6 +326,8 @@ namespace Controllers.Inputs
 
             inputs.MoveMouse.HoldRightClick.performed += OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
+
+            inputs.Movement.CancelMove.canceled += CancelMovement;
 
             inputs.UpgradeCapacity.Upgrade.performed += OnPressUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled += OnReleaseUpgrade;
@@ -363,6 +376,8 @@ namespace Controllers.Inputs
 
             inputs.MoveMouse.HoldRightClick.performed -= OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled -= OnReleaseRightClick;
+            
+            inputs.Movement.CancelMove.canceled -= CancelMovement;
 
             inputs.UpgradeCapacity.Upgrade.performed -= OnPressUpgrade;
             inputs.UpgradeCapacity.Upgrade.canceled -= OnReleaseUpgrade;
