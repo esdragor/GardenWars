@@ -44,7 +44,6 @@ public class LineGenerate : MonoBehaviour
         for(int i = 0; i < vertexCount; i++)
         {
             lineRenderer.SetPosition(i, Vector3.Lerp(startPoint.position, new Vector3(endPoint.position.x, startPoint.position.y - 0.01f, endPoint.position.z),(float)i/(vertexCount-1)));
-            print((float)i / (vertexCount - 1));
         }/*
         lineRenderer.SetPosition(0, startPoint.position);
         lineRenderer.SetPosition(1, new Vector3(endPoint.position.x, startPoint.position.y-0.01f, endPoint.position.z));*/
