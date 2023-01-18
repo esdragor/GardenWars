@@ -28,7 +28,7 @@ public class LocalPoolManager : MonoBehaviour
     [SerializeField] private List<GameObjectData> gameObjectsPrefabs = new List<GameObjectData>();
 
     private static readonly Dictionary<Component, Queue<Component>> componentDict = new Dictionary<Component, Queue<Component>>();
-    private static readonly Dictionary<GameObject, Queue<GameObject>> gameobjectDic = new Dictionary<GameObject, Queue<GameObject>>();
+    private static readonly Dictionary<GameObject, Queue<GameObject>> gameObjectDic = new Dictionary<GameObject, Queue<GameObject>>();
 
     private void Awake()
     {
@@ -48,13 +48,13 @@ public class LocalPoolManager : MonoBehaviour
     private void SetupDictionary()
     {
         componentDict.Clear();
-        gameobjectDic.Clear();
+        gameObjectDic.Clear();
         
         foreach (var data in componentPrefabs)
         {
             CreateQueue(data.prefab,data.amount);
         }
-        
+
         foreach (var data in gameObjectsPrefabs)
         {
             CreateQueue(data.prefab,data.amount);
@@ -84,7 +84,7 @@ public class LocalPoolManager : MonoBehaviour
     
     private static void CreateQueue(GameObject prefab,uint amount = 0)
     {
-        if (gameobjectDic.ContainsKey(prefab))
+        if (gameObjectDic.ContainsKey(prefab))
         {
             Debug.LogWarning($"Duplicate key for {prefab.gameObject.name} (gameObject)");
             return;
@@ -100,29 +100,46 @@ public class LocalPoolManager : MonoBehaviour
             newQueue.Enqueue(go);
         }
             
-        gameobjectDic.Add(prefab, newQueue);
+        gameObjectDic.Add(prefab, newQueue);
     }
     
     public static T PoolInstantiate<T>(T prefab, Transform parent = null,bool requeue = true) where T : Component
     {
-        if (!componentDict.ContainsKey(prefab)) CreateQueue(prefab);
+        var savedAsTransform = typeof(T) != typeof(Transform) && componentDict.ContainsKey(prefab.transform) ;
+        if (!componentDict.ContainsKey(prefab) && !savedAsTransform)
+        {
+            CreateQueue(prefab);
+        }
 
-        var component = componentDict[prefab].Dequeue().GetComponent<T>();
+        var component = savedAsTransform ? componentDict[prefab.transform].Dequeue().GetComponent<T>() : componentDict[prefab].Dequeue();
 
         component.transform.SetParent(parent);
 
         component.gameObject.SetActive(true);
         
-        if(requeue) componentDict[prefab].Enqueue(component);
+        if (!requeue) return (T)component;
         
-        return component;
+        if(savedAsTransform) 
+        {
+            componentDict[prefab.transform].Enqueue(component.transform);
+        }
+        else
+        {
+            componentDict[prefab].Enqueue(component);
+        }
+
+        return (T)component;
     }
     
     public static T PoolInstantiate<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent = null,bool requeue = true) where T : Component
     {
-        if (!componentDict.ContainsKey(prefab)) CreateQueue(prefab);
+        var savedAsTransform = typeof(T) != typeof(Transform) && componentDict.ContainsKey(prefab.transform) ;
+        if (!componentDict.ContainsKey(prefab) && !savedAsTransform)
+        {
+            CreateQueue(prefab);
+        }
 
-        var component = componentDict[prefab].Dequeue();
+        var component = savedAsTransform ? componentDict[prefab.transform].Dequeue().GetComponent<T>() : componentDict[prefab].Dequeue();
         var tr = component.transform;
         var go = component.gameObject;
 
@@ -134,32 +151,41 @@ public class LocalPoolManager : MonoBehaviour
         go.SetActive(false);
         
         go.SetActive(true);
+
+        if (!requeue) return (T)component;
         
-        if(requeue) componentDict[prefab].Enqueue(component);
-        
+        if(savedAsTransform) 
+        {
+            componentDict[prefab.transform].Enqueue(tr);
+        }
+        else
+        {
+            componentDict[prefab].Enqueue(component);
+        }
+
         return (T)component;
     }
     
     public static GameObject PoolInstantiate(GameObject prefab, Transform parent = null,bool requeue = true)
     {
-        if (!gameobjectDic.ContainsKey(prefab)) CreateQueue(prefab);
+        if (!gameObjectDic.ContainsKey(prefab)) CreateQueue(prefab);
 
-        var go = gameobjectDic[prefab].Dequeue();
+        var go = gameObjectDic[prefab].Dequeue();
 
         go.transform.SetParent(parent);
 
         go.SetActive(true);
         
-        if(requeue) gameobjectDic[prefab].Enqueue(go);
+        if(requeue) gameObjectDic[prefab].Enqueue(go);
         
         return go;
     }
     
     public static GameObject PoolInstantiate(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null,bool requeue = true)
     {
-        if (!gameobjectDic.ContainsKey(prefab)) CreateQueue(prefab);
+        if (!gameObjectDic.ContainsKey(prefab)) CreateQueue(prefab);
 
-        var go = gameobjectDic[prefab].Dequeue();
+        var go = gameObjectDic[prefab].Dequeue();
         var tr = go.transform;
 
         tr.position = position;
@@ -169,7 +195,7 @@ public class LocalPoolManager : MonoBehaviour
         
         go.SetActive(true);
         
-        if(requeue) gameobjectDic[prefab].Enqueue(go);
+        if(requeue) gameObjectDic[prefab].Enqueue(go);
         
         return go;
     }

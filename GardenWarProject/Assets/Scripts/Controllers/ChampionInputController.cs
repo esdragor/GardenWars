@@ -197,10 +197,12 @@ namespace Controllers.Inputs
             
             if(previousSelected != null) previousSelected.Deselect();
             previousSelected = null;
-            
+
             if (!isRightClicking)
-                RequeueClick(LocalPoolManager.PoolInstantiate(clicFx,
-                    ActiveCapacity.GetClosestValidPoint(cursorWorldPos), clicFx.transform.rotation));
+            {
+                RequeueClick(LocalPoolManager.PoolInstantiate(clicFx, ActiveCapacity.GetClosestValidPoint(cursorWorldPos), clicFx.transform.rotation));
+            }
+                
         }
 
         private void OnLeftClick(InputAction.CallbackContext ctx)
@@ -214,6 +216,7 @@ namespace Controllers.Inputs
             previousSelected = null;
 
             champion.CancelMoveToTarget();
+            champion.CancelCast();
             champion.MoveToPosition(champion.position);
         }
 
