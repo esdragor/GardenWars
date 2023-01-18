@@ -9,6 +9,11 @@ namespace Entities.Champion
 {
     public partial class Champion : ICastable
     {
+        [Header("Recall")]
+        [SerializeField] private RecallSO recall;
+
+        public byte recallAbilityIndex => recall.indexInCollection;
+
         [Header("Range Indicator")]
         [SerializeField] private GameObject areaIndicatorPrefab;
 
@@ -117,11 +122,7 @@ namespace Entities.Champion
         {
             targetedEntities = newTargetedEntities;
             targetedPositions = newTargetedPositions;
-            if (capacityDict.ContainsKey(capacityIndex))
-            {
-                capacityDict[capacityIndex].isCasting = true;
-            }
-            else
+            if (!capacityDict.ContainsKey(capacityIndex))
             {
                 var newCapacity = new CastingAbility
                 {
@@ -130,10 +131,13 @@ namespace Entities.Champion
                 };
                 capacityDict.Add(capacityIndex,newCapacity);
             }
+
+            capacityDict[capacityIndex].isCasting = true;
+            
             capacityDict[capacityIndex].capacity.OnPress(targetedEntities,targetedPositions);
         }
 
-        public void ChangeActiveAbility(int index,byte abilityId)
+        public void  ChangeActiveAbility(int index,byte abilityId)
         {
             if (isOffline)
             {
@@ -197,24 +201,21 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncOnReleaseCapacityRPC(byte capacityIndex, int newTargetedEntities, Vector3 newTargetedPositions)
         {
-            if(!capacityDict[capacityIndex].isCasting) return;
-            
             targetedEntities = newTargetedEntities;
             targetedPositions = newTargetedPositions;
-            if (capacityDict.ContainsKey(capacityIndex))
-            {
-                capacityDict[capacityIndex].isCasting = false;
-            }
-            else
+            if (!capacityDict.ContainsKey(capacityIndex))
             {
                 var newCapacity = new CastingAbility
                 {
-                    isCasting = false,
+                    isCasting = true,
                     capacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this)
                 };
                 capacityDict.Add(capacityIndex,newCapacity);
             }
-            
+
+            if(!capacityDict[capacityIndex].isCasting) return;
+            capacityDict[capacityIndex].isCasting = false;
+
             capacityDict[capacityIndex].capacity.OnRelease(targetedEntities,targetedPositions);
             if(isMaster) OnCast?.Invoke(capacityIndex,targetedEntities,targetedPositions);
             

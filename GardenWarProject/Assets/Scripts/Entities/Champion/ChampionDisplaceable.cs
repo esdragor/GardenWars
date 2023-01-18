@@ -81,7 +81,12 @@ namespace Entities.Champion
             var endPos = ActiveCapacity.GetClosestValidPoint(destination);
             var timeToDestination = time;
             float timer = 0;
-
+            if (time == 0)
+            {
+                Arrived();
+                return;
+            }
+            
             gsm.OnUpdateFeedback += MoveToDestination;
             
             void MoveToDestination()
@@ -92,20 +97,24 @@ namespace Entities.Champion
                 
                 if (timer < timeToDestination) return;
                 
+                gsm.OnUpdateFeedback -= MoveToDestination;
+                
+                Arrived();
+            }
+
+            void Arrived()
+            {
                 canMove = true;
                 canBeDisplaced = true;
-                
-                gsm.OnUpdateFeedback -= MoveToDestination;
                 
                 if(isMaster) OnDisplace?.Invoke(destination,time);
                 OnDisplaceFeedback?.Invoke(destination,time);
 
-                if (isPlayerChampion)
-                {
-                    agent.enabled = true;
+                if (!isPlayerChampion) return;
+                
+                agent.enabled = true;
 
-                    agent.Warp(endPos);
-                }
+                agent.Warp(endPos);
             }
         }
 

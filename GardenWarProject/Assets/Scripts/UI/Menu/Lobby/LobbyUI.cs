@@ -51,7 +51,7 @@ namespace UIComponents
 
             InitializeChampionButtons();
 
-            InitializeRoleButtons();
+            //InitializeRoleButtons();
 
             SetupReadyButton();
             

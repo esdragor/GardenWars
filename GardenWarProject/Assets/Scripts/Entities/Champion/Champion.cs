@@ -26,6 +26,7 @@ namespace Entities.Champion
         private List<byte> bufferbyte = new List<byte>();
 
         private Vector3 respawnPos;
+        public Vector3 respawnPosition => respawnPos;
         public Rigidbody rb;
 
         [HideInInspector] public GameObject championMesh;
