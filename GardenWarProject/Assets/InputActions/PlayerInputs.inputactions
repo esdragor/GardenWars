@@ -6,15 +6,6 @@
             "id": "2b795710-b287-4812-ae8b-43eb8f73991b",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "598f10a3-a71c-4ba7-bccd-c75ad4f936ae",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "CancelMove",
                     "type": "Button",
                     "id": "ca7f4080-26b9-4377-8429-685d79c3fa0a",
@@ -25,61 +16,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "WASD",
-                    "id": "e33561b7-f02a-4f3c-99b3-bcb830ee5774",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "6046c493-1af8-4773-b534-9edb26f34a04",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "db5831e6-3bad-49c1-9063-296195b540ed",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "89c756b9-e98f-4cd1-aa79-c1a0d2e5b28f",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "612eafcd-da8d-4901-8258-b84b7f219246",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
                 {
                     "name": "",
                     "id": "2b7cc26a-ff6b-4dd1-a818-633a43407343",
@@ -157,6 +93,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShowMaxRangeIndicator",
+                    "type": "Button",
+                    "id": "e1b44cbe-5eb7-4046-9d05-8cfedf8ec8ef",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UpgradeCapacity",
+                    "type": "Button",
+                    "id": "ba44bf19-27de-4214-89ff-00ae981af087",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -212,6 +166,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RecalCapacity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3e086b5-e8eb-4031-9d43-fe99fdb3c0ca",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowMaxRangeIndicator",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc7b1616-0fca-4467-ba17-f4295773f442",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpgradeCapacity",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -367,7 +343,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ActiveButton",
+                    "name": "RightClick",
                     "type": "Button",
                     "id": "423383cc-dfaf-401e-9009-8a937d79459c",
                     "expectedControlType": "Button",
@@ -413,7 +389,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ActiveButton",
+                    "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -464,62 +440,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Emote1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "UpgradeCapacity",
-            "id": "d961dcde-4da8-42c3-8008-4e732187f491",
-            "actions": [
-                {
-                    "name": "Upgrade",
-                    "type": "Button",
-                    "id": "d00588e9-6fe3-4dc7-b334-96b01c21fc25",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "e5453578-efd9-4c2c-a937-8dcd4628b472",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Upgrade",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "ShowMaxRange",
-            "id": "e1568d58-24c3-433b-a624-2f6df04e2a2d",
-            "actions": [
-                {
-                    "name": "Show",
-                    "type": "Button",
-                    "id": "0b9ca180-dacc-474e-924d-9fb3c12ff46a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "ba70edc9-047b-47fb-ab57-89373e1a1dd3",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Show",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

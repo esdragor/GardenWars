@@ -294,6 +294,12 @@ namespace Controllers.Inputs
             if(champion == null) return;
             
             base.Link(entity);
+            
+            champion.GetComponent<NavMeshAgent>().enabled = true;
+            champion.rb.isKinematic = true;
+            
+            inputs.Inventory.ShowHideInventory.started += context => UIManager.Instance.ShowHideInventory(true);
+            inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
 
             inputs.Attack.Attack.performed += OnAttack;
 
@@ -306,48 +312,37 @@ namespace Controllers.Inputs
 
             inputs.Capacity.ThrowCapacity.performed += OnPressThrowCapacity;
             inputs.Capacity.ThrowCapacity.canceled += OnReleaseThrowCapacity;
+            
+            inputs.Capacity.UpgradeCapacity.performed += OnPressUpgrade;
+            inputs.Capacity.UpgradeCapacity.canceled += OnReleaseUpgrade;
+            
+            inputs.Capacity.ShowMaxRangeIndicator.performed += OnPressShowRange;
+            inputs.Capacity.ShowMaxRangeIndicator.canceled += OnReleaseShowRange;
 
-            champion.GetComponent<NavMeshAgent>().enabled = true;
-            inputs.MoveMouse.ActiveButton.performed += OnRightClick;
-            champion.rb.isKinematic = true;
-
-            inputs.MoveMouse.MousePos.performed += OnMouseMove;
-
+            inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
+            
             inputs.Inventory.ActivateItem0.performed += OnPressItem0;
             inputs.Inventory.ActivateItem1.performed += OnPressItem1;
             inputs.Inventory.ActivateItem2.performed += OnPressItem2;
             inputs.Inventory.ActivateItem0.canceled += OnReleaseItem0;
             inputs.Inventory.ActivateItem1.canceled += OnReleaseItem1;
             inputs.Inventory.ActivateItem2.canceled += OnReleaseItem2;
-
-            inputs.Inventory.ShowHideInventory.started += context => UIManager.Instance.ShowHideInventory(true);
-            inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
-            inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
             
-            inputs.MoveMouse.LeftClick.performed += DebugNavMeshPoint;
+            inputs.MoveMouse.RightClick.performed += OnRightClick;
+
+            inputs.MoveMouse.MousePos.performed += OnMouseMove;
+            
             inputs.MoveMouse.LeftClick.performed += OnLeftClick;
 
             inputs.MoveMouse.HoldRightClick.performed += OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
-
+            
             inputs.Movement.CancelMove.canceled += CancelMovement;
-
-            inputs.UpgradeCapacity.Upgrade.performed += OnPressUpgrade;
-            inputs.UpgradeCapacity.Upgrade.canceled += OnReleaseUpgrade;
 
             inputs.Emotes.Emote1.performed += OnPressEmote;
             inputs.Emotes.Emote1.canceled += OnReleaseEmote;
-
-            inputs.ShowMaxRange.Show.performed += OnPressShowRange;
-            inputs.ShowMaxRange.Show.canceled += OnReleaseShowRange;
         }
-
-        private void DebugNavMeshPoint(InputAction.CallbackContext ctx)
-        {
-            var point = ActiveCapacity.GetClosestValidPoint(cursorWorldPos);
-            Debug.DrawLine(point, point + Vector3.up, Color.yellow, 1f);
-        }
-
+        
         protected override void Unlink()
         {
             inputs.Attack.Attack.performed -= OnAttack;
@@ -359,21 +354,27 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity1.canceled -= OnReleaseCapacity1;
             inputs.Capacity.Capacity2.canceled -= OnReleaseCapacity2;
 
-            inputs.Capacity.ThrowCapacity.performed += OnPressThrowCapacity;
-            inputs.Capacity.ThrowCapacity.canceled += OnReleaseThrowCapacity;
+            inputs.Capacity.ThrowCapacity.performed -= OnPressThrowCapacity;
+            inputs.Capacity.ThrowCapacity.canceled -= OnReleaseThrowCapacity;
+            
+            inputs.Capacity.UpgradeCapacity.performed -= OnPressUpgrade;
+            inputs.Capacity.UpgradeCapacity.canceled -= OnReleaseUpgrade;
+            
+            inputs.Capacity.ShowMaxRangeIndicator.performed -= OnPressShowRange;
+            inputs.Capacity.ShowMaxRangeIndicator.canceled -= OnReleaseShowRange;
 
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
-
-            inputs.MoveMouse.ActiveButton.performed -= OnRightClick;
-
-            inputs.MoveMouse.MousePos.performed -= OnMouseMove;
-
+            
             inputs.Inventory.ActivateItem0.performed -= OnPressItem0;
             inputs.Inventory.ActivateItem1.performed -= OnPressItem1;
             inputs.Inventory.ActivateItem2.performed -= OnPressItem2;
             inputs.Inventory.ActivateItem0.canceled -= OnReleaseItem0;
             inputs.Inventory.ActivateItem1.canceled -= OnReleaseItem1;
             inputs.Inventory.ActivateItem2.canceled -= OnReleaseItem2;
+            
+            inputs.MoveMouse.RightClick.performed -= OnRightClick;
+
+            inputs.MoveMouse.MousePos.performed -= OnMouseMove;
             
             inputs.MoveMouse.LeftClick.performed -= OnLeftClick;
 
@@ -382,14 +383,8 @@ namespace Controllers.Inputs
             
             inputs.Movement.CancelMove.canceled -= CancelMovement;
 
-            inputs.UpgradeCapacity.Upgrade.performed -= OnPressUpgrade;
-            inputs.UpgradeCapacity.Upgrade.canceled -= OnReleaseUpgrade;
-
             inputs.Emotes.Emote1.performed -= OnPressEmote;
             inputs.Emotes.Emote1.canceled -= OnReleaseEmote;
-            
-            inputs.ShowMaxRange.Show.performed -= OnPressShowRange;
-            inputs.ShowMaxRange.Show.canceled -= OnReleaseShowRange;
 
             CameraController.Instance.UnLinkCamera();
 

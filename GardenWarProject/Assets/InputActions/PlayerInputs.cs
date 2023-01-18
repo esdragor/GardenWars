@@ -28,15 +28,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""id"": ""2b795710-b287-4812-ae8b-43eb8f73991b"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""598f10a3-a71c-4ba7-bccd-c75ad4f936ae"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""CancelMove"",
                     ""type"": ""Button"",
                     ""id"": ""ca7f4080-26b9-4377-8429-685d79c3fa0a"",
@@ -47,61 +38,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""e33561b7-f02a-4f3c-99b3-bcb830ee5774"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""6046c493-1af8-4773-b534-9edb26f34a04"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""db5831e6-3bad-49c1-9063-296195b540ed"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""89c756b9-e98f-4cd1-aa79-c1a0d2e5b28f"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""612eafcd-da8d-4901-8258-b84b7f219246"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": """",
                     ""id"": ""2b7cc26a-ff6b-4dd1-a818-633a43407343"",
@@ -179,6 +115,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowMaxRangeIndicator"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1b44cbe-5eb7-4046-9d05-8cfedf8ec8ef"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UpgradeCapacity"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba44bf19-27de-4214-89ff-00ae981af087"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -234,6 +188,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RecalCapacity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3e086b5-e8eb-4031-9d43-fe99fdb3c0ca"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowMaxRangeIndicator"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc7b1616-0fca-4467-ba17-f4295773f442"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpgradeCapacity"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -389,7 +365,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""ActiveButton"",
+                    ""name"": ""RightClick"",
                     ""type"": ""Button"",
                     ""id"": ""423383cc-dfaf-401e-9009-8a937d79459c"",
                     ""expectedControlType"": ""Button"",
@@ -435,7 +411,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ActiveButton"",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -490,69 +466,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""UpgradeCapacity"",
-            ""id"": ""d961dcde-4da8-42c3-8008-4e732187f491"",
-            ""actions"": [
-                {
-                    ""name"": ""Upgrade"",
-                    ""type"": ""Button"",
-                    ""id"": ""d00588e9-6fe3-4dc7-b334-96b01c21fc25"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""e5453578-efd9-4c2c-a937-8dcd4628b472"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Upgrade"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""ShowMaxRange"",
-            ""id"": ""e1568d58-24c3-433b-a624-2f6df04e2a2d"",
-            ""actions"": [
-                {
-                    ""name"": ""Show"",
-                    ""type"": ""Button"",
-                    ""id"": ""0b9ca180-dacc-474e-924d-9fb3c12ff46a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""ba70edc9-047b-47fb-ab57-89373e1a1dd3"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Show"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": []
 }");
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-        m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
         m_Movement_CancelMove = m_Movement.FindAction("CancelMove", throwIfNotFound: true);
         // Attack
         m_Attack = asset.FindActionMap("Attack", throwIfNotFound: true);
@@ -564,6 +483,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Capacity_Capacity2 = m_Capacity.FindAction("Capacity2", throwIfNotFound: true);
         m_Capacity_ThrowCapacity = m_Capacity.FindAction("ThrowCapacity", throwIfNotFound: true);
         m_Capacity_RecalCapacity = m_Capacity.FindAction("RecalCapacity", throwIfNotFound: true);
+        m_Capacity_ShowMaxRangeIndicator = m_Capacity.FindAction("ShowMaxRangeIndicator", throwIfNotFound: true);
+        m_Capacity_UpgradeCapacity = m_Capacity.FindAction("UpgradeCapacity", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_ActivateItem0 = m_Inventory.FindAction("ActivateItem0", throwIfNotFound: true);
@@ -577,18 +498,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // MoveMouse
         m_MoveMouse = asset.FindActionMap("MoveMouse", throwIfNotFound: true);
         m_MoveMouse_MousePos = m_MoveMouse.FindAction("MousePos", throwIfNotFound: true);
-        m_MoveMouse_ActiveButton = m_MoveMouse.FindAction("ActiveButton", throwIfNotFound: true);
+        m_MoveMouse_RightClick = m_MoveMouse.FindAction("RightClick", throwIfNotFound: true);
         m_MoveMouse_LeftClick = m_MoveMouse.FindAction("LeftClick", throwIfNotFound: true);
         m_MoveMouse_HoldRightClick = m_MoveMouse.FindAction("HoldRightClick", throwIfNotFound: true);
         // Emotes
         m_Emotes = asset.FindActionMap("Emotes", throwIfNotFound: true);
         m_Emotes_Emote1 = m_Emotes.FindAction("Emote1", throwIfNotFound: true);
-        // UpgradeCapacity
-        m_UpgradeCapacity = asset.FindActionMap("UpgradeCapacity", throwIfNotFound: true);
-        m_UpgradeCapacity_Upgrade = m_UpgradeCapacity.FindAction("Upgrade", throwIfNotFound: true);
-        // ShowMaxRange
-        m_ShowMaxRange = asset.FindActionMap("ShowMaxRange", throwIfNotFound: true);
-        m_ShowMaxRange_Show = m_ShowMaxRange.FindAction("Show", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -648,13 +563,11 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // Movement
     private readonly InputActionMap m_Movement;
     private IMovementActions m_MovementActionsCallbackInterface;
-    private readonly InputAction m_Movement_Move;
     private readonly InputAction m_Movement_CancelMove;
     public struct MovementActions
     {
         private @PlayerInputs m_Wrapper;
         public MovementActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Movement_Move;
         public InputAction @CancelMove => m_Wrapper.m_Movement_CancelMove;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
@@ -665,9 +578,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_MovementActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnMove;
                 @CancelMove.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
                 @CancelMove.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
                 @CancelMove.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
@@ -675,9 +585,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             m_Wrapper.m_MovementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
                 @CancelMove.started += instance.OnCancelMove;
                 @CancelMove.performed += instance.OnCancelMove;
                 @CancelMove.canceled += instance.OnCancelMove;
@@ -727,6 +634,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Capacity_Capacity2;
     private readonly InputAction m_Capacity_ThrowCapacity;
     private readonly InputAction m_Capacity_RecalCapacity;
+    private readonly InputAction m_Capacity_ShowMaxRangeIndicator;
+    private readonly InputAction m_Capacity_UpgradeCapacity;
     public struct CapacityActions
     {
         private @PlayerInputs m_Wrapper;
@@ -736,6 +645,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Capacity2 => m_Wrapper.m_Capacity_Capacity2;
         public InputAction @ThrowCapacity => m_Wrapper.m_Capacity_ThrowCapacity;
         public InputAction @RecalCapacity => m_Wrapper.m_Capacity_RecalCapacity;
+        public InputAction @ShowMaxRangeIndicator => m_Wrapper.m_Capacity_ShowMaxRangeIndicator;
+        public InputAction @UpgradeCapacity => m_Wrapper.m_Capacity_UpgradeCapacity;
         public InputActionMap Get() { return m_Wrapper.m_Capacity; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -760,6 +671,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @RecalCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
                 @RecalCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
                 @RecalCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
+                @ShowMaxRangeIndicator.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnShowMaxRangeIndicator;
+                @ShowMaxRangeIndicator.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnShowMaxRangeIndicator;
+                @ShowMaxRangeIndicator.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnShowMaxRangeIndicator;
+                @UpgradeCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnUpgradeCapacity;
+                @UpgradeCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnUpgradeCapacity;
+                @UpgradeCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnUpgradeCapacity;
             }
             m_Wrapper.m_CapacityActionsCallbackInterface = instance;
             if (instance != null)
@@ -779,6 +696,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @RecalCapacity.started += instance.OnRecalCapacity;
                 @RecalCapacity.performed += instance.OnRecalCapacity;
                 @RecalCapacity.canceled += instance.OnRecalCapacity;
+                @ShowMaxRangeIndicator.started += instance.OnShowMaxRangeIndicator;
+                @ShowMaxRangeIndicator.performed += instance.OnShowMaxRangeIndicator;
+                @ShowMaxRangeIndicator.canceled += instance.OnShowMaxRangeIndicator;
+                @UpgradeCapacity.started += instance.OnUpgradeCapacity;
+                @UpgradeCapacity.performed += instance.OnUpgradeCapacity;
+                @UpgradeCapacity.canceled += instance.OnUpgradeCapacity;
             }
         }
     }
@@ -886,7 +809,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MoveMouse;
     private IMoveMouseActions m_MoveMouseActionsCallbackInterface;
     private readonly InputAction m_MoveMouse_MousePos;
-    private readonly InputAction m_MoveMouse_ActiveButton;
+    private readonly InputAction m_MoveMouse_RightClick;
     private readonly InputAction m_MoveMouse_LeftClick;
     private readonly InputAction m_MoveMouse_HoldRightClick;
     public struct MoveMouseActions
@@ -894,7 +817,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         private @PlayerInputs m_Wrapper;
         public MoveMouseActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @MousePos => m_Wrapper.m_MoveMouse_MousePos;
-        public InputAction @ActiveButton => m_Wrapper.m_MoveMouse_ActiveButton;
+        public InputAction @RightClick => m_Wrapper.m_MoveMouse_RightClick;
         public InputAction @LeftClick => m_Wrapper.m_MoveMouse_LeftClick;
         public InputAction @HoldRightClick => m_Wrapper.m_MoveMouse_HoldRightClick;
         public InputActionMap Get() { return m_Wrapper.m_MoveMouse; }
@@ -909,9 +832,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MousePos.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
                 @MousePos.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
                 @MousePos.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
-                @ActiveButton.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnActiveButton;
-                @ActiveButton.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnActiveButton;
-                @ActiveButton.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnActiveButton;
+                @RightClick.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnRightClick;
+                @RightClick.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnRightClick;
+                @RightClick.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnRightClick;
                 @LeftClick.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnLeftClick;
                 @LeftClick.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnLeftClick;
                 @LeftClick.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnLeftClick;
@@ -925,9 +848,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MousePos.started += instance.OnMousePos;
                 @MousePos.performed += instance.OnMousePos;
                 @MousePos.canceled += instance.OnMousePos;
-                @ActiveButton.started += instance.OnActiveButton;
-                @ActiveButton.performed += instance.OnActiveButton;
-                @ActiveButton.canceled += instance.OnActiveButton;
+                @RightClick.started += instance.OnRightClick;
+                @RightClick.performed += instance.OnRightClick;
+                @RightClick.canceled += instance.OnRightClick;
                 @LeftClick.started += instance.OnLeftClick;
                 @LeftClick.performed += instance.OnLeftClick;
                 @LeftClick.canceled += instance.OnLeftClick;
@@ -971,75 +894,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public EmotesActions @Emotes => new EmotesActions(this);
-
-    // UpgradeCapacity
-    private readonly InputActionMap m_UpgradeCapacity;
-    private IUpgradeCapacityActions m_UpgradeCapacityActionsCallbackInterface;
-    private readonly InputAction m_UpgradeCapacity_Upgrade;
-    public struct UpgradeCapacityActions
-    {
-        private @PlayerInputs m_Wrapper;
-        public UpgradeCapacityActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Upgrade => m_Wrapper.m_UpgradeCapacity_Upgrade;
-        public InputActionMap Get() { return m_Wrapper.m_UpgradeCapacity; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(UpgradeCapacityActions set) { return set.Get(); }
-        public void SetCallbacks(IUpgradeCapacityActions instance)
-        {
-            if (m_Wrapper.m_UpgradeCapacityActionsCallbackInterface != null)
-            {
-                @Upgrade.started -= m_Wrapper.m_UpgradeCapacityActionsCallbackInterface.OnUpgrade;
-                @Upgrade.performed -= m_Wrapper.m_UpgradeCapacityActionsCallbackInterface.OnUpgrade;
-                @Upgrade.canceled -= m_Wrapper.m_UpgradeCapacityActionsCallbackInterface.OnUpgrade;
-            }
-            m_Wrapper.m_UpgradeCapacityActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Upgrade.started += instance.OnUpgrade;
-                @Upgrade.performed += instance.OnUpgrade;
-                @Upgrade.canceled += instance.OnUpgrade;
-            }
-        }
-    }
-    public UpgradeCapacityActions @UpgradeCapacity => new UpgradeCapacityActions(this);
-
-    // ShowMaxRange
-    private readonly InputActionMap m_ShowMaxRange;
-    private IShowMaxRangeActions m_ShowMaxRangeActionsCallbackInterface;
-    private readonly InputAction m_ShowMaxRange_Show;
-    public struct ShowMaxRangeActions
-    {
-        private @PlayerInputs m_Wrapper;
-        public ShowMaxRangeActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Show => m_Wrapper.m_ShowMaxRange_Show;
-        public InputActionMap Get() { return m_Wrapper.m_ShowMaxRange; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ShowMaxRangeActions set) { return set.Get(); }
-        public void SetCallbacks(IShowMaxRangeActions instance)
-        {
-            if (m_Wrapper.m_ShowMaxRangeActionsCallbackInterface != null)
-            {
-                @Show.started -= m_Wrapper.m_ShowMaxRangeActionsCallbackInterface.OnShow;
-                @Show.performed -= m_Wrapper.m_ShowMaxRangeActionsCallbackInterface.OnShow;
-                @Show.canceled -= m_Wrapper.m_ShowMaxRangeActionsCallbackInterface.OnShow;
-            }
-            m_Wrapper.m_ShowMaxRangeActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Show.started += instance.OnShow;
-                @Show.performed += instance.OnShow;
-                @Show.canceled += instance.OnShow;
-            }
-        }
-    }
-    public ShowMaxRangeActions @ShowMaxRange => new ShowMaxRangeActions(this);
     public interface IMovementActions
     {
-        void OnMove(InputAction.CallbackContext context);
         void OnCancelMove(InputAction.CallbackContext context);
     }
     public interface IAttackActions
@@ -1053,6 +909,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnCapacity2(InputAction.CallbackContext context);
         void OnThrowCapacity(InputAction.CallbackContext context);
         void OnRecalCapacity(InputAction.CallbackContext context);
+        void OnShowMaxRangeIndicator(InputAction.CallbackContext context);
+        void OnUpgradeCapacity(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {
@@ -1069,20 +927,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IMoveMouseActions
     {
         void OnMousePos(InputAction.CallbackContext context);
-        void OnActiveButton(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
         void OnLeftClick(InputAction.CallbackContext context);
         void OnHoldRightClick(InputAction.CallbackContext context);
     }
     public interface IEmotesActions
     {
         void OnEmote1(InputAction.CallbackContext context);
-    }
-    public interface IUpgradeCapacityActions
-    {
-        void OnUpgrade(InputAction.CallbackContext context);
-    }
-    public interface IShowMaxRangeActions
-    {
-        void OnShow(InputAction.CallbackContext context);
     }
 }
