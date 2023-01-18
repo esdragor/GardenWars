@@ -50,8 +50,12 @@ namespace Entities.Champion
             areaIndicatorGo = Instantiate(areaIndicatorPrefab);
             areaIndicatorGo.GetComponent<Renderer>().material = areaMat;
             areaIndicatorTr = areaIndicatorGo.transform;
+
+            skillShotIndicatorTr = skillShotIndicatorGo.transform;
             
             HideMaxRangeIndicator();
+            HideAreaIndicator();
+            HideSkillShotIndicator();
         }
 
         protected override void OnUpdate()
