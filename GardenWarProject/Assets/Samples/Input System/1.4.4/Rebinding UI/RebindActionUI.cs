@@ -329,6 +329,37 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             m_RebindOperation.Start();
         }
 
+
+        private bool CheckDuplicateBindings(InputAction action, int bindingIndex, bool allCompositeParts = false)
+        {
+            InputBinding newBinding = action.bindings[bindingIndex];
+
+            foreach (InputBinding binding in action.actionMap.bindings)
+            {
+                if (binding.action == newBinding.action)
+                    continue;
+                if (binding.effectivePath == newBinding.effectivePath)
+                {
+                    Debug.Log($"Duplicate binding found for {newBinding.effectivePath} on {newBinding.action}");
+                    return true;
+                }
+            }
+
+            if (allCompositeParts)
+            {
+                for (int i = 0; i < bindingIndex; i++)
+                {
+                    if (action.bindings[i].effectivePath == newBinding.effectivePath)
+                    {
+                        Debug.Log($"Duplicate binding found for {newBinding.effectivePath} on {newBinding.action}");
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         protected void OnEnable()
         {
             if (s_RebindActionUIs == null)
