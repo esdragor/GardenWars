@@ -21,7 +21,10 @@ namespace Entities
         public static int level;
         private int maxBonbon => level % 2 == 0 ? 30 + 20 * level : 30 + 20 * level - 1;
         [SerializeField] private int currentBonbon;
-
+        private bool playerIsFigher;
+        private Champion.Champion currentFeeder;
+        
+        
         [Header("Indicator")]
         [SerializeField] private RectTransform indicator;
         //[SerializeField] private RectTransform rotator;
@@ -29,15 +32,12 @@ namespace Entities
         [SerializeField] private float margin;
         //private GameObject rotatorGo;
         private Vector3 iconPos;
-
-        private bool playerIsFigher;
-        
         private Camera cam;
+        
+       
         
         private bool isAlive = true;
         private bool canDie = true;
-
-
         protected override void OnStart()
         {
             OnInstantiated();
@@ -50,8 +50,11 @@ namespace Entities
         public override void OnInstantiated()
         {
             isAlive = true;
+            canDie = true;
             
             cam = Camera.main;
+
+            currentFeeder = null;
 
             //UIManager.Instance.InstantiateHealthBarForEntity(this);
         }
@@ -177,9 +180,44 @@ namespace Entities
         public event GlobalDelegates.NoParameterDelegate OnRevive;
         public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
 
-        public void StartChanneling()
+        public void StartChanneling(Champion.Champion champion)
         {
-            Debug.Log("YAYAYAYAYA");
+            if (currentFeeder != null)
+            {
+                Debug.Log($"{currentFeeder} is already feeding");
+                return;
+            }
+            currentFeeder = champion;
+            
+            Debug.Log($"current feeder is {currentFeeder}");
+
+            currentFeeder.OnMoving += StopChanneling;
+            currentFeeder.OnCast += StopChanneling;
+            currentFeeder.OnAttack += StopChanneling;
         }
+        
+        void StopChanneling(byte _,int __, Vector3 ___)
+        {
+            StopChanneling();
+        }
+        
+        void StopChanneling(bool moving)
+        {
+            if(moving) StopChanneling();
+        }
+        
+        void StopChanneling()
+        {
+            Debug.Log($"Stopped channeling");
+            
+            currentFeeder.OnMoving -= StopChanneling;
+            currentFeeder.OnCast -= StopChanneling;
+            currentFeeder.OnAttack -= StopChanneling;
+            
+            
+            currentFeeder = null;
+        }
+        
+        
     }
 }

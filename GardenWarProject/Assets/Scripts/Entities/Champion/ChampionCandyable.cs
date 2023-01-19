@@ -291,7 +291,7 @@ namespace Entities.Champion
                 return;
             }
                 
-            photonView.RPC("ChannelPinataRPC", RpcTarget.All, pinata.entityIndex);
+            photonView.RPC("ChannelPinataRPC", RpcTarget.MasterClient, pinata.entityIndex);
         }
 
         [PunRPC]
@@ -300,7 +300,7 @@ namespace Entities.Champion
             var entity = EntityCollectionManager.GetEntityByIndex(pinataIndex);
             if (entity is Pinata pinata)
             {
-                pinata.StartChanneling();
+                pinata.StartChanneling(this);
             }
         }
     }

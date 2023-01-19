@@ -21,6 +21,7 @@ namespace GameStates
         
         private int expectedEmotes;
         private int receivedEmotes;
+        private int sentEmotes;
         private Dictionary<int, bool> emoteLoadingDict = new Dictionary<int, bool>();
 
 
@@ -31,18 +32,17 @@ namespace GameStates
 
         public void LoadEmotes()
         {
-            if (isMaster)
+            Debug.Log("Loading Emotes");
+            
+            if (!isMaster) return;
+            
+            if (GameSettingsManager.IgnoreEmotes)
             {
-                if (GameSettingsManager.IgnoreEmotes)
-                {
-                    Debug.Log("Ignoring Emotes");
-                    StartLoadingMap();
-                    return;
-                }
-                
-                PrepareToReceiveEmoteDataRPC();
+                Debug.Log("Ignoring Emotes");
+                StartLoadingMap();
                 return;
             }
+            
             photonView.RPC("PrepareToReceiveEmoteDataRPC", RpcTarget.All);
         }
         
@@ -53,6 +53,9 @@ namespace GameStates
             
             expectedEmotes = playerDataDict.Count * 6;
             receivedEmotes = 0;
+            sentEmotes = 0;
+            
+            Debug.Log($"Expecting {expectedEmotes} emotes");
 
             emoteLoadingDict.Clear();
             foreach (var actorNumber in playerDataDict.Keys)
@@ -74,6 +77,9 @@ namespace GameStates
 
         private async void SendEmote(byte[] bytes,int actorNumber,int index)
         {
+            sentEmotes++;
+            Debug.Log($"Sending emote, now at {sentEmotes}/6");
+            
             int max = maxBytePackSize;
             if (bytes.Length <= max)
             {
@@ -139,7 +145,7 @@ namespace GameStates
 
         private void OnReceivedEmote()
         {
-            //Debug.Log($"Receive emote, now at {receivedEmotes}/{expectedEmotes}");
+            Debug.Log($"Receive emote, now at {receivedEmotes}/{expectedEmotes}");
             
             if(receivedEmotes < expectedEmotes) return;
             
