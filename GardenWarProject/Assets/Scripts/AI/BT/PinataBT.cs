@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using BehaviourTree;
+using Entities;
 using Test.IA_BL.Task;
 using UnityEngine;
 using UnityEngine.AI;

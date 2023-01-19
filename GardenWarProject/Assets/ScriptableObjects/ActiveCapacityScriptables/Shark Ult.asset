@@ -16,11 +16,12 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 55a3622adfcbc524284863f53438b896, type: 3}
   description: Original do not steal
   maxLevel: 2
-  cooldown: 0
+  cooldown: 30
   castTime: 0
   maxRange: 3
   types: 00000000
   shootType: 1
+  showMaxRangeIfSkillShot: 0
   indexInCollection: 12
   impactArea: {fileID: 4689079691940470199, guid: 00e2eb0805bbae04fa5175df31978ff5, type: 3}
   stun: {fileID: 11400000, guid: a76b16a08ad87cd47a749eabc36b9d58, type: 2}
@@ -28,4 +29,4 @@ MonoBehaviour:
   impactZoneAppearance: 0.9
   sizeMultiplier: 1.5
   borrowDuration: 1
-  damage: 50
+  damage: 25

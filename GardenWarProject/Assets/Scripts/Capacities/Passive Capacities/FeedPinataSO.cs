@@ -5,17 +5,19 @@ using UnityEngine;
 
 namespace Entities.Capacities
 {
-    [CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO/RecallPassive", fileName = "RecallPassive")]
-    public class RecallPassiveSO : PassiveCapacitySO
+    [CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO/FeedPinata", fileName = "FeedPinata")]
+    public class FeedPinataSO : PassiveCapacitySO
     {
         public override Type AssociatedType()
         {
-            return typeof(RecallPassive);
+            return typeof(FeedPinata);
         }
     }
     
-    public class RecallPassive : PassiveCapacity
+    public class FeedPinata : PassiveCapacity
     {
+        private FeedPinataSO so => (FeedPinataSO)AssociatedPassiveCapacitySO();
+        
         private bool isCanceled;
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
@@ -25,10 +27,12 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            champion.OnDisplace += CancelRecall;
+            /*
+            champion.OnDecreaseCurrentHp += CancelRecall;
             champion.OnMove += CancelRecall;
             champion.OnAttack += CancelRecall;
             champion.OnCast += CancelRecall;
+            */
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
@@ -43,14 +47,7 @@ namespace Entities.Capacities
 
         protected override void OnRemovedEffects(Entity target)
         {
-            champion.OnDisplace -= CancelRecall;
-            champion.OnMove -= CancelRecall;
-            champion.OnAttack -= CancelRecall;
-            champion.OnCast -= CancelRecall;
             
-            if(isCanceled) return;
-            
-            champion.DisplaceRPC(champion.respawnPosition,0);
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
@@ -62,31 +59,6 @@ namespace Entities.Capacities
         {
             
         }
-
-        private void CancelRecall(Vector3 _,float __)
-        {
-            CancelRecall();
-        }
-        
-        private void CancelRecall(Vector3 _)
-        {
-            CancelRecall();
-        }
-        
-        private void CancelRecall(byte index,int _,Vector3 __)
-        {
-            if(index == champion.recallAbilityIndex) return;
-            
-            CancelRecall();
-        }
-
-        private void CancelRecall()
-        {
-            isCanceled = true;
-
-            internalPassiveTimer = 0;
-        }
     }
 }
-
 

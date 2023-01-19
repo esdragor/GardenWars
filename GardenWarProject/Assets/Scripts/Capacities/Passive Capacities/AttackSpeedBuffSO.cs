@@ -24,7 +24,7 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            champion.ChangeAttackSpeedRPC(-(float)so.timeGained);
+            champion.ChangeAttackSpeedRPC((float)so.timeGained);
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
@@ -39,7 +39,7 @@ namespace Entities.Capacities
 
         protected override void OnRemovedEffects(Entity target)
         {
-            champion.ChangeAttackSpeedRPC((float)so.timeGained);
+            champion.ChangeAttackSpeedRPC(-(float)so.timeGained);
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)

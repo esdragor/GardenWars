@@ -15,15 +15,19 @@ MonoBehaviour:
   capacityName: Big Shot
   icon: {fileID: 21300000, guid: 8cafc9b83a3a950449a679bfe75d72f1, type: 3}
   description: C l'ult de ashe mais il stun pas :(
-  maxLevel: 3
-  cooldown: 30
-  castTime: 0.4
+  maxLevel: 2
+  cooldown: 1
+  castTime: 0
   maxRange: 100
   types: 00000000
   shootType: 0
+  showMaxRangeIfSkillShot: 0
   indexInCollection: 4
   projectile: {fileID: 4689079691940470199, guid: 3918df71962f5b149b2e159a2fa9f538, type: 3}
+  areaExplosionFx: {fileID: 2111450335713149475, guid: d6fa2ffb28c5f61489ecac07b14a812b, type: 3}
+  explosionRadius: 5
+  explosionFxMultiplier: 0.4
   projectileSpeed: 7
-  projectileDamage: 1000
+  projectileDamage: 40
   FXLaunch: {fileID: 7438705932272510266, guid: 7231bbe4c62592a4fb5c60af9db80129, type: 3}
   FXBurst: {fileID: 6711204043633888654, guid: ba6700ec2899db847ad5c5b43da7d2d2, type: 3}

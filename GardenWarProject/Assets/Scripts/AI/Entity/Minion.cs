@@ -18,14 +18,16 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public Animator animatorTrap;
     public Transform BasketGoal;
 
-    [SerializeField] private bool canMove = true;
-    [SerializeField] private bool canAttack = true;
+    [Header("Stats")]
     [SerializeField] private float attackValue = 5f;
-    [SerializeField] private float referenceMoveSpeed;
-    [SerializeField] private NavMeshAgent agent;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float MaxHP = 100f;
     [SerializeField] private float currentHp = 100f;
+    
+    [SerializeField] private bool canMove = true;
+    [SerializeField] private bool canAttack = true;
+    [SerializeField] private float referenceMoveSpeed;
+    [SerializeField] private NavMeshAgent agent;
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private GameObject MinionDieFX;
     [SerializeField] private int NbCandyDropOnDeath = 5;

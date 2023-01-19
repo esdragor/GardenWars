@@ -7,6 +7,7 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/ArcherVentouse", fileName = "new ArcherVentouse")]
     public class ArcherVentouseSO : ActiveCapacitySO
     {
+        public ArcherGrabDebuffSO debuff;
         public ProjectileOnCollideEffect projectile;
         public float projectileSpeed = 1f;
         public float projectileDamage;
@@ -73,10 +74,12 @@ namespace Entities.Capacities
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
             var projectile = LocalPoolManager.PoolInstantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
-            Grab grabcs = projectile.GetComponent<Grab>();
+            var grabcs = projectile.GetComponent<Grab>();
             grabcs.StartGrab(caster.transform);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
+
+            var displacementDestination = champion.position + champion.forward * so.dragDistance;
             
             var projectileTr = projectile.transform;
 
@@ -98,6 +101,10 @@ namespace Entities.Capacities
 
             void DealDamage(Entity entity)
             {
+                if(level < 1) return;
+                
+                if(level >= 3) entity.AddPassiveCapacityRPC(so.debuff.indexInCollection);
+                
                 var lifeable = entity.GetComponent<IActiveLifeable>();
 
                 lifeable?.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
@@ -107,7 +114,7 @@ namespace Entities.Capacities
             {
                 var displaceable = entity.GetComponent<IDisplaceable>();
                 
-                displaceable?.DisplaceRPC(champion.position + champion.forward*so.dragDistance,so.dragTime);
+                displaceable?.DisplaceRPC(displacementDestination,so.dragTime);
             }
             
             void EntityCollide(Entity entity)

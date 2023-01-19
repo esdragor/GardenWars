@@ -11,8 +11,8 @@ namespace Entities.Capacities
         public float borrowTransitionDuration = 1f;
         public float unBorrowTransitionDuration = 0.683f;
         public float borrowDamage = 10f;
-        public double knockUpDuration = 1;
         public float knockUpDamage = 20f;
+        public float increasedMoveSpeed = 1f;
         public ProjectileOnCollideEffect aileron;
         public StunPassiveSO stunPassive;
         public ParticleSystem UnborrowBlue;
@@ -115,6 +115,8 @@ namespace Entities.Capacities
             {
                 if(untargetable) champion.SetCanBeTargetedRPC(false);
                 
+                champion.IncreaseCurrentMoveSpeedRPC(so.increasedMoveSpeed);
+                
                 champion.OnAttack += StunTarget;
             }
 
@@ -155,6 +157,8 @@ namespace Entities.Capacities
             if (Entity.isMaster)
             {
                 champion.OnAttack -= StunTarget;
+                
+                champion.DecreaseCurrentMoveSpeedRPC(so.increasedMoveSpeed);
             }
             
             //champion.rotateParent.localPosition = Vector3.zero;
@@ -195,7 +199,7 @@ namespace Entities.Capacities
             
             var lifeable = entity.GetComponent<IActiveLifeable>();
             
-            lifeable.DecreaseCurrentHpRPC(so.borrowDamage+bonusDamage, champion.entityIndex);
+            lifeable?.DecreaseCurrentHpRPC(so.borrowDamage+bonusDamage, champion.entityIndex);
         }
 
         protected override void OnRemovedEffects(Entity target)

@@ -431,10 +431,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c48a0861fcf52245bf86165f81cbd47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionsPerWave: 5
+  minionsPerWave: 10
   timeBetweenMinionSpawn: 0.3
   timeBetweenWaves: 30
-  timeBeforeFirstWave: 0
+  timeBeforeFirstWave: 5
   SpawnPoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -454,9 +454,9 @@ MonoBehaviour:
   - {fileID: 0}
   pinataSpawnPoints:
   - {fileID: 5146283350326915587}
-  timeBeforeSpawnPinata: 4
-  timeBeforeRespawnPinata: 5
-  timeBetweenPinataLevelUp: 30
+  timeBeforeSpawnPinata: 5
+  timeBeforeRespawnPinata: 10
+  timeBetweenPinataLevelUp: 60
   pinataLevel: 0
   minionTimer: 0
   pinataTimer: 0

@@ -4,6 +4,9 @@ public class GameSettingsManager : MonoBehaviour
 {
     private static GameSettingsManager instance;
 
+    public bool ignoreEmotes;
+    public static bool IgnoreEmotes => instance.ignoreEmotes;
+
     private string pName;
     private byte[][] emoteBytes;
 
@@ -44,6 +47,6 @@ public class GameSettingsManager : MonoBehaviour
         if(index >= 6) return;
         instance.emoteBytes[index] = bytes;
     }
-    
-    
+
+
 }

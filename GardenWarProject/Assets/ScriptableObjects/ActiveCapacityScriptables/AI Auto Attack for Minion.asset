@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17864f56e1624845a4eeff929087887, type: 3}
   m_Name: AI Auto Attack for Minion
   m_EditorClassIdentifier: 
-  abilityName: 
+  capacityName: 
   icon: {fileID: 0}
   description: 
+  maxLevel: 3
   cooldown: 0
+  castTime: 0
   maxRange: 0
   types: 04000000
   shootType: 0
+  showMaxRangeIfSkillShot: 0
   indexInCollection: 0
-  AtkValue: 5
+  AtkValue: 10

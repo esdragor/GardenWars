@@ -33,6 +33,13 @@ namespace GameStates
         {
             if (isMaster)
             {
+                if (GameSettingsManager.IgnoreEmotes)
+                {
+                    Debug.Log("Ignoring Emotes");
+                    StartLoadingMap();
+                    return;
+                }
+                
                 PrepareToReceiveEmoteDataRPC();
                 return;
             }

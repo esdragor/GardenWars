@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb8302b8cf8d7944ba990f0d6c70efdc, type: 3}
-  m_Name: Dash (Fixed Distance)
+  m_Name: Archer Dash
   m_EditorClassIdentifier: 
   capacityName: Big Dash
   icon: {fileID: 21300000, guid: 4a4251928ee82b54986c33cf349deeab, type: 3}
@@ -18,7 +18,7 @@ MonoBehaviour:
   maxLevel: 3
   cooldown: 3
   castTime: 0
-  maxRange: 7.5
+  maxRange: 4.25
   types: 
   shootType: 0
   showMaxRangeIfSkillShot: 0
@@ -26,6 +26,6 @@ MonoBehaviour:
   isBlink: 0
   dashTime: 0.1
   fixedDistance: 1
-  canPassWalls: 1
+  canPassWalls: 0
   FXDashBlue: {fileID: 4170322446005998126, guid: 24d10fc53a1acc6468a66e318364aed8, type: 3}
   FXDashRed: {fileID: 6302747510868648293, guid: 6ec844cdb342bc944ba8bc956b20ccaf, type: 3}

@@ -23,7 +23,7 @@ namespace Entities.Capacities
 
         public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
         public bool isOnCooldown;
-        public double cooldownTimer { get; private set; }
+        public double cooldownTimer { get; protected set; }
 
         private double castTimeTimer;
         private double castTime => AssociatedActiveCapacitySO().castTime;
@@ -131,6 +131,7 @@ namespace Entities.Capacities
 
         public void OnHold(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            if(isOnCooldown) return;
             if(isMaster) Hold(targetsEntityIndexes,targetPositions);
             HoldFeedback(targetsEntityIndexes,targetPositions);
             

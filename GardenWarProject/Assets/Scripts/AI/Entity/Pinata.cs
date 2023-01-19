@@ -1,31 +1,25 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Entities;
-using Entities.Capacities;
-using Entities.Champion;
-using Entities.FogOfWar;
-using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.AI;
-using Object = System.Object;
 using Random = UnityEngine.Random;
 
-public class Pinata : Entity, IAttackable, IActiveLifeable, IDeadable
+namespace Entities
 {
-    public ActivePinataAutoSO activePinataAutoSO;
+    using FogOfWar;
+    using Inventory;
     
-    [SerializeField] private bool canAttack = true;
-    [SerializeField] private float attackValue = 5f;
+    public class Pinata : Entity, IDeadable
+{
+    [Header("Visual")]
     [SerializeField] private Transform FalseFX;
     [SerializeField] private GameObject Mesh;
-    
-    [SerializeField] private float MaxHP = 100f;
-    [SerializeField] private float currentHp = 100f;
     [SerializeField] private GameObject PinataDieFX;
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private Animator[] Myanimators;
+
+    [Header("Fill")]
+    [SerializeField] private int maxBonbon = 50;
+    private int currentBonbon;
     
     private bool isAlive = true;
     private bool canDie = true;
@@ -42,7 +36,6 @@ public class Pinata : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public override void OnInstantiated()
     {
-        currentHp = MaxHP;
         isAlive = true;
         
         UIManager.Instance.InstantiateHealthBarForEntity(this);
@@ -60,279 +53,6 @@ public class Pinata : Entity, IAttackable, IActiveLifeable, IDeadable
 
         return im.CreateItem((byte)randomItem, this);
     }
-
-    public bool CanAttack()
-    {
-        return canAttack;
-    }
-
-     public void RequestSetCanAttack(bool value)
-     {
-         if (isMaster)
-         {
-             SetCanAttackRPC(value);
-             return;
-         }
-         photonView.RPC("SetCanAttackRPC", RpcTarget.MasterClient, value);
-     }
-        
-     [PunRPC]
-     public void SetCanAttackRPC(bool value)
-     {
-         canAttack = value;
-         OnSetCanAttack?.Invoke(value);
-         if (isOffline)
-         {
-             SyncSetCanAttackRPC(value);
-             return;
-         }
-         photonView.RPC("SyncSetCanAttackRPC", RpcTarget.All, value);
-     }
-
-     [PunRPC]
-     public void SyncSetCanAttackRPC(bool value)
-     {
-         canAttack = value;
-         OnSetCanAttackFeedback?.Invoke(value);
-     }
-
-    public event GlobalDelegates.BoolDelegate OnSetCanAttack;
-    public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;
-
-    public float GetAttackDamage()
-    {
-        return attackValue;
-    }
-
-    public void RequestSetAttackDamage(float value)
-    {
-        SetAttackDamageRPC(value);
-    }
-    [PunRPC]
-    public void SyncSetAttackDamageRPC(float value)
-    {
-        attackValue = value;
-        OnSetAttackDamage?.Invoke(attackValue);
-        OnSetAttackDamageFeedback?.Invoke(attackValue);
-    }
-    [PunRPC]
-    public void SetAttackDamageRPC(float value)
-    {
-        attackValue = value;
-        photonView.RPC("SyncSetAttackDamageRPC", RpcTarget.All, value);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
-    public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
-
-    public void RequestAttack(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
-    {
-        photonView.RPC("AttackRPC", RpcTarget.MasterClient, attackIndex, targetedEntities, targetedPositions);
-    }
-    [PunRPC]
-    public void SyncAttackRPC(byte capacityIndex, int targetedEntities, Vector3 targetedPositions)
-    {
-        if(FalseFX)
-        FalseFX.gameObject.SetActive(true);
-        OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
-        OnAttackFeedback?.Invoke(capacityIndex, targetedEntities, targetedPositions);
-    }
-    [PunRPC]
-    public void AttackRPC(byte attackIndex, int targetedEntities, Vector3 targetedPositions)
-    {
-        attackValue = ((ActivePinataAutoSO)CapacitySOCollectionManager.GetActiveCapacitySOByIndex(attackIndex)).AtkValue;
-        var entity = EntityCollectionManager.GetEntityByIndex(targetedEntities);
-        entity.GetComponent<IActiveLifeable>().DecreaseCurrentHpRPC(attackValue, entityIndex);
-        photonView.RPC("SyncAttackRPC", RpcTarget.All, attackIndex, targetedEntities, targetedPositions);
-    }
-
-    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
-    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
-
-    public float GetMaxHp()
-    {
-        return MaxHP;
-    }
-
-    public float GetCurrentHp()
-    {
-        return currentHp;
-    }
-
-    public float GetCurrentHpPercent()
-    {
-        if (MaxHP == 0) return 0;
-        return currentHp / MaxHP * 100;
-    }
-
-    public void RequestSetMaxHp(float value)
-    {
-        SetMaxHpRPC(value);
-    }
-    [PunRPC]
-    public void SyncSetMaxHpRPC(float value)
-    {
-        MaxHP = value;
-        OnSetMaxHp?.Invoke(MaxHP);
-        OnSetMaxHpFeedback?.Invoke(MaxHP);
-    }
-    [PunRPC]
-    public void SetMaxHpRPC(float value)
-    {
-        MaxHP = value;
-        photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, value);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnSetMaxHp;
-    public event GlobalDelegates.FloatDelegate OnSetMaxHpFeedback;
-
-    public void RequestIncreaseMaxHp(float amount, int killerId)
-    {
-        IncreaseMaxHpRPC(amount, killerId);
-    }
-    [PunRPC]
-    public void SyncIncreaseMaxHpRPC(float amount, int killerId)
-    {
-        MaxHP += amount;
-        OnIncreaseMaxHp?.Invoke(MaxHP);
-        OnIncreaseMaxHpFeedback?.Invoke(MaxHP);
-    }
-    [PunRPC]
-    public void IncreaseMaxHpRPC(float amount, int killerId)
-    {
-        MaxHP += amount;
-        photonView.RPC("SyncIncreaseMaxHpRPC", RpcTarget.All, amount, killerId);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
-    public event GlobalDelegates.FloatDelegate OnIncreaseMaxHpFeedback;
-
-    public void RequestDecreaseMaxHp(float amount, int killerId)
-    {
-        DecreaseMaxHpRPC(amount, killerId);
-    }
-    [PunRPC]
-    public void SyncDecreaseMaxHpRPC(float amount, int killerId)
-    {
-        MaxHP -= amount;
-        OnDecreaseMaxHp?.Invoke(MaxHP);
-        OnDecreaseMaxHpFeedback?.Invoke(MaxHP);
-    }
-    [PunRPC]
-    public void DecreaseMaxHpRPC(float amount, int killerId)
-    {
-        MaxHP -= amount;
-        photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, amount, killerId);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
-    public event GlobalDelegates.FloatDelegate OnDecreaseMaxHpFeedback;
-
-    public void RequestSetCurrentHp(float value)
-    {
-        SetCurrentHpRPC(value);
-    }
-    [PunRPC]
-    public void SyncSetCurrentHpRPC(float value)
-    {
-        currentHp = value;
-        OnSetCurrentHp?.Invoke(currentHp);
-        OnSetCurrentHpFeedback?.Invoke(currentHp);
-    }
-    [PunRPC]
-    public void SetCurrentHpRPC(float value)
-    {
-        currentHp = value;
-        photonView.RPC("SyncSetCurrentHpRPC", RpcTarget.All, value);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
-    public event GlobalDelegates.FloatDelegate OnSetCurrentHpFeedback;
-
-    public void RequestSetCurrentHpPercent(float value)
-    {
-        SetCurrentHpPercentRPC(value);
-    }
-    
-    [PunRPC]
-    public void SyncSetCurrentHpPercentRPC(float value)
-    {
-        currentHp = (value / 100) * MaxHP;
-        OnSetCurrentHpPercent?.Invoke(currentHp);
-        OnSetCurrentHpPercentFeedback?.Invoke(currentHp);
-    }
-    [PunRPC]
-    public void SetCurrentHpPercentRPC(float value)
-    {
-        currentHp = (value / 100) * MaxHP;
-        photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, value);
-    }
-
-    public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
-    public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
-
-    public void RequestIncreaseCurrentHp(float amount, int killerId)
-    {
-        IncreaseCurrentHpRPC(amount, killerId);
-    }
-
-    [PunRPC]
-    public void SyncIncreaseCurrentHpRPC(float amount, int killerId)
-    {
-        currentHp = amount;
-        OnIncreaseCurrentHpFeedback?.Invoke(amount,killerId);
-    }
-
-    [PunRPC]
-    public void IncreaseCurrentHpRPC(float amount, int killerId)
-    {
-        currentHp += amount;
-        if (currentHp > MaxHP) currentHp = MaxHP;
-        OnIncreaseCurrentHp?.Invoke(amount,killerId);
-        
-        photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
-    }
-
-    public event Action<float,int> OnIncreaseCurrentHp;
-    public event Action<float,int> OnIncreaseCurrentHpFeedback;
-
-    public void RequestDecreaseCurrentHp(float amount, int killerId)
-    {
-        photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount, killerId);
-    }
-
-    [PunRPC]
-    public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
-    {
-        currentHp = amount;
-        //Debug.Log("CurrentHP : " + CurrentHP);
-        if (currentHp <= 0)
-        {
-            currentHp = 0;
-            if(isMaster) DieRPC(killerId);
-        }
-        else
-        {
-            HitFX.Play();
-        }
-        OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
-    }
-
-    [PunRPC]
-    public void DecreaseCurrentHpRPC(float amount, int killerId)
-    {
-        currentHp -= amount;
-        OnDecreaseCurrentHp?.Invoke(amount,killerId);
-        if (isOffline)
-        {
-            SyncDecreaseCurrentHpRPC(currentHp, killerId);
-            return;
-        }
-        photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp, killerId);
-    }
-
-    public event Action<float,int> OnDecreaseCurrentHp;
-    public event Action<float,int> OnDecreaseCurrentHpFeedback;
 
     private void DropItem()
     {
@@ -377,7 +97,7 @@ public class Pinata : Entity, IAttackable, IActiveLifeable, IDeadable
     public void DieRPC(int killerId)
     {
         var entity = EntityCollectionManager.GetEntityByIndex(killerId);
-        if (entity && entity is Champion)
+        if (entity && (entity is Champion.Champion))
         {
             // GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
             // ItemBag bag = item.GetComponent<ItemBag>();
@@ -441,3 +161,5 @@ public class Pinata : Entity, IAttackable, IActiveLifeable, IDeadable
     public event GlobalDelegates.NoParameterDelegate OnRevive;
     public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
 }
+}
+
