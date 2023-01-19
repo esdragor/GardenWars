@@ -606,26 +606,10 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         {
             var fxGo = LocalPoolManager.PoolInstantiate(MinionDieFX, transform.position, Quaternion.identity);
             HideMinionDieFx(fxGo, 2000);
-
-            //Destroy(Instantiate(MinionDieFX, transform.position, Quaternion.identity), 2f);
-
+            
             currentHp = 0;
             if (isMaster)
             {
-                var entity = EntityCollectionManager.GetEntityByIndex(killerId);
-                if (entity)
-                {
-                    var champion = entity.GetComponent<Champion>();
-
-                    if (champion != null)
-                    {
-                        if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
-                        {
-                            champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath+level);
-                        }
-                    }
-                }
-
                 DieRPC(killerId);
             }
         }
@@ -705,7 +689,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             {
                 if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
                 {
-                    champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+                    champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath+level);
                 }
             }
         }
