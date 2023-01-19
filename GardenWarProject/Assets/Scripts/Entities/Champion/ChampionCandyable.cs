@@ -224,19 +224,6 @@ namespace Entities.Champion
         {
             currentCandy += amount;
             
-            if (!isFighter)
-            {
-                while (currentCandy >= candyPerLevel)
-                {
-                    currentCandy -= candyPerLevel;
-                    upgradeCount++;
-                }
-            }
-            else
-            {
-                upgradeCount = 0;
-            }
-            
             if (currentCandy > maxCandy) currentCandy = maxCandy;
             OnIncreaseCurrentCandy?.Invoke(amount);
             if (isOffline)

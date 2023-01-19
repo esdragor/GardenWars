@@ -7,6 +7,7 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/ArcherVentouse", fileName = "new ArcherVentouse")]
     public class ArcherVentouseSO : ActiveCapacitySO
     {
+        public ArcherGrabDebuffSO debuff;
         public ProjectileOnCollideEffect projectile;
         public float projectileSpeed = 1f;
         public float projectileDamage;
@@ -100,6 +101,10 @@ namespace Entities.Capacities
 
             void DealDamage(Entity entity)
             {
+                if(level < 1) return;
+                
+                if(level >= 3) entity.AddPassiveCapacityRPC(so.debuff.indexInCollection);
+                
                 var lifeable = entity.GetComponent<IActiveLifeable>();
 
                 lifeable?.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);

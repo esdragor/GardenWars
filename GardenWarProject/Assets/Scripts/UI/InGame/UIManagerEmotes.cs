@@ -46,10 +46,12 @@ public partial class UIManager
         panel.SetActive(false);
         var entityTr = entity.transform;
         var panelTransform = panel.transform;
+        
         gsm.OnUpdateFeedback += UpdateEmotesPosition;
         
         void UpdateEmotesPosition()
         {
+            if(panelTransform == null || entityTr == null) return;
             panelTransform.position = cam.WorldToScreenPoint(entityTr.position) + offset;
         }
     }

@@ -114,9 +114,10 @@ public class LocalPoolManager : MonoBehaviour
         var component = savedAsTransform ? componentDict[prefab.transform].Dequeue().GetComponent<T>() : componentDict[prefab].Dequeue();
 
         component.transform.SetParent(parent);
+        component.transform.localScale = Vector3.one;
 
         component.gameObject.SetActive(true);
-        
+
         if (!requeue) return (T)component;
         
         if(savedAsTransform) 
@@ -145,7 +146,8 @@ public class LocalPoolManager : MonoBehaviour
 
         tr.position = position;
         tr.rotation = rotation;
-        
+        tr.localScale = Vector3.one;
+
         tr.SetParent(parent);
         
         go.SetActive(false);
@@ -173,6 +175,7 @@ public class LocalPoolManager : MonoBehaviour
         var go = gameObjectDic[prefab].Dequeue();
 
         go.transform.SetParent(parent);
+        go.transform.localScale = Vector3.one;
 
         go.SetActive(true);
         
@@ -190,6 +193,7 @@ public class LocalPoolManager : MonoBehaviour
 
         tr.position = position;
         tr.rotation = rotation;
+        tr.localScale = Vector3.one;
         
         tr.SetParent(parent);
         

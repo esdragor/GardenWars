@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Mathematics;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Entities.Capacities
 {
@@ -12,6 +8,10 @@ namespace Entities.Capacities
     public class ArcherUltSO : ActiveCapacitySO
     {
         public ProjectileOnCollideEffect projectile;
+        
+        public float explosionRadius;
+        public float explosionFxMultiplier = 0.5f;
+        
         public float projectileSpeed = 1f;
         public float projectileDamage;
         public ParticleSystem FXLaunch;
@@ -29,6 +29,7 @@ namespace Entities.Capacities
         private ArcherUltSO so => (ArcherUltSO) AssociatedActiveCapacitySO();
         private GameObject FXLaunchGo;
         private GameObject FXLaunchBurst;
+        private Transform burstTr;
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -74,6 +75,15 @@ namespace Entities.Capacities
                 FXLaunchGo.transform.localPosition = new Vector3(0f, 1, shotDirection.z);
                 FXLaunchGo.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             }
+
+            if(!FXLaunchBurst)
+            {
+                FXLaunchBurst = LocalPoolManager.PoolInstantiate(so.FXBurst).gameObject;
+                burstTr = FXLaunchBurst.transform;
+            }
+            
+            FXLaunchBurst.SetActive(false);
+            
             FXLaunchGo.SetActive(false);
             FXLaunchGo.SetActive(true);
 
@@ -113,17 +123,12 @@ namespace Entities.Capacities
                 if (Vector3.Distance(projectileTr.position, targetPos) <= 0.01f)
                 {
                     gsm.OnUpdateFeedback -= MoveProjectile;
-                    if (!FXLaunchBurst)
-                    {
-                        FXLaunchBurst = LocalPoolManager.PoolInstantiate(so.FXBurst, targetPos, quaternion.identity).gameObject;
-                    }
-                    else
-                    {
-                        FXLaunchBurst.transform.position = targetPos;
-                    }
-
-                    FXLaunchBurst.SetActive(false);
+                    
+                    burstTr.position = targetPos;
+                    burstTr.localScale = Vector3.one;
+                    
                     FXLaunchBurst.SetActive(true);
+                    
                     projectile.DestroyProjectile(true);
                 }
             }
@@ -132,9 +137,39 @@ namespace Entities.Capacities
             {
                 if (!entity) return;
                 var lifeable = entity.GetComponent<IActiveLifeable>();
+                lifeable?.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
 
-                lifeable.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
+                gsm.OnUpdateFeedback -= MoveProjectile;
+                
+                projectile.DestroyProjectile(true);
+                
+                burstTr.position = entity.position;
+                burstTr.localScale = (level < 2) ? Vector3.one : Vector3.one * so.explosionRadius * so.explosionFxMultiplier;;
+                
+                FXLaunchBurst.SetActive(true);
+                
+                if (level < 2) return;
+                
+                var hitColliders = Physics.OverlapSphere(entity.position, so.explosionRadius);
+                foreach (var hitCollider in hitColliders)
+                {
+                    var exploEnt = hitCollider.GetComponent<Entity>();
+                    ExplosionDamage(exploEnt);
+                }
+                
+                void ExplosionDamage(Entity exploEntity)
+                {
+                    if(exploEntity == null) return;
+                    if(exploEntity == entity) return;
+                    if(!champion.GetEnemyTeams().Contains(exploEntity.team)) return;
+                    
+                    var exploLifeable = exploEntity.GetComponent<IActiveLifeable>();
+                    exploLifeable?.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
+                }
+                
             }
+
+            
 
             void EntityCollide(Entity entity)
             {
