@@ -198,8 +198,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 var bindingIndex = action.bindings.IndexOf(x => x.id.ToString() == m_BindingId);
                 if (bindingIndex != -1)
-                    displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath,
-                        displayStringOptions);
+                    displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, displayStringOptions);
             }
 
             // Set on label (if any).
@@ -228,7 +227,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 action.RemoveBindingOverride(bindingIndex);
             }
-
             UpdateBindingDisplay();
         }
 
@@ -264,20 +262,11 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 m_RebindOperation = null;
             }
 
-            // Disable
-            action.Disable();
-            
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
-                .WithControlsExcluding("<Mouse>/leftButton")
-                .WithControlsExcluding("<Mouse>/rightButton")
-                .WithControlsExcluding("<Mouse>/press")
-                .WithControlsExcluding("<Mouse>/position")
-                .WithCancelingThrough("<Keyboard>/escape")
                 .OnCancel(
                     operation =>
                     {
-                        action.Enable();
                         m_RebindStopEvent?.Invoke(this, operation);
                         m_RebindOverlay?.SetActive(false);
                         UpdateBindingDisplay();
@@ -286,7 +275,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 .OnComplete(
                     operation =>
                     {
-                        action.Enable();
                         m_RebindOverlay?.SetActive(false);
                         m_RebindStopEvent?.Invoke(this, operation);
                         UpdateBindingDisplay();
@@ -297,8 +285,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                         if (allCompositeParts)
                         {
                             var nextBindingIndex = bindingIndex + 1;
-                            if (nextBindingIndex < action.bindings.Count &&
-                                action.bindings[nextBindingIndex].isPartOfComposite)
+                            if (nextBindingIndex < action.bindings.Count && action.bindings[nextBindingIndex].isPartOfComposite)
                                 PerformInteractiveRebind(action, nextBindingIndex, true);
                         }
                     });
@@ -327,37 +314,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             m_RebindStartEvent?.Invoke(this, m_RebindOperation);
 
             m_RebindOperation.Start();
-        }
-
-
-        private bool CheckDuplicateBindings(InputAction action, int bindingIndex, bool allCompositeParts = false)
-        {
-            InputBinding newBinding = action.bindings[bindingIndex];
-
-            foreach (InputBinding binding in action.actionMap.bindings)
-            {
-                if (binding.action == newBinding.action)
-                    continue;
-                if (binding.effectivePath == newBinding.effectivePath)
-                {
-                    Debug.Log($"Duplicate binding found for {newBinding.effectivePath} on {newBinding.action}");
-                    return true;
-                }
-            }
-
-            if (allCompositeParts)
-            {
-                for (int i = 0; i < bindingIndex; i++)
-                {
-                    if (action.bindings[i].effectivePath == newBinding.effectivePath)
-                    {
-                        Debug.Log($"Duplicate binding found for {newBinding.effectivePath} on {newBinding.action}");
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         protected void OnEnable()
@@ -409,35 +365,39 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             }
         }
 
-        [Tooltip("Reference to action that is to be rebound from the UI.")] [SerializeField]
+        [Tooltip("Reference to action that is to be rebound from the UI.")]
+        [SerializeField]
         private InputActionReference m_Action;
 
-        [SerializeField] private string m_BindingId;
+        [SerializeField]
+        private string m_BindingId;
 
-        [SerializeField] private InputBinding.DisplayStringOptions m_DisplayStringOptions;
+        [SerializeField]
+        private InputBinding.DisplayStringOptions m_DisplayStringOptions;
 
         [Tooltip("Text label that will receive the name of the action. Optional. Set to None to have the "
-                 + "rebind UI not show a label for the action.")]
+            + "rebind UI not show a label for the action.")]
         [SerializeField]
         private Text m_ActionLabel;
 
-        [Tooltip("Text label that will receive the current, formatted binding string.")] [SerializeField]
+        [Tooltip("Text label that will receive the current, formatted binding string.")]
+        [SerializeField]
         private Text m_BindingText;
 
-        [Tooltip("Optional UI that will be shown while a rebind is in progress.")] [SerializeField]
+        [Tooltip("Optional UI that will be shown while a rebind is in progress.")]
+        [SerializeField]
         private GameObject m_RebindOverlay;
 
-        [Tooltip("Optional text label that will be updated with prompt for user input.")] [SerializeField]
+        [Tooltip("Optional text label that will be updated with prompt for user input.")]
+        [SerializeField]
         private Text m_RebindText;
 
-        [Tooltip(
-            "Event that is triggered when the way the binding is display should be updated. This allows displaying "
+        [Tooltip("Event that is triggered when the way the binding is display should be updated. This allows displaying "
             + "bindings in custom ways, e.g. using images instead of text.")]
         [SerializeField]
         private UpdateBindingUIEvent m_UpdateBindingUIEvent;
 
-        [Tooltip(
-            "Event that is triggered when an interactive rebind is being initiated. This can be used, for example, "
+        [Tooltip("Event that is triggered when an interactive rebind is being initiated. This can be used, for example, "
             + "to implement custom UI behavior while a rebind is in progress. It can also be used to further "
             + "customize the rebind.")]
         [SerializeField]
@@ -453,14 +413,14 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
         // We want the label for the action name to update in edit mode, too, so
         // we kick that off from here.
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         protected void OnValidate()
         {
             UpdateActionLabel();
             UpdateBindingDisplay();
         }
 
-#endif
+        #endif
 
         private void UpdateActionLabel()
         {
@@ -477,8 +437,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         }
 
         [Serializable]
-        public class
-            InteractiveRebindEvent : UnityEvent<RebindActionUI, InputActionRebindingExtensions.RebindingOperation>
+        public class InteractiveRebindEvent : UnityEvent<RebindActionUI, InputActionRebindingExtensions.RebindingOperation>
         {
         }
     }
