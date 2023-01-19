@@ -40,7 +40,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float SpeedAnimationGoal = 1f;
     [SerializeField] private MinionBT BT;
 
-
+    public static int level;
     private float currentMoveSpeed;
     private bool isAlive = true;
     private bool canDie = true;
@@ -621,7 +621,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
                     {
                         if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
                         {
-                            champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath);
+                            champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath+level);
                         }
                     }
                 }

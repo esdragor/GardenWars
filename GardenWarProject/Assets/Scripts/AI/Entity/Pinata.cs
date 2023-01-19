@@ -1,7 +1,6 @@
 using System;
 using Photon.Pun;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Entities
 {
@@ -17,9 +16,11 @@ namespace Entities
         [SerializeField] private ParticleSystem HitFX;
         [SerializeField] private Animator[] Myanimators;
 
-        [Header("Fill")]
-        [SerializeField] private int maxBonbon = 50;
-        private int currentBonbon;
+        [Header("Bonbon Gaming")]
+        public float fillRange = 4;
+        public static int level;
+        private int maxBonbon => level % 2 == 0 ? 30 + 20 * level : 30 + 20 * level - 1;
+        [SerializeField] private int currentBonbon;
 
         [Header("Indicator")]
         [SerializeField] private RectTransform indicator;
@@ -29,7 +30,8 @@ namespace Entities
         //private GameObject rotatorGo;
         private Vector3 iconPos;
 
-
+        private bool playerIsFigher;
+        
         private Camera cam;
         
         private bool isAlive = true;
@@ -38,13 +40,11 @@ namespace Entities
 
         protected override void OnStart()
         {
-            var item = AssignRandomItem();
-            Mesh.GetComponent<Renderer>().material.color = item.AssociatedItemSO().itemColor;
-            RequestAddItem(item.indexOfSOInCollection);
             OnInstantiated();
             animators = Myanimators;
             //rotatorGo = rotator.gameObject;
             //rotatorGo.SetActive(false);
+            playerIsFigher = gsm.GetPlayerChampion().isFighter;
         }
 
         public override void OnInstantiated()
@@ -63,6 +63,8 @@ namespace Entities
 
         private void ShowIcon()
         {
+            if(playerIsFigher) return;
+            
             iconPos = cam.WorldToScreenPoint(position+Vector3.up * offset);
             
             var sizeDelta = indicator.sizeDelta;
@@ -86,18 +88,6 @@ namespace Entities
             var targetDir = cam.WorldToScreenPoint(transform.position) - rotator.position;
             rotator.up = targetDir;
             */
-        }
-
-        private Item AssignRandomItem()
-        {
-            ItemCollectionManager im = ItemCollectionManager.Instance;
-            int randomItem = Random.Range(0, im.allItemSOs.Count);
-
-            return im.CreateItem((byte)randomItem, this);
-        }
-
-        private void DropItem()
-        {
         }
 
         public bool IsAlive()
@@ -140,19 +130,7 @@ namespace Entities
             var entity = EntityCollectionManager.GetEntityByIndex(killerId);
             if (entity && (entity is Champion.Champion))
             {
-                // GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
-                // ItemBag bag = item.GetComponent<ItemBag>();
-                // bag.SetItemBag(items[0].indexOfSOInCollection, EntityCollectionManager.GetEntityByIndex(killerId).team);
-                // bag.ChangeVisuals(true);
-                // bag.IsCollectible();
                 entity.AddItemRPC(items[0].indexOfSOInCollection);
-
-                var rp = new RespawnPinata
-                {
-                    delay = 0,
-                };
-
-                SpawnAIs.Instance.PinatasRespawned.Add(rp);
             }
 
             OnDie?.Invoke(killerId);
@@ -198,5 +176,10 @@ namespace Entities
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
         public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
+
+        public void StartChanneling()
+        {
+            Debug.Log("YAYAYAYAYA");
+        }
     }
 }

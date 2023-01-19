@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -192,8 +193,15 @@ namespace Controllers.Inputs
                 }
 
                 if (selectedEntity is Tower) return;
-                
-                StartMoveAttack();
+
+                if (selectedEntity is Pinata pinata)
+                {
+                    StartMovePinata(pinata);
+                }
+                else
+                {
+                    StartMoveAttack();
+                }
                 
                 if(previousSelected != null) previousSelected.Deselect();
                 
@@ -253,7 +261,20 @@ namespace Controllers.Inputs
                 champion.RequestAttack(champion.attackAbilityIndex, entityToMoveTo.entityIndex, cursorWorldPos);
             }
         }
-        
+
+        private void StartMovePinata(Pinata pinata)
+        {
+            if(champion.isFighter) return;
+            
+            champion.StartMoveToTarget(selectedEntity, pinata.fillRange, RequestPinata);
+
+            void RequestPinata()
+            {
+                champion.RequestChannelPinata(pinata);
+                champion.CancelMoveToTarget();
+            }
+        }
+
         private void StartMoveGetItem()
         {
             if (!selectedEntity) return;

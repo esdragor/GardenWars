@@ -22,6 +22,7 @@ public class SpawnAIs : MonoBehaviourPun
     public double timeBetweenWaves = 30;
     [SerializeField] private double timeBeforeFirstWave = 5;
     [SerializeField] private List<Transform> SpawnPoints;
+    [SerializeField] private int minionLevel;
     
     [Header("Minions")]
     [SerializeField] private Transform[] waypointsTeamBlue;
@@ -71,6 +72,7 @@ public class SpawnAIs : MonoBehaviourPun
         minionTimer = 0;
         pinataTimer = 0;
         pinataLevel = 0;
+        minionLevel = -1;
         
         if (PhotonNetwork.IsMasterClient)
         {
@@ -114,6 +116,9 @@ public class SpawnAIs : MonoBehaviourPun
     {
         if (minionTimer < timeBetweenWaves) return;
         minionTimer = 0;
+
+        minionLevel++;
+        Minion.level = minionLevel;
         
         for (var i = 0; i < minionsPerWave; i++)
         {
@@ -170,6 +175,7 @@ public class SpawnAIs : MonoBehaviourPun
     private void SpawnPinata(Transform tr)
     {
         pinataLevel++;
+        Pinata.level = pinataLevel;
         
         if (currentPinata != null)
         {

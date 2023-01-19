@@ -281,5 +281,27 @@ namespace Entities.Champion
 
         public event GlobalDelegates.IntDelegate OnDecreaseCurrentCandy;
         public event GlobalDelegates.IntDelegate OnDecreaseCurrentCandyFeedback;
+
+
+        public void RequestChannelPinata(Pinata pinata)
+        {
+            if (isMaster)
+            {
+                ChannelPinataRPC(pinata.entityIndex);
+                return;
+            }
+                
+            photonView.RPC("ChannelPinataRPC", RpcTarget.All, pinata.entityIndex);
+        }
+
+        [PunRPC]
+        public void ChannelPinataRPC(int pinataIndex)
+        {
+            var entity = EntityCollectionManager.GetEntityByIndex(pinataIndex);
+            if (entity is Pinata pinata)
+            {
+                pinata.StartChanneling();
+            }
+        }
     }
 }
