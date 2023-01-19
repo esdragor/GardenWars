@@ -6,13 +6,22 @@ using UnityEngine.UI;
 
 public class RebindKeys : MonoBehaviour
 {
-    [SerializeField] private Button[] listOfButtons;
+    [SerializeField] private Button Button;
+    [SerializeField] private string nameOfKey;
+    [SerializeField] private Text textOfButton;
+    [SerializeField] private GameObject defaultKey;
+    [SerializeField] private GameObject WaitingForKey;
+    [SerializeField] private PlayerController pc;
 
     private void Start()
     {
-        foreach (var btn in listOfButtons)
-        {
-            string nameOfKey = btn.transform.GetChild(0).GetComponent<Text>().text;
-        }
+        Button.onClick.AddListener(StartRebinding);
+    }
+
+    public void StartRebinding()
+    {
+        Button.gameObject.SetActive(false);
+        WaitingForKey.gameObject.SetActive(false);
+        pc.PlayerInput.SwitchCurrentActionMap("UI");
     }
 }
