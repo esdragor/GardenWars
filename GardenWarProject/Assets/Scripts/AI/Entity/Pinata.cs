@@ -23,12 +23,12 @@ namespace Entities
 
         [Header("Indicator")]
         [SerializeField] private RectTransform indicator;
-        [SerializeField] private RectTransform rotator;
+        //[SerializeField] private RectTransform rotator;
         [SerializeField] private float offset;
         [SerializeField] private float margin;
-        private GameObject rotatorGo;
+        //private GameObject rotatorGo;
         private Vector3 iconPos;
-        
+
 
         private Camera cam;
         
@@ -38,12 +38,13 @@ namespace Entities
 
         protected override void OnStart()
         {
-            Item item = AssignRandomItem();
+            var item = AssignRandomItem();
             Mesh.GetComponent<Renderer>().material.color = item.AssociatedItemSO().itemColor;
             RequestAddItem(item.indexOfSOInCollection);
             OnInstantiated();
             animators = Myanimators;
-            rotatorGo = rotator.gameObject;
+            //rotatorGo = rotator.gameObject;
+            //rotatorGo.SetActive(false);
         }
 
         public override void OnInstantiated()
@@ -62,29 +63,29 @@ namespace Entities
 
         private void ShowIcon()
         {
-            var position1 = transform.position;
-            iconPos = cam.WorldToScreenPoint(position1+Vector3.up * offset);
-            var entityPos = cam.WorldToScreenPoint(position1);
-            var actualPos = iconPos;
-
-            var sizeDelta = indicator.sizeDelta;
-            var totalSize = sizeDelta * 0.5f + Vector2.one * (rotator.sizeDelta.x + margin);
+            iconPos = cam.WorldToScreenPoint(position+Vector3.up * offset);
             
+            var sizeDelta = indicator.sizeDelta;
+            var totalSize = sizeDelta * 0.5f + Vector2.one * margin;
+            
+            indicator.position = iconPos;
+            
+            indicator.gameObject.SetActive(!((iconPos.x + totalSize.x > Screen.width) || (iconPos.x - totalSize.x < 0) ||
+                                           (iconPos.y + totalSize.y > Screen.height) || (iconPos.y - totalSize.y < 0)));
+            
+            /*
             if (iconPos.x + totalSize.x > Screen.width ) iconPos.x = Screen.width - totalSize.x;
             if (iconPos.x - totalSize.x < 0) iconPos.x = 0 + totalSize.x;
             if (iconPos.y + totalSize.y > Screen.height) iconPos.y = Screen.height - totalSize.y;
             if (iconPos.y - totalSize.y < 0) iconPos.y = 0 + totalSize.y;
 
-            indicator.position = iconPos;
-            
-            
             rotatorGo.SetActive(entityPos.x + margin > Screen.width || entityPos.y + margin > Screen.height || entityPos.x - margin < 0 || entityPos.y - margin < 0);
             
             if(actualPos == iconPos) return;
             
             var targetDir = cam.WorldToScreenPoint(transform.position) - rotator.position;
             rotator.up = targetDir;
-
+            */
         }
 
         private Item AssignRandomItem()
