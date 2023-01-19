@@ -353,8 +353,8 @@ namespace Controllers.Inputs
             
             inputs.Movement.CancelMove.canceled += CancelMovement;
 
-            inputs.Emotes.Emote1.performed += OnPressEmote;
-            inputs.Emotes.Emote1.canceled += OnReleaseEmote;
+            inputs.Emotes.EmoteWheel.performed += OnPressEmote;
+            inputs.Emotes.EmoteWheel.canceled += OnReleaseEmote;
         }
         
         protected override void Unlink()
@@ -400,8 +400,8 @@ namespace Controllers.Inputs
             
             inputs.Movement.CancelMove.canceled -= CancelMovement;
 
-            inputs.Emotes.Emote1.performed -= OnPressEmote;
-            inputs.Emotes.Emote1.canceled -= OnReleaseEmote;
+            inputs.Emotes.EmoteWheel.performed -= OnPressEmote;
+            inputs.Emotes.EmoteWheel.canceled -= OnReleaseEmote;
 
             CameraController.Instance.UnLinkCamera();
 

@@ -444,7 +444,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""id"": ""14323f0b-b440-4d20-b63e-e4231fd5429d"",
             ""actions"": [
                 {
-                    ""name"": ""Emote1"",
+                    ""name"": ""EmoteWheel"",
                     ""type"": ""Button"",
                     ""id"": ""dac54b6b-bfd1-4508-819e-098363e1b0ce"",
                     ""expectedControlType"": ""Button"",
@@ -461,7 +461,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Emote1"",
+                    ""action"": ""EmoteWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -503,7 +503,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_MoveMouse_HoldRightClick = m_MoveMouse.FindAction("HoldRightClick", throwIfNotFound: true);
         // Emotes
         m_Emotes = asset.FindActionMap("Emotes", throwIfNotFound: true);
-        m_Emotes_Emote1 = m_Emotes.FindAction("Emote1", throwIfNotFound: true);
+        m_Emotes_EmoteWheel = m_Emotes.FindAction("EmoteWheel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -865,12 +865,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // Emotes
     private readonly InputActionMap m_Emotes;
     private IEmotesActions m_EmotesActionsCallbackInterface;
-    private readonly InputAction m_Emotes_Emote1;
+    private readonly InputAction m_Emotes_EmoteWheel;
     public struct EmotesActions
     {
         private @PlayerInputs m_Wrapper;
         public EmotesActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Emote1 => m_Wrapper.m_Emotes_Emote1;
+        public InputAction @EmoteWheel => m_Wrapper.m_Emotes_EmoteWheel;
         public InputActionMap Get() { return m_Wrapper.m_Emotes; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -880,16 +880,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_EmotesActionsCallbackInterface != null)
             {
-                @Emote1.started -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmote1;
-                @Emote1.performed -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmote1;
-                @Emote1.canceled -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmote1;
+                @EmoteWheel.started -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmoteWheel;
+                @EmoteWheel.performed -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmoteWheel;
+                @EmoteWheel.canceled -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmoteWheel;
             }
             m_Wrapper.m_EmotesActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Emote1.started += instance.OnEmote1;
-                @Emote1.performed += instance.OnEmote1;
-                @Emote1.canceled += instance.OnEmote1;
+                @EmoteWheel.started += instance.OnEmoteWheel;
+                @EmoteWheel.performed += instance.OnEmoteWheel;
+                @EmoteWheel.canceled += instance.OnEmoteWheel;
             }
         }
     }
@@ -933,6 +933,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     }
     public interface IEmotesActions
     {
-        void OnEmote1(InputAction.CallbackContext context);
+        void OnEmoteWheel(InputAction.CallbackContext context);
     }
 }
