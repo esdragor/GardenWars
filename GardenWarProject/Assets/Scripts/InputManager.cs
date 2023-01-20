@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -9,7 +10,8 @@ public class InputManager : MonoBehaviour
     
     public static PlayerInputs PlayerUIMap;
     
-    private 
+    
+    private static Dictionary<string, string> allKeys = new Dictionary<string, string>();
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class InputManager : MonoBehaviour
             return;
         }
         PlayerMap ??= new PlayerInputs();
+
     }
 
     /// <summary>
@@ -47,15 +50,29 @@ public class InputManager : MonoBehaviour
     public static event Action rebindCanceled;
     public static event Action<InputAction, int> rebindStarted;
 
+    private static void RefreshDataDict()
+    {
+        allKeys.Clear();
+        foreach (InputBinding bind in PlayerMap.bindings)
+        {
+            if (bind.effectivePath.Contains("Mouse")) continue;
+            allKeys.Add(bind.effectivePath, bind.action);
+        }
+    }
+    
     public static void StartRebind(string actionName, int bindingIndex, Text statusText, bool excludeMouse)
     {
+        if (allKeys.Count == 0)
+        {
+            RefreshDataDict();
+        }
+        
         InputAction action = PlayerMap.asset.FindAction(actionName);
         if (action == null || action.bindings.Count <= bindingIndex)
         {
             Debug.Log("Couldn't find action or binding");
             return;
         }
-
         if (action.bindings[bindingIndex].isComposite)
         {
             var firstPartIndex = bindingIndex + 1;
@@ -74,27 +91,33 @@ public class InputManager : MonoBehaviour
         statusText.text = $"Press a {actionToRebind.expectedControlType}";
 
         actionToRebind.Disable();
-
         var rebind = actionToRebind.PerformInteractiveRebinding(bindingIndex);
 
         rebind.OnComplete(operation =>
         {
+            Debug.Log(actionToRebind.bindings[bindingIndex].action);
+            if (allKeys.ContainsKey(actionToRebind.bindings[bindingIndex].effectivePath) ||actionToRebind.bindings[bindingIndex].effectivePath.Contains("Mouse"))
+            {
+                Debug.Log("ERROR");
+                actionToRebind.RemoveBindingOverride(bindingIndex);
+                return;
+            }
             actionToRebind.Enable();
             operation.Dispose();
-
             if(allCompositeParts)
             {
                 var nextBindingIndex = bindingIndex + 1;
                 if (nextBindingIndex < actionToRebind.bindings.Count && actionToRebind.bindings[nextBindingIndex].isComposite)
                     DoRebind(actionToRebind, nextBindingIndex, statusText, allCompositeParts, excludeMouse);
             }
-
+            RefreshDataDict();
             SaveBindingOverride(actionToRebind);
             rebindComplete?.Invoke();
         });
 
         rebind.OnCancel(operation =>
         {
+            Debug.Log("Cancel");
             actionToRebind.Enable();
             operation.Dispose();
 
