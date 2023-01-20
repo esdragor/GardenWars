@@ -10,17 +10,17 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/ScavengerThrowV2", fileName = "ScavengerThrowV2")]
     public class ScavengerThrowV2SO : ActiveCapacitySO
     {
+        [Header("Throw Config")]
         public ProjectileOnCollideEffect upgradeProjectile;
         
         public float projectileSpeed = 1.0f;
         public float height = 5.0f;
-        public bool canBounce = false;
         public int nbBounce = 5;
         public float bounceRadius = 0.5f;
+        public bool hasRandomBounceDirection = false;
         public float chargeRate = 1f;
         public float minDistance = 5.0f;
-        public float maxDistance = 5.0f;
-        
+
         public ParticleSystem ThrowDestFx;
 
 
@@ -41,22 +41,7 @@ namespace Entities.Capacities
         
         private ParticleSystem ThrowDestFx;
         private ParticleSystem ThrowDestFxGO;
-        
-        
-        private double progress = 0f;
-        private int nbBounce = 0;
-        private float height = 0;
-        private Vector3 dir = Vector3.zero;
-        private double speed;
-        private float timeForOneUnit;
-        private float distanceToDestination;
-        private Vector3 startPosition;
-        private Vector3 endPosition;
-        private bool isRandom = false;
-        private float randomRangeRadius = 0f;
-        private bool Finished = false;
-        
-        
+
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -69,13 +54,13 @@ namespace Entities.Capacities
 
         protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            
+            time_Pressed = 0;
+            throwDistance = so.minDistance;
         }
 
         protected override void PressLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            time_Pressed = 0;
-            throwDistance = so.minDistance;
+            
         }
 
         protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
@@ -88,7 +73,6 @@ namespace Entities.Capacities
             time_Pressed += Time.deltaTime * so.chargeRate;
             throwDistance += time_Pressed;
             if (throwDistance < so.minDistance) throwDistance = so.minDistance;
-            if (throwDistance > so.maxDistance) throwDistance = so.maxDistance;
         }
 
         protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
@@ -103,13 +87,14 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
-            if (throwDistance > so.maxDistance) throwDistance = so.maxDistance;
             targetPosition = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * (float)throwDistance);
             targetPosition.y = 1;
 
-            var projectile = LocalPoolManager.PoolInstantiate(so.upgradeProjectile, targetPosition, Quaternion.identity);
+            var projectile = LocalPoolManager.PoolInstantiate(so.upgradeProjectile, champion.position, Quaternion.identity);
             var projectileTr = projectile.transform;
-
+            
+            champion.PlayThrowAnimation();
+            
             Throw();
 
             time_Pressed = 0;
@@ -117,22 +102,21 @@ namespace Entities.Capacities
             
             void Throw()
             {
-                startPosition = champion.position;
-                endPosition = targetPosition;
-                speed = throwDistance;
-                progress = 0;
+                var startPosition = champion.position;
+                var endPosition = targetPosition;
+                var speed = so.projectileSpeed;
+                float progress = 0;
                 
-                timeForOneUnit = so.projectileSpeed;
-                height = so.height;
-                isRandom = so.canBounce;
-                randomRangeRadius = so.bounceRadius;
-                nbBounce = so.nbBounce;
+                var height = so.height;
+                var hasRandomBounceDirection = so.hasRandomBounceDirection;
+                var randomRangeRadius = so.bounceRadius;
+                var nbBounce = so.nbBounce;
                 
                 bool canPickup = false;
 
-                dir = (endPosition - startPosition).normalized;
+                var dir = (endPosition - startPosition).normalized;
 
-                distanceToDestination = (Vector3.Distance(endPosition, startPosition));
+                var distanceToDestination = (Vector3.Distance(endPosition, startPosition));
 
                 var timeToDestination = distanceToDestination / so.projectileSpeed;
                 float timer = 0f;
@@ -159,16 +143,16 @@ namespace Entities.Capacities
                             startPosition = endPosition;
 
                             endPosition.x += (nbBounce * 0.5f) * dir.x + dir.x * (float)speed +
-                                             Random.Range(-randomRangeRadius, randomRangeRadius) * ((isRandom) ? 1 : 0);
+                                             Random.Range(-randomRangeRadius, randomRangeRadius) * ((hasRandomBounceDirection) ? 1 : 0);
                             endPosition.z += (nbBounce * 0.5f) * dir.z + dir.z * (float)speed +
-                                             Random.Range(-randomRangeRadius, randomRangeRadius) * ((isRandom) ? 1 : 0);
+                                             Random.Range(-randomRangeRadius, randomRangeRadius) * ((hasRandomBounceDirection) ? 1 : 0);
 
                             endPosition = GetClosestValidPoint(endPosition);
                             endPosition.y = 1;
 
                             distanceToDestination = Vector3.Distance(startPosition, endPosition);
 
-                            timeToDestination = distanceToDestination / so.projectileSpeed;
+                            timeToDestination = distanceToDestination / (so.projectileSpeed * 0.5f);
                             
                             nbBounce--;
                             
@@ -178,7 +162,6 @@ namespace Entities.Capacities
                         {
                             gsm.OnUpdateFeedback -= MoveBag;
                             projectileTr.position = new Vector3(projectileTr.position.x, endPosition.y, projectileTr.position.z);
-                            Finished = true;
                             Debug.Log("Done");
                             return;
                         }

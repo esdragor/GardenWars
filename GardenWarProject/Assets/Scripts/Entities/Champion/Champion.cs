@@ -160,6 +160,8 @@ namespace Entities.Champion
             canCast = true;
             canBeTargeted = true;
             canBeDisplaced = true;
+
+            currentCandy = 100;
         }
 
         public void SetupSpawn()

@@ -21,6 +21,8 @@ MonoBehaviour:
   maxRange: 0
   types: 
   shootType: 0
+  showMaxRangeIfSkillShot: 0
+  overrideDefaultIndicator: 0
   indexInCollection: 13
   candyBagPrefab: {fileID: 302393227357116420, guid: 1c845a85e73f83647a13ee404104dafa, type: 3}
   nbBounce: 1
@@ -28,7 +30,7 @@ MonoBehaviour:
   timeForOneUnit: 1.3
   height: 3
   MinCandy: 5
-  MaxCandy: 50
+  MaxCandy: 10
   accelerationJauge: 0.1
   RandomizeRebound: 1
   RandomizeReboundRadius: 3

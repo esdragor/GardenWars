@@ -134,7 +134,9 @@ public class FighterThrow : ActiveCapacity
 
         var candyBag = InitCandyBag();
         var transform = candyBag.transform;
+        
         transform.localScale =  Vector3.one * (!so.ScalebyNbCandy ? so.scaleByCandy * nbCandyStocked : (nbCandyStocked / so.NbCandyPerPalier) * so.scaleAndDamageByNbCandyOnBag);
+        
         targetPosition.y = transform.localScale.y;
         candyBag.InitBag(targetPosition, so.timeForOneUnit,distanceCandy, so.RandomizeRebound, so.RandomizeReboundRadius, caster);
         candyBag.SetCandyBag(so, nbCandyStocked);
