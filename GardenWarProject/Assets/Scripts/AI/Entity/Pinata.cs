@@ -49,6 +49,8 @@ namespace Entities
             //rotatorGo = rotator.gameObject;
             //rotatorGo.SetActive(false);
             playerIsFigher = gsm.GetPlayerChampion().isFighter;
+            
+            indicator.gameObject.SetActive(false);
         }
 
         public override void OnInstantiated()

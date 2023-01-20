@@ -73,7 +73,7 @@ MonoBehaviour:
   - prefab: {fileID: 4689079691940470199, guid: 00e2eb0805bbae04fa5175df31978ff5, type: 3}
     amount: 0
   - prefab: {fileID: 9163181885516752660, guid: 8a7105a30cdf4984bb5516fa131bb19e, type: 3}
-    amount: 0
+    amount: 30
   - prefab: {fileID: 6476699789138719455, guid: 1eca12248f61b8f4e813227c87f3e9d3, type: 3}
     amount: 8
   - prefab: {fileID: 6476699789138719455, guid: d39ce0d5a3fb6384caa9d9bd99d59f25, type: 3}
@@ -96,6 +96,10 @@ MonoBehaviour:
     amount: 4
   - prefab: {fileID: 2111450335713149472, guid: d6fa2ffb28c5f61489ecac07b14a812b, type: 3}
     amount: 4
+  - prefab: {fileID: 2395444416476895822, guid: 2519e5667bed12d45a06c24258a61524, type: 3}
+    amount: 20
+  - prefab: {fileID: 2395444416476895822, guid: 1524651826a65514aa17effd805ae9e0, type: 3}
+    amount: 10
   gameObjectsPrefabs: []
 --- !u!114 &4154794844745012401
 MonoBehaviour:
@@ -112,10 +116,6 @@ MonoBehaviour:
   defaultPosition: {x: 0, y: -50, z: 0}
   defaultPoolSize: 16
   entityPrefabs:
-  - entity: {fileID: 5833858699758456140, guid: 1c845a85e73f83647a13ee404104dafa, type: 3}
-    amount: 0
-  - entity: {fileID: 5833858699758456140, guid: f79802c43b3c38742ae23400332292d7, type: 3}
-    amount: 0
   - entity: {fileID: 4498412454335939635, guid: a3199f9f56fa626418b81f4fa9ce60dd, type: 3}
     amount: 80
   - entity: {fileID: 3480681341667345174, guid: 73a83e6dab4b03843a993e90f0e36e35, type: 3}
