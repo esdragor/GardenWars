@@ -8,9 +8,7 @@ namespace Entities.Champion
         [Header("Candy")]
         [SerializeField] private int maxCandy;
         public int currentCandy { get; private set; }
-
-        [SerializeField] private int candyPerLevel;
-
+        
         public int GetMaxCandy()
         {
             return maxCandy;

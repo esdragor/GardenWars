@@ -17,10 +17,13 @@ namespace Entities
         [SerializeField] private Animator[] Myanimators;
 
         [Header("Bonbon Gaming")]
-        public float fillRange = 4;
+        public float fillRange = 2;
         public static int level;
-        private int maxBonbon => level % 2 == 0 ? 30 + 20 * level : 30 + 20 * level - 1;
+        private int maxBonbon => 30 + 10 * (level-1 + (level-1)%2);
         [SerializeField] private int currentBonbon;
+        [SerializeField] private float timeBeforeDrain = 0.5f;
+        [SerializeField] private Vector3 maxSize;
+        
         private bool playerIsFigher;
         private Champion.Champion currentFeeder;
         
@@ -53,8 +56,12 @@ namespace Entities
             canDie = true;
             
             cam = Camera.main;
+            
+            currentBonbon = 0;
 
             currentFeeder = null;
+            
+            transform.localScale = Vector3.one;
 
             //UIManager.Instance.InstantiateHealthBarForEntity(this);
         }
@@ -130,12 +137,6 @@ namespace Entities
         [PunRPC]
         public void DieRPC(int killerId)
         {
-            var entity = EntityCollectionManager.GetEntityByIndex(killerId);
-            if (entity && (entity is Champion.Champion))
-            {
-                entity.AddItemRPC(items[0].indexOfSOInCollection);
-            }
-
             OnDie?.Invoke(killerId);
 
             if (isOffline)
@@ -184,40 +185,95 @@ namespace Entities
         {
             if (currentFeeder != null)
             {
-                Debug.Log($"{currentFeeder} is already feeding");
                 return;
             }
+            
             currentFeeder = champion;
-            
-            Debug.Log($"current feeder is {currentFeeder}");
 
-            currentFeeder.OnMoving += StopChanneling;
-            currentFeeder.OnCast += StopChanneling;
-            currentFeeder.OnAttack += StopChanneling;
-        }
-        
-        void StopChanneling(byte _,int __, Vector3 ___)
-        {
-            StopChanneling();
-        }
-        
-        void StopChanneling(bool moving)
-        {
-            if(moving) StopChanneling();
-        }
-        
-        void StopChanneling()
-        {
-            Debug.Log($"Stopped channeling");
+            var pos = champion.position;
+            pos.y = transform.position.y;
+            transform.LookAt(pos);
             
-            currentFeeder.OnMoving -= StopChanneling;
-            currentFeeder.OnCast -= StopChanneling;
-            currentFeeder.OnAttack -= StopChanneling;
+            currentFeeder.IncreaseCurrentCandyRPC(100); // TODO - Remove when testing over
             
+            double drainTimer = -timeBeforeDrain;
+            var drainTime = 1;
+
+            gsm.OnTick += ChannelDrain;
             
-            currentFeeder = null;
+            currentFeeder.OnDecreaseCurrentHp += CancelOnDamage;
+            currentFeeder.OnMoving += CancelOnMove;
+            currentFeeder.OnCast += CancelOnCast;
+            currentFeeder.OnAttack += CancelOnCast;
+            
+            void ChannelDrain()
+            {
+                drainTimer += gsm.increasePerTick;
+                
+                if(drainTimer < 1) return;
+                
+                drainTimer = 0;
+                drainTime++;
+
+                if (champion.currentCandy <= 0)
+                {
+                    StopChanneling();
+                    return;
+                }
+                
+                DrainCandy(drainTime);
+            }
+            
+            void DrainCandy(int candy)
+            {
+                if (currentFeeder.currentCandy - candy <= 0) candy = currentFeeder.currentCandy;
+                
+                IncreaseCurrentCandy(candy);
+            }
+
+            void IncreaseCurrentCandy(int candy)
+            {
+                currentFeeder.DecreaseCurrentCandyRPC(candy);
+                
+                currentBonbon += candy;
+
+                transform.localScale = new Vector3(Mathf.Lerp(1, maxSize.x, (float) currentBonbon / maxBonbon), 1,
+                    Mathf.Lerp(1, maxSize.z, (float) currentBonbon / maxBonbon));
+
+                if (currentBonbon < maxBonbon) return;
+                
+                DieRPC(currentFeeder.entityIndex);
+                
+                StopChanneling();
+            }
+            
+            void CancelOnCast(byte _,int __, Vector3 ___)
+            {
+                StopChanneling();
+            }
+
+            void CancelOnDamage(float _,int __)
+            {
+                StopChanneling();
+            }
+        
+            void CancelOnMove(bool moving)
+            {
+                if(moving) StopChanneling();
+            }
+        
+            void StopChanneling()
+            {
+                gsm.OnTick -= ChannelDrain;
+
+                currentFeeder.OnDecreaseCurrentHp -= CancelOnDamage;
+                currentFeeder.OnMoving -= CancelOnMove;
+                currentFeeder.OnCast -= CancelOnCast;
+                currentFeeder.OnAttack -= CancelOnCast;
+                
+                currentFeeder = null;
+            }
         }
-        
-        
+
     }
 }
