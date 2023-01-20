@@ -9,7 +9,6 @@ namespace BehaviourTree
         
         [SerializeField] private LayerMask enemyMask;
         [SerializeField] private Tower entity;
-        [SerializeField] private float AtkRange;
         [SerializeField] public Transform Poussin;
         private float atkDelay => entity.GetAttackSpeed();
         
@@ -17,7 +16,7 @@ namespace BehaviourTree
         {
             origin = new Sequence(new List<Node>
             {
-                new CheckEnemyInPOVRange(this, entity,enemyMask, AtkRange), 
+                new CheckEnemyInPOVRange(this, entity,enemyMask, entity.GetFOWViewRange()), 
                 new TaskAttack(this, entity, Poussin, entity.activeTowerAutoSO.indexInCollection, atkDelay, null, "AttackTower")
             });
             return origin;
