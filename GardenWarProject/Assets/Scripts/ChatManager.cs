@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Entities;
+using Entities.Champion;
 using GameStates;
-using Photon.Pun;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class ChatManager : MonoBehaviour
 {
@@ -13,6 +13,9 @@ public class ChatManager : MonoBehaviour
 
     [SerializeField] private TMP_Text chatPanel;
     [SerializeField] private TMP_InputField inputField;
+
+    private Champion champion = null;
+    private bool isChatting = false;
 
     private void Awake()
     {
@@ -22,19 +25,26 @@ public class ChatManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void OnStart()
+    private void Start()
     {
-        inputField.onEndEdit.AddListener(delegate { OnAddMessage(); });
+        inputField.onEndEdit.AddListener(OnAddMessage);
     }
 
-    public void OnAddMessage()
+    private void OnAddMessage(string message)
     {
-        GameStateMachine.Instance.GetPlayerChampion().OnAddMessage($"[{GameSettingsManager.playerName}]: {inputField.text}" + string.Format("\n"));
+        if(!champion) champion = GameStateMachine.Instance.GetPlayerChampion();
+
+        champion.OnAddMessage($"[{GameSettingsManager.playerName}]: {message}", champion.entityIndex);
         inputField.text = "";
     }
     
-    public void UpdateMessageBox(string message)
+    public void UpdateMessageBox(string message, int entityIndex)
     {
-        chatPanel.text += message;
+        if (message.Length == 0) return;
+        if(!champion) champion = GameStateMachine.Instance.GetPlayerChampion();
+        if (!champion.GetEnemyTeams().Contains(EntityCollectionManager.GetEntityByIndex(entityIndex).team)) 
+            chatPanel.text += $"<color=blue>{message}</color>" + string.Format("\n");
+        else
+            chatPanel.text += $"<color=red>{message}</color>" + string.Format("\n");
     }
 }

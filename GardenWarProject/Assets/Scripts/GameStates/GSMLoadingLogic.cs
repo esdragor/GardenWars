@@ -246,6 +246,7 @@ namespace GameStates
             champion.SetupNavMesh();
             champion.SetupUI();
             if (isMaster) champion.SyncInstantiate(champion.team);
+            champion.OnInitializedChat();
         }
 
         private void InstantiateChampion()

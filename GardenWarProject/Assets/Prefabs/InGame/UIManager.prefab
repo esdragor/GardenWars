@@ -1751,10 +1751,10 @@ RectTransform:
   m_Father: {fileID: 6482523060872135862}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 380, y: -100}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5903834833936998792
 CanvasRenderer:
@@ -4002,10 +4002,10 @@ RectTransform:
   m_Father: {fileID: 6482523060872135862}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80, y: -100}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8026596122805842870
 CanvasRenderer:
@@ -4913,10 +4913,10 @@ RectTransform:
   m_Father: {fileID: 6482523060872135862}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 230, y: -100}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &835596182124664797
 CanvasRenderer:
@@ -6138,6 +6138,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Settings
       objectReference: {fileID: 0}
+    - target: {fileID: 7432613806927712750, guid: 99c67bd579f11404880202477e0a295a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99c67bd579f11404880202477e0a295a, type: 3}
 --- !u!1 &8370068750088444907 stripped
@@ -6178,18 +6182,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5606235260623421263}
     m_Modifications:
-    - target: {fileID: 401385680635473143, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262878113499051640, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -2.501709
-      objectReference: {fileID: 0}
-    - target: {fileID: 2236194443039125367, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_Value
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4349097762785103491, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -6274,29 +6266,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6887065899968791102, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 7624228061856080509, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
       propertyPath: m_Name
       value: Chat
-      objectReference: {fileID: 0}
-    - target: {fileID: 7812504677093156868, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7812504677093156868, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_ReferenceResolution.x
-      value: 1920
-      objectReference: {fileID: 0}
-    - target: {fileID: 7812504677093156868, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_ReferenceResolution.y
-      value: 1080
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038350378310153769, guid: c0507e344e083ab479a358c548ff7cda, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0507e344e083ab479a358c548ff7cda, type: 3}

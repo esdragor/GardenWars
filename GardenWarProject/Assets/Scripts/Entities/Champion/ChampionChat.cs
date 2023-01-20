@@ -1,19 +1,27 @@
+using System;
 using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Champion
 {
-    public partial class Champion : ICandyable
+    public partial class Champion
     {
-        public void OnAddMessage(string message)
+        public void OnInitializedChat()
         {
-            photonView.RPC("AddMessage", RpcTarget.All, message);
+            OnAddMessage("", entityIndex);
+        }
+
+        public void OnAddMessage(string message, int index)
+        {
+            Debug.Log("Sending Message");
+            photonView.RPC("AddMessageRPC", RpcTarget.All, message, index);
         }
     
         [PunRPC]
-        public void AddMessage(string message)
+        public void AddMessageRPC(string message, int entityIndex)
         {
-            ChatManager.Instance.UpdateMessageBox(message);
+            Debug.Log("Received Message");
+            ChatManager.Instance.UpdateMessageBox(message, entityIndex);
         }
     }
 }
