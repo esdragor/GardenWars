@@ -259,6 +259,32 @@ namespace Entities.Champion
 
         public event Action OnAbilityUpgraded;
 
+
+        public void IncreaseUpgradeCount()
+        {
+            if(!isMaster) return;
+
+            upgradeCount++;
+
+            if (isOffline)
+            {
+                SyncIncreaseUpgradeCountRPC(upgradeCount);
+                return;
+            }
+            
+            photonView.RPC("SyncIncreaseUpgradeCountRPC",RpcTarget.All,upgradeCount);
+        }
+
+        [PunRPC]
+        private void SyncIncreaseUpgradeCountRPC(int value)
+        {
+            Debug.Log($"Upgrade count : {upgradeCount}");
+            upgradeCount = value;
+            OnUpgradeCountIncreased?.Invoke();
+        }
+
+        public event Action OnUpgradeCountIncreased; 
+
         public void ShowMaxRangeIndicator(float range)
         {
             maxRangeIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
