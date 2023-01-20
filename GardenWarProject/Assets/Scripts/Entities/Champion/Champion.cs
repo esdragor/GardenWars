@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.Capacities;
 using Entities.Inventory;
 using GameStates;
 using Photon.Pun;
@@ -23,7 +24,6 @@ namespace Entities.Champion
         public Quaternion rotation => rotateParent.localRotation;
 
         public RawImage emotesImage;
-        private List<byte> bufferbyte = new List<byte>();
 
         private Vector3 respawnPos;
         public Vector3 respawnPosition => respawnPos;
@@ -119,13 +119,15 @@ namespace Entities.Champion
             {
                 ChangeActiveAbility(i, currentSo.activeCapacitiesIndexes[i]);
             }
-            
+
             championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;
 
             team = newTeam;
             role = newRole;
+
+            throwAbilityIndex = CapacitySOCollectionManager.GetThrowAbilityIndex(role);
 
             var linker = championMesh.GetComponent<ChampionMeshLinker>();
             var teamMat = team == gsm.GetPlayerTeam() ? currentSo.materialsBlueTeam : currentSo.materialsRedTeam;

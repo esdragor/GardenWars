@@ -39,6 +39,9 @@ namespace Entities.Champion
 
         [Header("Upgrades")]
         [SerializeField] private int upgradeCount = 10;
+        public int upgrades => upgradeCount;
+
+        public byte throwAbilityIndex { get; private set; }
 
         public class CastingAbility
         {
@@ -251,6 +254,7 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncUpgradeRPC(int index)
         {
+            if(!isFighter) return;
             Debug.Log($"Upgrade capacity at index {index} ({capacityDict[abilitiesIndexes[index]].capacity.AssociatedActiveCapacitySO().capacityName}) (now level {capacityDict[abilitiesIndexes[index]].capacity.level})");
             upgradeCount--;
             capacityDict[abilitiesIndexes[index]].capacity.level++;
@@ -284,6 +288,31 @@ namespace Entities.Champion
         }
 
         public event Action OnUpgradeCountIncreased; 
+        
+        public void DecreaseUpgradeCount()
+        {
+            if(!isMaster) return;
+
+            upgradeCount--;
+
+            if (isOffline)
+            {
+                SyncDecreaseUpgradeCountRPC(upgradeCount);
+                return;
+            }
+            
+            photonView.RPC("SyncDecreaseUpgradeCountRPC",RpcTarget.All,upgradeCount);
+        }
+
+        [PunRPC]
+        private void SyncDecreaseUpgradeCountRPC(int value)
+        {
+            Debug.Log($"Upgrade count : {upgradeCount}");
+            upgradeCount = value;
+            OnUpgradeCountDecreased?.Invoke();
+        }
+
+        public event Action OnUpgradeCountDecreased; 
 
         public void ShowMaxRangeIndicator(float range)
         {
@@ -298,10 +327,10 @@ namespace Entities.Champion
             maxRangeIndicatorGo.SetActive(false);
         }
         
-        public void ShowAreaIndicator(Vector3 pos,float range)
+        public void ShowAreaIndicator(Vector3 pos,float size)
         {
             if(!areaIndicatorGo.activeSelf) areaIndicatorGo.SetActive(true);
-            areaIndicatorTr.localScale = range * rangeScaleFactor * Vector3.one;
+            areaIndicatorTr.localScale = size * rangeScaleFactor * Vector3.one;
             pos.y = position.y + indicatorHeight;
             areaIndicatorTr.transform.position = pos;
         }
@@ -313,6 +342,11 @@ namespace Entities.Champion
 
         public void ShowSkillShotIndicator(Vector3 pos, float range)
         {
+            if (pos == position)
+            {
+                skillShotIndicatorGo.SetActive(false);
+                return;
+            }
             var dir = (pos - position).normalized;
 
             skillShotIndicatorTr.localRotation = Quaternion.LookRotation(dir);
