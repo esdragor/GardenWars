@@ -106,22 +106,25 @@ namespace Entities.Capacities
             PressFeedback(targetsEntityIndexes,targetPositions);
             
             if (!caster.isLocal) return true;
-            
-            switch (_so.shootType)
-            {
-                case Enums.CapacityShootType.Skillshot:
-                    if(_so.showMaxRangeIfSkillShot) champion.ShowMaxRangeIndicator(_so.maxRange);
-                    break;
-                case Enums.CapacityShootType.TargetPosition:
-                    champion.ShowMaxRangeIndicator(_so.maxRange);
-                    break;
-                case Enums.CapacityShootType.TargetEntity:
-                    champion.ShowMaxRangeIndicator(_so.maxRange);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
 
+            if (!_so.overrideDefaultIndicator)
+            {
+                switch (_so.shootType)
+                {
+                    case Enums.CapacityShootType.Skillshot:
+                        if(_so.showMaxRangeIfSkillShot) champion.ShowMaxRangeIndicator(_so.maxRange);
+                        break;
+                    case Enums.CapacityShootType.TargetPosition:
+                        champion.ShowMaxRangeIndicator(_so.maxRange);
+                        break;
+                    case Enums.CapacityShootType.TargetEntity:
+                        champion.ShowMaxRangeIndicator(_so.maxRange);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            
             PressLocal(targetsEntityIndexes,targetPositions);
             return true;
         }
@@ -136,7 +139,7 @@ namespace Entities.Capacities
             HoldFeedback(targetsEntityIndexes,targetPositions);
             
             if (!caster.isLocal) return;
-            if(_so.shootType == Enums.CapacityShootType.Skillshot) champion.ShowSkillShotIndicator(targetPositions,_so.maxRange);
+            if(_so.shootType == Enums.CapacityShootType.Skillshot && !_so.overrideDefaultIndicator) champion.ShowSkillShotIndicator(targetPositions,_so.maxRange);
             HoldLocal(targetsEntityIndexes,targetPositions);
         }
 
