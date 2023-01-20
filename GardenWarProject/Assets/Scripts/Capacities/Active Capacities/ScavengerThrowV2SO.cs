@@ -11,17 +11,16 @@ namespace Entities.Capacities
     public class ScavengerThrowV2SO : ActiveCapacitySO
     {
         public ProjectileOnCollideEffect upgradeProjectile;
-        public GameObject prefabJauge;
-        public int nbBounce = 5;
-        [Range(0.1f, 10f)] public float airSpeed = 1.0f;
-        [Range(0.01f, 2f)] public float timeForOneUnit = 1.0f;
+        
+        public float projectileSpeed = 1.0f;
         public float height = 5.0f;
-        public bool RandomizeRebound = false;
-        public float RandomizeReboundRadius = 0.5f;
-        public float HextechFlashSpeedScale = 1f;
-        public float MinDistanceHFlash = 5.0f;
-        public float MaxDistanceHFlash = 5.0f;
-        public float accelerationJauge = 1f; //linear (not used lol)
+        public bool canBounce = false;
+        public int nbBounce = 5;
+        public float bounceRadius = 0.5f;
+        public float chargeRate = 1f;
+        public float minDistance = 5.0f;
+        public float maxDistance = 5.0f;
+        
         public ParticleSystem ThrowDestFx;
 
 
@@ -38,9 +37,8 @@ namespace Entities.Capacities
         private Vector3 targetPosition;
 
         private float time_Pressed = 0f;
-        private double bagSpeed;
-
-        private double acceleration = 0.1;
+        private double throwDistance;
+        
         private ParticleSystem ThrowDestFx;
         private ParticleSystem ThrowDestFxGO;
         
@@ -48,7 +46,6 @@ namespace Entities.Capacities
         private double progress = 0f;
         private int nbBounce = 0;
         private float height = 0;
-        private float moveSpeed;
         private Vector3 dir = Vector3.zero;
         private double speed;
         private float timeForOneUnit;
@@ -72,32 +69,31 @@ namespace Entities.Capacities
 
         protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            time_Pressed = Time.time;
-            bagSpeed = so.MinDistanceHFlash;
-            acceleration = 0;
+            
         }
 
         protected override void PressLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            time_Pressed = 0;
+            throwDistance = so.minDistance;
         }
 
         protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            
         }
 
         protected override void HoldFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            acceleration += (Time.time - time_Pressed) * so.accelerationJauge;
+            time_Pressed += Time.deltaTime * so.chargeRate;
+            throwDistance += time_Pressed;
+            if (throwDistance < so.minDistance) throwDistance = so.minDistance;
+            if (throwDistance > so.maxDistance) throwDistance = so.maxDistance;
         }
 
         protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            time_Pressed = (Time.time - time_Pressed) * so.HextechFlashSpeedScale;
-            bagSpeed += time_Pressed;
-            if (bagSpeed < so.MinDistanceHFlash) bagSpeed = so.MinDistanceHFlash;
-            if (bagSpeed > so.MaxDistanceHFlash) bagSpeed = so.MaxDistanceHFlash;
-            
-            champion.ShowSkillShotIndicator(PlayerInputController.CursorWorldPos, (float)bagSpeed);
+            champion.ShowSkillShotIndicator(PlayerInputController.CursorWorldPos, (float)throwDistance);
         }
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
@@ -107,29 +103,29 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
-            time_Pressed = (Time.time - time_Pressed) * so.HextechFlashSpeedScale;
-            bagSpeed += time_Pressed;
-            if (bagSpeed > so.MaxDistanceHFlash) bagSpeed = so.MaxDistanceHFlash;
-            targetPosition = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * (float)bagSpeed);
+            if (throwDistance > so.maxDistance) throwDistance = so.maxDistance;
+            targetPosition = GetClosestValidPoint(casterPos + (targetPositions - casterPos).normalized * (float)throwDistance);
             targetPosition.y = 1;
 
             var projectile = LocalPoolManager.PoolInstantiate(so.upgradeProjectile, targetPosition, Quaternion.identity);
             var projectileTr = projectile.transform;
 
             Throw();
+
+            time_Pressed = 0;
+            throwDistance = so.minDistance;
             
             void Throw()
             {
                 startPosition = champion.position;
                 endPosition = targetPosition;
-                speed = bagSpeed;
+                speed = throwDistance;
                 progress = 0;
                 
-                timeForOneUnit = so.timeForOneUnit;
-                moveSpeed = so.airSpeed;
+                timeForOneUnit = so.projectileSpeed;
                 height = so.height;
-                isRandom = so.RandomizeRebound;
-                randomRangeRadius = so.RandomizeReboundRadius;
+                isRandom = so.canBounce;
+                randomRangeRadius = so.bounceRadius;
                 nbBounce = so.nbBounce;
                 
                 bool canPickup = false;
@@ -137,6 +133,11 @@ namespace Entities.Capacities
                 dir = (endPosition - startPosition).normalized;
 
                 distanceToDestination = (Vector3.Distance(endPosition, startPosition));
+
+                var timeToDestination = distanceToDestination / so.projectileSpeed;
+                float timer = 0f;
+                
+                Debug.Log("Throw");
 
                 gsm.OnUpdateFeedback += MoveBag;
 
@@ -152,7 +153,7 @@ namespace Entities.Capacities
                     {
                         if (nbBounce > 0)
                         {
-                            progress = 0f;
+                            timer = 0f;
                             height /= 1.5f;
                             speed /= 4f;
                             startPosition = endPosition;
@@ -164,26 +165,32 @@ namespace Entities.Capacities
 
                             endPosition = GetClosestValidPoint(endPosition);
                             endPosition.y = 1;
+
+                            distanceToDestination = Vector3.Distance(startPosition, endPosition);
+
+                            timeToDestination = distanceToDestination / so.projectileSpeed;
+                            
                             nbBounce--;
-                            moveSpeed *= 0.9f;
+                            
+                            Debug.Log($"Done bounce {nbBounce+1}");
                         }
                         else
                         {
                             gsm.OnUpdateFeedback -= MoveBag;
                             projectileTr.position = new Vector3(projectileTr.position.x, endPosition.y, projectileTr.position.z);
                             Finished = true;
+                            Debug.Log("Done");
                             return;
                         }
                     }
 
-                    progress += moveSpeed * (timeForOneUnit / distanceToDestination) * Time.deltaTime;
+                    timer += Time.deltaTime;
+                    progress = (timer / timeToDestination);
                     
                     projectileTr.position = ParabolaClass.Parabola(startPosition, endPosition, height, progress);
                 }
             }
-
             
-
             void GiveUpgrade(Entity entity)
             {
                 if (!(entity is Champion.Champion champ)) return;

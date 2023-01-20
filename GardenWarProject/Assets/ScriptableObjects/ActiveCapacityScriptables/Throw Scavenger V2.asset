@@ -25,15 +25,12 @@ MonoBehaviour:
   overrideDefaultIndicator: 1
   indexInCollection: 16
   upgradeProjectile: {fileID: 2395444416476895822, guid: 1524651826a65514aa17effd805ae9e0, type: 3}
-  prefabJauge: {fileID: 0}
-  nbBounce: 1
-  airSpeed: 5.6
-  timeForOneUnit: 1.7
+  projectileSpeed: 6
   height: 2.5
-  RandomizeRebound: 1
-  RandomizeReboundRadius: 2
-  HextechFlashSpeedScale: 0
-  MinDistanceHFlash: 1
-  MaxDistanceHFlash: 300
-  accelerationJauge: 10
+  canBounce: 1
+  nbBounce: 1
+  bounceRadius: 0.5
+  chargeRate: 0.25
+  minDistance: 1
+  maxDistance: 30
   ThrowDestFx: {fileID: 9163181885516752660, guid: 8a7105a30cdf4984bb5516fa131bb19e, type: 3}
