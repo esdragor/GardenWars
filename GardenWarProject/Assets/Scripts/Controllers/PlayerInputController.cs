@@ -28,7 +28,7 @@ namespace Controllers.Inputs
         /// </summary>
         private void SetupInputMap()
         {
-            InputManager.PlayerMap = new PlayerInputs();
+            InputManager.PlayerMap ??= new PlayerInputs();
             InputManager.PlayerMap.Enable();
             inputs = InputManager.PlayerMap;
         }
