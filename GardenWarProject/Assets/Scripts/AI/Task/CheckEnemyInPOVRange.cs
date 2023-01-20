@@ -39,12 +39,20 @@ public class CheckEnemyInPOVRange : Node
                     var entity = coll.GetComponent<Entity>();
                     if (!entity) continue;
                     if (!entity.isVisible) continue;
-                    if (Physics.Raycast(MyTransform.position,
-                            (entity.transform.position - MyTransform.position).normalized, out var hit,
+                    Vector3 start = MyTransform.position;
+                    start.y = 0.7f;
+                    Vector3 end = entity.transform.position;
+                    end.y = 0.7f;
+                    if (Physics.Raycast(start,
+                            (end - start).normalized, out var hit,
                             MyEntity.viewRange,
                             layerTargetFogOfWar))
                     {
                         if (hit.collider.gameObject.layer != 29) continue;
+                    }
+                    else
+                    {
+                        continue;
                     }
 
                     if (!MyEntity.GetEnemyTeams().Contains(entity.team) || entity.team == Enums.Team.Neutral) continue;
@@ -66,25 +74,9 @@ public class CheckEnemyInPOVRange : Node
             }
         }
 
-        // if (t != null)
-        // {
-            // if (!t.gameObject.activeSelf)
-            // {
-            //     Root.ClearData("target");
-            //     state = NodeState.Failure;
-            // }
-
-            if (t != null && Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV)
-                return NodeState.Success;
-            // IDeadable deadable = t.GetComponent<IDeadable>();
-            // if (deadable != null && !deadable.IsAlive())
-            // {
-            //     Root.ClearData("target");
-            //     return NodeState.Failure;
-            // }
-        //}
+        if (t != null && Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV)
+            return NodeState.Success;
         Root.getOrigin().ClearData("target");
         return NodeState.Failure;
-        return state;
     }
 }
