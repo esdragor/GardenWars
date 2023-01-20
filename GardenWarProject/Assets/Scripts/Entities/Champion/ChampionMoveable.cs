@@ -264,7 +264,12 @@ namespace Entities.Champion
             {
                 animator.SetBool("IsMoving", move);
             }
+            if(isMaster) OnMoving?.Invoke(move);
+            OnMovingFeedback?.Invoke(move);
         }
+
+        public event Action<bool> OnMoving;
+        public event Action<bool> OnMovingFeedback;
 
         [PunRPC]
         private void SyncIsMovingRPC(int actorNumber, bool isMoving)

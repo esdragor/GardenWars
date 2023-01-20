@@ -1,7 +1,6 @@
 using System;
 using Photon.Pun;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Entities
 {
@@ -17,10 +16,18 @@ namespace Entities
         [SerializeField] private ParticleSystem HitFX;
         [SerializeField] private Animator[] Myanimators;
 
-        [Header("Fill")]
-        [SerializeField] private int maxBonbon = 50;
-        private int currentBonbon;
-
+        [Header("Bonbon Gaming")]
+        public float fillRange = 2;
+        public static int level;
+        private int maxBonbon => 30 + 10 * (level-1 + (level-1)%2);
+        [SerializeField] private int currentBonbon;
+        [SerializeField] private float timeBeforeDrain = 0.5f;
+        [SerializeField] private Vector3 maxSize;
+        
+        private bool playerIsFigher;
+        private Champion.Champion currentFeeder;
+        
+        
         [Header("Indicator")]
         [SerializeField] private RectTransform indicator;
         //[SerializeField] private RectTransform rotator;
@@ -28,30 +35,33 @@ namespace Entities
         [SerializeField] private float margin;
         //private GameObject rotatorGo;
         private Vector3 iconPos;
-
-
         private Camera cam;
+        
+       
         
         private bool isAlive = true;
         private bool canDie = true;
-
-
         protected override void OnStart()
         {
-            var item = AssignRandomItem();
-            Mesh.GetComponent<Renderer>().material.color = item.AssociatedItemSO().itemColor;
-            RequestAddItem(item.indexOfSOInCollection);
             OnInstantiated();
             animators = Myanimators;
             //rotatorGo = rotator.gameObject;
             //rotatorGo.SetActive(false);
+            playerIsFigher = gsm.GetPlayerChampion().isFighter;
         }
 
         public override void OnInstantiated()
         {
             isAlive = true;
+            canDie = true;
             
             cam = Camera.main;
+            
+            currentBonbon = 0;
+
+            currentFeeder = null;
+            
+            transform.localScale = Vector3.one;
 
             //UIManager.Instance.InstantiateHealthBarForEntity(this);
         }
@@ -63,6 +73,8 @@ namespace Entities
 
         private void ShowIcon()
         {
+            if(playerIsFigher) return;
+            
             iconPos = cam.WorldToScreenPoint(position+Vector3.up * offset);
             
             var sizeDelta = indicator.sizeDelta;
@@ -86,18 +98,6 @@ namespace Entities
             var targetDir = cam.WorldToScreenPoint(transform.position) - rotator.position;
             rotator.up = targetDir;
             */
-        }
-
-        private Item AssignRandomItem()
-        {
-            ItemCollectionManager im = ItemCollectionManager.Instance;
-            int randomItem = Random.Range(0, im.allItemSOs.Count);
-
-            return im.CreateItem((byte)randomItem, this);
-        }
-
-        private void DropItem()
-        {
         }
 
         public bool IsAlive()
@@ -137,24 +137,6 @@ namespace Entities
         [PunRPC]
         public void DieRPC(int killerId)
         {
-            var entity = EntityCollectionManager.GetEntityByIndex(killerId);
-            if (entity && (entity is Champion.Champion))
-            {
-                // GameObject item = PhotonNetwork.Instantiate(activePinataAutoSO.ItemBagPrefab.name, transform.position, Quaternion.identity);
-                // ItemBag bag = item.GetComponent<ItemBag>();
-                // bag.SetItemBag(items[0].indexOfSOInCollection, EntityCollectionManager.GetEntityByIndex(killerId).team);
-                // bag.ChangeVisuals(true);
-                // bag.IsCollectible();
-                entity.AddItemRPC(items[0].indexOfSOInCollection);
-
-                var rp = new RespawnPinata
-                {
-                    delay = 0,
-                };
-
-                SpawnAIs.Instance.PinatasRespawned.Add(rp);
-            }
-
             OnDie?.Invoke(killerId);
 
             if (isOffline)
@@ -198,5 +180,100 @@ namespace Entities
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
         public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
+
+        public void StartChanneling(Champion.Champion champion)
+        {
+            if (currentFeeder != null)
+            {
+                return;
+            }
+            
+            currentFeeder = champion;
+
+            var pos = champion.position;
+            pos.y = transform.position.y;
+            transform.LookAt(pos);
+            
+            currentFeeder.IncreaseCurrentCandyRPC(100); // TODO - Remove when testing over
+            
+            double drainTimer = -timeBeforeDrain;
+            var drainTime = 1;
+
+            gsm.OnTick += ChannelDrain;
+            
+            currentFeeder.OnDecreaseCurrentHp += CancelOnDamage;
+            currentFeeder.OnMoving += CancelOnMove;
+            currentFeeder.OnCast += CancelOnCast;
+            currentFeeder.OnAttack += CancelOnCast;
+            
+            void ChannelDrain()
+            {
+                drainTimer += gsm.increasePerTick;
+                
+                if(drainTimer < 1) return;
+                
+                drainTimer = 0;
+                drainTime++;
+
+                if (champion.currentCandy <= 0)
+                {
+                    StopChanneling();
+                    return;
+                }
+                
+                DrainCandy(drainTime);
+            }
+            
+            void DrainCandy(int candy)
+            {
+                if (currentFeeder.currentCandy - candy <= 0) candy = currentFeeder.currentCandy;
+                
+                IncreaseCurrentCandy(candy);
+            }
+
+            void IncreaseCurrentCandy(int candy)
+            {
+                currentFeeder.DecreaseCurrentCandyRPC(candy);
+                
+                currentBonbon += candy;
+
+                transform.localScale = new Vector3(Mathf.Lerp(1, maxSize.x, (float) currentBonbon / maxBonbon), 1,
+                    Mathf.Lerp(1, maxSize.z, (float) currentBonbon / maxBonbon));
+
+                if (currentBonbon < maxBonbon) return;
+                
+                DieRPC(currentFeeder.entityIndex);
+                
+                StopChanneling();
+            }
+            
+            void CancelOnCast(byte _,int __, Vector3 ___)
+            {
+                StopChanneling();
+            }
+
+            void CancelOnDamage(float _,int __)
+            {
+                StopChanneling();
+            }
+        
+            void CancelOnMove(bool moving)
+            {
+                if(moving) StopChanneling();
+            }
+        
+            void StopChanneling()
+            {
+                gsm.OnTick -= ChannelDrain;
+
+                currentFeeder.OnDecreaseCurrentHp -= CancelOnDamage;
+                currentFeeder.OnMoving -= CancelOnMove;
+                currentFeeder.OnCast -= CancelOnCast;
+                currentFeeder.OnAttack -= CancelOnCast;
+                
+                currentFeeder = null;
+            }
+        }
+
     }
 }
