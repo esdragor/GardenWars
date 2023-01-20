@@ -68,19 +68,6 @@ namespace Entities.Champion
             TryMoveToTarget();
         }
 
-        public void OnAddMessage(string message)
-        {
-            Debug.Log("Champion Message: " + message);
-            photonView.RPC("AddMessage", RpcTarget.All, message);
-        }
-    
-        [PunRPC]
-        public void AddMessage(string message)
-        {
-            Debug.Log("Sync Message: " + message);
-            ChatManager.Instance.UpdateMessageBox(message);
-        }
-        
         private void UpdateAnimators()
         {
             if (!photonView.IsMine) return;
