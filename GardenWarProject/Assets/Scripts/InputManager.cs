@@ -8,6 +8,8 @@ public class InputManager : MonoBehaviour
     public static PlayerInputs PlayerMap;
     
     public static PlayerInputs PlayerUIMap;
+    
+    private 
 
     private void Awake()
     {
@@ -16,7 +18,7 @@ public class InputManager : MonoBehaviour
             DestroyImmediate(gameObject);
             return;
         }
-        PlayerMap = new PlayerInputs();
+        PlayerMap ??= new PlayerInputs();
     }
 
     /// <summary>

@@ -19,6 +19,7 @@ public class GameSettingsManager : MonoBehaviour
         else Destroy(gameObject);
         Application.targetFrameRate = 60;
         DontDestroyOnLoad(gameObject);
+        InputManager.PlayerMap ??= new PlayerInputs();
     }
 
     private void Start()
