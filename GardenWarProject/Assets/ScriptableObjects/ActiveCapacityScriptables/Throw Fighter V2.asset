@@ -22,17 +22,17 @@ MonoBehaviour:
   types: 
   shootType: 1
   showMaxRangeIfSkillShot: 0
-  overrideDefaultIndicator: 0
-  indexInCollection: 0
+  overrideDefaultIndicator: 1
+  indexInCollection: 17
   candyBagProjectile: {fileID: 2395444416476895822, guid: 2519e5667bed12d45a06c24258a61524, type: 3}
-  projectileSpeed: 1
+  projectileSpeed: 10
   height: 3
   nbBounce: 1
   bounceRadius: 0.5
   hasRandomBounceDirection: 1
   minCandy: 5
   maxCandy: 50
-  candyAccelerationRate: 0.1
+  candyAccelerationRate: 10
   candyPerGroup: 5
   scalePerCandyGroup: 0.33
   damagePerCandyGroup: 1

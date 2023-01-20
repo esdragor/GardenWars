@@ -121,8 +121,6 @@ namespace Entities.Capacities
                 var timeToDestination = distanceToDestination / so.projectileSpeed;
                 float timer = 0f;
                 
-                Debug.Log("Throw");
-
                 gsm.OnUpdateFeedback += MoveBag;
 
                 void MoveBag()
@@ -155,14 +153,11 @@ namespace Entities.Capacities
                             timeToDestination = distanceToDestination / (so.projectileSpeed * 0.5f);
                             
                             nbBounce--;
-                            
-                            Debug.Log($"Done bounce {nbBounce+1}");
                         }
                         else
                         {
                             gsm.OnUpdateFeedback -= MoveBag;
                             projectileTr.position = new Vector3(projectileTr.position.x, endPosition.y, projectileTr.position.z);
-                            Debug.Log("Done");
                             return;
                         }
                     }
