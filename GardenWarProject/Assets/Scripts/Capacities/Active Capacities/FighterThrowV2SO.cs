@@ -27,6 +27,7 @@ namespace Entities.Capacities
 
         [Header("Damage")]
         public int damagePerCandyGroup = 1; // damage per candy group (exclude candy beneath trigger requierement)
+        public int baseDamage = 20; // min candy for damage
         public int minimumCandyForDamage = 1; // min candy for damage
 
         public ParticleSystem ThrowDestFx;
@@ -46,9 +47,6 @@ namespace Entities.Capacities
 
         private double acceleration = 0.1;
         private float distanceCandy = 10f;
-        private ParticleSystem ThrowDestFx;
-        private ParticleSystem ThrowDestFxGO;
-
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -115,6 +113,11 @@ namespace Entities.Capacities
             
             champion.PlayThrowAnimation();
 
+            var destinationFX = LocalPoolManager.PoolInstantiate(so.ThrowDestFx, targetPositions, Quaternion.identity);
+            var destionFXTR = destinationFX.transform;
+            destionFXTR.Rotate(Vector3.right * 90);
+            destionFXTR.localScale = size;
+
             Throw();
             
             time_Pressed = 0;
@@ -124,7 +127,7 @@ namespace Entities.Capacities
             void Throw()
             {
                 var thrownCandy = nbCandyStocked;
-                var damage = nbCandyStocked - so.minimumCandyForDamage <= 0 ? 0 : ((nbCandyStocked - so.minimumCandyForDamage)/so.candyPerGroup) * so.damagePerCandyGroup;
+                var damage = so.baseDamage + ((nbCandyStocked - so.minimumCandyForDamage)/so.candyPerGroup) * so.damagePerCandyGroup;
                 
                 var startPosition = champion.position;
                 var endPosition = targetPositions;
@@ -137,7 +140,7 @@ namespace Entities.Capacities
                 var nbBounce = so.nbBounce;
 
                 bool canPickup = false;
-                bool removedDamage = false;
+                bool firstBounce = false;
 
                 var dir = (endPosition - startPosition).normalized;
 
@@ -146,6 +149,8 @@ namespace Entities.Capacities
                 var timeToDestination = distanceToDestination / so.projectileSpeed;
                 float timer = 0f;
                 
+                
+                
                 gsm.OnUpdateFeedback += MoveBag;
 
                 void MoveBag()
@@ -153,22 +158,22 @@ namespace Entities.Capacities
                     if (progress > 0.5f && !canPickup)
                     {
                         canPickup = true;
-                        projectile.OnEntityCollide += GiveCandy;
-                        if (damage > 0)
-                        {
-                            removedDamage = false;
-                            projectile.OnEntityCollide += DealDamage;
-                        }
+
+                        projectile.OnEntityCollideFeedback += GiveCandy;
+                        projectile.OnEntityCollideFeedback += DealDamage;
                     }
 
                     if (progress > 0.99f)
                     {
                         if (nbBounce > 0)
                         {
-                            if (!removedDamage)
+                            if (!firstBounce)
                             {
-                                projectile.OnEntityCollide -= DealDamage;
-                                removedDamage = true;
+                                projectile.OnEntityCollideFeedback -= DealDamage;
+                                
+                                destinationFX.gameObject.SetActive(false);
+                                
+                                firstBounce = true;
                             }
                             
                             timer = 0f;
@@ -208,12 +213,17 @@ namespace Entities.Capacities
                 {
                     if (!(entity is Champion.Champion champ)) return;
 
-                    champ.IncreaseCurrentCandyRPC(thrownCandy);
+                    if(isMaster)champ.IncreaseCurrentCandyRPC(thrownCandy);
+                    
+                    projectile.OnEntityCollideFeedback -= GiveCandy;
+                    
                     projectile.DestroyProjectile(true);
                 }
 
                 void DealDamage(Entity entity)
                 {
+                    if(thrownCandy < so.minimumCandyForDamage || !isMaster) return; 
+                    
                     if(entity is Tower) return;
 
                     var lifeable = entity.GetComponent<IActiveLifeable>();
