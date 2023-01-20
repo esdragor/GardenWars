@@ -366,12 +366,14 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public void SyncSetCanDieRPC(bool value)
     {
         canDie = value;
+        OnSetCanDieFeedback?.Invoke(value);
     }
 
     public void SetCanDieRPC(bool value)
     {
         canDie = value;
         photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
+        OnSetCanDie?.Invoke(value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;
@@ -392,6 +394,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         BT.Poussin.parent = null;
         gameObject.SetActive(false);
         HairDryer.SetActive(false);
+        OnDieFeedback?.Invoke(killerId);
     }
 
     [PunRPC]
@@ -399,6 +402,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     {
         photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
+        OnDie?.Invoke(killerId);
     }
 
     public event Action<int> OnDie;
@@ -410,10 +414,12 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void SyncReviveRPC()
     {
+        OnReviveFeedback?.Invoke();
     }
 
     public void ReviveRPC()
     {
+        OnRevive?.Invoke();
     }
 
     public event GlobalDelegates.NoParameterDelegate OnRevive;

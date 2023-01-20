@@ -42,11 +42,7 @@ namespace BehaviourTree
                     {
                         return NodeState.Success;
                     }
-                    else
-                    {
-                        return NodeState.Failure;
-                    }
-                    break;
+                    return NodeState.Failure;
                 default:
                     return NodeState.Failure;
             }

@@ -39,6 +39,7 @@ public class GoToTarget : Node
             
             if (!entity)
                 entity = MyTransform.GetComponent<Entity>();
+            if(entity is Minion)
             entity.SetAnimatorTrigger("Move");
             state = NodeState.Running;
             return state;

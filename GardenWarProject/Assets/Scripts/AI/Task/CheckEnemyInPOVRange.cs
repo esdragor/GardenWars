@@ -65,6 +65,7 @@ public class CheckEnemyInPOVRange : Node
                     if (!deadable.IsAlive()) continue;
 
                     Root.getOrigin().SetDataInBlackboard("target", entity);
+                    if(MyEntity is Tower)
                     MyEntity.SetAnimatorTrigger("SpotEnemy");
                     state = NodeState.Success;
                     return state;

@@ -303,6 +303,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         currentMoveSpeed += amount;
         agent.speed = currentMoveSpeed;
         photonView.RPC("SyncIncreaseCurrentMoveSpeedRPC", RpcTarget.All, amount);
+        OnMove?.Invoke(Vector3.zero);
     }
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
@@ -328,6 +329,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         currentMoveSpeed -= amount;
         agent.speed = currentMoveSpeed;
         photonView.RPC("SyncDecreaseCurrentMoveSpeedRPC", RpcTarget.All, amount);
+        OnMoveFeedback?.Invoke(Vector3.zero);
     }
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
@@ -662,12 +664,14 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public void SyncSetCanDieRPC(bool value)
     {
         canDie = value;
+        OnSetCanDieFeedback?.Invoke(value);
     }
 
     public void SetCanDieRPC(bool value)
     {
         canDie = value;
         photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
+        OnSetCanDie?.Invoke(value);
     }
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;
@@ -701,7 +705,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
             return;
         }
-
+        OnDie?.Invoke(killerId);
         photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
     }
 
@@ -712,6 +716,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         FogOfWarManager.Instance.RemoveFOWViewable(this);
 
         gameObject.SetActive(false);
+        OnDieFeedback?.Invoke(killerId);
     }
 
     public event Action<int> OnDie;
@@ -723,10 +728,12 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public void SyncReviveRPC()
     {
+        OnReviveFeedback?.Invoke();
     }
 
     public void ReviveRPC()
     {
+        OnRevive?.Invoke();
     }
 
     public event GlobalDelegates.NoParameterDelegate OnRevive;

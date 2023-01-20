@@ -70,11 +70,13 @@ public class TaskAttack : Node
         if (Previouspos != target.transform.position)
         {
             model.LookAt(new Vector3(target.position.x, model.position.y, target.position.z));
+            if(MyEntity is Tower)
             MyEntity.SetAnimatorTrigger("Turn");
             Previouspos = target.transform.position;
         }
         else
         {
+            if(MyEntity is Tower)
             MyEntity.SetAnimatorTrigger("TurnOff");
         }
 

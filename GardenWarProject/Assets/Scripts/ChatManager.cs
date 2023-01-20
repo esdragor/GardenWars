@@ -29,7 +29,6 @@ public class ChatManager : MonoBehaviour
 
     public void OnAddMessage()
     {
-        Debug.Log("Chat Message: " + inputField.text);
         GameStateMachine.Instance.GetPlayerChampion().OnAddMessage($"[{GameSettingsManager.playerName}]: {inputField.text}" + string.Format("\n"));
         inputField.text = "";
     }

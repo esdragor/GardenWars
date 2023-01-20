@@ -36,8 +36,5 @@ public class PostGameUIManager : MonoBehaviour
     public void OnRematchClick()
     {
         Debug.Log("Does not work yet");
-        return;
-        rematchButton.interactable = false;
-        GameStateMachine.Instance.RequestSetReady(true);
     }
 }

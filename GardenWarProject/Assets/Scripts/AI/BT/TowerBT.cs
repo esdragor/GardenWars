@@ -5,8 +5,6 @@ namespace BehaviourTree
 {
     public class TowerBT : Tree
     {
-        private Node origin;
-        
         [SerializeField] private LayerMask enemyMask;
         [SerializeField] private Tower entity;
         [SerializeField] public Transform Poussin;
