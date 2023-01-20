@@ -23,6 +23,7 @@ namespace Entities
         [SerializeField] private int currentBonbon;
         [SerializeField] private float timeBeforeDrain = 0.5f;
         [SerializeField] private Vector3 maxSize;
+        [SerializeField] private ProjectileOnCollideEffect upgradeProjectile;
         
         private bool playerIsFigher;
         private Champion.Champion currentFeeder;
@@ -155,7 +156,11 @@ namespace Entities
             isAlive = false;
             FogOfWarManager.Instance.RemoveFOWViewable(this);
 
-            Destroy(Instantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
+            Destroy(LocalPoolManager.PoolInstantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
+
+            
+            DropUpgrade();
+            
             SetAnimatorTrigger("Death");
 
             gameObject.SetActive(false);
@@ -272,6 +277,21 @@ namespace Entities
                 currentFeeder.OnAttack -= CancelOnCast;
                 
                 currentFeeder = null;
+            }
+        }
+
+        private void DropUpgrade()
+        {
+            var projectile = LocalPoolManager.PoolInstantiate(upgradeProjectile, transform.position, Quaternion.identity);
+
+            projectile.OnEntityCollide += GiveUpgrade;
+            
+            void GiveUpgrade(Entity entity)
+            {
+                if (!(entity is Champion.Champion champion)) return;
+                
+                champion.IncreaseUpgradeCount();
+                projectile.DestroyProjectile(true);
             }
         }
 

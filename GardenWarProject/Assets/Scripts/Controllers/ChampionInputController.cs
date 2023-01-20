@@ -113,12 +113,12 @@ namespace Controllers.Inputs
 
         private void OnPressThrowCapacity(InputAction.CallbackContext ctx)
         {
-            champion.RequestOnCastCapacity(CapacitySOCollectionManager.GetThrowAbilityIndex(champion.role));
+            champion.RequestOnCastCapacity(champion.throwAbilityIndex);
         }
 
         private void OnReleaseThrowCapacity(InputAction.CallbackContext ctx)
         {
-            champion.RequestOnReleaseCapacity(champion.recallAbilityIndex);
+            champion.RequestOnReleaseCapacity(champion.throwAbilityIndex);
         }
         
         
