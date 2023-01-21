@@ -54,13 +54,13 @@ namespace UIComponents
             var text = capacity.AssociatedActiveCapacitySO().description;
             switch (capacity.level)
             {
-                case 0 :
+                case 1 :
                     text = capacity.AssociatedActiveCapacitySO().description;
                     break;
-                case 1 :
+                case 2 :
                     text = capacity.AssociatedActiveCapacitySO().description1;
                     break;
-                case 2 :
+                case 3 :
                     text = capacity.AssociatedActiveCapacitySO().description2;
                     break;
             }
