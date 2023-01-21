@@ -33,7 +33,7 @@ namespace Entities.Capacities
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            return true;
+            return level > 1;
         }
 
         protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
