@@ -23,6 +23,16 @@ public class InputManager : MonoBehaviour
         PlayerMap ??= new PlayerInputs();
 
     }
+    
+    public static void DisableInput()
+    {
+        PlayerMap.Disable();
+    }
+    
+    public static void EnableInput()
+    {
+        PlayerMap.Enable();
+    }
 
     /// <summary>
     /// Toggle PlayerMap

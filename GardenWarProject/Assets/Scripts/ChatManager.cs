@@ -24,10 +24,11 @@ public class ChatManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
     private void Start()
     {
         inputField.onEndEdit.AddListener(OnAddMessage);
+        inputField.onSelect.AddListener((string s) => { InputManager.DisableInput(); });
+        inputField.onDeselect.AddListener((string s) => { InputManager.EnableInput(); });
     }
 
     private void OnAddMessage(string message)
