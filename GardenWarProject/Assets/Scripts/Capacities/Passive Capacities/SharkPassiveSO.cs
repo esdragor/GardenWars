@@ -117,8 +117,12 @@ namespace Entities.Capacities
                 champion.IncreaseCurrentMoveSpeedRPC(so.increasedMoveSpeed);
                 
                 champion.OnAttack += StunTarget;
+                
+                OnBurrow?.Invoke();
             }
 
+            OnBurrowFeedback?.Invoke();
+            
             borrowed = true;
             
             champion.SetAnimatorBool("Borrowed",borrowed);
@@ -126,6 +130,9 @@ namespace Entities.Capacities
             aileronGo.SetActive(true);
             aileronGo.GetComponent<SharkPassiveManager>().EnableFXShot(champion.team);
         }
+
+        public event Action OnBurrow;
+        public event Action OnBurrowFeedback;
 
         private void StunTarget(byte _,int targetId,Vector3 __)
         {
@@ -158,6 +165,8 @@ namespace Entities.Capacities
                 champion.OnAttack -= StunTarget;
                 
                 champion.DecreaseCurrentMoveSpeedRPC(so.increasedMoveSpeed);
+                
+                OnUnBurrow?.Invoke();
             }
             
             //champion.rotateParent.localPosition = Vector3.zero;
@@ -175,6 +184,8 @@ namespace Entities.Capacities
 
             aileronGo.SetActive(false);
         }
+
+        public event Action OnUnBurrow;
         
         private void UnBorrow(int _)
         {

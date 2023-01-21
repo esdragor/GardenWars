@@ -172,6 +172,9 @@ namespace Entities.Capacities
             void ReleaseCapacity()
             {
                 if(!CanCast(targetsEntityIndexes,targetPositions)) return;
+                
+                if(baseCooldown > 0) EnterCooldown(baseCooldown);
+                
                 if(isMaster) Release(targetsEntityIndexes,targetPositions);
                 ReleaseFeedback(targetsEntityIndexes,targetPositions);
                 if (caster.isLocal)
@@ -194,7 +197,7 @@ namespace Entities.Capacities
                     
                     ReleaseLocal(targetsEntityIndexes,targetPositions);
                 }
-                if(baseCooldown > 0) EnterCooldown(baseCooldown);
+                
             }
             
             void DecreaseCastTimer()

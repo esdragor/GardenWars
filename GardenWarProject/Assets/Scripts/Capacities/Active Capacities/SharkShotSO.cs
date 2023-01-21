@@ -13,6 +13,8 @@ namespace Entities.Capacities
         public float projectileSpeed = 1f;
         public float projectileDamage;
         public ParticleSystem FXhit;
+        
+        public float cdReductionWhenBurrowed = 3f;
 
         public override Type AssociatedType()
         {
@@ -24,6 +26,12 @@ namespace Entities.Capacities
     {
         private SharkShotSO so => (SharkShotSO) AssociatedActiveCapacitySO();
         private GameObject FXHitGo;
+
+        private SharkPassive passive;
+
+        private bool isResetCdSetup = false;
+        
+        
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return true;
@@ -66,6 +74,15 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
+            passive ??= champion.GetPassiveCapacity<SharkPassive>();
+
+            if (!isResetCdSetup)
+            {
+                isResetCdSetup = true;
+
+                passive.OnBurrowFeedback += ResetCd;
+            }
+            
             targetPositions.y = casterPos.y;
             
             var shotDirection = (targetPositions - casterPos).normalized;
@@ -86,8 +103,27 @@ namespace Entities.Capacities
             projectile.OnEntityCollide += EntityCollide;
             projectile.OnEntityCollideFeedback += EntityCollideFeedback;
 
+            projectile.OnCollideFeedback += DestroyOnWallCollide;
+
             gsm.OnUpdateFeedback += MoveProjectile;
-            
+
+            if (passive.borrowed)
+            {
+                cooldownTimer -= so.cdReductionWhenBurrowed;
+            }
+
+            void ResetCd()
+            {
+                cooldownTimer = 0;
+            }
+
+            void DestroyOnWallCollide(Collision other)
+            {
+                if(other.gameObject.layer != 30) return;
+
+                projectile.DestroyProjectile(true);
+            }
+
             void MoveProjectile()
             {
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetPos, so.projectileSpeed * Time.deltaTime);
