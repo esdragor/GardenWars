@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveName: Une envie de plongette
   icon: {fileID: 21300000, guid: dc80f135500895a44a79be5050c3c36e, type: 3}
-  description: "Apr\xE8s 30 secondes sans auto attaques, Bubulle plonge sous l'eau
-    et son jet d'eau est recharg\xE9. Quand bubulle est sous l'eau, elle est l\xE9g\xE8rement
-    plus rapide et le temps de charge de son jet d'eau est r\xE9duit. La prochaine
-    auto attaque de Bubulle inflige un stun et la fait remonter \xE0 la surface."
+  description: "Apr\xE8s **30s** sans <color=#28F820>auto attaques</color>, Bubulle
+    plonge *sous l'eau* et son <color=#28F820>jet d'eau</color> est *recharg\xE9*.
+    Quand bubulle est *sous l'eau*, sa <color=#ECF820> vitesse de d\xE9placement</color>
+    *augmente* et le temps de charge de son <color=#28F820>jet d'eau</color> est
+    *r\xE9duit*. La prochaine <color=#28F820>auto attaque</color> de Bubulle inflige
+    un stun et la fait *remonter* \xE0 la surface."
   stackType: 2
   duration: 0
   types: 0000000002000000
