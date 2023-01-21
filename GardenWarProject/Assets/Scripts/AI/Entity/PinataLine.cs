@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,9 +10,10 @@ namespace Entities
     {
         [Header("Indicator")]
         [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] private float lineHeight = 1;
         [SerializeField] private bool smoothPath = true;
         
-        [SerializeField] private Vector3[] initialState = new Vector3[1];
+        private Vector3[] initialState = new Vector3[1];
         [SerializeField] private float SmoothingLength = 2f;
         private float smoothingLength = 2f;
         [SerializeField] private int SmoothingSections = 10;
@@ -20,6 +22,7 @@ namespace Entities
         private BezierCurve[] curves;
         
         private NavMeshPath path;
+        private Vector3[] pathVectors;
 
         private void SetupLine()
         {
@@ -30,8 +33,16 @@ namespace Entities
         {
             NavMesh.CalculatePath(gsm.GetPlayerChampion().position, position,NavMesh.AllAreas,path);
 
-            lineRenderer.positionCount = path.corners.Length;
-            lineRenderer.SetPositions(path.corners);
+            pathVectors = path.corners;
+            
+            lineRenderer.positionCount = pathVectors.Length;
+
+            for (int i = 0; i < pathVectors.Length; i++)
+            {
+                pathVectors[i].y = lineHeight;
+            }
+            
+            lineRenderer.SetPositions(pathVectors);
             
             if (!smoothPath) return;
 
