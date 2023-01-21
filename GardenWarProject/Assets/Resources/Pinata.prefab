@@ -346,6 +346,11 @@ MonoBehaviour:
   offset: 2
   margin: 20
   lineRenderer: {fileID: 722359916644635579}
+  smoothPath: 1
+  initialState:
+  - {x: 0, y: 0, z: 0}
+  SmoothingLength: 2
+  SmoothingSections: 10
   references:
     version: 1
 --- !u!65 &4435092801337144789
@@ -380,7 +385,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

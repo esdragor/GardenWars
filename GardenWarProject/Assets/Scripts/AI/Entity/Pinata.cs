@@ -8,7 +8,7 @@ namespace Entities
     using FogOfWar;
     using Inventory;
 
-    public class Pinata : Entity, IDeadable
+    public partial class Pinata : Entity, IDeadable
     {
         [Header("Visual")]
         [SerializeField] private Transform FalseFX;
@@ -35,9 +35,6 @@ namespace Entities
         //[SerializeField] private RectTransform rotator;
         [SerializeField] private float offset;
         [SerializeField] private float margin;
-
-        [SerializeField] private LineRenderer lineRenderer;
-        private NavMeshPath path;
         
         //private GameObject rotatorGo;
         private Vector3 iconPos;
@@ -56,7 +53,8 @@ namespace Entities
             playerIsFigher = gsm.GetPlayerChampion().isFighter;
             
             indicator.gameObject.SetActive(false);
-            path = new NavMeshPath();
+
+            SetupLine();
         }
 
         public override void OnInstantiated()
@@ -306,14 +304,6 @@ namespace Entities
                 if(isMaster)champion.IncreaseUpgradeCount();
                 projectile.DestroyProjectile(true);
             }
-        }
-
-        private void UpdatePath()
-        {
-            NavMesh.CalculatePath(gsm.GetPlayerChampion().position, position,NavMesh.AllAreas,path);
-
-            lineRenderer.positionCount = path.corners.Length;
-            lineRenderer.SetPositions(path.corners);
         }
 
     }
