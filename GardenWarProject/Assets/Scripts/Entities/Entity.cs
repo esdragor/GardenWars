@@ -151,6 +151,11 @@ namespace Entities
             return (T)passiveCapacitiesList.FirstOrDefault(item => item.GetType() == typeof(T));
         }
 
+        public int GetPassiveCapacityCount<T>() where T : PassiveCapacity
+        {
+            return passiveCapacitiesList.Count(item => item.GetType() == typeof(T));
+        }
+ 
         public virtual void OnInstantiatedFeedback() { }
 
         /// <summary>

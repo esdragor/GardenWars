@@ -21,7 +21,8 @@ namespace Entities.Capacities
         protected Transform casterTr => caster.transform;
         protected Vector3 casterPos => casterTr.position;
 
-        public double baseCooldown => champion == null ? AssociatedActiveCapacitySO().cooldown : isBasicAttack ? champion.attackSpeed : AssociatedActiveCapacitySO().cooldown;
+        private float soCd => AssociatedActiveCapacitySO().cooldown;
+        public double baseCooldown => champion == null ? soCd : isBasicAttack ? champion.attackSpeed : soCd * champion.currentCd;
         public bool isOnCooldown;
         public double cooldownTimer { get; protected set; }
 

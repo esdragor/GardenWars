@@ -19,11 +19,6 @@ namespace Entities.Capacities
     public class SharkUltBorrow : PassiveCapacity
     {
         private SharkPassive sharkPassive;
-        
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
 
         protected override void OnAddedEffects(Entity target)
         {

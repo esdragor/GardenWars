@@ -40,11 +40,6 @@ namespace Entities.Capacities
 
         public bool holdStacks;
 
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
-
         protected override void OnAddedEffects(Entity target)
         {
             currentStacks = 0;

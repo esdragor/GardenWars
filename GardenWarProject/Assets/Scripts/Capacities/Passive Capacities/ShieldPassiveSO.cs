@@ -31,11 +31,7 @@ namespace Entities.Capacities
         private GameObject FXShieldGO;
         private ParticleSystem FXShieldBreak;
         private GameObject FXShieldBreakGO;
-
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
+        
 
         protected override void OnAddedEffects(Entity target)
         {

@@ -108,6 +108,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""EatCapacity"",
+                    ""type"": ""Button"",
+                    ""id"": ""48996e2e-b3aa-453c-8f70-d381365910dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""RecalCapacity"",
                     ""type"": ""Button"",
                     ""id"": ""c127f5b8-4e5b-495a-a883-273461b1f71c"",
@@ -210,6 +219,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""UpgradeCapacity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d98caa9-e7d4-45f2-bd36-ae4624047d1f"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EatCapacity"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -482,6 +502,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Capacity_Capacity1 = m_Capacity.FindAction("Capacity1", throwIfNotFound: true);
         m_Capacity_Capacity2 = m_Capacity.FindAction("Capacity2", throwIfNotFound: true);
         m_Capacity_ThrowCapacity = m_Capacity.FindAction("ThrowCapacity", throwIfNotFound: true);
+        m_Capacity_EatCapacity = m_Capacity.FindAction("EatCapacity", throwIfNotFound: true);
         m_Capacity_RecalCapacity = m_Capacity.FindAction("RecalCapacity", throwIfNotFound: true);
         m_Capacity_ShowMaxRangeIndicator = m_Capacity.FindAction("ShowMaxRangeIndicator", throwIfNotFound: true);
         m_Capacity_UpgradeCapacity = m_Capacity.FindAction("UpgradeCapacity", throwIfNotFound: true);
@@ -633,6 +654,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Capacity_Capacity1;
     private readonly InputAction m_Capacity_Capacity2;
     private readonly InputAction m_Capacity_ThrowCapacity;
+    private readonly InputAction m_Capacity_EatCapacity;
     private readonly InputAction m_Capacity_RecalCapacity;
     private readonly InputAction m_Capacity_ShowMaxRangeIndicator;
     private readonly InputAction m_Capacity_UpgradeCapacity;
@@ -644,6 +666,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Capacity1 => m_Wrapper.m_Capacity_Capacity1;
         public InputAction @Capacity2 => m_Wrapper.m_Capacity_Capacity2;
         public InputAction @ThrowCapacity => m_Wrapper.m_Capacity_ThrowCapacity;
+        public InputAction @EatCapacity => m_Wrapper.m_Capacity_EatCapacity;
         public InputAction @RecalCapacity => m_Wrapper.m_Capacity_RecalCapacity;
         public InputAction @ShowMaxRangeIndicator => m_Wrapper.m_Capacity_ShowMaxRangeIndicator;
         public InputAction @UpgradeCapacity => m_Wrapper.m_Capacity_UpgradeCapacity;
@@ -668,6 +691,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ThrowCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnThrowCapacity;
                 @ThrowCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnThrowCapacity;
                 @ThrowCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnThrowCapacity;
+                @EatCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnEatCapacity;
+                @EatCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnEatCapacity;
+                @EatCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnEatCapacity;
                 @RecalCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
                 @RecalCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
                 @RecalCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
@@ -693,6 +719,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ThrowCapacity.started += instance.OnThrowCapacity;
                 @ThrowCapacity.performed += instance.OnThrowCapacity;
                 @ThrowCapacity.canceled += instance.OnThrowCapacity;
+                @EatCapacity.started += instance.OnEatCapacity;
+                @EatCapacity.performed += instance.OnEatCapacity;
+                @EatCapacity.canceled += instance.OnEatCapacity;
                 @RecalCapacity.started += instance.OnRecalCapacity;
                 @RecalCapacity.performed += instance.OnRecalCapacity;
                 @RecalCapacity.canceled += instance.OnRecalCapacity;
@@ -908,6 +937,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnCapacity1(InputAction.CallbackContext context);
         void OnCapacity2(InputAction.CallbackContext context);
         void OnThrowCapacity(InputAction.CallbackContext context);
+        void OnEatCapacity(InputAction.CallbackContext context);
         void OnRecalCapacity(InputAction.CallbackContext context);
         void OnShowMaxRangeIndicator(InputAction.CallbackContext context);
         void OnUpgradeCapacity(InputAction.CallbackContext context);

@@ -11,8 +11,16 @@ namespace Entities.Champion
     {
         [Header("Recall")]
         [SerializeField] private RecallSO recall;
+        
+        [Header("Candy Buff")]
+        [SerializeField] private ConsumeCandySO consumeCandy;
 
         public byte recallAbilityIndex => recall.indexInCollection;
+        public byte consumeAbilityIndex => consumeCandy.indexInCollection;
+
+        [Header("Cooldown")]
+        public float cooldownReduction;
+        public float currentCd => 1 - cooldownReduction;
 
         [Header("Range Indicator")]
         [SerializeField] private GameObject areaIndicatorPrefab;
@@ -38,7 +46,7 @@ namespace Entities.Champion
         public Vector3 targetedPositions;
 
         [Header("Upgrades")]
-        [SerializeField] private int upgradeCount = 10;
+        [SerializeField] private int upgradeCount;
         public int upgrades => upgradeCount;
 
         public byte throwAbilityIndex { get; private set; }
@@ -376,6 +384,25 @@ namespace Entities.Champion
             HideSkillShotIndicator();
             HideMaxRangeIndicator();
             HideAreaIndicator();
+        }
+
+        public void ChangeCooldownReduction(float amount)
+        {
+            cooldownReduction += amount;
+
+            if (isOffline)
+            {
+                SyncChangeCooldownReductionRPC(cooldownReduction);
+                return;
+            }
+
+            photonView.RPC("SyncChangeCooldownReductionRPC",RpcTarget.All,cooldownReduction);
+        }
+
+        [PunRPC]
+        private void SyncChangeCooldownReductionRPC(float amount)
+        {
+            cooldownReduction = amount;
         }
         
         
