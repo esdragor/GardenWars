@@ -291,13 +291,13 @@ namespace Entities
         {
             var projectile = LocalPoolManager.PoolInstantiate(upgradeProjectile, transform.position, Quaternion.identity);
 
-            projectile.OnEntityCollide += GiveUpgrade;
+            projectile.OnEntityCollideFeedback += GiveUpgrade;
             
             void GiveUpgrade(Entity entity)
             {
                 if (!(entity is Champion.Champion champion)) return;
                 
-                champion.IncreaseUpgradeCount();
+                if(isMaster)champion.IncreaseUpgradeCount();
                 projectile.DestroyProjectile(true);
             }
         }

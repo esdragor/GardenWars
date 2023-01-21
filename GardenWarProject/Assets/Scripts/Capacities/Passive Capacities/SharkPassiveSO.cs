@@ -59,6 +59,10 @@ namespace Entities.Capacities
             
             champion.OnDie += UnBorrow;
             champion.OnDie += ResetTimer;
+
+            champion.OnStartChannelPinata += ResetTimer;
+            champion.OnStartChannelPinata += ForceUnBorrow;
+            
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
@@ -176,7 +180,7 @@ namespace Entities.Capacities
         {
             ForceUnBorrow();
         }
-        
+
         private void ResetTimer(byte _,int __,Vector3 ___)
         {
             timeUnBorrowed = 0;
@@ -184,6 +188,11 @@ namespace Entities.Capacities
         }
         
         private void ResetTimer(int _)
+        {
+            ResetTimer(0,0,Vector3.zero);
+        }
+        
+        private void ResetTimer()
         {
             ResetTimer(0,0,Vector3.zero);
         }
@@ -208,6 +217,9 @@ namespace Entities.Capacities
             
             champion.OnDie -= UnBorrow;
             champion.OnDie -= ResetTimer;
+            
+            champion.OnStartChannelPinata -= ResetTimer;
+            champion.OnStartChannelPinata -= ForceUnBorrow;
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)

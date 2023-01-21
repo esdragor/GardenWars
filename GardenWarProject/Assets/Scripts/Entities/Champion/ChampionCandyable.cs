@@ -1,3 +1,4 @@
+using System;
 using Photon.Pun;
 using UnityEngine;
 
@@ -296,10 +297,13 @@ namespace Entities.Champion
         public void ChannelPinataRPC(int pinataIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(pinataIndex);
-            if (entity is Pinata pinata)
-            {
-                pinata.StartChanneling(this);
-            }
+            if (!(entity is Pinata pinata)) return;
+            
+            pinata.StartChanneling(this);
+            
+            OnStartChannelPinata?.Invoke();
         }
+
+        public event Action OnStartChannelPinata;
     }
 }
