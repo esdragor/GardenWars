@@ -19,7 +19,10 @@ namespace Entities.Capacities
 
         private bool subscribedForTimer = false;
 
-        public abstract PassiveCapacitySO AssociatedPassiveCapacitySO();
+        public PassiveCapacitySO AssociatedPassiveCapacitySO()
+        {
+            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
+        }
 
         protected Entity entity;
         protected Champion.Champion champion => (Champion.Champion) entity;

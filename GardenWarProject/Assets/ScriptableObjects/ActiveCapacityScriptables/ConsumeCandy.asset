@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81be5de2240276d4bb431d7e6c6b1393, type: 3}
+  m_Name: ConsumeCandy
+  m_EditorClassIdentifier: 
+  capacityName: 
+  icon: {fileID: 0}
+  description: 
+  maxLevel: 1
+  cooldown: 0.05
+  castTime: 0
+  maxRange: 0
+  types: 
+  shootType: 1
+  showMaxRangeIfSkillShot: 0
+  overrideDefaultIndicator: 0
+  indexInCollection: 0
+  buff: {fileID: 11400000, guid: 22c9530ff6557764ab2f84faf06dfae8, type: 2}
+  candyPerStack: 5

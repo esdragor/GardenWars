@@ -86,6 +86,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "EatCapacity",
+                    "type": "Button",
+                    "id": "48996e2e-b3aa-453c-8f70-d381365910dc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RecalCapacity",
                     "type": "Button",
                     "id": "c127f5b8-4e5b-495a-a883-273461b1f71c",
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "UpgradeCapacity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d98caa9-e7d4-45f2-bd36-ae4624047d1f",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EatCapacity",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

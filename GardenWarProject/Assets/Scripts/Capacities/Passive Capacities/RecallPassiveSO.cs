@@ -17,11 +17,6 @@ namespace Entities.Capacities
     public class RecallPassive : PassiveCapacity
     {
         private bool isCanceled;
-        
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
 
         protected override void OnAddedEffects(Entity target)
         {

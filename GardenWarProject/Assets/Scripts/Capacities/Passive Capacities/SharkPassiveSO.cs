@@ -39,11 +39,6 @@ namespace Entities.Capacities
         private ParticleSystem Unborrow;
         private GameObject UnborrowGO;
 
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
-
         protected override void OnAddedEffects(Entity target)
         {
             timeUnBorrowed = 0;

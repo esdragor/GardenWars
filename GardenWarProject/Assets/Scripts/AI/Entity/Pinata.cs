@@ -49,6 +49,8 @@ namespace Entities
             //rotatorGo = rotator.gameObject;
             //rotatorGo.SetActive(false);
             playerIsFigher = gsm.GetPlayerChampion().isFighter;
+            
+            indicator.gameObject.SetActive(false);
         }
 
         public override void OnInstantiated()
@@ -199,8 +201,6 @@ namespace Entities
             pos.y = transform.position.y;
             transform.LookAt(pos);
             
-            currentFeeder.IncreaseCurrentCandyRPC(100); // TODO - Remove when testing over
-            
             double drainTimer = -timeBeforeDrain;
             var drainTime = 1;
 
@@ -210,6 +210,7 @@ namespace Entities
             currentFeeder.OnMoving += CancelOnMove;
             currentFeeder.OnCast += CancelOnCast;
             currentFeeder.OnAttack += CancelOnCast;
+            currentFeeder.OnDie += CancelOnDie;
             
             void ChannelDrain()
             {
@@ -251,6 +252,11 @@ namespace Entities
                 
                 StopChanneling();
             }
+
+            void CancelOnDie(int _)
+            {
+                StopChanneling();
+            }
             
             void CancelOnCast(byte _,int __, Vector3 ___)
             {
@@ -275,6 +281,7 @@ namespace Entities
                 currentFeeder.OnMoving -= CancelOnMove;
                 currentFeeder.OnCast -= CancelOnCast;
                 currentFeeder.OnAttack -= CancelOnCast;
+                currentFeeder.OnDie -= CancelOnDie;
                 
                 currentFeeder = null;
             }

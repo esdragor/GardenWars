@@ -19,11 +19,6 @@ namespace Entities.Capacities
     {
         private MoveSpeedSO so => (MoveSpeedSO)AssociatedPassiveCapacitySO();
         private IMoveable moveable;
-        
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
 
         protected override void OnAddedEffects(Entity target)
         {

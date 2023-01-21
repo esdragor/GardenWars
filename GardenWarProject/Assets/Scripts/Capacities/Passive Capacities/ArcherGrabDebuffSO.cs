@@ -24,11 +24,6 @@ namespace Entities.Capacities
         private float removedAttackSpeed;
 
         private ArcherGrabDebuffSO so => (ArcherGrabDebuffSO) AssociatedPassiveCapacitySO();
-        
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
 
         protected override void OnAddedEffects(Entity target)
         {
