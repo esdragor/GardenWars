@@ -1,12 +1,13 @@
 using Controllers.Inputs;
+using LogicUI.FancyTextRendering;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour
 {
-    public TextMeshProUGUI headerText;
-    public TextMeshProUGUI descriptionText;
+    public MarkdownRenderer headerText;
+    public MarkdownRenderer descriptionText;
     public LayoutElement layoutElement;
     public uint characterLimit;
 
@@ -21,10 +22,10 @@ public class Tooltip : MonoBehaviour
     {
         if (string.IsNullOrEmpty(text)) text = "";
         headerText.gameObject.SetActive(header != "");
-        headerText.text = header;
-        descriptionText.text = text;
+        headerText.Source = header;
+        descriptionText.Source = text;
         
-        layoutElement.enabled = (headerText.text?.Length > characterLimit || descriptionText.text?.Length > characterLimit);
+        layoutElement.enabled = (headerText.Source?.Length > characterLimit || descriptionText.Source?.Length > characterLimit);
 
         var position = PlayerInputController.mousePos;
 
