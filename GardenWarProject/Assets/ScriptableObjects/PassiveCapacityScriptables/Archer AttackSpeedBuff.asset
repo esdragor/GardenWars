@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveName: 
   icon: {fileID: 21300000, guid: 92b204cca46037444ab18ba6701f86f7, type: 3}
-  description: "La vitesse d'attaque de Reindeer est augment\xE9e"
+  description: "Lorsque Reindeer reste *immobile* pendant plus de **1s**, sa <color=#6D8BF1>vitesse
+    d'attaque</color> est augment\xE9e par **stack**. Chaque stack r\xE9duit de **0.1s**
+    le temps entre chaque attaque "
   stackType: 1
   duration: 0
   types: 02000000
