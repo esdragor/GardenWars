@@ -14,17 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: "Grapine moi \xE7a"
   icon: {fileID: 21300000, guid: 83962b3d8dfea3e4cbece2c4604bd7da, type: 3}
-  description: "Reindeer tire une ventouse capable de passer au travers des murs
-    dans la direction de la souris. Si elle touche un personnage, elle le d\xE9place
+  description: "Reindeer tire une ventouse capable de passer *au travers* des murs
+    dans la direction de la souris. Si elle *touche* un personnage, elle le d\xE9place
     jusqu'\xE0 la position actuelle de Reindeer."
-  description1: "Reindeer tire une ventouse capable de passer au travers des murs
-    dans la direction de la souris. Si elle touche un personnage, elle lui inflige
+  description1: "Reindeer tire une ventouse capable de passer *au travers* des murs
+    dans la direction de la souris. Si elle *touche* un personnage, elle lui inflige
     **15** <color=#F82020>points de d\xE9g\xE2ts</color> et le d\xE9place jusqu'\xE0
     la position actuelle de Reindeer."
-  description2: "Reindeer tire une ventouse capable de passer au travers des murs
-    dans la direction de la souris. Si elle touche un personnage, elle lui inflige
+  description2: "Reindeer tire une ventouse capable de passer *au travers* des murs
+    dans la direction de la souris. Si elle *touche* un personnage, elle lui inflige
     **15** <color=#F82020>points de d\xE9g\xE2ts</color> et le d\xE9place jusqu'\xE0
-    la position actuelle de Reindeer. Il est ensuite *Ralentit* pendant 3s."
+    la position actuelle de Reindeer. Il est ensuite *Ralentit* pendant 3s. Un personnage
+    *Ralentit* perd 30% de sa <color=#6D8BF1>vitesse d'attaque</color> et 30% de
+    sa <color=#ECF820>vitesse de d\xE9placement</color>."
   maxLevel: 3
   cooldown: 5
   castTime: 0
