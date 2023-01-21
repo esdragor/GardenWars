@@ -17,11 +17,6 @@ namespace Entities.Capacities
     public class AttackSpeedBuff : PassiveCapacity
     {
         private AttackSpeedBuffSO so => (AttackSpeedBuffSO) AssociatedPassiveCapacitySO();
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
-
         protected override void OnAddedEffects(Entity target)
         {
             champion.ChangeAttackSpeedRPC((float)so.timeGained);

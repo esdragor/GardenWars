@@ -161,7 +161,11 @@ namespace Entities.Champion
             canBeTargeted = true;
             canBeDisplaced = true;
 
+            cooldownReduction = 0;
+            
+            
             currentCandy = 100;
+            upgradeCount = 10;
         }
 
         public void SetupSpawn()

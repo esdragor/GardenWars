@@ -131,6 +131,16 @@ namespace Controllers.Inputs
         {
             champion.RequestOnReleaseCapacity(champion.recallAbilityIndex);
         }
+        
+        private void OnPressConsumeCapacity(InputAction.CallbackContext ctx)
+        {
+            champion.RequestOnCastCapacity(champion.consumeAbilityIndex);
+        }
+
+        private void OnReleaseConsumeCapacity(InputAction.CallbackContext ctx)
+        {
+            champion.RequestOnReleaseCapacity(champion.consumeAbilityIndex);
+        }
 
 
         private void OnPressItem0(InputAction.CallbackContext ctx)
@@ -344,6 +354,9 @@ namespace Controllers.Inputs
             
             inputs.Capacity.RecalCapacity.performed += OnPressRecallCapacity;
             inputs.Capacity.RecalCapacity.canceled += OnReleaseRecallCapacity;
+            
+            inputs.Capacity.EatCapacity.performed += OnPressConsumeCapacity;
+            inputs.Capacity.EatCapacity.canceled += OnReleaseConsumeCapacity;
 
             inputs.Capacity.ThrowCapacity.performed += OnPressThrowCapacity;
             inputs.Capacity.ThrowCapacity.canceled += OnReleaseThrowCapacity;
@@ -391,6 +404,9 @@ namespace Controllers.Inputs
             
             inputs.Capacity.RecalCapacity.performed -= OnPressRecallCapacity;
             inputs.Capacity.RecalCapacity.canceled -= OnReleaseRecallCapacity;
+            
+            inputs.Capacity.EatCapacity.performed -= OnPressConsumeCapacity;
+            inputs.Capacity.EatCapacity.canceled -= OnReleaseConsumeCapacity;
 
             inputs.Capacity.ThrowCapacity.performed -= OnPressThrowCapacity;
             inputs.Capacity.ThrowCapacity.canceled -= OnReleaseThrowCapacity;

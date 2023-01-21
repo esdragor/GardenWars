@@ -10,7 +10,6 @@ namespace Entities.Champion
         public Sprite portrait;
         public Sprite SpriteSelection;
         public GameObject championMeshPrefab;
-        public int canvasIndex;
         public Material[] materialsRedTeam;
         public Material[] materialsBlueTeam;
         
@@ -25,9 +24,7 @@ namespace Entities.Champion
         public float attackDamage;
         [Tooltip("Time between attacks")] public double attackSpeed;
         public float attackRange = 10;
-        public float baseArmorPenetration;
-        public float baseLifesteal;
-        
+
         [Header("Attack")]
         public ActiveCapacitySO attackAbility;
         [HideInInspector] public byte attackAbilityIndex;

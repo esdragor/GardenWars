@@ -17,11 +17,7 @@ namespace Entities.Capacities
         private IMoveable moveable;
         private IAttackable attackable;
         private ICastable castable;
-        
-        public override PassiveCapacitySO AssociatedPassiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
-        }
+    
 
         protected override void OnAddedEffects(Entity target)
         {
