@@ -51,20 +51,19 @@ namespace UIComponents
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            var text = capacity.AssociatedActiveCapacitySO().description;
-            switch (capacity.level)
+            var so = capacity.AssociatedActiveCapacitySO();
+
+            var text = capacity.level switch
             {
-                case 1 :
-                    text = capacity.AssociatedActiveCapacitySO().description;
-                    break;
-                case 2 :
-                    text = capacity.AssociatedActiveCapacitySO().description1;
-                    break;
-                case 3 :
-                    text = capacity.AssociatedActiveCapacitySO().description2;
-                    break;
-            }
-            ToolTipManager.Show(text,capacity.AssociatedActiveCapacitySO().capacityName);
+                1 => so.description,
+                2 => so.description1,
+                3 => so.description2,
+                _ => so.description
+            };
+
+            var header = $"{so.capacityName} [{capacity.level}]";
+            
+            ToolTipManager.Show(text,header);
         }
 
         public void OnPointerExit(PointerEventData eventData)
