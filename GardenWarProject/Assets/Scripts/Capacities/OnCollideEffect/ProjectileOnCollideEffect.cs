@@ -34,9 +34,8 @@ public class ProjectileOnCollideEffect : MonoBehaviour
 
     async void Disparition(bool immediate)
     {
-        if (!immediate)
-            await Task.Delay(700);
-        gameObject.SetActive(false);
+        if (!immediate) await Task.Delay(700);
+        if(gameObject.activeSelf) gameObject.SetActive(false);
     }
 
     public void DestroyProjectile(bool immediate)
@@ -48,5 +47,10 @@ public class ProjectileOnCollideEffect : MonoBehaviour
         OnEntityCollideFeedback = null;
 
         Disparition(immediate);
+    }
+
+    private void OnDisable()
+    {
+        DestroyProjectile(true);
     }
 }

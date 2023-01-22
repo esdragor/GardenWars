@@ -303,7 +303,10 @@ namespace Entities
             {
                 if (!(entity is Champion.Champion champion)) return;
                 
+                if(champion.upgrades >= 1) return;
+                
                 if(isMaster)champion.IncreaseUpgradeCount();
+                
                 projectile.DestroyProjectile(true);
             }
         }

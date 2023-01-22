@@ -164,7 +164,7 @@ namespace Entities.Champion
             
             
             currentCandy = 100;
-            upgradeCount = isFighter ? 0 : 10;
+            upgradeCount = isFighter ? 0 : 3;
         }
 
         public void SetupSpawn()
