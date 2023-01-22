@@ -14,8 +14,8 @@ namespace Entities.Capacities
 
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
-        public string description1;
-        public string description2;
+        [TextArea(4, 4)] public string description1;
+        [TextArea(4, 4)] public string description2;
 
         public uint maxLevel = 3;
 
