@@ -119,9 +119,7 @@ namespace Entities.Capacities
             
             void EntityCollide(Entity entity)
             {
-                if (!caster.GetEnemyTeams().Contains(entity.team)) return;
-                
-                DealDamage(entity);
+                if(caster.GetEnemyTeams().Contains(entity.team)) DealDamage(entity);
                 
                 Displace(entity);
                 

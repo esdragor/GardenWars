@@ -56,6 +56,8 @@ namespace Entities.Champion
             HideMaxRangeIndicator();
             HideAreaIndicator();
             HideSkillShotIndicator();
+
+            path = new NavMeshPath();
         }
 
         protected override void OnUpdate()
@@ -65,6 +67,7 @@ namespace Entities.Champion
             CastHeldItems();
             UpdateAnimators();
             TryMoveToTarget();
+            LookAtDestination();
         }
 
         private void UpdateAnimators()
