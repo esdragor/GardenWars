@@ -7,6 +7,7 @@ using GameStates;
 using LogicUI.FancyTextRendering;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChatManager : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class ChatManager : MonoBehaviour
 
     [SerializeField] private MarkdownRenderer chatPanel;
     [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private ScrollRect scrollRect;
+    [SerializeField] private Color allyColor = Color.cyan;
+    [SerializeField] private Color enemyColor = Color.red;
 
     private Champion champion = null;
     private bool isChatting = false;
@@ -38,17 +42,31 @@ public class ChatManager : MonoBehaviour
         
         if(message.Length <= 0) return;
         
-        champion.OnAddMessage($"[{GameSettingsManager.playerName}]: {message}", champion.entityIndex);
+        champion.OnAddMessage($"[|@@@@|{GameSettingsManager.playerName}|@@@|]: {message}", champion.entityIndex);
         inputField.text = "";
+        
+        InputManager.EnableInput();
     }
-    
+
     public void UpdateMessageBox(string message, int entityIndex)
     {
         if (message.Length == 0) return;
         if(!champion) champion = GameStateMachine.Instance.GetPlayerChampion();
-        if (!champion.GetEnemyTeams().Contains(EntityCollectionManager.GetEntityByIndex(entityIndex).team)) 
-            chatPanel.Source += $"<color=blue>{message}</color>" + string.Format("\n");
-        else
-            chatPanel.Source += $"<color=red>{message}</color>" + string.Format("\n");
+        
+        var code = !champion.GetEnemyTeams().Contains(EntityCollectionManager.GetEntityByIndex(entityIndex).team)
+            ? ColorUtility.ToHtmlStringRGB(allyColor)
+            : ColorUtility.ToHtmlStringRGB(enemyColor);
+
+        var text = message.Replace("[|@@@@|", $"[<color=#{code}>");
+        text = text.Replace("|@@@|]:", $"</color>]:");
+        
+        chatPanel.Source += text;
+        
+        GoToBot();
+    }
+
+    private void GoToBot()
+    {
+        scrollRect.verticalNormalizedPosition = 0;
     }
 }
