@@ -111,6 +111,8 @@ namespace Entities.Capacities
             if(borrowed) return;
             
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXSharkPassive, champion.transform.position);
+
+            (entity as Champion.Champion).CurrentSFXMove = (entity as Champion.Champion).SFXMoves[1];
             
             //champion.rotateParent.localPosition = Vector3.up * -0.75f;
 
@@ -155,6 +157,8 @@ namespace Entities.Capacities
             if(target == null) return;
             if(!champion.GetEnemyTeams().Contains(target.team)) return;
             
+            (entity as Champion.Champion).CurrentSFXMove = (entity as Champion.Champion).SFXMoves[0];
+
             ForceUnBorrow();
         }
 

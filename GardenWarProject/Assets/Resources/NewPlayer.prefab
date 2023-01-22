@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3480681341152264625}
   - component: {fileID: 5698148310340446966}
+  - component: {fileID: 3959878453506176337}
   m_Layer: 29
   m_Name: RotatePoint(Mesh Parent)
   m_TagString: Untagged
@@ -78,6 +79,36 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3959878453506176337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480681341152264626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -529049768
+      Data2: 1117165884
+      Data3: 202091173
+      Data4: -841966255
+    Path: event:/Swim
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3480681341397647662
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,11 +376,10 @@ MonoBehaviour:
   canMove: 0
   agent: {fileID: 0}
   isMoving: 0
-  fmodEmitter: {fileID: 6592253577964224067}
   SFXMoves:
-  - FootSteps
-  - Swim
-  CurrentSFXMove: 
+  - {fileID: 6592253577964224067}
+  - {fileID: 3959878453506176337}
+  CurrentSFXMove: {fileID: 6592253577964224067}
   maxResource: 0
   currentResource: 0
   recupItemRange: 3
