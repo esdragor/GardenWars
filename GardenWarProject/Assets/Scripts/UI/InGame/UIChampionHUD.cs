@@ -38,7 +38,7 @@ namespace UIComponents
         private ICandyable candyable;
 
         private Dictionary<PassiveCapacity, UIPassiveIcon> handledPassives = new Dictionary<PassiveCapacity, UIPassiveIcon>();
-
+        
         private UIActiveIcon[] activeIcons = new UIActiveIcon[3];
         
         public void InitHUD(Champion newChampion)
@@ -95,9 +95,14 @@ namespace UIComponents
             champion.OnChangedAbilityFeedback += ChangeAbilityIcon;
         }
 
-        private void ChangeAbilityIcon(int index,ActiveCapacity capacity)
+        private void ChangeAbilityIcon(int index, ActiveCapacity capacity)
         {
-            activeIcons[index].SetCapacity(capacity,new InputBinding());
+            ChangeAbilityIcon(index, capacity,activeIcons[index].control);
+        }
+
+        private void ChangeAbilityIcon(int index,ActiveCapacity capacity,InputControl control,int upgradeIndex = -1)
+        {
+            activeIcons[index].SetCapacity(capacity,control,upgradeIndex);
         }
 
         private void UpdateIcons(Champion champ)
@@ -111,11 +116,12 @@ namespace UIComponents
                 AddPassiveIcon(passiveCapacity);
             }
 
-            for (var i = 0; i < champ.abilitiesIndexes.Length; i++)
-            {
-                var index = champ.abilitiesIndexes[i];
-                ChangeAbilityIcon(i,champ.capacityDict[index].capacity);
-            }
+
+            var inputMap = InputManager.PlayerMap;
+            
+            ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0],0);
+            ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Capacity1.controls[0],1);
+            ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Capacity2.controls[0],2);
         }
 
         private void UpdateFillPercentByPercentHealth(float value)

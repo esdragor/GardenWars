@@ -25,14 +25,10 @@ public class RebindKeys : MonoBehaviour
     private string actionName;
 
     [Header("UI Fields")]
-    [SerializeField]
-    private Text actionText;
-    [SerializeField]
-    private Button rebindButton;
-    [SerializeField]
-    private Text rebindText;
-    [SerializeField]
-    private Button resetButton;
+    [SerializeField] private Text actionText;
+    [SerializeField] private Button rebindButton;
+    [SerializeField] private Text rebindText;
+    [SerializeField] private Button resetButton;
 
     private void OnEnable()
     {

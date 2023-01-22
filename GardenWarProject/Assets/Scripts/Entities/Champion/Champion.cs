@@ -164,7 +164,7 @@ namespace Entities.Champion
             
             
             currentCandy = 100;
-            upgradeCount = 10;
+            upgradeCount = 3;
         }
 
         public void SetupSpawn()

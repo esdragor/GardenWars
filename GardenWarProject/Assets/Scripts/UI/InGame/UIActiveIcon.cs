@@ -1,4 +1,5 @@
 using Entities.Capacities;
+using Entities.Champion;
 using GameStates;
 using TMPro;
 using UnityEngine;
@@ -14,14 +15,28 @@ namespace UIComponents
         [SerializeField] private Image cooldownOverlayImage;
         [SerializeField] private TextMeshProUGUI cooldownOverLayText;
         [SerializeField] private TextMeshProUGUI keyBindText;
-        
+        [SerializeField] private Button upgradeButton;
+        private GameObject upgradeButtonGo;
 
+        private int upgradeIndex;
         private ActiveCapacity capacity;
+        private Champion champion;
 
-        private InputAction inputAction;
-        
+        public InputControl control { get; private set; }
+
         private void Start()
         {
+            champion = GameStateMachine.Instance.GetPlayerChampion();
+            
+            upgradeButtonGo = upgradeButton.gameObject;
+            //upgradeButtonGo.SetActive(false);
+            
+            upgradeButton.onClick.AddListener(UpgradeAbility);
+            
+            champion.OnUpgradeCountIncreased += UpdateUpgradeActive;
+            champion.OnUpgradeCountDecreased += UpdateUpgradeActive;
+            capacity.OnUpgraded += HideUpgradeButton;
+
             ResetFill();
         }
 
@@ -34,20 +49,39 @@ namespace UIComponents
             cooldownOverLayText.text = $"{(int) capacity.cooldownTimer + 1}";
         }
 
+        private void UpgradeAbility()
+        {
+            champion.RequestUpgrade(upgradeIndex);
+        }
 
-        public void SetCapacity(ActiveCapacity active,InputBinding binding)
+
+        public void SetCapacity(ActiveCapacity active,InputControl newControl,int index = -1)
         {
             if (capacity != null)
             {
                 capacity.OnCooldownEnded -= ResetFill;
             }
 
+            if(newControl != null) control = newControl;
+
+            upgradeIndex = index;
             capacity = active;
             iconImage.sprite = capacity.AssociatedActiveCapacitySO().icon;
             cooldownOverlayImage.fillAmount = 0;
-            keyBindText.text = binding.name;
+            keyBindText.text = control.name.Length > 1 ? control.name : control.name.ToUpper();
 
             capacity.OnCooldownEnded += ResetFill;
+        }
+
+        private void UpdateUpgradeActive()
+        {
+            upgradeButtonGo.SetActive(champion.upgrades > 0 && capacity.canBeUpgraded);
+        }
+        
+        private void HideUpgradeButton(int level)
+        {
+            
+            upgradeButtonGo.SetActive(champion.upgrades > 0 && level < capacity.AssociatedActiveCapacitySO().maxLevel);
         }
 
         private void ResetFill()
