@@ -12,16 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8302b8cf8d7944ba990f0d6c70efdc, type: 3}
   m_Name: Archer Dash
   m_EditorClassIdentifier: 
-  capacityName: Trotti-course
+  capacityName: Roller-dash
   icon: {fileID: 21300000, guid: a276f6a80b5012f489779d081d382342, type: 3}
-  description: "Propulse Reindeer dans la direction de la souris du joueur. Cette
-    capacit\xE9 peut passer au travers des murs."
-  description1: "Propulse Reindeer dans la direction de la souris du joueur. Cette
-    capacit\xE9 peut passer au travers des murs. Vous pouvez stocker jusqu'\xE0 deux
-    utilisations de cette capacit\xE9."
-  description2: "Propulse Reindeer dans la direction de la souris du joueur. Cette
-    capacit\xE9 peut passer au travers des murs. Vous pouvez stocker jusqu'\xE0 trois
-    utilisations de cette capacit\xE9."
+  description: "Reindeer dashes in a chosen direction. Reindeer may dash *through
+    any obstacle*. \n"
+  description1: 'Reindeer dashes in a chosen direction. Reindeer may dash *through
+    any obstacle*. You can stack up to **2** dash at any given time '
+  description2: 'Reindeer dashes in a chosen direction. Reindeer may dash *through
+    any obstacle*. You can stack up to **3** dash at any given time '
   maxLevel: 3
   cooldown: 3
   castTime: 0

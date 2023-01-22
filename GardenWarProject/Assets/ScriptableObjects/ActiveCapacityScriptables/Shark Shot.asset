@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d1d3e336395084489e8cd85c10b164, type: 3}
   m_Name: Shark Shot
   m_EditorClassIdentifier: 
-  capacityName: Jet d'eau
+  capacityName: Water Splash
   icon: {fileID: 21300000, guid: 068e5992b64111f4f9e28de3a108aabb, type: 3}
-  description: "Bubulle *tire* une vague dans la direction de la souris. La *premi\xE8re*
-    entit\xE9 (Sbire ou Personnage) *touch\xE9e* recoit **15** <color=#F82020>points
-    de d\xE9g\xE2ts</color>. Si la vague *touche* une entit\xE9e, Bubulle gagne **1
-    stack** de bouclier"
+  description: 'Bubulle *shooots* a small wave in a chosen direction. The first *entity*
+    (Character or Minion) hit is dealt **15** <color=#F82020>damage</color>. If the
+    wave hits an *entity*, Bubulle *gains* **1 Shield stack**.
+
+'
   description1: 
   description2: 
   maxLevel: 3

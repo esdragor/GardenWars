@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7537b72a4b764a84695f92b771f3c581, type: 3}
   m_Name: Archer Ventouse
   m_EditorClassIdentifier: 
-  capacityName: "Grapine moi \xE7a"
+  capacityName: Got'cha
   icon: {fileID: 21300000, guid: 83962b3d8dfea3e4cbece2c4604bd7da, type: 3}
-  description: "Reindeer tire une ventouse capable de passer *au travers* des murs
-    dans la direction de la souris. Si elle *touche* un personnage, elle le d\xE9place
-    jusqu'\xE0 la position actuelle de Reindeer."
-  description1: "Reindeer tire une ventouse capable de passer *au travers* des murs
-    dans la direction de la souris. Si elle *touche* un personnage, elle lui inflige
-    **15** <color=#F82020>points de d\xE9g\xE2ts</color> et le d\xE9place jusqu'\xE0
-    la position actuelle de Reindeer."
-  description2: "Reindeer tire une ventouse capable de passer *au travers* des murs
-    dans la direction de la souris. Si elle *touche* un personnage, elle lui inflige
-    **15** <color=#F82020>points de d\xE9g\xE2ts</color> et le d\xE9place jusqu'\xE0
-    la position actuelle de Reindeer. Il est ensuite *Ralentit* pendant **3s**. Un
-    personnage *Ralentit* perd **30%** de sa <color=#6D8BF1>vitesse d'attaque</color>
-    et 30% de sa <color=#ECF820>vitesse de d\xE9placement</color>."
+  description: Reindeer *shoots* a grapling hook in a chosen direction. The grapling
+    hook can go *through any obstacle*. If it hits a *Character*, that *character*
+    is *dragged* towards Reindeer's **current position**.
+  description1: 'Reindeer *shoots* a grapling hook in a chosen direction. The grapling
+    hook can go *through any obstacle*. If it hits a *Character*, that *character*
+    is dealt **15** <color=#F82020>damage</color>, then *dragged* towards Reindeer''s
+    **current position**. '
+  description2: 'Reindeer *shoots* a grapling hook in a chosen direction. The grapling
+    hook can go *through any obstacle*. If it hits a *Character*, that *character*
+    is dealt **15** <color=#F82020>damage</color>, then *dragged* towards Reindeer''s
+    **current position**. It is then **Slowed** for **3s**. A **Slowed** character
+    has **0.7** <color=#ECF820>move speed</color> and **0.7** <color=#6D8BF1>attack
+    speed</color> '
   maxLevel: 3
   cooldown: 5
   castTime: 0

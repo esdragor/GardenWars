@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b92ff8be7cb4e49b5848861b4e0377, type: 3}
   m_Name: Shark Borrow
   m_EditorClassIdentifier: 
-  capacityName: Grosse Crawleuse
+  capacityName: Emergency Dive
   icon: {fileID: 21300000, guid: b34fe4549d39b964589278b4e246dbed, type: 3}
-  description: "Bubulle plonge *sous l'eau* et son <color=#28F820>jet d'eau</color>
-    est *recharg\xE9*. Quand bubulle est *sous l'eau*, sa <color=#ECF820>vitesse
-    de d\xE9placement</color> *augmente* et le temps de charge de son <color=#28F820>jet
-    d'eau</color> est *r\xE9duit*. La prochaine <color=#28F820>auto attaque</color>
-    de Bubulle inflige un *Stun* pendant **1s** \xE0 sa cible et la fait *remonter*
-    \xE0 la surface."
+  description: 'Bubulle goes **Underwater** and her <color=#28F820>Water Splash</color>
+    cooldown is *reset*. When Bubulle is **Underwater**, her <color=#ECF820>move
+    speed</color> is *increased* by **10%** and <color=#28F820>Water Splash</color>''s
+    cooldown is *reduced* by **3s**. The next <color=#28F820>auto attack</color>
+    Bubulle lands  will **Stun** the target for **1s**, then she *resurfaces*. A
+    **Stunned entity** is unable to *move* or *use* any <color=#28F820>ability</color>.
+
+'
   description1: 
   description2: 
   maxLevel: 3

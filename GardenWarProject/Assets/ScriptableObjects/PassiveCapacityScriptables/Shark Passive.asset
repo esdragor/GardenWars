@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 929873cb5f86e334cb41b96bcf512e85, type: 3}
   m_Name: Shark Passive
   m_EditorClassIdentifier: 
-  passiveName: Une envie de plongette
+  passiveName: I want to go swimmin'
   icon: {fileID: 21300000, guid: dc80f135500895a44a79be5050c3c36e, type: 3}
-  description: "Apr\xE8s **30s** sans <color=#28F820>auto attaques</color>, Bubulle
-    plonge *sous l'eau* et son <color=#28F820>jet d'eau</color> est *recharg\xE9*.
-    Quand bubulle est *sous l'eau*, sa <color=#ECF820> vitesse de d\xE9placement</color>
-    *augmente* et le temps de charge de son <color=#28F820>jet d'eau</color> est
-    *r\xE9duit*. La prochaine <color=#28F820>auto attaque</color> de Bubulle inflige
-    un stun pendant **1s** \xE0 sa cible et la fait *remonter* \xE0 la surface."
+  description: 'After **30s** *without attacking*, Bubulle goes **Underwater** and
+    her <color=#28F820>Water Splash</color> cooldown is *reset*. When Bubulle is
+    **Underwater**, her <color=#ECF820>move speed</color> is *increased* by **10%**
+    and <color=#28F820>Water Splash</color>''s cooldown is *reduced* by **3s**. The
+    next <color=#28F820>auto attack</color> Bubulle lands  will **Stun** the target
+    for **1s**, then she *resurfaces*. A **Stunned entity** is unable to *move* or
+    *use* any ability.
+
+'
   stackType: 2
   duration: 0
   types: 0000000002000000

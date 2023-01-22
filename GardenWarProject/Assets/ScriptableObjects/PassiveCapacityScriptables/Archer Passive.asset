@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac5589acfc285a409f3e53393cc4d90, type: 3}
   m_Name: Archer Passive
   m_EditorClassIdentifier: 
-  passiveName: Un bon angle de vue
+  passiveName: Aiming juuust right
   icon: {fileID: 21300000, guid: a0f12cecd3bc05a4c9561d1a6d1dedd1, type: 3}
-  description: "Lorsque Reindeer reste *immobile* pendant plus de **1s**, sa <color=#6D8BF1>vitesse
-    d'attaque</color> est augment\xE9e par **stack**. Chaque stack r\xE9duit de **0.1s**
-    le temps entre chaque attaque "
+  description: "If Reindeer *stops moving* for more than **1s**, his <color=#6D8BF1>attack
+    speed</color> starts *increasing*. \n*Every second* he receives **1 stack**,
+    *lowering* the time between attacks by **1s**.\r\n"
   stackType: 2
   duration: 0
   types: 0000000002000000
