@@ -12,7 +12,7 @@ namespace Entities.Capacities
         
         [Tooltip("Capacity Icon")] public Sprite icon;
 
-        [TextArea(4, 4)] [Tooltip("Description of the capacity")]
+        [TextArea(6, 10)] [Tooltip("Description of the capacity")]
         public string description;
 
         public Enums.StackType stackType;

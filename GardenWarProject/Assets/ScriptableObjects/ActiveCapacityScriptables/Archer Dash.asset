@@ -14,15 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: Roller-dash
   icon: {fileID: 21300000, guid: a276f6a80b5012f489779d081d382342, type: 3}
-  description: Reindeer <color=yellow>**dashes**</color> in the target direction.
-  description1: Reindeer <color=yellow>**dashes**</color> in the target direction,
+  description: 'Reindeer <color=yellow>**dashes**</color> in the target direction.
+
+
+    *Reindeer
+    doesn''t lose stacks of <color=green>**Precision**</color> while using <color=green>Roller-dash</color>*.'
+  description1: 'Reindeer <color=yellow>**dashes**</color> in the target direction,
     *ignoring any obstacles*.
+
+
+    *Reindeer doesn''t lose stacks of <color=green>**Precision**</color>
+    while using <color=green>Roller-dash</color>*.'
   description2: 'Reindeer <color=yellow>**dashes**</color> in the target direction,
     *ignoring any obstacles*.
 
 
     Reindeer periodically stocks a <color=green>**Roller-dash**</color>
-    charge, up to a maximum of **3**.'
+    charge, up to a maximum of **3**.
+
+
+    *Reindeer doesn''t lose stacks of <color=green>**Precision**</color>
+    while using <color=green>Roller-dash</color>*.'
   maxLevel: 3
   cooldown: 7
   castTime: 0

@@ -14,10 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: Splish Splash Splosh
   icon: {fileID: 21300000, guid: a39c89e6e8da9ec43ad206f421e1ced5, type: 3}
-  description: "Bubulle *jumps* and *dives* **underwater**, dealing **25** <color=#F82020>damage</color>
-    to *all entities* in a *circular area* around her. \n\nOnce **underwater**, she
-    can *immediately* resurface, causing an *additional* **25** <color=#F82020>damage</color>
-    in a *circular* area around her.\n"
+  description: '*Can only be used while <color=green>**Underwater**</color>.*
+
+
+    Bubulle
+    <color=green>**Resurfaces**</color>, increasing her size and <color=yellow>**leaping**</color>
+    to the target position. Upon arrival, she deals <color=red>**25 damage**</color>
+    to <color=orange>**all Enemies**</color> around her and goes <color=green>**Underwater**</color>.
+
+
+    After
+    1s or after recasting, Bubulle <color=green>**Resurfaces**</color>,  <color=yellow>**leaping**</color>
+    to the target position. Upon arrival, she deals <color=red>**25 damage**</color>
+    to <color=orange>**all Enemies**</color> around her.'
   description1: 
   description2: 
   maxLevel: 2
