@@ -7,9 +7,6 @@ namespace BehaviourTree
     {
         
         private bool BoolTrue = true;
-        public Sequence() : base()
-        {
-        }
 
         public Sequence(List<Node> children) : base(children)
         {
