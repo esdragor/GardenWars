@@ -203,14 +203,14 @@ namespace Entities
 
         public void StartChanneling(Champion.Champion champion)
         {
-            cam.DOFieldOfView(deZoomFov,deZoomDuration);
-            
             if (currentFeeder != null)
             {
                 return;
             }
             
             currentFeeder = champion;
+            
+            cam.DOFieldOfView(deZoomFov,deZoomDuration);
 
             var pos = champion.position;
             pos.y = transform.position.y;
