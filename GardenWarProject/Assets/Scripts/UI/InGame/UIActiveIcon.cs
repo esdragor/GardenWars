@@ -1,7 +1,9 @@
 using Entities.Capacities;
+using GameStates;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace UIComponents
@@ -11,9 +13,13 @@ namespace UIComponents
         [SerializeField] private Image iconImage;
         [SerializeField] private Image cooldownOverlayImage;
         [SerializeField] private TextMeshProUGUI cooldownOverLayText;
+        [SerializeField] private TextMeshProUGUI keyBindText;
+        
 
         private ActiveCapacity capacity;
 
+        private InputAction inputAction;
+        
         private void Start()
         {
             ResetFill();
@@ -29,7 +35,7 @@ namespace UIComponents
         }
 
 
-        public void SetCapacity(ActiveCapacity active)
+        public void SetCapacity(ActiveCapacity active,InputAction action)
         {
             if (capacity != null)
             {
@@ -61,7 +67,9 @@ namespace UIComponents
                 _ => so.description
             };
 
-            var header = $"{so.capacityName} [{capacity.level}]";
+
+            var level = GameStateMachine.Instance.GetPlayerChampion().isFighter ? $"[{capacity.level}]" : string.Empty;
+            var header = $"{so.capacityName} {level}";
             
             ToolTipManager.Show(text,header);
         }

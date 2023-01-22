@@ -84,12 +84,7 @@ public class RebindKeys : MonoBehaviour
 
         if(rebindText != null)
         {
-            if (Application.isPlaying)
-            {
-                rebindText.text = InputManager.GetBindingName(actionName, bindingIndex);
-            }
-            else
-                rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex);
+            rebindText.text = Application.isPlaying ? InputManager.GetBindingName(actionName, bindingIndex) : inputActionReference.action.GetBindingDisplayString(bindingIndex);
         }
     }
 

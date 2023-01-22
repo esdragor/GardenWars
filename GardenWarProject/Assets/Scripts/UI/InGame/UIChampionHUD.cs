@@ -6,6 +6,7 @@ using Entities.Champion;
 using GameStates;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace UIComponents
@@ -16,6 +17,7 @@ namespace UIComponents
         [SerializeField] private UIPassiveIcon passiveIconPrefab;
         [SerializeField] private Transform positivePassiveParent;
         [SerializeField] private Transform negativePassiveParent;
+        [SerializeField] private UIPassiveIcon championPassiveIcon;
 
         [Header("Active")]
         [SerializeField] private UIActiveIcon activeIconPrefab;
@@ -100,7 +102,7 @@ namespace UIComponents
 
         private void ChangeAbilityIcon(int index,ActiveCapacity capacity)
         {
-            activeIcons[index].SetCapacity(capacity);
+            activeIcons[index].SetCapacity(capacity,new InputAction());
         }
 
         private void UpdateIcons(Champion champion)
@@ -153,9 +155,14 @@ namespace UIComponents
 
         private void AddPassiveIcon(PassiveCapacity capacity)
         {
-            if(capacity.AssociatedPassiveCapacitySO().types.Contains(Enums.CapacityType.Kit)) return;
-            
             if (handledPassives.ContainsKey(capacity)) return;
+            
+            if (capacity.AssociatedPassiveCapacitySO().types.Contains(Enums.CapacityType.Kit))
+            {
+                handledPassives.Add(capacity,championPassiveIcon);
+                championPassiveIcon.LinkWithChampion(champion,capacity,null);
+                return;
+            }
 
             Transform parent = null;
 
