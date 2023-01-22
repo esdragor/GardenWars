@@ -21,9 +21,9 @@ namespace Entities.Champion
         
                 
         [Header("Sound")]
-        [SerializeField] private FMODUnity.StudioEventEmitter fmodEmitter;
-        public string[] SFXMoves = new string[2];
-        public string CurrentSFXMove;
+        
+        public StudioEventEmitter[] SFXMoves;
+        public StudioEventEmitter CurrentSFXMove;
 
         public bool CanMove()
         {
@@ -247,11 +247,7 @@ namespace Entities.Champion
             if (!photonView.IsMine) return;
             if (currentVelocity > 0.1f && !isMoving)
             {
-                // EventReference newRef = new EventReference();
-                // newRef.Path = "event:/" + CurrentSFXMove;
-                // fmodEmitter.EventReference = newRef;
-                //
-                // fmodEmitter.Play();
+                CurrentSFXMove.Play();
                 isMoving = true;
                 //FMODUnity.RuntimeManager.PlayOneShot("event:/" + CurrentSFXMove, transform.position);
                 foreach (var animator in animators)
@@ -262,8 +258,7 @@ namespace Entities.Champion
             }
             else if (currentVelocity < 0.1f && isMoving)
             {
-                fmodEmitter.Stop();
-                
+                CurrentSFXMove.Stop();                
                 isMoving = false;
                 foreach (var animator in animators)
                 {
