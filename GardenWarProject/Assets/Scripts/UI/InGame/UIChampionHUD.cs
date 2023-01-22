@@ -24,6 +24,7 @@ namespace UIComponents
         [SerializeField] private Transform activeIconParent;
         [SerializeField] private UIActiveIcon recallActiveIcon;
         [SerializeField] private UIActiveIcon consumeCandyIcon;
+        [SerializeField] private UIActiveIcon throwIcon;
         
         [Header("Components")]
         [SerializeField] private Image Portrait;
@@ -128,7 +129,9 @@ namespace UIComponents
             ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0]);
             ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Capacity1.controls[0]);
             ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Capacity2.controls[0]);
+            
             recallActiveIcon.SetCapacity(champ.capacityDict[champ.recallAbilityIndex].capacity,inputMap.Capacity.RecalCapacity.controls[0]);
+            throwIcon.SetCapacity(champ.capacityDict[champ.throwAbilityIndex].capacity,inputMap.Capacity.ThrowCapacity.controls[0]);
             
             consumeCandyIcon.gameObject.SetActive(!champion.isFighter);
             

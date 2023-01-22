@@ -240,6 +240,11 @@ namespace Entities.Champion
 
             OnMove?.Invoke(pos);
 
+            if (path.corners.Length <= 1)
+            {
+                return;
+            }
+
             var lookAtPoint = path.corners[1];
             
             lookAtPoint.y = rotateParent.position.y;
@@ -328,7 +333,7 @@ namespace Entities.Champion
 
         public void StartMoveToTarget(Entity targetEntity, float rangeToAction, Action action)
         {
-            if (!targetEntity) return;
+            if (targetEntity == null) return;
             MoveToTargetAction += TargetAction;
 
             void TargetAction()

@@ -109,6 +109,9 @@ namespace Entities.Champion
             attackRange = currentSo.attackRange;
 
             baseDef = currentSo.baseDefense;
+            
+            team = newTeam;
+            role = newRole;
 
             if (!agent) agent = GetComponent<NavMeshAgent>();
             agent.speed = moveSpeed;
@@ -129,10 +132,9 @@ namespace Entities.Champion
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;
 
-            team = newTeam;
-            role = newRole;
-
             throwAbilityIndex = CapacitySOCollectionManager.GetThrowAbilityIndex(role);
+
+            SetupAbility(throwAbilityIndex);
 
             var linker = championMesh.GetComponent<ChampionMeshLinker>();
             var teamMat = team == gsm.GetPlayerTeam() ? currentSo.materialsBlueTeam : currentSo.materialsRedTeam;
