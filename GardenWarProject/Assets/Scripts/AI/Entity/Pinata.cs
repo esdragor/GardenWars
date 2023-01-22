@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,6 +17,8 @@ namespace Entities
         [SerializeField] private GameObject PinataDieFX;
         [SerializeField] private ParticleSystem HitFX;
         [SerializeField] private Animator[] Myanimators;
+        [SerializeField] private float deZoomFov = 65f;
+        [SerializeField] private float deZoomDuration = 1f;
 
         [Header("Bonbon Gaming")]
         public float fillRange = 2;
@@ -206,6 +209,8 @@ namespace Entities
             }
             
             currentFeeder = champion;
+            
+            cam.DOFieldOfView(deZoomFov,deZoomDuration);
 
             var pos = champion.position;
             pos.y = transform.position.y;
@@ -294,6 +299,8 @@ namespace Entities
                 currentFeeder.OnDie -= CancelOnDie;
                 
                 currentFeeder = null;
+
+                cam.DOFieldOfView(60, 1);
             }
         }
 

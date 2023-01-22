@@ -199,7 +199,7 @@ namespace Entities.Capacities
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    
+                    champion.HideTextIndicator();
                     ReleaseLocal(targetsEntityIndexes,targetPositions);
                 }
                 

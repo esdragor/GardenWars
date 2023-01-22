@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Controllers.Inputs;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,24 +11,28 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/FighterThrowV2", fileName = "Throw Fighter V2")]
     public class FighterThrowV2SO : ActiveCapacitySO
     {
-        [Header("Throw Config")] public ProjectileOnCollideEffect candyBagProjectile;
+        [Header("Throw Config")]
+        public ProjectileOnCollideEffect candyBagProjectile;
         public float projectileSpeed = 1.0f;
         public float height = 5.0f;
         public int nbBounce = 1;
         public float bounceRadius = 0.5f;
         public bool hasRandomBounceDirection = false;
 
-        [Header("Candy")] public int minCandy = 5;
+        [Header("Candy")]
+        public int minCandy = 5;
         public int maxCandy = 10;
         public float candyAccelerationRate = 1f;
         public int candyPerGroup = 5;
         public float scalePerCandyGroup = 0.33f;
+        public Vector2 offset;
+        public int textSize = 100;
 
         [Header("Damage")]
-        public int damagePerCandyGroup = 1; // damage per candy group (exclude candy beneath trigger requierement)
+        public int damagePerCandyGroup = 1;
 
-        public int baseDamage = 20; // min candy for damage
-        public int minimumCandyForDamage = 1; // min candy for damage
+        public int baseDamage = 20;
+        public int minimumCandyForDamage = 1;
 
         public ParticleSystem ThrowDestFx;
 
@@ -83,16 +88,12 @@ namespace Entities.Capacities
 
             if (nbCandyStocked > so.maxCandy) nbCandyStocked = so.maxCandy;
             if (nbCandyStocked >= champion.currentCandy) nbCandyStocked = champion.currentCandy;
-
-            Debug.Log(
-                $"Stocked Candy : {nbCandyStocked} (size : {0.5f + 1 * ((nbCandyStocked / so.candyPerGroup) * so.scalePerCandyGroup)})");
-
-            champion.ShowAreaIndicator(PlayerInputController.CursorWorldPos,
-                0.5f * (0.5f + 1 * ((nbCandyStocked / so.candyPerGroup) * so.scalePerCandyGroup)));
         }
 
         protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
+            champion.ShowAreaIndicator(PlayerInputController.CursorWorldPos, 0.5f * (0.5f + 1 * ((nbCandyStocked / so.candyPerGroup) * so.scalePerCandyGroup)));
+            champion.ShowTextIndicator(PlayerInputController.mousePos+so.offset,$"<size={so.textSize}%>x{nbCandyStocked}");
         }
 
         protected override void Release(int targetsEntityIndexes, Vector3 targetPositions)
@@ -110,8 +111,7 @@ namespace Entities.Capacities
 
             champion.RequestDecreaseCurrentCandy(nbCandyStocked);
 
-            var projectile =
-                LocalPoolManager.PoolInstantiate(so.candyBagProjectile, champion.position, Quaternion.identity);
+            var projectile = LocalPoolManager.PoolInstantiate(so.candyBagProjectile, champion.position, Quaternion.identity);
             var projectileTr = projectile.transform;
 
             projectileTr.localScale = size;
@@ -122,22 +122,15 @@ namespace Entities.Capacities
             var destionFXTR = destinationFX.transform;
             destionFXTR.Rotate(Vector3.right * 90);
             destionFXTR.localScale = size;
-
-            ProjectileOnCollideEffect s = projectile.GetComponent<ProjectileOnCollideEffect>();
-            s.OnCollideFeedback += (coll) => PlayDrop(coll);
-            s.OnCollideFeedback -= (coll) => PlayDrop(coll);
+            
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.dropCandySFX, projectile.transform.position);
 
             Throw();
 
             time_Pressed = 0;
             nbCandyStocked = so.minCandy;
             acceleration = 0;
-
-            void PlayDrop(Collision _)
-            {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.dropCandySFX, projectile.transform.position);
-            }
-
+            
             void Throw()
             {
                 var thrownCandy = nbCandyStocked;
@@ -163,6 +156,8 @@ namespace Entities.Capacities
 
                 var timeToDestination = distanceToDestination / so.projectileSpeed;
                 float timer = 0f;
+
+                var fxGo = destinationFX.gameObject;
 
 
                 gsm.OnUpdateFeedback += MoveBag;
@@ -214,8 +209,12 @@ namespace Entities.Capacities
                         else
                         {
                             gsm.OnUpdateFeedback -= MoveBag;
+                            
                             projectileTr.position = new Vector3(projectileTr.position.x, endPosition.y,
                                 projectileTr.position.z);
+                            if(canPickup) projectile.OnEntityCollideFeedback -= DealDamage;
+                            fxGo.SetActive(false);
+                            
                             return;
                         }
                     }
@@ -233,7 +232,7 @@ namespace Entities.Capacities
                     if (isMaster) champ.IncreaseCurrentCandyRPC(thrownCandy);
 
                     projectile.OnEntityCollideFeedback -= GiveCandy;
-
+                    
                     projectile.DestroyProjectile(true);
                 }
 

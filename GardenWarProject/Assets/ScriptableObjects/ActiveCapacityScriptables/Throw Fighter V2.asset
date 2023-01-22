@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041583c1b736a624abe778ea8d74b01d, type: 3}
   m_Name: Throw Fighter V2
   m_EditorClassIdentifier: 
-  capacityName: 
+  capacityName: Candy Throw
   icon: {fileID: 0}
-  description: 
+  description: Throws some candy
   description1: 
   description2: 
-  maxLevel: 3
+  maxLevel: 1
   cooldown: 1
   castTime: 0
   maxRange: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   candyBagProjectile: {fileID: 2395444416476895822, guid: 2519e5667bed12d45a06c24258a61524, type: 3}
   projectileSpeed: 10
   height: 3
-  nbBounce: 1
+  nbBounce: 0
   bounceRadius: 0.5
   hasRandomBounceDirection: 1
   minCandy: 5
@@ -37,6 +37,8 @@ MonoBehaviour:
   candyAccelerationRate: 10
   candyPerGroup: 5
   scalePerCandyGroup: 0.15
+  offset: {x: 25, y: -25}
+  textSize: 125
   damagePerCandyGroup: 5
   baseDamage: 20
   minimumCandyForDamage: 30

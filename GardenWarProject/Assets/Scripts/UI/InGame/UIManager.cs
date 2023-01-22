@@ -19,6 +19,11 @@ public partial class UIManager : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Button settingsButton;
 
+    [Header("Free Canvas")]
+    [SerializeField] private Transform freeCanvas;
+
+    public static Transform canvas => Instance.freeCanvas;
+
     private Camera cam;
     
     private void Awake()

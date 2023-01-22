@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54a52f8011379a438311ef4fd11f7e4, type: 3}
   m_Name: Throw Scavenger V2
   m_EditorClassIdentifier: 
-  capacityName: 
+  capacityName: Upgrade Throw
   icon: {fileID: 0}
-  description: 
+  description: Throws the upgade
   description1: 
   description2: 
-  maxLevel: 3
+  maxLevel: 1
   cooldown: 1
   castTime: 0
   maxRange: 0
@@ -25,11 +25,11 @@ MonoBehaviour:
   shootType: 0
   showMaxRangeIfSkillShot: 0
   overrideDefaultIndicator: 1
-  indexInCollection: 16
+  indexInCollection: 14
   upgradeProjectile: {fileID: 2395444416476895822, guid: 1524651826a65514aa17effd805ae9e0, type: 3}
   projectileSpeed: 10
   height: 2.5
-  nbBounce: 1
+  nbBounce: 0
   bounceRadius: 0.25
   hasRandomBounceDirection: 0
   chargeRate: 0.1
