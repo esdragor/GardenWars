@@ -33,6 +33,9 @@ namespace UIComponents
 
         [Header("Candy")]
         [SerializeField] private TMP_Text nbCandy;
+
+        [Header("Upgrade")]
+        [SerializeField] private GameObject upgradeHolder;
         
         private Champion champion;
         private IResourceable resourceable;
@@ -93,8 +96,10 @@ namespace UIComponents
             candyable.OnIncreaseCurrentCandyFeedback += UpdateCandy;
 
             champion.OnPassiveCapacityAddedFeedback += AddPassiveIcon;
-
             champion.OnChangedAbilityFeedback += ChangeAbilityIcon;
+
+            champion.OnUpgradeCountIncreased += UpdateUpgradeCount;
+            champion.OnUpgradeCountDecreased += UpdateUpgradeCount;
         }
 
         private void ChangeAbilityIcon(int index, ActiveCapacity capacity)
@@ -117,8 +122,7 @@ namespace UIComponents
             {
                 AddPassiveIcon(passiveCapacity);
             }
-
-
+            
             var inputMap = InputManager.PlayerMap;
             
             ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0]);
@@ -129,6 +133,8 @@ namespace UIComponents
             consumeCandyIcon.gameObject.SetActive(!champion.isFighter);
             
             if(!champion.isFighter) consumeCandyIcon.SetCapacity(champ.capacityDict[champ.consumeAbilityIndex].capacity,inputMap.Capacity.EatCapacity.controls[0]);
+            
+            upgradeHolder.SetActive(false);
         }
 
         private void UpdateFillPercentByPercentHealth(float value)
@@ -205,7 +211,10 @@ namespace UIComponents
             }
         }
 
-        
+        private void UpdateUpgradeCount()
+        {
+            upgradeHolder.SetActive(champion.upgrades > 0);
+        }
         
     }
 }
