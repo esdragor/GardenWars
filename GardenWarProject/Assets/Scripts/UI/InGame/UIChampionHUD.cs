@@ -23,14 +23,11 @@ namespace UIComponents
         [SerializeField] private UIActiveIcon activeIconPrefab;
         [SerializeField] private Transform activeIconParent;
         
-        
         [Header("Components")]
         [SerializeField] private Image Portrait;
         [SerializeField] private Image healthBar;
         [SerializeField] private TMP_Text healthBarText;
         [SerializeField] private Image resourceBar;
-        [SerializeField] private Image spellPassive;
-        [SerializeField] private Image spellPassiveCooldown;
 
         [Header("Candy")]
         [SerializeField] private TMP_Text nbCandy;
@@ -38,7 +35,6 @@ namespace UIComponents
         private Champion champion;
         private IResourceable resourceable;
         private IActiveLifeable lifeable;
-        private ICastable castable;
         private ICandyable candyable;
 
         private Dictionary<PassiveCapacity, UIPassiveIcon> handledPassives = new Dictionary<PassiveCapacity, UIPassiveIcon>();
@@ -50,7 +46,6 @@ namespace UIComponents
             champion = newChampion;
             lifeable = champion.GetComponent<IActiveLifeable>();
             resourceable = champion.GetComponent<IResourceable>();
-            castable = champion.GetComponent<ICastable>();
             candyable = champion.GetComponent<ICandyable>();
 
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
@@ -59,7 +54,7 @@ namespace UIComponents
             
             handledPassives.Clear();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 activeIcons[i] = Instantiate(activeIconPrefab, activeIconParent);
             }
@@ -102,24 +97,24 @@ namespace UIComponents
 
         private void ChangeAbilityIcon(int index,ActiveCapacity capacity)
         {
-            activeIcons[index].SetCapacity(capacity,new InputAction());
+            activeIcons[index].SetCapacity(capacity,new InputBinding());
         }
 
-        private void UpdateIcons(Champion champion)
+        private void UpdateIcons(Champion champ)
         {
-            var so = champion.currentSo;
+            var so = champ.currentSo;
             
             Portrait.sprite = so.portrait;
 
-            foreach (var passiveCapacity in champion.passiveCapacitiesList)
+            foreach (var passiveCapacity in champ.passiveCapacitiesList)
             {
                 AddPassiveIcon(passiveCapacity);
             }
 
-            for (var i = 0; i < champion.abilitiesIndexes.Length; i++)
+            for (var i = 0; i < champ.abilitiesIndexes.Length; i++)
             {
-                var index = champion.abilitiesIndexes[i];
-                ChangeAbilityIcon(i,champion.capacityDict[index].capacity);
+                var index = champ.abilitiesIndexes[i];
+                ChangeAbilityIcon(i,champ.capacityDict[index].capacity);
             }
         }
 
@@ -188,12 +183,11 @@ namespace UIComponents
             void RemovePassiveIcon(Entity _)
             {
                 if (passiveIcon == null) return;
+
+                if (!passiveIcon.RemovePassive(_)) return;
                 
-                if (passiveIcon.RemovePassive(_))
-                {
-                    handledPassives.Remove(capacity);
-                    Destroy(passiveIcon.gameObject);
-                }
+                handledPassives.Remove(capacity);
+                Destroy(passiveIcon.gameObject);
 
             }
         }

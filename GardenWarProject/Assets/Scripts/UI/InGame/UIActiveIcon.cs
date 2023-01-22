@@ -35,7 +35,7 @@ namespace UIComponents
         }
 
 
-        public void SetCapacity(ActiveCapacity active,InputAction action)
+        public void SetCapacity(ActiveCapacity active,InputBinding binding)
         {
             if (capacity != null)
             {
@@ -45,6 +45,7 @@ namespace UIComponents
             capacity = active;
             iconImage.sprite = capacity.AssociatedActiveCapacitySO().icon;
             cooldownOverlayImage.fillAmount = 0;
+            keyBindText.text = binding.name;
 
             capacity.OnCooldownEnded += ResetFill;
         }

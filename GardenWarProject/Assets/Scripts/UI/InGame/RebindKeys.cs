@@ -36,8 +36,8 @@ public class RebindKeys : MonoBehaviour
 
     private void OnEnable()
     {
-        rebindButton.onClick.AddListener(() => DoRebind());
-        resetButton.onClick.AddListener(() => ResetBinding());
+        rebindButton.onClick.AddListener(DoRebind);
+        resetButton.onClick.AddListener(ResetBinding);
 
         if(inputActionReference != null)
         {
