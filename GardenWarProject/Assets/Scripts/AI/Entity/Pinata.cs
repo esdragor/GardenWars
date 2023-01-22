@@ -88,9 +88,11 @@ namespace Entities
             var totalSize = sizeDelta * 0.5f + Vector2.one * margin;
             
             indicator.position = iconPos;
+
+            isOnScreen = !((iconPos.x + totalSize.x > Screen.width) || (iconPos.x - totalSize.x < 0) ||
+                           (iconPos.y + totalSize.y > Screen.height) || (iconPos.y - totalSize.y < 0));
             
-            indicator.gameObject.SetActive(!((iconPos.x + totalSize.x > Screen.width) || (iconPos.x - totalSize.x < 0) ||
-                                           (iconPos.y + totalSize.y > Screen.height) || (iconPos.y - totalSize.y < 0)));
+            indicator.gameObject.SetActive(isOnScreen);
             
             /*
             if (iconPos.x + totalSize.x > Screen.width ) iconPos.x = Screen.width - totalSize.x;

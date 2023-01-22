@@ -24,6 +24,8 @@ namespace Entities
         private NavMeshPath path;
         private Vector3[] pathVectors;
 
+        private bool isOnScreen;
+
         private void SetupLine()
         {
             path = new NavMeshPath();
@@ -31,6 +33,12 @@ namespace Entities
         
         private void UpdatePath()
         {
+            if (isOnScreen)
+            {
+                lineRenderer.positionCount = 0;
+                return;
+            }
+            
             NavMesh.CalculatePath(gsm.GetPlayerChampion().position, position,NavMesh.AllAreas,path);
 
             pathVectors = path.corners;
