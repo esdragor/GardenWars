@@ -14,19 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: Got'cha
   icon: {fileID: 21300000, guid: 83962b3d8dfea3e4cbece2c4604bd7da, type: 3}
-  description: "Reindeer *shoots* a grapling hook in a chosen direction. The grapling
-    hook can go *through any obstacle*. \n\nIf it hits a *Character*, that *character*
-    is *dragged* towards Reindeer's **current position**."
-  description1: "Reindeer *shoots* a grapling hook in a chosen direction. The grapling
-    hook can go *through any obstacle*. \n\nIf it hits a *Character*, that *character*
-    is dealt **15** <color=#F82020>damage</color>, then *dragged* towards Reindeer's
-    **current position**. "
-  description2: "Reindeer *shoots* a grapling hook in a chosen direction. The grapling
-    hook can go *through any obstacle*. \n\nIf it hits a *Character*, that *character*
-    is dealt **15** <color=#F82020>damage</color>, then *dragged* towards Reindeer's
-    **current position**. \n\nIt is then **Slowed** for **3s**. A **Slowed** character
-    has **0.7** <color=#ECF820>move speed</color> and **0.7** <color=#6D8BF1>attack
-    speed</color> "
+  description: Reindeer <color=yellow>**shoots**</color> a grapling hook in the target
+    direction that catches the first <color=orange>**Kid**</color> hit, <color=yellow>**dragging**</color>
+    them towards Reindeer.
+  description1: "Reindeer <color=yellow>**shoots**</color> a grapling hook in the
+    target direction that catches the first <color=orange>**Kid**</color> hit, <color=yellow>**dragging**</color>
+    them towards Reindeer.\n If the **Kid** is an enemy, the hook deals <color=#F82020>**15
+    damage**</color> to them."
+  description2: 'Reindeer <color=yellow>**shoots**</color> a grapling hook in the
+    target direction that catches the first <color=orange>**Kid**</color> hit, <color=yellow>**dragging**</color>
+    them towards Reindeer.
+
+    If the <color=orange>**Kid**</color> is an enemy,
+    the hook deals <color=#F82020>**15 damage**</color> and reduces their <color=#00b3ff>**attack
+    speed**</color> by <color=#00b3ff>**30%**</color> and <color=#3b48ff>**movement
+    speed**</color> by <color=#3b48ff>**30%**</color>.'
   maxLevel: 3
   cooldown: 5
   castTime: 0

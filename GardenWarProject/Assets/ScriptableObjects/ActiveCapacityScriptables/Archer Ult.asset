@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: Apollo that, sucker
   icon: {fileID: 21300000, guid: 64d24c2de8e37c34185bc20daddb163c, type: 3}
-  description: This ability cannot be used until it has been *upgraded*
-  description1: Reindeer *shoots* a rocket in a chosen direction. The rocket can
-    go *through any obstacle* and *explodes* on the first *entity* (Character or
-    Minion) it *hits*, dealing it **40** <color=#F82020>damage</color>.
-  description2: 'Reindeer *shoots* a rocket in a chosen direction. The rocket can
-    go *through any obstacle* and *explodes* on the first *entity* (Character or
-    Minion) it *hits*, doing **40** <color=#F82020>damage</color> to *all entities*
-    in **circular area**. '
+  description: '*Cannot be used until upgraded*'
+  description1: Reindeer <color=yellow>**shoots**</color> a humongous rocket in the
+    target direction that explodes on the first <color=orange>**Enemy**</color> hit,
+    dealing <color=#F82020>**40 damage**</color> to it.
+  description2: Reindeer <color=yellow>**shoots**</color> a humongous rocket in the
+    target direction that explodes on the first <color=orange>**Enemy**</color> hit,
+    dealing <color=#F82020>**40 damage**</color> to it and to <color=orange>**all
+    Entities**</color> around it.
   maxLevel: 3
   cooldown: 30
   castTime: 0.4

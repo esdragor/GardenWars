@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: Roller-dash
   icon: {fileID: 21300000, guid: a276f6a80b5012f489779d081d382342, type: 3}
-  description: 'Reindeer dashes in a chosen direction. '
-  description1: "Reindeer dashes in a chosen direction. Reindeer may dash *through
-    any obstacle*. \n "
-  description2: "Reindeer dashes in a chosen direction. Reindeer may dash *through
-    any obstacle*. \n\nYou can stack up to **3** dash at any given time "
+  description: Reindeer <color=yellow>**dashes**</color> in the target direction.
+  description1: Reindeer <color=yellow>**dashes**</color> in the target direction,
+    *ignoring any obstacles*.
+  description2: 'Reindeer <color=yellow>**dashes**</color> in the target direction,
+    *ignoring any obstacles*.
+
+
+    Reindeer periodically stocks a <color=green>**Roller-dash**</color>
+    charge, up to a maximum of **3**.'
   maxLevel: 3
   cooldown: 7
   castTime: 0
