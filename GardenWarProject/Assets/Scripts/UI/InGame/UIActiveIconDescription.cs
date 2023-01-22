@@ -25,7 +25,7 @@ namespace UIComponents
             };
 
 
-            var level = GameStateMachine.Instance.GetPlayerChampion().isFighter ? $"[{capacity.level}]" : string.Empty;
+            var level = GameStateMachine.Instance.GetPlayerChampion().isFighter && capacity.AssociatedActiveCapacitySO().maxLevel != 1 ? $"[{capacity.level}]" : string.Empty;
             var header = $"{so.capacityName} {level}";
             
             ToolTipManager.Show(text,header);

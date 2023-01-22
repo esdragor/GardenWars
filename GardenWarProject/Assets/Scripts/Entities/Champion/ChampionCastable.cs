@@ -158,26 +158,33 @@ namespace Entities.Champion
             }
             photonView.RPC("SyncChangeActiveAbility",RpcTarget.All,index,abilityId);
         }
-        
+
         [PunRPC]
-        private void SyncChangeActiveAbility(int index,byte abilityId)
+        private void SyncChangeActiveAbility(int index,byte abilityIndex)
         {
             if(index<0 || index >=3) return;
-            abilitiesIndexes[index] = abilityId;
-            
-            var newCapacity = new CastingAbility
-            {
-                isCasting = false,
-                capacity = CapacitySOCollectionManager.CreateActiveCapacity(abilityId,this)
-            };
+            abilitiesIndexes[index] = abilityIndex;
 
-            if (capacityDict.ContainsKey(abilityId)) capacityDict[abilityId] = newCapacity;
-            else capacityDict.Add(abilityId,newCapacity);
+            var capacity = SetupAbility(abilityIndex);
             
-            OnChangedAbilityFeedback?.Invoke(index,newCapacity.capacity);
+            OnChangedAbilityFeedback?.Invoke(index,capacity);
         }
 
         public event Action<int, ActiveCapacity> OnChangedAbilityFeedback;
+
+        private ActiveCapacity SetupAbility(byte index)
+        {
+            var newCapacity = new CastingAbility
+            {
+                isCasting = false,
+                capacity = CapacitySOCollectionManager.CreateActiveCapacity(index,this)
+            };
+
+            if (capacityDict.ContainsKey(index)) capacityDict[index] = newCapacity;
+            else capacityDict.Add(index,newCapacity);
+
+            return newCapacity.capacity;
+        }
 
         private void CastHeldCapacities()
         {

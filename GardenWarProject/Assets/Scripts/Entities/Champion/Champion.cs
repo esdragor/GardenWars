@@ -119,6 +119,9 @@ namespace Entities.Champion
                 ChangeActiveAbility(i, currentSo.activeCapacitiesIndexes[i]);
             }
 
+            SetupAbility(recallAbilityIndex);
+            SetupAbility(consumeAbilityIndex);
+
             championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;
@@ -165,6 +168,8 @@ namespace Entities.Champion
             
             currentCandy = 100;
             upgradeCount = isFighter ? 0 : 3;
+            
+            
         }
 
         public void SetupSpawn()

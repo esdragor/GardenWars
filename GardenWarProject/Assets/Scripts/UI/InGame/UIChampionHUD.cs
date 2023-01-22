@@ -22,6 +22,8 @@ namespace UIComponents
         [Header("Active")]
         [SerializeField] private UIActiveIcon activeIconPrefab;
         [SerializeField] private Transform activeIconParent;
+        [SerializeField] private UIActiveIcon recallActiveIcon;
+        [SerializeField] private UIActiveIcon consumeCandyIcon;
         
         [Header("Components")]
         [SerializeField] private Image Portrait;
@@ -122,6 +124,11 @@ namespace UIComponents
             ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0]);
             ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Capacity1.controls[0]);
             ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Capacity2.controls[0]);
+            recallActiveIcon.SetCapacity(champ.capacityDict[champ.recallAbilityIndex].capacity,inputMap.Capacity.RecalCapacity.controls[0]);
+            
+            consumeCandyIcon.gameObject.SetActive(!champion.isFighter);
+            
+            if(!champion.isFighter) consumeCandyIcon.SetCapacity(champ.capacityDict[champ.consumeAbilityIndex].capacity,inputMap.Capacity.EatCapacity.controls[0]);
         }
 
         private void UpdateFillPercentByPercentHealth(float value)

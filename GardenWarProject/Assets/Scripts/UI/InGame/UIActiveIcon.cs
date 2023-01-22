@@ -29,20 +29,6 @@ namespace UIComponents
 
         private void Start()
         {
-            champion = GameStateMachine.Instance.GetPlayerChampion();
-            
-            upgradeButtonGo = upgradeButton.gameObject;
-            upgradeButtonGo.SetActive(false);
-
-            if (champion.isFighter)
-            {
-                upgradeButton.onClick.AddListener(UpgradeAbility);
-
-                champion.OnUpgradeCountIncreased += UpdateUpgradeActive;
-                champion.OnUpgradeCountDecreased += UpdateUpgradeActive;
-                capacity.OnUpgraded += HideUpgradeButton;
-            }
-            
             ResetFill();
         }
 
@@ -71,6 +57,21 @@ namespace UIComponents
 
             if(index != -1) upgradeIndex = index;
             capacity = active;
+            
+            champion = GameStateMachine.Instance.GetPlayerChampion();
+            
+            upgradeButtonGo = upgradeButton.gameObject;
+            upgradeButtonGo.SetActive(false);
+
+            if (champion.isFighter)
+            {
+                upgradeButton.onClick.AddListener(UpgradeAbility);
+
+                champion.OnUpgradeCountIncreased += UpdateUpgradeActive;
+                champion.OnUpgradeCountDecreased += UpdateUpgradeActive;
+                capacity.OnUpgraded += HideUpgradeButton;
+            }
+            
             description.capacity = capacity;
             upgradeDescription.capacity = capacity;
             iconImage.sprite = capacity.AssociatedActiveCapacitySO().icon;

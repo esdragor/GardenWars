@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d0c1579f75d6b4ca98bf848913567c, type: 3}
   m_Name: Recall
   m_EditorClassIdentifier: 
-  capacityName: 
-  icon: {fileID: 0}
+  capacityName: Recall
+  icon: {fileID: 21300000, guid: 222b82146d07f2c41a00a5b748e63ea0, type: 3}
   description: 
+  description1: 
+  description2: 
   maxLevel: 1
   cooldown: 0
   castTime: 0
@@ -22,5 +24,6 @@ MonoBehaviour:
   types: 00000000
   shootType: 0
   showMaxRangeIfSkillShot: 0
+  overrideDefaultIndicator: 1
   indexInCollection: 15
   passive: {fileID: 11400000, guid: 49909ba369c319643bc5a1279c54ce7f, type: 2}
