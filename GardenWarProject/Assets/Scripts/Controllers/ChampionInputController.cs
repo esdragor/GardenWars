@@ -193,7 +193,7 @@ namespace Controllers.Inputs
             
             if (selectedEntity != null)
             {
-                if (champion != selectedEntity && selectedEntity.team == champion.team)
+                if (selectedEntity.team == champion.team)
                 {
                     //StartMoveGetItem();
                     
@@ -204,6 +204,7 @@ namespace Controllers.Inputs
                     previousSelected = selectedEntity;
                     return;
                 }
+                
 
                 if (selectedEntity is Tower) return;
 
