@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: Candy Throw
   icon: {fileID: 0}
-  description: Throws some candy
+  description: "On hit, Reindeer *throws* a bag of  **5** <color=#FF66E3>candies</color>
+    in the chosen spot. \n\nOn hold, the number of  <color=#FF66E3>candies</color>
+    thrown will *increase* by **something**, to a maximum of **50** <color=#FF66E3>candies</color>.
+    \n\nIf Reindeer throws *at least* **30** <color=#FF66E3>candies</color> in a
+    *single* bag, the bag will deal **20 + The number of additionnal <color=#FF66E3>candies</color>** 
+    <color=#F82020>damage</color> to any *entity* it hits while still in the air."
   description1: 
   description2: 
   maxLevel: 1
@@ -37,7 +42,8 @@ MonoBehaviour:
   candyAccelerationRate: 10
   candyPerGroup: 5
   scalePerCandyGroup: 0.15
-  offset: {x: 125, y: 0}
+  offset: {x: 25, y: -25}
+  textSize: 125
   damagePerCandyGroup: 5
   baseDamage: 20
   minimumCandyForDamage: 30
