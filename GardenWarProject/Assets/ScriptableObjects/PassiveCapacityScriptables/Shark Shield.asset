@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9df42e364c73fe438ada9f6e6af4eaa, type: 3}
   m_Name: Shark Shield
   m_EditorClassIdentifier: 
-  passiveName: 
+  passiveName: Special floaties
   icon: {fileID: 21300000, guid: ad4dcac393f63f3468f6d9ff1652732e, type: 3}
-  description: 
+  description: 'Every **Shield stacks** on Bubulle *reduces* incoming attack <color=#F82020>damage</color>
+    by **10**. When Bubulle *is hit* by an attack, she *loses* **1 Shield Stack**.
+
+    
+
+'
   stackType: 1
   duration: 0
   types: 02000000

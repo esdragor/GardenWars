@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed24281030498454187f1ca892878f6b, type: 3}
   m_Name: ArcherDebuff
   m_EditorClassIdentifier: 
-  passiveName: 
-  icon: {fileID: 0}
-  description: 
+  passiveName: 'Sticky mud '
+  icon: {fileID: 21300000, guid: 83962b3d8dfea3e4cbece2c4604bd7da, type: 3}
+  description: 'Your <color=#ECF820>move speed</color> and <color=#6D8BF1>attack
+    speed</color> have been *reduced*.
+
+'
   stackType: 0
   duration: 3
   types: 03000000
-  indexInCollection: 0
+  indexInCollection: 9
   moveSpeedMultiplier: 0.7
   attackSpeedMultiplier: 0.7

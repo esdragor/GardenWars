@@ -6,6 +6,7 @@ using Entities.Champion;
 using GameStates;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace UIComponents
@@ -16,19 +17,17 @@ namespace UIComponents
         [SerializeField] private UIPassiveIcon passiveIconPrefab;
         [SerializeField] private Transform positivePassiveParent;
         [SerializeField] private Transform negativePassiveParent;
+        [SerializeField] private UIPassiveIcon championPassiveIcon;
 
         [Header("Active")]
         [SerializeField] private UIActiveIcon activeIconPrefab;
         [SerializeField] private Transform activeIconParent;
-        
         
         [Header("Components")]
         [SerializeField] private Image Portrait;
         [SerializeField] private Image healthBar;
         [SerializeField] private TMP_Text healthBarText;
         [SerializeField] private Image resourceBar;
-        [SerializeField] private Image spellPassive;
-        [SerializeField] private Image spellPassiveCooldown;
 
         [Header("Candy")]
         [SerializeField] private TMP_Text nbCandy;
@@ -36,11 +35,10 @@ namespace UIComponents
         private Champion champion;
         private IResourceable resourceable;
         private IActiveLifeable lifeable;
-        private ICastable castable;
         private ICandyable candyable;
 
         private Dictionary<PassiveCapacity, UIPassiveIcon> handledPassives = new Dictionary<PassiveCapacity, UIPassiveIcon>();
-
+        
         private UIActiveIcon[] activeIcons = new UIActiveIcon[3];
         
         public void InitHUD(Champion newChampion)
@@ -48,7 +46,6 @@ namespace UIComponents
             champion = newChampion;
             lifeable = champion.GetComponent<IActiveLifeable>();
             resourceable = champion.GetComponent<IResourceable>();
-            castable = champion.GetComponent<ICastable>();
             candyable = champion.GetComponent<ICandyable>();
 
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
@@ -57,7 +54,7 @@ namespace UIComponents
             
             handledPassives.Clear();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 activeIcons[i] = Instantiate(activeIconPrefab, activeIconParent);
             }
@@ -98,27 +95,33 @@ namespace UIComponents
             champion.OnChangedAbilityFeedback += ChangeAbilityIcon;
         }
 
-        private void ChangeAbilityIcon(int index,ActiveCapacity capacity)
+        private void ChangeAbilityIcon(int index, ActiveCapacity capacity)
         {
-            activeIcons[index].SetCapacity(capacity);
+            ChangeAbilityIcon(index, capacity,activeIcons[index].control);
         }
 
-        private void UpdateIcons(Champion champion)
+        private void ChangeAbilityIcon(int index,ActiveCapacity capacity,InputControl control)
         {
-            var so = champion.currentSo;
+            activeIcons[index].SetCapacity(capacity,control,index);
+        }
+
+        private void UpdateIcons(Champion champ)
+        {
+            var so = champ.currentSo;
             
             Portrait.sprite = so.portrait;
 
-            foreach (var passiveCapacity in champion.passiveCapacitiesList)
+            foreach (var passiveCapacity in champ.passiveCapacitiesList)
             {
                 AddPassiveIcon(passiveCapacity);
             }
 
-            for (var i = 0; i < champion.abilitiesIndexes.Length; i++)
-            {
-                var index = champion.abilitiesIndexes[i];
-                ChangeAbilityIcon(i,champion.capacityDict[index].capacity);
-            }
+
+            var inputMap = InputManager.PlayerMap;
+            
+            ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0]);
+            ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Capacity1.controls[0]);
+            ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Capacity2.controls[0]);
         }
 
         private void UpdateFillPercentByPercentHealth(float value)
@@ -153,9 +156,14 @@ namespace UIComponents
 
         private void AddPassiveIcon(PassiveCapacity capacity)
         {
-            if(capacity.AssociatedPassiveCapacitySO().types.Contains(Enums.CapacityType.Kit)) return;
-            
             if (handledPassives.ContainsKey(capacity)) return;
+            
+            if (capacity.AssociatedPassiveCapacitySO().types.Contains(Enums.CapacityType.Kit))
+            {
+                handledPassives.Add(capacity,championPassiveIcon);
+                championPassiveIcon.LinkWithChampion(champion,capacity,null);
+                return;
+            }
 
             Transform parent = null;
 
@@ -181,12 +189,11 @@ namespace UIComponents
             void RemovePassiveIcon(Entity _)
             {
                 if (passiveIcon == null) return;
+
+                if (!passiveIcon.RemovePassive(_)) return;
                 
-                if (passiveIcon.RemovePassive(_))
-                {
-                    handledPassives.Remove(capacity);
-                    Destroy(passiveIcon.gameObject);
-                }
+                handledPassives.Remove(capacity);
+                Destroy(passiveIcon.gameObject);
 
             }
         }

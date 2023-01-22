@@ -8,6 +8,10 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO/RecallPassive", fileName = "RecallPassive")]
     public class RecallPassiveSO : PassiveCapacitySO
     {
+        public ParticleSystem recallFxGo;
+        public Vector3 fxRotation;
+        public float fxHeight;
+        
         public override Type AssociatedType()
         {
             return typeof(RecallPassive);
@@ -16,6 +20,8 @@ namespace Entities.Capacities
     
     public class RecallPassive : PassiveCapacity
     {
+        private RecallPassiveSO so => (RecallPassiveSO) AssociatedPassiveCapacitySO();
+        private GameObject recallObjectGo;
         private bool isCanceled;
 
         protected override void OnAddedEffects(Entity target)
@@ -28,7 +34,8 @@ namespace Entities.Capacities
 
         protected override void OnAddedFeedbackEffects(Entity target)
         {
-            
+            recallObjectGo = LocalPoolManager.PoolInstantiate(so.recallFxGo, champion.position+Vector3.up*so.fxHeight, Quaternion.Euler(so.fxRotation)).gameObject;
+            recallObjectGo.transform.localScale = Vector3.one * 0.5f;
         }
 
         protected override void OnAddedLocalEffects(Entity target)
@@ -50,7 +57,7 @@ namespace Entities.Capacities
 
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
-            
+            recallObjectGo.SetActive(false);
         }
 
         protected override void OnRemovedLocalEffects(Entity target)

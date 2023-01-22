@@ -33,7 +33,7 @@ namespace Entities.Capacities
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            return true;
+            return level > 1;
         }
 
         protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
@@ -144,11 +144,11 @@ namespace Entities.Capacities
                 projectile.DestroyProjectile(true);
                 
                 burstTr.position = entity.position;
-                burstTr.localScale = (level < 2) ? Vector3.one : Vector3.one * so.explosionRadius * so.explosionFxMultiplier;;
+                burstTr.localScale = (level < 3) ? Vector3.one : Vector3.one * so.explosionRadius * so.explosionFxMultiplier;;
                 
                 FXLaunchBurst.SetActive(true);
                 
-                if (level < 2) return;
+                if (level < 3) return;
                 
                 var hitColliders = Physics.OverlapSphere(entity.position, so.explosionRadius);
                 foreach (var hitCollider in hitColliders)

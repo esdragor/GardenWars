@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a7be1d98224da4eae3883a12b5b4e1, type: 3}
   m_Name: RecallPassive
   m_EditorClassIdentifier: 
-  passiveName: 
+  passiveName: Taking a break
   icon: {fileID: 0}
-  description: 
+  description: You are going back to the sleepy zone. If you move or use any <color=#28F820>ability</color>,
+    you will stop.
   stackType: 2
-  duration: 5
+  duration: 4.8
   types: 02000000
-  indexInCollection: 0
+  indexInCollection: 8
+  recallFxGo: {fileID: 3640360892502211885, guid: 17e0262262815c946a046927d09cf37b, type: 3}
+  fxRotation: {x: -90, y: 0, z: 0}
+  fxHeight: 0.5

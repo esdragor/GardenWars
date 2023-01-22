@@ -11,7 +11,7 @@ namespace Entities.Champion
     {
         [Header("Recall")]
         [SerializeField] private RecallSO recall;
-        
+
         [Header("Candy Buff")]
         [SerializeField] private ConsumeCandySO consumeCandy;
 
@@ -149,7 +149,7 @@ namespace Entities.Champion
             capacityDict[capacityIndex].capacity.OnPress(targetedEntities,targetedPositions);
         }
 
-        public void  ChangeActiveAbility(int index,byte abilityId)
+        public void ChangeActiveAbility(int index,byte abilityId)
         {
             if (isOffline)
             {
@@ -249,7 +249,11 @@ namespace Entities.Champion
         {
             if(upgradeCount <= 0) return;
             
+            Debug.Log($"Trying to upgrade capacity at index {index}");
+            Debug.Log($"It's {capacityDict[abilitiesIndexes[index]].capacity}");
             if(!capacityDict[abilitiesIndexes[index]].capacity.canBeUpgraded) return;
+            
+            DecreaseUpgradeCount();
             
             if (isOffline)
             {
@@ -263,9 +267,8 @@ namespace Entities.Champion
         private void SyncUpgradeRPC(int index)
         {
             if(!isFighter) return;
-            Debug.Log($"Upgrade capacity at index {index} ({capacityDict[abilitiesIndexes[index]].capacity.AssociatedActiveCapacitySO().capacityName}) (now level {capacityDict[abilitiesIndexes[index]].capacity.level})");
-            upgradeCount--;
-            capacityDict[abilitiesIndexes[index]].capacity.level++;
+            var capacity = capacityDict[abilitiesIndexes[index]];
+            capacity.capacity.Upgrade();
             OnAbilityUpgraded?.Invoke();
         }
 
@@ -290,7 +293,6 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncIncreaseUpgradeCountRPC(int value)
         {
-            Debug.Log($"Upgrade count : {upgradeCount}");
             upgradeCount = value;
             OnUpgradeCountIncreased?.Invoke();
         }
@@ -315,7 +317,6 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncDecreaseUpgradeCountRPC(int value)
         {
-            Debug.Log($"Upgrade count : {upgradeCount}");
             upgradeCount = value;
             OnUpgradeCountDecreased?.Invoke();
         }

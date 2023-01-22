@@ -12,15 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b92ff8be7cb4e49b5848861b4e0377, type: 3}
   m_Name: Shark Borrow
   m_EditorClassIdentifier: 
-  capacityName: Burrow
-  icon: {fileID: 21300000, guid: 0004f432feb52de499f43ce34f200878, type: 3}
-  description: le bureau sous terre
+  capacityName: Emergency Dive
+  icon: {fileID: 21300000, guid: b34fe4549d39b964589278b4e246dbed, type: 3}
+  description: "Bubulle goes **Underwater** and her <color=#28F820>Water Splash</color>
+    cooldown is *reset*. \n\nWhen Bubulle is **Underwater**, her <color=#ECF820>move
+    speed</color> is *increased* by **10%** and <color=#28F820>Water Splash</color>'s
+    cooldown is *reduced* by **3s**. \n\nThe next <color=#28F820>auto attack</color>
+    Bubulle lands  will **Stun** the target for **1s**, then she *resurfaces*. \n\nA
+    **Stunned entity** is unable to *move* or *use* any <color=#28F820>ability</color>.\n"
+  description1: 
+  description2: 
   maxLevel: 3
   cooldown: 5
   castTime: 0
   maxRange: 0
   types: 00000000
   shootType: 1
+  showMaxRangeIfSkillShot: 0
+  overrideDefaultIndicator: 0
   indexInCollection: 10
   sharkPassive: {fileID: 11400000, guid: a79af256dcb1a904eae66f1ad7928738, type: 2}
   aileronBonusDamage: 0

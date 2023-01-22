@@ -59,6 +59,10 @@ namespace Entities.Capacities
             
             champion.OnDie += UnBorrow;
             champion.OnDie += ResetTimer;
+
+            champion.OnStartChannelPinata += ResetTimer;
+            champion.OnStartChannelPinata += ForceUnBorrow;
+            
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
@@ -113,8 +117,12 @@ namespace Entities.Capacities
                 champion.IncreaseCurrentMoveSpeedRPC(so.increasedMoveSpeed);
                 
                 champion.OnAttack += StunTarget;
+                
+                OnBurrow?.Invoke();
             }
 
+            OnBurrowFeedback?.Invoke();
+            
             borrowed = true;
             
             champion.SetAnimatorBool("Borrowed",borrowed);
@@ -122,6 +130,9 @@ namespace Entities.Capacities
             aileronGo.SetActive(true);
             aileronGo.GetComponent<SharkPassiveManager>().EnableFXShot(champion.team);
         }
+
+        public event Action OnBurrow;
+        public event Action OnBurrowFeedback;
 
         private void StunTarget(byte _,int targetId,Vector3 __)
         {
@@ -154,6 +165,8 @@ namespace Entities.Capacities
                 champion.OnAttack -= StunTarget;
                 
                 champion.DecreaseCurrentMoveSpeedRPC(so.increasedMoveSpeed);
+                
+                OnUnBurrow?.Invoke();
             }
             
             //champion.rotateParent.localPosition = Vector3.zero;
@@ -171,12 +184,14 @@ namespace Entities.Capacities
 
             aileronGo.SetActive(false);
         }
+
+        public event Action OnUnBurrow;
         
         private void UnBorrow(int _)
         {
             ForceUnBorrow();
         }
-        
+
         private void ResetTimer(byte _,int __,Vector3 ___)
         {
             timeUnBorrowed = 0;
@@ -184,6 +199,11 @@ namespace Entities.Capacities
         }
         
         private void ResetTimer(int _)
+        {
+            ResetTimer(0,0,Vector3.zero);
+        }
+        
+        private void ResetTimer()
         {
             ResetTimer(0,0,Vector3.zero);
         }
@@ -208,6 +228,9 @@ namespace Entities.Capacities
             
             champion.OnDie -= UnBorrow;
             champion.OnDie -= ResetTimer;
+            
+            champion.OnStartChannelPinata -= ResetTimer;
+            champion.OnStartChannelPinata -= ForceUnBorrow;
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)

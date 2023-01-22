@@ -136,6 +136,9 @@ namespace Entities.Capacities
         public void OnHold(int targetsEntityIndexes, Vector3 targetPositions)
         {
             if(isOnCooldown) return;
+            
+            if(!CanCast(targetsEntityIndexes,targetPositions)) return;
+            
             if(isMaster) Hold(targetsEntityIndexes,targetPositions);
             HoldFeedback(targetsEntityIndexes,targetPositions);
             
@@ -158,6 +161,8 @@ namespace Entities.Capacities
                 ReleaseCapacity();
                 return;
             }
+            
+            if(!CanCast(targetsEntityIndexes,targetPositions)) return;
 
             if (isMaster)
             {
@@ -165,13 +170,16 @@ namespace Entities.Capacities
                 attackable?.SetCanAttackRPC(false);
                 moveable?.SetCanMoveRPC(false);
             }
-            
+
             gsm.OnUpdateFeedback += DecreaseCastTimer;
 
             
             void ReleaseCapacity()
             {
                 if(!CanCast(targetsEntityIndexes,targetPositions)) return;
+                
+                if(baseCooldown > 0) EnterCooldown(baseCooldown);
+                
                 if(isMaster) Release(targetsEntityIndexes,targetPositions);
                 ReleaseFeedback(targetsEntityIndexes,targetPositions);
                 if (caster.isLocal)
@@ -194,7 +202,7 @@ namespace Entities.Capacities
                     
                     ReleaseLocal(targetsEntityIndexes,targetPositions);
                 }
-                if(baseCooldown > 0) EnterCooldown(baseCooldown);
+                
             }
             
             void DecreaseCastTimer()
@@ -251,6 +259,16 @@ namespace Entities.Capacities
             position.y = 0;
             return position;
         }
+
+        public void Upgrade()
+        {
+            level++;
+            OnUpgraded?.Invoke(level);
+        }
+
+        public event Action<int> OnUpgraded;
     }
+    
+    
 }
 

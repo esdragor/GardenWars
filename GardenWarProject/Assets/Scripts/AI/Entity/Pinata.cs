@@ -1,13 +1,14 @@
 using System;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Entities
 {
     using FogOfWar;
     using Inventory;
 
-    public class Pinata : Entity, IDeadable
+    public partial class Pinata : Entity, IDeadable
     {
         [Header("Visual")]
         [SerializeField] private Transform FalseFX;
@@ -34,6 +35,7 @@ namespace Entities
         //[SerializeField] private RectTransform rotator;
         [SerializeField] private float offset;
         [SerializeField] private float margin;
+        
         //private GameObject rotatorGo;
         private Vector3 iconPos;
         private Camera cam;
@@ -51,6 +53,8 @@ namespace Entities
             playerIsFigher = gsm.GetPlayerChampion().isFighter;
             
             indicator.gameObject.SetActive(false);
+
+            SetupLine();
         }
 
         public override void OnInstantiated()
@@ -71,22 +75,24 @@ namespace Entities
 
         protected override void OnUpdate()
         {
+            if(playerIsFigher) return;
             ShowIcon();
+            UpdatePath();
         }
 
         private void ShowIcon()
         {
-            if(playerIsFigher) return;
-            
             iconPos = cam.WorldToScreenPoint(position+Vector3.up * offset);
             
             var sizeDelta = indicator.sizeDelta;
             var totalSize = sizeDelta * 0.5f + Vector2.one * margin;
             
             indicator.position = iconPos;
+
+            isOnScreen = !((iconPos.x + totalSize.x > Screen.width) || (iconPos.x - totalSize.x < 0) ||
+                           (iconPos.y + totalSize.y > Screen.height) || (iconPos.y - totalSize.y < 0));
             
-            indicator.gameObject.SetActive(!((iconPos.x + totalSize.x > Screen.width) || (iconPos.x - totalSize.x < 0) ||
-                                           (iconPos.y + totalSize.y > Screen.height) || (iconPos.y - totalSize.y < 0)));
+            indicator.gameObject.SetActive(isOnScreen);
             
             /*
             if (iconPos.x + totalSize.x > Screen.width ) iconPos.x = Screen.width - totalSize.x;
@@ -291,13 +297,16 @@ namespace Entities
         {
             var projectile = LocalPoolManager.PoolInstantiate(upgradeProjectile, transform.position, Quaternion.identity);
 
-            projectile.OnEntityCollide += GiveUpgrade;
+            projectile.OnEntityCollideFeedback += GiveUpgrade;
             
             void GiveUpgrade(Entity entity)
             {
                 if (!(entity is Champion.Champion champion)) return;
                 
-                champion.IncreaseUpgradeCount();
+                if(champion.upgrades >= 1) return;
+                
+                if(isMaster)champion.IncreaseUpgradeCount();
+                
                 projectile.DestroyProjectile(true);
             }
         }

@@ -78,8 +78,6 @@ namespace Entities.Capacities
             grabcs.StartGrab(caster.transform);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
-
-            var displacementDestination = champion.position + champion.forward * so.dragDistance;
             
             var projectileTr = projectile.transform;
 
@@ -101,7 +99,7 @@ namespace Entities.Capacities
 
             void DealDamage(Entity entity)
             {
-                if(level < 1) return;
+                if(level < 2) return;
                 
                 if(level >= 3) entity.AddPassiveCapacityRPC(so.debuff.indexInCollection);
                 
@@ -113,6 +111,8 @@ namespace Entities.Capacities
             void Displace(Entity entity)
             {
                 var displaceable = entity.GetComponent<IDisplaceable>();
+                
+                var displacementDestination = champion.position + champion.forward * so.dragDistance;
                 
                 displaceable?.DisplaceRPC(displacementDestination,so.dragTime);
             }

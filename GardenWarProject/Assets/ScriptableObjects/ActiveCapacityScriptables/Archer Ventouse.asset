@@ -12,9 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7537b72a4b764a84695f92b771f3c581, type: 3}
   m_Name: Archer Ventouse
   m_EditorClassIdentifier: 
-  capacityName: Big Grab
-  icon: {fileID: 21300000, guid: 8210ec37964ce2a4da4f6c3cd89da299, type: 3}
-  description: C le grab de blitz
+  capacityName: Got'cha
+  icon: {fileID: 21300000, guid: 83962b3d8dfea3e4cbece2c4604bd7da, type: 3}
+  description: "Reindeer *shoots* a grapling hook in a chosen direction. The grapling
+    hook can go *through any obstacle*. \n\nIf it hits a *Character*, that *character*
+    is *dragged* towards Reindeer's **current position**."
+  description1: "Reindeer *shoots* a grapling hook in a chosen direction. The grapling
+    hook can go *through any obstacle*. \n\nIf it hits a *Character*, that *character*
+    is dealt **15** <color=#F82020>damage</color>, then *dragged* towards Reindeer's
+    **current position**. "
+  description2: "Reindeer *shoots* a grapling hook in a chosen direction. The grapling
+    hook can go *through any obstacle*. \n\nIf it hits a *Character*, that *character*
+    is dealt **15** <color=#F82020>damage</color>, then *dragged* towards Reindeer's
+    **current position**. \n\nIt is then **Slowed** for **3s**. A **Slowed** character
+    has **0.7** <color=#ECF820>move speed</color> and **0.7** <color=#6D8BF1>attack
+    speed</color> "
   maxLevel: 3
   cooldown: 5
   castTime: 0
@@ -22,10 +34,11 @@ MonoBehaviour:
   types: 00000000
   shootType: 0
   showMaxRangeIfSkillShot: 0
+  overrideDefaultIndicator: 0
   indexInCollection: 5
   debuff: {fileID: 11400000, guid: 043b7cd57422a0047afb5d69983c5401, type: 2}
   projectile: {fileID: 4689079691940470199, guid: 8b7f0c310cebb1d418ee9af83176c6f0, type: 3}
   projectileSpeed: 10
-  projectileDamage: 1
+  projectileDamage: 15
   dragDistance: 1
   dragTime: 1

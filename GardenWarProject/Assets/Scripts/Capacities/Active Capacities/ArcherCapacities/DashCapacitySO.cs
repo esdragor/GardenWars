@@ -130,8 +130,13 @@ namespace Entities.Capacities
         private void Blink(Vector3 destination)
         {
             if (champion == null) return;
-            champion.agent.Warp(destination);
-            champion.canMove = true;
+            if (champion == gsm.GetPlayerChampion())
+            {
+                champion.agent.enabled = true;
+                champion.agent.Warp(destination);
+                champion.canMove = true;
+            }
+            
 
             if(level <3) return;
             
@@ -180,9 +185,7 @@ namespace Entities.Capacities
                 caster.transform.position = Vector3.Lerp(start, destination, (float) (timeInDash / dashDuration));
                 
                 if (timeInDash < dashDuration) return;
-                
-                if(isMaster) champion.agent.enabled = true;
-                
+
                 Blink(destination);
                 
                 if (archerPassive != null)  archerPassive.holdStacks = false;

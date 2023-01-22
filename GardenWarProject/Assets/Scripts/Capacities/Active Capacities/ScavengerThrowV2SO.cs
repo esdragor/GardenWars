@@ -122,13 +122,14 @@ namespace Entities.Capacities
                 float timer = 0f;
                 
                 gsm.OnUpdateFeedback += MoveBag;
+                projectile.OnEntityCollideFeedback += GiveUpgrade;
 
                 void MoveBag()
                 {
                     if (progress > 0.5f && !canPickup)
                     {
                         canPickup = true;
-                        projectile.OnEntityCollide += GiveUpgrade;
+                        
                     } 
                     
                     if (progress > 0.99f)
@@ -167,14 +168,19 @@ namespace Entities.Capacities
                     
                     projectileTr.position = ParabolaClass.Parabola(startPosition, endPosition, height, progress);
                 }
-            }
-            
-            void GiveUpgrade(Entity entity)
-            {
-                if (!(entity is Champion.Champion champ)) return;
+                
+                void GiveUpgrade(Entity entity)
+                {
+                    if(!canPickup) return;
+                        
+                    if (!(entity is Champion.Champion champ)) return;
+                
+                    if(champ.upgrades >= 1) return;
 
-                champ.IncreaseUpgradeCount();
-                projectile.DestroyProjectile(true);
+                    if(isMaster) champ.IncreaseUpgradeCount();
+                
+                    projectile.DestroyProjectile(true);
+                }
             }
         }
 

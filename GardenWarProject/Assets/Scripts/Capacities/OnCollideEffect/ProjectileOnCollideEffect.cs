@@ -12,30 +12,30 @@ public class ProjectileOnCollideEffect : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        var hitEntity = other.gameObject.GetComponent<Entity>();
+
+        if (hitEntity != null)
+        {
+            if (Entity.isMaster)
+            {
+                OnEntityCollide?.Invoke(hitEntity);
+            }
+
+            OnEntityCollideFeedback?.Invoke(hitEntity);
+        }
+        
         if (Entity.isMaster)
         {
             OnCollide?.Invoke(other);
         }
 
         OnCollideFeedback?.Invoke(other);
-
-        var hitEntity = other.gameObject.GetComponent<Entity>();
-
-        if (hitEntity == null) return;
-
-        if (Entity.isMaster)
-        {
-            OnEntityCollide?.Invoke(hitEntity);
-        }
-
-        OnEntityCollideFeedback?.Invoke(hitEntity);
     }
 
     async void Disparition(bool immediate)
     {
-        if (!immediate)
-            await Task.Delay(700);
-        gameObject.SetActive(false);
+        if (!immediate) await Task.Delay(700);
+        if(gameObject.activeSelf) gameObject.SetActive(false);
     }
 
     public void DestroyProjectile(bool immediate)
@@ -47,5 +47,10 @@ public class ProjectileOnCollideEffect : MonoBehaviour
         OnEntityCollideFeedback = null;
 
         Disparition(immediate);
+    }
+
+    private void OnDisable()
+    {
+        DestroyProjectile(true);
     }
 }

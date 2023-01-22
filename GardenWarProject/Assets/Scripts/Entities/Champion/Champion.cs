@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Capacities;
@@ -165,7 +164,7 @@ namespace Entities.Champion
             
             
             currentCandy = 100;
-            upgradeCount = 10;
+            upgradeCount = isFighter ? 0 : 3;
         }
 
         public void SetupSpawn()

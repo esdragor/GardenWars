@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac5589acfc285a409f3e53393cc4d90, type: 3}
   m_Name: Archer Passive
   m_EditorClassIdentifier: 
-  descriptionName: 
-  icon: {fileID: 21300000, guid: 626b9cddb29049e4cac50cd87b419945, type: 3}
-  description: 
+  passiveName: Aiming juuust right
+  icon: {fileID: 21300000, guid: a0f12cecd3bc05a4c9561d1a6d1dedd1, type: 3}
+  description: "If Reindeer *stops moving* for more than **1s**, his <color=#6D8BF1>attack
+    speed</color> starts *increasing*. \n\n*Every second* he receives **1 stack**,
+    *lowering* the time between attacks by **1s**.\r\n"
   stackType: 2
   duration: 0
   types: 0000000002000000
-  indexInCollection: 3
+  indexInCollection: 1
   timeToIncrease: 1
   timeToDecrease: 0.25
   maxStacks: 5

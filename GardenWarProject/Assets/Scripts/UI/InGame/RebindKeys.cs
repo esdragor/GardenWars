@@ -25,19 +25,15 @@ public class RebindKeys : MonoBehaviour
     private string actionName;
 
     [Header("UI Fields")]
-    [SerializeField]
-    private Text actionText;
-    [SerializeField]
-    private Button rebindButton;
-    [SerializeField]
-    private Text rebindText;
-    [SerializeField]
-    private Button resetButton;
+    [SerializeField] private Text actionText;
+    [SerializeField] private Button rebindButton;
+    [SerializeField] private Text rebindText;
+    [SerializeField] private Button resetButton;
 
     private void OnEnable()
     {
-        rebindButton.onClick.AddListener(() => DoRebind());
-        resetButton.onClick.AddListener(() => ResetBinding());
+        rebindButton.onClick.AddListener(DoRebind);
+        resetButton.onClick.AddListener(ResetBinding);
 
         if(inputActionReference != null)
         {
@@ -84,12 +80,7 @@ public class RebindKeys : MonoBehaviour
 
         if(rebindText != null)
         {
-            if (Application.isPlaying)
-            {
-                rebindText.text = InputManager.GetBindingName(actionName, bindingIndex);
-            }
-            else
-                rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex);
+            rebindText.text = Application.isPlaying ? InputManager.GetBindingName(actionName, bindingIndex) : inputActionReference.action.GetBindingDisplayString(bindingIndex);
         }
     }
 
