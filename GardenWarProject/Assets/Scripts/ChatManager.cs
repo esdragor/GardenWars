@@ -35,7 +35,9 @@ public class ChatManager : MonoBehaviour
     private void OnAddMessage(string message)
     {
         if(!champion) champion = GameStateMachine.Instance.GetPlayerChampion();
-
+        
+        if(message.Length <= 0) return;
+        
         champion.OnAddMessage($"[{GameSettingsManager.playerName}]: {message}", champion.entityIndex);
         inputField.text = "";
     }
