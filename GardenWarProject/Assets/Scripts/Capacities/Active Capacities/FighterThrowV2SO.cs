@@ -114,6 +114,9 @@ namespace Entities.Capacities
             var projectile = LocalPoolManager.PoolInstantiate(so.candyBagProjectile, champion.position, Quaternion.identity);
             var projectileTr = projectile.transform;
 
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXCataLaunch, champion.position);
+
+            
             projectileTr.localScale = size;
 
             champion.PlayThrowAnimation();
