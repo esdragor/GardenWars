@@ -149,7 +149,7 @@ namespace Entities.Champion
             capacityDict[capacityIndex].capacity.OnPress(targetedEntities,targetedPositions);
         }
 
-        public void  ChangeActiveAbility(int index,byte abilityId)
+        public void ChangeActiveAbility(int index,byte abilityId)
         {
             if (isOffline)
             {
@@ -249,6 +249,8 @@ namespace Entities.Champion
         {
             if(upgradeCount <= 0) return;
             
+            Debug.Log($"Trying to upgrade capacity at index {index}");
+            Debug.Log($"It's {capacityDict[abilitiesIndexes[index]].capacity}");
             if(!capacityDict[abilitiesIndexes[index]].capacity.canBeUpgraded) return;
             
             DecreaseUpgradeCount();
@@ -291,7 +293,6 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncIncreaseUpgradeCountRPC(int value)
         {
-            Debug.Log($"Upgrade count : {upgradeCount}");
             upgradeCount = value;
             OnUpgradeCountIncreased?.Invoke();
         }

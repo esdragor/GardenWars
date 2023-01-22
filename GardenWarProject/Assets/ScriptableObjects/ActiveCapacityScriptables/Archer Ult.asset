@@ -14,17 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacityName: Apollo that, sucker
   icon: {fileID: 21300000, guid: 64d24c2de8e37c34185bc20daddb163c, type: 3}
-  description: 'Reindeer *shoots* a rocket in a chosen direction. The rocket can
+  description: unusable until **upgraded**
+  description1: Reindeer *shoots* a rocket in a chosen direction. The rocket can
     go *through any obstacle* and *explodes* on the first *entity* (Character or
     Minion) it *hits*, dealing it **40** <color=#F82020>damage</color>.
-
-'
-  description1: 'Reindeer *shoots* a rocket in a chosen direction. The rocket can
+  description2: 'Reindeer *shoots* a rocket in a chosen direction. The rocket can
     go *through any obstacle* and *explodes* on the first *entity* (Character or
     Minion) it *hits*, doing **40** <color=#F82020>damage</color> to *all entities*
     in **circular area**. '
-  description2: 
-  maxLevel: 2
+  maxLevel: 3
   cooldown: 30
   castTime: 0.4
   maxRange: 100

@@ -100,9 +100,9 @@ namespace UIComponents
             ChangeAbilityIcon(index, capacity,activeIcons[index].control);
         }
 
-        private void ChangeAbilityIcon(int index,ActiveCapacity capacity,InputControl control,int upgradeIndex = -1)
+        private void ChangeAbilityIcon(int index,ActiveCapacity capacity,InputControl control)
         {
-            activeIcons[index].SetCapacity(capacity,control,upgradeIndex);
+            activeIcons[index].SetCapacity(capacity,control,index);
         }
 
         private void UpdateIcons(Champion champ)
@@ -119,9 +119,9 @@ namespace UIComponents
 
             var inputMap = InputManager.PlayerMap;
             
-            ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0],0);
-            ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Capacity1.controls[0],1);
-            ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Capacity2.controls[0],2);
+            ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0]);
+            ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Capacity1.controls[0]);
+            ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Capacity2.controls[0]);
         }
 
         private void UpdateFillPercentByPercentHealth(float value)

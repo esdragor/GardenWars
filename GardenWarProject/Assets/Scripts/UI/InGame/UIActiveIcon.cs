@@ -9,13 +9,16 @@ using UnityEngine.UI;
 
 namespace UIComponents
 {
-    public class UIActiveIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class UIActiveIcon : MonoBehaviour
     {
         [SerializeField] private Image iconImage;
         [SerializeField] private Image cooldownOverlayImage;
         [SerializeField] private TextMeshProUGUI cooldownOverLayText;
         [SerializeField] private TextMeshProUGUI keyBindText;
         [SerializeField] private Button upgradeButton;
+
+        [SerializeField] private UIActiveIconDescription description;
+        [SerializeField] private UIActiveIconUpgradeDescription upgradeDescription;
         private GameObject upgradeButtonGo;
 
         private int upgradeIndex;
@@ -29,14 +32,17 @@ namespace UIComponents
             champion = GameStateMachine.Instance.GetPlayerChampion();
             
             upgradeButtonGo = upgradeButton.gameObject;
-            //upgradeButtonGo.SetActive(false);
-            
-            upgradeButton.onClick.AddListener(UpgradeAbility);
-            
-            champion.OnUpgradeCountIncreased += UpdateUpgradeActive;
-            champion.OnUpgradeCountDecreased += UpdateUpgradeActive;
-            capacity.OnUpgraded += HideUpgradeButton;
+            upgradeButtonGo.SetActive(false);
 
+            if (champion.isFighter)
+            {
+                upgradeButton.onClick.AddListener(UpgradeAbility);
+
+                champion.OnUpgradeCountIncreased += UpdateUpgradeActive;
+                champion.OnUpgradeCountDecreased += UpdateUpgradeActive;
+                capacity.OnUpgraded += HideUpgradeButton;
+            }
+            
             ResetFill();
         }
 
@@ -53,8 +59,7 @@ namespace UIComponents
         {
             champion.RequestUpgrade(upgradeIndex);
         }
-
-
+        
         public void SetCapacity(ActiveCapacity active,InputControl newControl,int index = -1)
         {
             if (capacity != null)
@@ -64,8 +69,10 @@ namespace UIComponents
 
             if(newControl != null) control = newControl;
 
-            upgradeIndex = index;
+            if(index != -1) upgradeIndex = index;
             capacity = active;
+            description.capacity = capacity;
+            upgradeDescription.capacity = capacity;
             iconImage.sprite = capacity.AssociatedActiveCapacitySO().icon;
             cooldownOverlayImage.fillAmount = 0;
             keyBindText.text = control.name.Length > 1 ? control.name : control.name.ToUpper();
@@ -80,7 +87,8 @@ namespace UIComponents
         
         private void HideUpgradeButton(int level)
         {
-            
+            description.DisplayText();
+            upgradeDescription.DisplayText();
             upgradeButtonGo.SetActive(champion.upgrades > 0 && level < capacity.AssociatedActiveCapacitySO().maxLevel);
         }
 
@@ -88,30 +96,6 @@ namespace UIComponents
         {
             cooldownOverlayImage.fillAmount = 0;
             cooldownOverLayText.text = string.Empty;
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            var so = capacity.AssociatedActiveCapacitySO();
-
-            var text = capacity.level switch
-            {
-                1 => so.description,
-                2 => so.description1,
-                3 => so.description2,
-                _ => so.description
-            };
-
-
-            var level = GameStateMachine.Instance.GetPlayerChampion().isFighter ? $"[{capacity.level}]" : string.Empty;
-            var header = $"{so.capacityName} {level}";
-            
-            ToolTipManager.Show(text,header);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            ToolTipManager.Hide();
         }
     }
 }

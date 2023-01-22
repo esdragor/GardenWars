@@ -12,10 +12,10 @@ namespace Entities.Capacities
 
         [Tooltip("Capacity Icon")] public Sprite icon;
 
-        [TextArea(4, 4)] [Tooltip("Description of the capacity")]
+        [TextArea(6, 4)] [Tooltip("Description of the capacity")]
         public string description;
-        [TextArea(4, 4)] public string description1;
-        [TextArea(4, 4)] public string description2;
+        [TextArea(6, 4)] public string description1;
+        [TextArea(6, 4)] public string description2;
 
         public uint maxLevel = 3;
 
