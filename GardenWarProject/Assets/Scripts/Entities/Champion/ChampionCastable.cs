@@ -11,7 +11,7 @@ namespace Entities.Champion
     {
         [Header("Recall")]
         [SerializeField] private RecallSO recall;
-        
+
         [Header("Candy Buff")]
         [SerializeField] private ConsumeCandySO consumeCandy;
 

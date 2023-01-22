@@ -14,7 +14,7 @@ public class LocalPoolManager : MonoBehaviour
     [Serializable]
     public class GameObjectData
     {
-        public MonoBehaviour prefab;
+        public GameObject prefab;
         public uint amount;
     }
 
