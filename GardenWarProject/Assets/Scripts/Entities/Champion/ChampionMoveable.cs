@@ -247,13 +247,13 @@ namespace Entities.Champion
             if (!photonView.IsMine) return;
             if (currentVelocity > 0.1f && !isMoving)
             {
-                EventReference newRef = new EventReference();
-                newRef.Path = "event:/" + CurrentSFXMove;
-                fmodEmitter.EventReference = newRef;
-                
-                fmodEmitter.Play();
+                // EventReference newRef = new EventReference();
+                // newRef.Path = "event:/" + CurrentSFXMove;
+                // fmodEmitter.EventReference = newRef;
+                //
+                // fmodEmitter.Play();
                 isMoving = true;
-                FMODUnity.RuntimeManager.PlayOneShot("event:/" + CurrentSFXMove, transform.position);
+                //FMODUnity.RuntimeManager.PlayOneShot("event:/" + CurrentSFXMove, transform.position);
                 foreach (var animator in animators)
                 {
                     animator.SetBool("IsMoving", isMoving);
