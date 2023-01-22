@@ -176,6 +176,7 @@ GameObject:
   - component: {fileID: 6530865356692434526}
   - component: {fileID: 8091990961712310653}
   - component: {fileID: 7728234700033618375}
+  - component: {fileID: 6592253577964224067}
   m_Layer: 29
   m_Name: NewPlayer
   m_TagString: Untagged
@@ -344,6 +345,11 @@ MonoBehaviour:
   canMove: 0
   agent: {fileID: 0}
   isMoving: 0
+  fmodEmitter: {fileID: 6592253577964224067}
+  SFXMoves:
+  - FootSteps
+  - Swim
+  CurrentSFXMove: 
   maxResource: 0
   currentResource: 0
   recupItemRange: 3
@@ -411,6 +417,36 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 1, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &6592253577964224067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480681341667345177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1486893081
+      Data2: 1283622355
+      Data3: 1469347233
+      Data4: 1596681290
+    Path: event:/FootSteps
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3480681342087303709
 GameObject:
   m_ObjectHideFlags: 0

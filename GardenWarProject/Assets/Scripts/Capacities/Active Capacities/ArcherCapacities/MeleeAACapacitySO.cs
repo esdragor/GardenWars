@@ -10,6 +10,8 @@ namespace Entities.Capacities
         public double timeUntilAttack;
         public ParticleSystem FXAttack;
 
+        public string SFX;
+
         public override Type AssociatedType()
         {
             return typeof(MeleeAACapacity);
@@ -18,7 +20,7 @@ namespace Entities.Capacities
 
     public class MeleeAACapacity : ActiveCapacity
     {
-        private MeleeAACapacitySO so => (MeleeAACapacitySO) AssociatedActiveCapacitySO();
+        private MeleeAACapacitySO so => (MeleeAACapacitySO)AssociatedActiveCapacitySO();
         private IDeadable deadableEntity;
         public GameObject FXAttack;
 
@@ -34,11 +36,12 @@ namespace Entities.Capacities
                     return false;
                 }
             }
-            
+
             if (!caster.GetEnemyTeams().Contains(targetedEntity.team))
             {
                 return false;
             }
+
             return true;
         }
 
@@ -52,7 +55,6 @@ namespace Entities.Capacities
 
         protected override void PressLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            
         }
 
         protected override void Hold(int targetsEntityIndexes, Vector3 targetPositions)
@@ -71,16 +73,20 @@ namespace Entities.Capacities
         {
             champion.LookAt(targetedEntity.position);
             champion.SetAnimatorTrigger("Basic Attack");
-            
+
             var timer = so.timeUntilAttack;
             if (so.FXAttack)
             {
                 if (!FXAttack)
                 {
-                    FXAttack = LocalPoolManager.PoolInstantiate(so.FXAttack, champion.championMesh.transform).gameObject;
+                    FXAttack = LocalPoolManager.PoolInstantiate(so.FXAttack, champion.championMesh.transform)
+                        .gameObject;
                 }
+
                 FXAttack.SetActive(false);
                 FXAttack.SetActive(true);
+                if (so.SFX != null)
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFX, champion.position);
             }
 
             gsm.OnUpdate += IncreaseTimer;
@@ -90,8 +96,9 @@ namespace Entities.Capacities
                 timer -= Time.deltaTime;
                 if (timer > 0) return;
 
-                targetedEntity.GetComponent<IActiveLifeable>()?.DecreaseCurrentHpRPC(champion.attackDamage,caster.entityIndex);
-                
+                targetedEntity.GetComponent<IActiveLifeable>()
+                    ?.DecreaseCurrentHpRPC(champion.attackDamage, caster.entityIndex);
+
                 gsm.OnUpdate -= IncreaseTimer;
             }
         }
@@ -105,5 +112,4 @@ namespace Entities.Capacities
         {
         }
     }
-
 }

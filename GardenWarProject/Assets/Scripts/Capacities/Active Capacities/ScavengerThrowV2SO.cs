@@ -22,6 +22,7 @@ namespace Entities.Capacities
         public float minDistance = 5.0f;
 
         public ParticleSystem ThrowDestFx;
+        public string ThrowSFXCata;
 
 
         public override Type AssociatedType()
@@ -95,6 +96,8 @@ namespace Entities.Capacities
             
             champion.PlayThrowAnimation();
             
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.ThrowSFXCata, champion.position);
+
             Throw();
 
             time_Pressed = 0;

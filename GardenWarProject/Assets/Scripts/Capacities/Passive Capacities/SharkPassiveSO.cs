@@ -17,6 +17,8 @@ namespace Entities.Capacities
         public StunPassiveSO stunPassive;
         public ParticleSystem UnborrowBlue;
         public ParticleSystem UnborrowRed;
+        
+        public string SFXSharkPassive;
 
         public override Type AssociatedType()
         {
@@ -107,6 +109,8 @@ namespace Entities.Capacities
         public void Borrow(bool untargetable = false)
         {
             if(borrowed) return;
+            
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXSharkPassive, champion.transform.position);
             
             //champion.rotateParent.localPosition = Vector3.up * -0.75f;
 

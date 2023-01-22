@@ -12,6 +12,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     public ActiveCapacitySO activeTowerAutoSO;
     private ActiveCapacity capacity;
 
+    public string SFXDieTower;
+
     [SerializeField] private bool canAttack = true;
     [SerializeField] private float attackValue = 50f;
     [SerializeField] private float attackSpeed;
@@ -394,6 +396,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         BT.Poussin.parent = null;
         gameObject.SetActive(false);
         HairDryer.SetActive(false);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/" + SFXDieTower, transform.position);
         OnDieFeedback?.Invoke(killerId);
     }
 

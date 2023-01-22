@@ -1,5 +1,6 @@
 using System;
 using Entities.Capacities;
+using FMODUnity;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
@@ -17,6 +18,12 @@ namespace Entities.Champion
         [HideInInspector] public NavMeshAgent agent;
         public float currentVelocity => agent.velocity.magnitude;
         public bool isMoving = false;
+        
+                
+        [Header("Sound")]
+        [SerializeField] private FMODUnity.StudioEventEmitter fmodEmitter;
+        public string[] SFXMoves = new string[2];
+        public string CurrentSFXMove;
 
         public bool CanMove()
         {
@@ -240,7 +247,13 @@ namespace Entities.Champion
             if (!photonView.IsMine) return;
             if (currentVelocity > 0.1f && !isMoving)
             {
+                EventReference newRef = new EventReference();
+                newRef.Path = "event:/" + CurrentSFXMove;
+                fmodEmitter.EventReference = newRef;
+                
+                fmodEmitter.Play();
                 isMoving = true;
+                FMODUnity.RuntimeManager.PlayOneShot("event:/" + CurrentSFXMove, transform.position);
                 foreach (var animator in animators)
                 {
                     animator.SetBool("IsMoving", isMoving);
@@ -249,6 +262,8 @@ namespace Entities.Champion
             }
             else if (currentVelocity < 0.1f && isMoving)
             {
+                fmodEmitter.Stop();
+                
                 isMoving = false;
                 foreach (var animator in animators)
                 {

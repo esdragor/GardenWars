@@ -15,6 +15,8 @@ namespace Entities.Capacities
         public ParticleSystem FXhit;
         
         public float cdReductionWhenBurrowed = 3f;
+        
+        public string SFXShot;
 
         public override Type AssociatedType()
         {
@@ -75,6 +77,8 @@ namespace Entities.Capacities
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
             passive ??= champion.GetPassiveCapacity<SharkPassive>();
+            
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXShot);
 
             if (!isResetCdSetup)
             {

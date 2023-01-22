@@ -48,6 +48,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     private Camera cam;
     public float currentVelocity => agent.velocity.magnitude;
 
+    public string SFXTrampoline;
+
 
     public void ReachEnemyCamp()
     {
@@ -56,6 +58,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         Vector3 startPos = transform.position;
         animatorTrap.SetTrigger("On");
         float t = 0;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/" + SFXTrampoline);
         gsm.OnUpdate += AnimationGoal;
 
         void AnimationGoal()

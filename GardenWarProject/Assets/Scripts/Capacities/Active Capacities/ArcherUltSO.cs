@@ -8,15 +8,16 @@ namespace Entities.Capacities
     public class ArcherUltSO : ActiveCapacitySO
     {
         public ProjectileOnCollideEffect projectile;
-        
+
         public float explosionRadius;
         public float explosionFxMultiplier = 0.5f;
-        
+
         public float projectileSpeed = 1f;
         public float projectileDamage;
         public ParticleSystem FXLaunch;
         public ParticleSystem FXBurst;
 
+        public string SFXArcherUlt;
 
         public override Type AssociatedType()
         {
@@ -26,7 +27,7 @@ namespace Entities.Capacities
 
     public class ArcherUlt : ActiveCapacity
     {
-        private ArcherUltSO so => (ArcherUltSO) AssociatedActiveCapacitySO();
+        private ArcherUltSO so => (ArcherUltSO)AssociatedActiveCapacitySO();
         private GameObject FXLaunchGo;
         private GameObject FXLaunchBurst;
         private Transform burstTr;
@@ -75,19 +76,21 @@ namespace Entities.Capacities
                 FXLaunchGo.transform.localPosition = new Vector3(0f, 1, shotDirection.z);
                 FXLaunchGo.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             }
+            
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXArcherUlt, casterPos);
 
-            if(!FXLaunchBurst)
+            if (!FXLaunchBurst)
             {
                 FXLaunchBurst = LocalPoolManager.PoolInstantiate(so.FXBurst).gameObject;
                 burstTr = FXLaunchBurst.transform;
             }
-            
+
             FXLaunchBurst.SetActive(false);
-            
+
             FXLaunchGo.SetActive(false);
             FXLaunchGo.SetActive(true);
 
-            
+
             champion.LookAt(targetPositions);
 
             champion.SetAnimatorTrigger("Ability3");
@@ -95,7 +98,8 @@ namespace Entities.Capacities
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
 
             var projectile =
-                LocalPoolManager.PoolInstantiate(so.projectile, projectileSpawnPos, Quaternion.LookRotation(shotDirection));
+                LocalPoolManager.PoolInstantiate(so.projectile, projectileSpawnPos,
+                    Quaternion.LookRotation(shotDirection));
             projectile.gameObject.SetActive(false);
 
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
@@ -105,7 +109,7 @@ namespace Entities.Capacities
             async void LaunchMoveRocket()
             {
                 await Task.Delay(700);
-                if(isMaster) champion.SetCanMoveRPC(true);
+                if (isMaster) champion.SetCanMoveRPC(true);
                 projectile.transform.position = shotDirection + champion.transform.position;
                 projectile.gameObject.SetActive(true);
                 gsm.OnUpdateFeedback += MoveProjectile;
@@ -123,12 +127,12 @@ namespace Entities.Capacities
                 if (Vector3.Distance(projectileTr.position, targetPos) <= 0.01f)
                 {
                     gsm.OnUpdateFeedback -= MoveProjectile;
-                    
+
                     burstTr.position = targetPos;
                     burstTr.localScale = Vector3.one;
-                    
+
                     FXLaunchBurst.SetActive(true);
-                    
+
                     projectile.DestroyProjectile(true);
                 }
             }
@@ -140,36 +144,36 @@ namespace Entities.Capacities
                 lifeable?.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
 
                 gsm.OnUpdateFeedback -= MoveProjectile;
-                
+
                 projectile.DestroyProjectile(true);
-                
+
                 burstTr.position = entity.position;
-                burstTr.localScale = (level < 3) ? Vector3.one : Vector3.one * so.explosionRadius * so.explosionFxMultiplier;;
-                
+                burstTr.localScale =
+                    (level < 3) ? Vector3.one : Vector3.one * so.explosionRadius * so.explosionFxMultiplier;
+                ;
+
                 FXLaunchBurst.SetActive(true);
-                
+
                 if (level < 3) return;
-                
+
                 var hitColliders = Physics.OverlapSphere(entity.position, so.explosionRadius);
                 foreach (var hitCollider in hitColliders)
                 {
                     var exploEnt = hitCollider.GetComponent<Entity>();
                     ExplosionDamage(exploEnt);
                 }
-                
+
                 void ExplosionDamage(Entity exploEntity)
                 {
-                    if(exploEntity == null) return;
-                    if(exploEntity == entity) return;
-                    if(!champion.GetEnemyTeams().Contains(exploEntity.team)) return;
-                    
+                    if (exploEntity == null) return;
+                    if (exploEntity == entity) return;
+                    if (!champion.GetEnemyTeams().Contains(exploEntity.team)) return;
+
                     var exploLifeable = exploEntity.GetComponent<IActiveLifeable>();
                     exploLifeable?.DecreaseCurrentHpRPC(so.projectileDamage, caster.entityIndex);
                 }
-                
             }
 
-            
 
             void EntityCollide(Entity entity)
             {
@@ -186,7 +190,8 @@ namespace Entities.Capacities
 
                 if (!FXLaunchBurst)
                 {
-                    FXLaunchBurst = LocalPoolManager.PoolInstantiate(so.FXBurst, champion.championMesh.transform).gameObject;
+                    FXLaunchBurst = LocalPoolManager.PoolInstantiate(so.FXBurst, champion.championMesh.transform)
+                        .gameObject;
                 }
 
                 FXLaunchBurst.SetActive(false);

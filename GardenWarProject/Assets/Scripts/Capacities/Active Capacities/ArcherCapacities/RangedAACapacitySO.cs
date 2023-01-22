@@ -10,6 +10,8 @@ namespace Entities.Capacities
         public ProjectileOnCollideEffect projectile;
         public float speedFire = 0.1f;
         
+        public string SFXName;
+        
         public override Type AssociatedType()
         {
             return typeof(RangedAACapacity);
@@ -98,6 +100,11 @@ namespace Entities.Capacities
             var projectileTr = projectile.transform;
             
             float damage = 0;
+            
+            if (so.SFXName != "")
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXName, casterPos);
+            }
             
             var attackable = caster.GetComponent<IAttackable>();
             if (attackable != null)

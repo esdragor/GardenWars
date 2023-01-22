@@ -44,6 +44,9 @@ namespace Entities
         
         private bool isAlive = true;
         private bool canDie = true;
+
+        public string SFXPinataDie;
+        
         protected override void OnStart()
         {
             OnInstantiated();
@@ -166,6 +169,7 @@ namespace Entities
 
             Destroy(LocalPoolManager.PoolInstantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
 
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + SFXPinataDie, transform.position);
             
             DropUpgrade();
             

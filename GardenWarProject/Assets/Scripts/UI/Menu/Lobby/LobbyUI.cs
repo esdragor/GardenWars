@@ -165,6 +165,7 @@ namespace UIComponents
             isReady = false;
             readyButtonText.text = isReady ? "Unlock" : "Lock";
             readyButton.onClick.AddListener(ToggleReady);
+            readyButton.onClick.AddListener(() => {FMODUnity.RuntimeManager.PlayOneShot("event:/GameLaunch");});
         }
 
         private void ToggleReady()
