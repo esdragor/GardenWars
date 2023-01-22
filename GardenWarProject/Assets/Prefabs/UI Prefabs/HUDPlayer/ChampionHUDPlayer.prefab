@@ -160,6 +160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2352364975899541028}
+  - component: {fileID: 6518804214291624129}
   m_Layer: 5
   m_Name: CandyHolder
   m_TagString: Untagged
@@ -178,6 +179,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 995044876027065200}
   - {fileID: 6786426188835368103}
   m_Father: {fileID: 7682205226075921491}
   m_RootOrder: 5
@@ -187,6 +189,28 @@ RectTransform:
   m_AnchoredPosition: {x: 410, y: 65}
   m_SizeDelta: {x: 100, y: 77}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &6518804214291624129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915189981338241154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28782be3dc3aacb41a6778a9b6af6260, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighterText: 'Each time Reindeer <color=yellow>**breaks a minion**</color>, he
+    gains <color=#FF66E3>**Candy_Count candies**</color>.
+
+    Reindeer can <color=yellow>**throw
+    the</color> <color=#FF66E3>candies**</color> to give them to <color=orange>**another
+    Kid**</color>.'
+  scavengerText: "Bubulle can use <color=#FF66E3>**candies**</color> to feed the
+    <color=orange>Pi\xF1ata</color>.\nWhen the <color=orange>Pi\xF1ata</color> is
+    fed enough, it will <color=yellow>**explode**</color>, leaving an <color=#af04d1>**Upgrade**</color>
+    behind."
 --- !u!1 &920363764908164652
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,6 +352,81 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1639512914999215835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 995044876027065200}
+  - component: {fileID: 6934329127964502552}
+  - component: {fileID: 6822263083876795766}
+  m_Layer: 5
+  m_Name: CandyBag Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &995044876027065200
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639512914999215835}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2352364975899541028}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 14.7, y: 6}
+  m_SizeDelta: {x: 150, y: 150}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6934329127964502552
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639512914999215835}
+  m_CullTransparentMesh: 1
+--- !u!114 &6822263083876795766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639512914999215835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.011764706}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: d891520912a083f43943902e152ddb45, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -486,7 +585,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2352364975899541028}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -640,10 +739,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44aa781edd4767c4a8957f46a6107bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fighterTextNoUpgrade: Fighter No Upgrade
-  fighterTextUpgrade: Fighter Upgrade
-  scavengerTextNoUpgrade: Scavenger No Upgrade
-  scavengerTextUpgrade: Scavenger Upgrade
+  fighterTextNoUpgrade: 'Reindeer can <color=yellow>**consume the</color> <color=#af04d1>Upgrade**</color>
+    to <color=yellow>**upgrade one of his abilities**</color>.
+
+
+    *You have no
+    upgrades*'
+  fighterTextUpgrade: Reindeer can <color=yellow>**consume the</color> <color=#af04d1>Upgrade**</color>
+    to <color=yellow>**upgrade one of his abilities**</color>.
+  scavengerTextNoUpgrade: 'Bubulle can <color=yellow>**throw the Upgrade**</color>
+    to give it to <color=orange>**another Kid**</color>.
+
+
+    *You have no upgrades*'
+  scavengerTextUpgrade: Bubulle can <color=yellow>**throw the Upgrade**</color> to
+    give it to <color=orange>**another Kid**</color>.
 --- !u!1 &4069329356804835062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,6 +2005,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b825b5c85b0436149a922fa00c47b5a8, type: 3}
+--- !u!224 &4769967657756876500 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6333962722072447887, guid: b825b5c85b0436149a922fa00c47b5a8, type: 3}
+  m_PrefabInstance: {fileID: 1573046849693193563}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8783091777511970322 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7797800963175334729, guid: b825b5c85b0436149a922fa00c47b5a8, type: 3}
@@ -1906,11 +2021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c774d64947ecb49a4096f37ed85bbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &4769967657756876500 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6333962722072447887, guid: b825b5c85b0436149a922fa00c47b5a8, type: 3}
-  m_PrefabInstance: {fileID: 1573046849693193563}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1765077385047121124
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2169,6 +2279,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
+--- !u!224 &1357892544664055182 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2804020181411353598, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
+  m_PrefabInstance: {fileID: 3761021825943273072}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6493553376869705436 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7938835729743714476, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
@@ -2180,11 +2295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc9ef1e0bbc7ae4f86ab6460403701a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &1357892544664055182 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2804020181411353598, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
-  m_PrefabInstance: {fileID: 3761021825943273072}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8531083519401514151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2306,6 +2416,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
+--- !u!224 &5804469480840038233 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2804020181411353598, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
+  m_PrefabInstance: {fileID: 8531083519401514151}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1749672963165146123 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7938835729743714476, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
@@ -2317,8 +2432,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc9ef1e0bbc7ae4f86ab6460403701a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &5804469480840038233 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2804020181411353598, guid: 656272f868aa2c74abcf4ca9b16bd0d2, type: 3}
-  m_PrefabInstance: {fileID: 8531083519401514151}
-  m_PrefabAsset: {fileID: 0}

@@ -42,7 +42,6 @@ public partial class UIManager : MonoBehaviour
     private void Start()
     {
         minimapSize = miniMapRenderImage.GetComponent<RectTransform>().sizeDelta;
-        minimapRenderTransform = miniMapRenderImage.rectTransform;
     }
 
     public void SetupTopBar()

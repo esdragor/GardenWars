@@ -8,7 +8,7 @@ public partial class UIManager
 {
     [Header("Minimap")]
     [SerializeField] private RawImage miniMapRenderImage;
-    private RectTransform minimapRenderTransform;
+    private RectTransform minimapRenderTransform => miniMapRenderImage.rectTransform;
     [SerializeField] private RawImage miniMapCoverImage;
     [SerializeField] private Transform playerIconsParent;
     [SerializeField] private MinimapPlayerIcon playerIconPrefab;
@@ -35,6 +35,7 @@ public partial class UIManager
 
     public RectTransform GetMinimapRect()
     {
+        Debug.Log("Getting minimap render");
         return minimapRenderTransform;
     }
 

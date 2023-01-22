@@ -14,9 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveName: Aiming juuust right
   icon: {fileID: 21300000, guid: a0f12cecd3bc05a4c9561d1a6d1dedd1, type: 3}
-  description: "If Reindeer *stops moving* for more than **1s**, his <color=#6D8BF1>attack
-    speed</color> starts *increasing*. \n\n*Every second* he receives **1 stack**,
-    *lowering* the time between attacks by **1s**.\r\n"
+  description: 'After <color=yellow>**not moving for 1 second**</color>, Reindeer
+    gains a stack of <color=green>**Precision**</color> reducing the <color=#00b3ff>**time
+    between his attacks**</color> by <color=#00b3ff>**0.1 seconds**</color>, up to
+    a maximum of <color=green>**5 stacks**</color>.
+
+
+    Reindeer loses stacks when
+    <color=yellow>**moving**</color>.'
   stackType: 2
   duration: 0
   types: 0000000002000000

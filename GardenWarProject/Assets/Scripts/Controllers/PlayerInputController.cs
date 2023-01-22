@@ -40,6 +40,7 @@ namespace Controllers.Inputs
             if (!controlledEntity.photonView.IsMine) return;
             SetupInputMap();
             minimapRect = UIManager.Instance.GetMinimapRect();
+            Debug.Log($"Minimap Rect is {minimapRect.gameObject.name}");
             mainCam = Camera.main;
             Link(controlledEntity);
         }
@@ -71,6 +72,7 @@ namespace Controllers.Inputs
         private void CastCamRay(out RaycastHit entityHit,out RaycastHit worldHit)
         {
             var mousePos = Input.mousePosition;
+            if(RectTransformUtility.RectangleContainsScreenPoint(minimapRect, mousePos)) Debug.Log("On Minimap");
             var mouseRay = RectTransformUtility.RectangleContainsScreenPoint(minimapRect, mousePos)
                 ? UIManager.Instance.MiniMapCamRay(mousePos) : mainCam.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(mouseRay, out entityHit, Mathf.Infinity, entityLayers);

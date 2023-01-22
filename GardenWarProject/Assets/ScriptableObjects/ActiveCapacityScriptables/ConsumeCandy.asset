@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81be5de2240276d4bb431d7e6c6b1393, type: 3}
   m_Name: ConsumeCandy
   m_EditorClassIdentifier: 
-  capacityName: Sugar Rush
+  capacityName: Consume Candy
   icon: {fileID: 0}
-  description: 
+  description: 'Bubulle <color=yellow>**consumes**</color> <color=#FF66E3>**5 candies**</color>
+    to gain a stack of <color=green>**Sugar Rush**</color> that lasts 5s. She <color=yellow>**consumes**</color>
+    an  <color=#FF66E3>**additional 5 candies**</color> per stack of <color=green>**Sugar
+    Rush**</color>.
+
+
+    Each stack of <color=green>**Sugar Rush**</color> increases
+    her <color=#00b3ff>attack speed by 15%</color> and her <color=#3b48ff>movement
+    speed by 50%</color> and <color=#05f79a>reduces her cooldowns by 30%</color>.'
   description1: 
   description2: 
   maxLevel: 1
