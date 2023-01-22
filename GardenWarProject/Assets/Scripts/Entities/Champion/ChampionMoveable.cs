@@ -16,6 +16,8 @@ namespace Entities.Champion
         public bool canMove;
 
         [HideInInspector] public NavMeshAgent agent;
+
+        private NavMeshPath path;
         public float currentVelocity => agent.velocity.magnitude;
         public bool isMoving = false;
         
@@ -224,19 +226,38 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
-        public void MoveToPosition(Vector3 position)
+        public void MoveToPosition(Vector3 pos)
         {
             if (!canMove) return;
+            
+            pos = ActiveCapacity.GetClosestValidPoint(pos);
+            
+            if (!agent.isOnNavMesh) return;
 
-            //CancelMoveToTarget();
+            agent.SetDestination(pos);
 
-            position = ActiveCapacity.GetClosestValidPoint(position);
+            NavMesh.CalculatePath(position,pos,NavMesh.AllAreas,path);
 
-            if (agent.isOnNavMesh) agent.SetDestination(position);
-            OnMove?.Invoke(position);
+            OnMove?.Invoke(pos);
 
-            position.y = rotateParent.position.y;
-            rotateParent.LookAt(position);
+            var lookAtPoint = path.corners[1];
+            
+            lookAtPoint.y = rotateParent.position.y;
+            
+            rotateParent.LookAt(lookAtPoint);
+        }
+
+        private void LookAtDestination()
+        {
+            if(path.corners.Length <= 2) return;
+            
+            NavMesh.CalculatePath(position,path.corners[path.corners.Length-1],NavMesh.AllAreas,path);
+            
+            var lookAtPoint = path.corners[1];
+            
+            lookAtPoint.y = rotateParent.position.y;
+            
+            rotateParent.LookAt(lookAtPoint);
         }
 
         public event GlobalDelegates.Vector3Delegate OnMove;
@@ -302,12 +323,7 @@ namespace Entities.Champion
                 return;
             }
 
-            if (agent.isOnNavMesh) agent.SetDestination(targetPos);
-
-            OnMove?.Invoke(targetPos);
-
-            targetPos.y = rotateParent.position.y;
-            rotateParent.LookAt(targetPos);
+            MoveToPosition(targetPos);
         }
 
         public void StartMoveToTarget(Entity targetEntity, float rangeToAction, Action action)
