@@ -4,6 +4,7 @@ using System.Linq;
 using Entities.Capacities;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 namespace Entities.Champion
 {
@@ -24,13 +25,18 @@ namespace Entities.Champion
 
         [Header("Range Indicator")]
         [SerializeField] private GameObject areaIndicatorPrefab;
-
         [SerializeField] private Material maxRangeMat;
+        [Header("Area Indicator")]
         [SerializeField] private Material areaMat;
         [SerializeField] private float indicatorHeight = 0.01f;
-
+        [Header("Skillshot Indicator")]
         [SerializeField] private GameObject skillShotIndicatorGo;
         private Transform skillShotIndicatorTr;
+        [Header("Text Indicator")]
+        [SerializeField] private TextMeshProUGUI textIndicatorPrefab;
+        private TextMeshProUGUI textIndicator;
+        private GameObject textIndicatorGo;
+        private RectTransform textIndicatorTr;
         
         private GameObject maxRangeIndicatorGo;
         private GameObject areaIndicatorGo;
@@ -380,6 +386,19 @@ namespace Entities.Champion
             skillShotIndicatorGo.SetActive(false);
         }
 
+        public void ShowTextIndicator(Vector3 pos, string text)
+        {
+            textIndicator.text = text;
+            textIndicatorTr.position = pos;
+            textIndicatorGo.SetActive(true);
+        }
+
+        public void HideTextIndicator()
+        {
+            textIndicator.text = string.Empty;
+            textIndicatorGo.SetActive(false);
+        }
+
         public void CancelCast()
         {
             if (!capacityDict.Values.Any(ability => ability.isCasting)) return;
@@ -392,6 +411,7 @@ namespace Entities.Champion
             HideSkillShotIndicator();
             HideMaxRangeIndicator();
             HideAreaIndicator();
+            HideTextIndicator();
         }
 
         public void ChangeCooldownReduction(float amount)

@@ -27,6 +27,7 @@ namespace Entities.Champion
         private Vector3 respawnPos;
         public Vector3 respawnPosition => respawnPos;
         public Rigidbody rb;
+        public Camera cam { get; private set; }
 
         [HideInInspector] public GameObject championMesh;
 
@@ -50,12 +51,19 @@ namespace Entities.Champion
             areaIndicatorGo = Instantiate(areaIndicatorPrefab);
             areaIndicatorGo.GetComponent<Renderer>().material = areaMat;
             areaIndicatorTr = areaIndicatorGo.transform;
-
+            
             skillShotIndicatorTr = skillShotIndicatorGo.transform;
+            
+            textIndicator = Instantiate(textIndicatorPrefab,UIManager.canvas);
+            textIndicatorGo = textIndicator.gameObject;
+            textIndicatorTr = textIndicator.GetComponent<RectTransform>();
             
             HideMaxRangeIndicator();
             HideAreaIndicator();
             HideSkillShotIndicator();
+            HideTextIndicator();
+            
+            cam = Camera.main;
 
             path = new NavMeshPath();
         }
