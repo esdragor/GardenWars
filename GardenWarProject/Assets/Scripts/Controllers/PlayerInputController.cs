@@ -9,7 +9,8 @@ namespace Controllers.Inputs
 
         protected RectTransform minimapRect;
 
-        protected LayerMask layersToHit;
+        protected LayerMask entityLayers;
+        protected LayerMask worldLayers;
         protected Camera mainCam;
         
         protected Vector3 cursorWorldPos;
@@ -20,7 +21,8 @@ namespace Controllers.Inputs
 
         protected override void OnAwake()
         {
-            layersToHit = 1 << 9 | 1 << 29;
+            entityLayers = 1 << 29;
+            worldLayers = 1 << 9;
         }
 
         /// <summary>
@@ -50,28 +52,29 @@ namespace Controllers.Inputs
 
         protected void UpdateTargets()
         {
-            CastCamRay(out var hit);
-            cursorWorldPos = hit.point;
+            CastCamRay(out var entityHit,out var worldHit);
+            cursorWorldPos = worldHit.point;
             CursorWorldPos = cursorWorldPos;
             selectedEntity = null;
-            if (hit.transform == null)
+            if (entityHit.transform == null)
             {
                 return;
             }
-            var ent = hit.transform.GetComponent<Entity>();
-            if (ent == null && hit.transform.parent != null) hit.transform.parent.GetComponent<Entity>();
+            var ent = entityHit.transform.GetComponent<Entity>();
+            if (ent == null && entityHit.transform.parent != null) entityHit.transform.parent.GetComponent<Entity>();
             if (ent == null) return;
             selectedEntity = ent;
-            cursorWorldPos = ent.transform.position;
-            CursorWorldPos = cursorWorldPos;
+            //cursorWorldPos = ent.transform.position;
+            //CursorWorldPos = cursorWorldPos;
         }
 
-        private void CastCamRay(out RaycastHit hit)
+        private void CastCamRay(out RaycastHit entityHit,out RaycastHit worldHit)
         {
             var mousePos = Input.mousePosition;
             var mouseRay = RectTransformUtility.RectangleContainsScreenPoint(minimapRect, mousePos)
                 ? UIManager.Instance.MiniMapCamRay(mousePos) : mainCam.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(mouseRay, out hit, Mathf.Infinity, layersToHit);
+            Physics.Raycast(mouseRay, out entityHit, Mathf.Infinity, entityLayers);
+            Physics.Raycast(mouseRay, out worldHit, Mathf.Infinity, worldLayers);
         }
     }
 }

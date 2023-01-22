@@ -38,6 +38,11 @@ namespace Controllers.Inputs
             UpdateTargets();
             champion.targetedEntities = (selectedEntity) ? selectedEntity.entityIndex : -1;
             champion.targetedPositions = cursorWorldPos;
+            
+            if(selectedEntity != null)
+                if (champion.GetEnemyTeams().Contains(selectedEntity.team) && selectedEntity.isVisible)
+                    champion.targetedPositions = selectedEntity.position;
+            
             if (isRightClicking) OnRightClick(nullCtx);
         }
 
@@ -194,7 +199,9 @@ namespace Controllers.Inputs
             {
                 if (champion != selectedEntity && selectedEntity.team == champion.team)
                 {
-                    StartMoveGetItem();
+                    //StartMoveGetItem();
+                    
+                    champion.MoveToPosition(cursorWorldPos);
                     
                     if(previousSelected != null) previousSelected.Deselect();
                     selectedEntity.Select(allyColor);
