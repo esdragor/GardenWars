@@ -33,8 +33,6 @@ namespace GameStates
 
         public void LoadEmotes()
         {
-            Debug.Log("Loading Emotes");
-            
             if (!isMaster) return;
             
             if (GameSettingsManager.IgnoreEmotes)
@@ -145,8 +143,6 @@ namespace GameStates
 
         private void OnReceivedEmote()
         {
-            Debug.Log($"Receive emote, now at {receivedEmotes}/{expectedEmotes}");
-
             loadingBarImage.fillAmount = ((float)receivedEmotes / (float)expectedEmotes);
             
             if(receivedEmotes < expectedEmotes) return;
