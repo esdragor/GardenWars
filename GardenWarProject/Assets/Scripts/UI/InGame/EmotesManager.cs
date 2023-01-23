@@ -9,6 +9,7 @@ public class EmotesManager : MonoBehaviour
     [SerializeField] private InputField fieldEmote1;
     [SerializeField] private Texture2D[] defaultEmotes = new Texture2D[6];
     [SerializeField] private UIEmoteFileExplorer[] emoteFileExplorers = new UIEmoteFileExplorer[6];
+
     public Texture2D[] EmotesTexture2Ds => defaultEmotes;
 
     private void Awake()

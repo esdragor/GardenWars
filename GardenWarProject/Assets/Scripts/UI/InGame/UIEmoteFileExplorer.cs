@@ -58,27 +58,32 @@ public class UIEmoteFileExplorer : MonoBehaviour
         // Print whether the user has selected some files/folders or cancelled the operation (FileBrowser.Success)
         Debug.Log(FileBrowser.Success);
 
-        if (FileBrowser.Success)
+        if (!FileBrowser.Success) yield break;
+        
+        // Print paths of the selected files (FileBrowser.Result) (null, if FileBrowser.Success is false)
+        string path = FileBrowser.Result.Aggregate(string.Empty, (current, t) => current + t);
+            
+        if (File.Exists(path))
         {
-            // Print paths of the selected files (FileBrowser.Result) (null, if FileBrowser.Success is false)
-            string path = FileBrowser.Result.Aggregate(string.Empty, (current, t) => current + t);
-            
-            Debug.Log($"path : {path}");
-            
-            if (File.Exists(path))
-            {
-                byte[]fileData = File.ReadAllBytes(path);
+            var fileData = File.ReadAllBytes(path);
                 
-                Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(fileData);
-                
-                image.texture = tex;
-                GameSettingsManager.SetEmoteTexture(index,fileData);
-            }
-            else
+            Debug.Log($"Array Size : {fileData.Length} (max is {GameSettingsManager.maxFileSize})");
+
+            if (fileData.Length > GameSettingsManager.maxFileSize)
             {
-                Debug.Log("File not found");
-            }
+                Debug.Log($"File to large!");
+                yield break;
+            } 
+                
+            var tex = new Texture2D(2, 2);
+            tex.LoadImage(fileData);
+                
+            image.texture = tex;
+            GameSettingsManager.SetEmoteTexture(index,fileData);
+        }
+        else
+        {
+            Debug.Log("File not found");
         }
     }
 
