@@ -49,6 +49,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     public float currentVelocity => agent.velocity.magnitude;
 
     public string SFXTrampoline;
+    
+    public Vector3 lastCheckpoint;
 
 
     public void ReachEnemyCamp()

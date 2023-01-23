@@ -70,6 +70,7 @@ public class TaskPatrol : Node
             }
            
            Vector3 pos = waypoints[CurrentWaypointIndex].position;
+           minion.lastCheckpoint = pos;
            pos.y = MyPos.y;
            if (Vector3.Distance(MyPos, pos) < 0.3f)
             {

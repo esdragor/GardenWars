@@ -22,6 +22,8 @@ namespace Entities
         public Vector3 position => isVisible ? transform.position : lastSeenPosition;
         private Vector3 lastSeenPosition;
 
+        public bool IsInsideBush = false;
+
         [Header("Team")]
         public bool canChangeTeam;
         public Enums.Team team;
@@ -29,7 +31,7 @@ namespace Entities
         [Header("Outline")]
         [SerializeField] private float baseOutlineThickness = 3;
         [SerializeField] private Color baseOutlineColor = Color.black;
-        
+
         public bool isEnemyOfPlayer => gsm.GetPlayerChampion().GetEnemyTeams().Contains(team);
 
         /// <summary>

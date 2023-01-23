@@ -438,10 +438,11 @@ namespace Entities.Champion
         private List<Vector3> currentCandyOnMap = new List<Vector3>();
         public void SpawnCandy(int amount,List<Transform> transforms)
         {
-            var tr = transforms[Random.Range(0, transforms.Count)];
+            var list = transforms.ToList();
+            var tr = list[Random.Range(0, transforms.Count)];
             while (currentCandyOnMap.Contains(tr.position))
             {
-                transforms.Remove(tr);
+                list.Remove(tr);
                 if (transforms.Count <= 0) return;
 
                 tr = transforms[Random.Range(0, transforms.Count)];

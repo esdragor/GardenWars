@@ -14,7 +14,7 @@ namespace BehaviourTree
         {
             origin = new Sequence(new List<Node>
             {
-                new CheckEnemyInPOVRange(this, entity,enemyMask, entity.GetFOWViewRange()), 
+                new CheckEnemyInPOVRange(this, entity,enemyMask, entity.GetFOWViewRange(), entity.GetFOWViewRange()), 
                 new TaskAttack(this, entity, Poussin, entity.activeTowerAutoSO.indexInCollection, atkDelay, null, "AttackTower")
             });
             return origin;

@@ -38,6 +38,7 @@ public class Bush : MonoBehaviour
     public void EntityEnter(Entity entity)
     {
         if(!entitiesInside.Contains(entity)) entitiesInside.Add(entity);
+        entity.IsInsideBush = true;
 
         if (!HideBush()) return;
         
@@ -50,7 +51,7 @@ public class Bush : MonoBehaviour
     public void EntityExit(Entity entity)
     {
         if(entitiesInside.Contains(entity)) entitiesInside.Remove(entity);
-
+        entity.IsInsideBush = false;
         if (HideBush()) return;
         
         foreach (var childRenderer in renderers)

@@ -2,6 +2,7 @@ using BehaviourTree;
 using Entities;
 using GameStates;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Tree = BehaviourTree.Tree;
 
 public class CheckEnemyInPOVRange : Node
@@ -13,8 +14,10 @@ public class CheckEnemyInPOVRange : Node
     private int layerTargetFogOfWar = 1 << 29 | 1 << 30;
 
     private Tree Root;
+    
+    private float maxRangeOfLane = 0f;
 
-    public CheckEnemyInPOVRange(Tree _Root, Entity entity, int enemyMaskByFunct, float _rangeFOV = 5f)
+    public CheckEnemyInPOVRange(Tree _Root, Entity entity, int enemyMaskByFunct, float _maxRangeOfLane, float _rangeFOV)
     {
         if (entity == null) return;
         MyTransform = entity.transform;
@@ -22,6 +25,7 @@ public class CheckEnemyInPOVRange : Node
         EnemyLayerMaskF = enemyMaskByFunct;
         Root = _Root;
         MyEntity = entity;
+        maxRangeOfLane = _maxRangeOfLane;
     }
 
     public override NodeState Evaluate(Node root)
@@ -63,6 +67,9 @@ public class CheckEnemyInPOVRange : Node
                     IDeadable deadable = coll.GetComponent<IDeadable>();
                     if (deadable == null) continue;
                     if (!deadable.IsAlive()) continue;
+                    if (entity.IsInsideBush) continue;
+                    if (MyEntity is Minion minion && 
+                        Vector3.Distance(minion.lastCheckpoint, entity.transform.position) > rangeFOV) continue;
 
                     Root.getOrigin().SetDataInBlackboard("target", entity);
                     state = NodeState.Success;
@@ -72,8 +79,11 @@ public class CheckEnemyInPOVRange : Node
                 return NodeState.Failure;
             }
         }
-
-        if (t != null && !(((IDeadable)t).IsAlive()))
+        
+        if ((t != null && !(((IDeadable)t).IsAlive())) ||
+            t != null && t.IsInsideBush || 
+            t != null && MyEntity is Minion &&  Vector3.Distance((MyEntity as Minion).lastCheckpoint, MyTransform.position) > maxRangeOfLane
+            )
         {
             Root.getOrigin().ClearData("target");
             if (MyEntity is Tower)

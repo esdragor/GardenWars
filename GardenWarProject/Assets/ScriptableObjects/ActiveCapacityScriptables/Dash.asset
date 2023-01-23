@@ -12,15 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8302b8cf8d7944ba990f0d6c70efdc, type: 3}
   m_Name: Dash
   m_EditorClassIdentifier: 
-  descriptionName: 
+  capacityName: 
   icon: {fileID: 21300000, guid: 8d98ab6168c3e91439339f1908b8fe97, type: 3}
   description: 
-  cooldown: 3
+  description1: 
+  description2: 
+  maxLevel: 3
+  cooldown: 5
+  castTime: 0
   maxRange: 7.5
   types: 
   shootType: 1
-  indexInCollection: 2
+  showMaxRangeIfSkillShot: 0
+  overrideDefaultIndicator: 0
+  indexInCollection: 8
   isBlink: 0
   dashTime: 0.1
   fixedDistance: 0
   canPassWalls: 0
+  FXDashBlue: {fileID: 0}
+  FXDashRed: {fileID: 0}

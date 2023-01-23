@@ -18,6 +18,7 @@ public class MinionBT : Tree
     [SerializeField] private float FOVRange;
     [SerializeField] private float atkDelay = 15;
     [SerializeField] private Transform Model;
+    [SerializeField] private float maxRangeOfLane;
     
     protected override Node InitTree()
     {
@@ -25,7 +26,7 @@ public class MinionBT : Tree
         {
             new Sequence(new List<Node>
             {
-                new CheckEnemyInPOVRange(this, entity,enemyMask, FOVRange),
+                new CheckEnemyInPOVRange(this, entity,enemyMask, maxRangeOfLane, FOVRange),
                 new Selector(new List<Node>
                 {
                     new Sequence(new List<Node>

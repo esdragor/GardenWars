@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BehaviourTree;
 using Entities;
+using Entities.Champion;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
