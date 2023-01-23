@@ -35,7 +35,6 @@ public partial class UIManager
 
     public RectTransform GetMinimapRect()
     {
-        Debug.Log("Getting minimap render");
         return minimapRenderTransform;
     }
 

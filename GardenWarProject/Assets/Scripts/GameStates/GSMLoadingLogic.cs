@@ -9,6 +9,7 @@ using Entities.FogOfWar;
 using Entities.Inventory;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameStates
 {
@@ -16,7 +17,7 @@ namespace GameStates
     {
         [Header("Loading")]
         [SerializeField] private GameObject loadingCanvas;
-
+        [SerializeField] private Image loadingBarImage;
         [SerializeField] private int maxBytePackSize = 75000;
         
         private int expectedEmotes;
@@ -49,13 +50,12 @@ namespace GameStates
         [PunRPC]
         private void PrepareToReceiveEmoteDataRPC()
         {
-            ShowLoadingCanvas(true);
-            
             expectedEmotes = playerDataDict.Count * 6;
             receivedEmotes = 0;
             sentEmotes = 0;
             
-            Debug.Log($"Expecting {expectedEmotes} emotes");
+            loadingBarImage.fillAmount = 0;
+            ShowLoadingCanvas(true);
 
             emoteLoadingDict.Clear();
             foreach (var actorNumber in playerDataDict.Keys)
@@ -146,6 +146,8 @@ namespace GameStates
         private void OnReceivedEmote()
         {
             Debug.Log($"Receive emote, now at {receivedEmotes}/{expectedEmotes}");
+
+            loadingBarImage.fillAmount = ((float)receivedEmotes / (float)expectedEmotes);
             
             if(receivedEmotes < expectedEmotes) return;
             
