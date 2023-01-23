@@ -210,6 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxItems: 1
   items: []
+  IsInsideBush: 0
   canChangeTeam: 0
   team: 0
   baseOutlineThickness: 3
@@ -256,6 +257,7 @@ MonoBehaviour:
   SpeedAnimationGoal: 2
   BT: {fileID: -8139420828089391152}
   SFXTrampoline: Trampoline
+  lastCheckpoint: {x: 0, y: 0, z: 0}
   references:
     version: 1
 --- !u!208 &8682732196991000772
@@ -296,6 +298,7 @@ MonoBehaviour:
   FOVRange: 5
   atkDelay: 1
   Model: {fileID: 8138424874688979662}
+  maxRangeOfLane: 7
 --- !u!1 &4879887528482904230
 GameObject:
   m_ObjectHideFlags: 0

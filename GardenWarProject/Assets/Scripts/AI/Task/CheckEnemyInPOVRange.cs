@@ -15,7 +15,7 @@ public class CheckEnemyInPOVRange : Node
 
     private Tree Root;
     
-    private float maxRangeOfLane = 0f;
+    private float maxRangeOfLane;
 
     public CheckEnemyInPOVRange(Tree _Root, Entity entity, int enemyMaskByFunct, float _maxRangeOfLane, float _rangeFOV)
     {
@@ -30,6 +30,7 @@ public class CheckEnemyInPOVRange : Node
 
     public override NodeState Evaluate(Node root)
     {
+        if (!MyEntity) return NodeState.Failure; 
         Entity t = (Entity)Root.getOrigin().GetData("target");
         if (t == null)
         {
@@ -68,8 +69,11 @@ public class CheckEnemyInPOVRange : Node
                     if (deadable == null) continue;
                     if (!deadable.IsAlive()) continue;
                     if (entity.IsInsideBush) continue;
-                    if (MyEntity is Minion minion && 
-                        Vector3.Distance(minion.lastCheckpoint, entity.transform.position) > rangeFOV) continue;
+                    
+                    Minion minion = MyEntity as Minion;
+                    
+                    if (minion && 
+                        Vector3.Distance(minion.lastCheckpoint, entity.transform.position) > maxRangeOfLane) continue;
 
                     Root.getOrigin().SetDataInBlackboard("target", entity);
                     state = NodeState.Success;
@@ -82,7 +86,7 @@ public class CheckEnemyInPOVRange : Node
         
         if ((t != null && !(((IDeadable)t).IsAlive())) ||
             t != null && t.IsInsideBush || 
-            t != null && MyEntity is Minion &&  Vector3.Distance((MyEntity as Minion).lastCheckpoint, MyTransform.position) > maxRangeOfLane
+             t != null && MyEntity is Minion &&  Vector3.Distance((MyEntity as Minion).lastCheckpoint, MyTransform.position) > maxRangeOfLane
             )
         {
             Root.getOrigin().ClearData("target");
