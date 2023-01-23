@@ -29,10 +29,12 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private Material[] chickMaterials;
     [SerializeField] private Material[] dryerMaterials;
     [SerializeField] private Renderer[] renderTowerAndChick;
+    [SerializeField] private Renderer renderAttackArea;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private Transform StartLinerenderer;
 
     private bool isAlive = true;
     private bool canDie = true;
-
     public float GetAttackSpeed()
     {
         return attackSpeed;
@@ -42,7 +44,7 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         CurrentHP = MaxHP;
         animators = MyAnimators;
-        if (team == Enums.Team.Team1)
+        if (gsm.GetPlayerChampion().team == team)
         {
             renderTowerAndChick[0].material = towersMaterials[0];
             renderTowerAndChick[1].material = chickMaterials[0];
@@ -54,9 +56,26 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
             renderTowerAndChick[0].material = towersMaterials[1];
             renderTowerAndChick[1].material = chickMaterials[1];
             renderTowerAndChick[2].material = dryerMaterials[1];
+
+            var mat = renderAttackArea.material;
+            mat.SetColor("Color_6ae890784e7b441783f03cdec0acb7be",Color.red);
+            renderAttackArea.material = mat;
+
         }
         UIManager.Instance.InstantiateHealthBarForEntity(this);
-
+    }
+    
+    public void TargetSeen(Transform target)
+    {
+        lineRenderer.enabled = true;
+        lineRenderer.SetPosition(0, StartLinerenderer.position);
+        lineRenderer.SetPosition(1, target.position);
+        SetAnimatorTrigger("SpotEnemy");
+    }
+    
+    public void TargetLost()
+    {
+        lineRenderer.enabled = false;
     }
 
     public override void OnInstantiated()

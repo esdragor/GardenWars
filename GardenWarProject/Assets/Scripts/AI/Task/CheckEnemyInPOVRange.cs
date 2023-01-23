@@ -65,8 +65,6 @@ public class CheckEnemyInPOVRange : Node
                     if (!deadable.IsAlive()) continue;
 
                     Root.getOrigin().SetDataInBlackboard("target", entity);
-                    if(MyEntity is Tower)
-                    MyEntity.SetAnimatorTrigger("SpotEnemy");
                     state = NodeState.Success;
                     return state;
                 }
@@ -75,9 +73,30 @@ public class CheckEnemyInPOVRange : Node
             }
         }
 
+        if (t != null && !(((IDeadable)t).IsAlive()))
+        {
+            Root.getOrigin().ClearData("target");
+            if (MyEntity is Tower)
+            {
+                (MyEntity as Tower).TargetLost();
+            }
+            return NodeState.Failure;
+        }
+
         if (t != null && Vector3.Distance(t.transform.position, MyTransform.position) < rangeFOV)
+        {
+            if (MyEntity is Tower)
+            {
+                (MyEntity as Tower).TargetSeen(t.transform);
+            }
             return NodeState.Success;
+        }
         Root.getOrigin().ClearData("target");
+        if (MyEntity is Tower)
+        {
+            (MyEntity as Tower).TargetLost();
+        }
+
         return NodeState.Failure;
     }
 }
