@@ -119,6 +119,8 @@ namespace Entities.Capacities
             }
             FXDashGO.SetActive(false);
             FXDashGO.SetActive(true);
+            (caster as Champion.Champion).championMesh.transform.LookAt(destination);
+
 
             StartDash(casterPos, destination);
         }
