@@ -12,7 +12,7 @@ namespace Entities.Champion
         public bool isAlive;
         public bool canDie;
         
-        public float respawnDuration = 3;
+        public float respawnDuration = 5;
         private double respawnTimer;
 
         public bool IsAlive()
