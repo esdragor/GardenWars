@@ -246,7 +246,6 @@ MonoBehaviour:
   agent: {fileID: 2077910377}
   HitFX: {fileID: 557445818242320917}
   MinionDieFX: {fileID: 55932162552029174, guid: dc9c800c2d45ce4469490addebe62230, type: 3}
-  NbCandyDropOnDeath: 5
   BlueMaterial: {fileID: 2100000, guid: 84f6411ae1edc124ca8aed00947bcb96, type: 2}
   RedMaterial: {fileID: 2100000, guid: 95967b0b914f3fc45aac3be969a4e8cc, type: 2}
   Mesh: {fileID: 4418320511870338024}
@@ -256,6 +255,8 @@ MonoBehaviour:
   - {fileID: 3257107067805905496}
   SpeedAnimationGoal: 2
   BT: {fileID: -8139420828089391152}
+  candyDropRange: 5.5
+  NbCandyDropOnDeath: 5
   SFXTrampoline: Trampoline
   lastCheckpoint: {x: 0, y: 0, z: 0}
   references:

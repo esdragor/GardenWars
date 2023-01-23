@@ -19,12 +19,16 @@ namespace Entities.Champion
         public Enums.ChampionRole role;
         public bool isFighter => role == Enums.ChampionRole.Fighter;
         [SerializeField] public Transform rotateParent;
+        [SerializeField] private Transform nonRotateParent;
         public Vector3 forward => rotateParent.forward;
         public Quaternion rotation => rotateParent.localRotation;
 
         public RawImage emotesImage;
 
         private Vector3 respawnPos;
+
+        public override Transform parent => nonRotateParent;
+
         public Vector3 respawnPosition => respawnPos;
         public Rigidbody rb;
         public Camera cam { get; private set; }

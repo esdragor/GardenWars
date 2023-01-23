@@ -22,6 +22,8 @@ namespace Entities
         public Vector3 position => isVisible ? transform.position : lastSeenPosition;
         private Vector3 lastSeenPosition;
 
+        public virtual Transform parent => transform; 
+
         public bool IsInsideBush = false;
 
         [Header("Team")]
