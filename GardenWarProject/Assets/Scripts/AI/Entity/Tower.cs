@@ -170,7 +170,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         if (MaxHP == 0) return 0;
         return CurrentHP / MaxHP * 100;
     }
-
     public void RequestSetMaxHp(float value)
     {
         SetMaxHpRPC(value);

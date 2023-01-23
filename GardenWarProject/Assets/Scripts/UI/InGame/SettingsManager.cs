@@ -14,6 +14,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Button emotesExitButton;
     [SerializeField] private Button keybindExitButton;
     [SerializeField] private Button settingsExitButton;
+    [SerializeField] private Button PaypalButton;
     void Start()
     {
         emotesButton.onClick.AddListener(() => emotesPanel.SetActive(true));
@@ -21,6 +22,7 @@ public class SettingsManager : MonoBehaviour
         emotesExitButton.onClick.AddListener(() => emotesPanel.SetActive(false));
         keybindExitButton.onClick.AddListener(() => keybinbindPanel.SetActive(false));
         settingsExitButton.onClick.AddListener(() => settingsPanel.SetActive(false));
+        PaypalButton.onClick.AddListener(() => Application.OpenURL("https://paypal.me/null?country.x=FR&locale.x=fr_FR"));
     }
 
     // Update is called once per frame
