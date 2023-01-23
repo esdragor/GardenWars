@@ -142,8 +142,8 @@ MonoBehaviour:
   canHide: 0
   isVisible: 0
   elementsToShow: []
-  baseViewRange: 8
-  viewRange: 8
+  baseViewRange: 4
+  viewRange: 4
   viewAngle: 360
   canView: 1
   meshFilterFoV: {fileID: 7922557302693259589}
@@ -153,8 +153,8 @@ MonoBehaviour:
   canAttack: 1
   attackValue: 20
   attackSpeed: 2
-  MaxHP: 500
-  CurrentHP: 500
+  MaxHP: 250
+  CurrentHP: 250
   HitFX: {fileID: 2089501711957444044}
   TowerModel: {fileID: 6622412508371854706}
   HairDryer: {fileID: 1656188867965048312}
@@ -919,11 +919,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6056047049693593279, guid: 9836cfba824cded4d8194587cd282db8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6056047049693593279, guid: 9836cfba824cded4d8194587cd282db8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6056047049693593279, guid: 9836cfba824cded4d8194587cd282db8, type: 3}
       propertyPath: m_LocalScale.z
