@@ -103,6 +103,8 @@ namespace Entities.Capacities
             
 
             destination = GetClosestValidPoint(destination);
+            
+            champion.LookAt(destination);
 
             if (isBlink)
             {
