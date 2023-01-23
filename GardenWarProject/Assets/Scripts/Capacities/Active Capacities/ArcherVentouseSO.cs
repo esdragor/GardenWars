@@ -119,6 +119,8 @@ namespace Entities.Capacities
             
             void EntityCollide(Entity entity)
             {
+                if(entity == champion) return;
+                
                 if(caster.GetEnemyTeams().Contains(entity.team)) DealDamage(entity);
                 
                 Displace(entity);
