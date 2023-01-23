@@ -42,7 +42,7 @@ public class ChatManager : MonoBehaviour
         
         if(message.Length <= 0) return;
         
-        champion.OnAddMessage($"[|@@@@|{GameSettingsManager.playerName}|@@@|]: {message}", champion.entityIndex);
+        champion.OnAddMessage($"[|@@@@|{GameSettingsManager.playerName}|@@@|]: {message}\n", champion.entityIndex);
         inputField.text = "";
         
         InputManager.EnableInput();
