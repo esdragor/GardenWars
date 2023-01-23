@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Entities;
 using Entities.Capacities;
@@ -30,7 +31,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private ParticleSystem HitFX;
     [SerializeField] private GameObject MinionDieFX;
-    [SerializeField] private int NbCandyDropOnDeath = 5;
     [SerializeField] private Material BlueMaterial;
     [SerializeField] private Material RedMaterial;
     [SerializeField] private GameObject Mesh;
@@ -40,6 +40,11 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private float SpeedAnimationGoal = 1f;
     [SerializeField] private MinionBT BT;
 
+    [Header("Candy")]
+    [SerializeField] private float candyDropRange = 5.5f;
+    [SerializeField] private int NbCandyDropOnDeath = 5;
+    
+    
     public static int level;
     private float currentMoveSpeed;
     private bool isAlive = true;
@@ -691,20 +696,11 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void DieRPC(int killerId)
     {
-        var entity = EntityCollectionManager.GetEntityByIndex(killerId);
-        if (entity)
+        foreach (var champion in gsm.GetAllChampions().Where(champion => GetEnemyTeams().Contains(champion.team) && champion.isFighter))
         {
-            var champion = entity.GetComponent<Champion>();
-            if (champion != null)
-            {
-                if (champion.isFighter && GetEnemyTeams().Contains(entity.team))
-                {
-                    champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath+level);
-                }
-            }
+            if(Vector3.Distance(champion.transform.position,transform.position) <= candyDropRange) champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath+level);
         }
-
-
+        
         if (isOffline)
         {
             SyncDieRPC(killerId);

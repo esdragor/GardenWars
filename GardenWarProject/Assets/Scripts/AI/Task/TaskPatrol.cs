@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using BehaviourTree;
-using GameStates;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,7 +9,6 @@ public class TaskPatrol : Node
 
     private Transform[] waypoints;
 
-    //private Animator animator;
     private int CurrentWaypointIndex = 0;
     private float waitTime = 1f;
     private float waitCounter = 0f;
@@ -22,14 +16,14 @@ public class TaskPatrol : Node
     private NavMeshAgent agent;
     private Minion minion;
 
-    public TaskPatrol(NavMeshAgent _agent, Minion _minion, Transform _transform, Transform _model, Transform[] _waypoints, float waitingBetweenTwoPoints = 1f)
+    public TaskPatrol(NavMeshAgent _agent, Minion _minion, Transform _transform, Transform _model,
+        Transform[] _waypoints, float waitingBetweenTwoPoints = 1f)
     {
         Mytransform = _transform;
         waypoints = _waypoints;
         waitTime = waitingBetweenTwoPoints;
         agent = _agent;
         minion = _minion;
-        //animator = getComponent<Animator>();
         model = _model;
     }
 
@@ -47,38 +41,43 @@ public class TaskPatrol : Node
         else
         {
             Vector3 MyPos = Mytransform.position;
-            
+
             if (CurrentWaypointIndex < waypoints.Length)
-            model.transform.LookAt(new Vector3(waypoints[CurrentWaypointIndex].position.x, MyPos.y, waypoints[CurrentWaypointIndex].position.z));
+                model.transform.LookAt(new Vector3(waypoints[CurrentWaypointIndex].position.x, MyPos.y,
+                    waypoints[CurrentWaypointIndex].position.z));
 
 
             if (CurrentWaypointIndex + 1 < waypoints.Length)
             {
-                if(MyPos.x > waypoints[CurrentWaypointIndex].position.x && MyPos.x < waypoints[CurrentWaypointIndex + 1].position.x)
+                if (MyPos.x > waypoints[CurrentWaypointIndex].position.x &&
+                    MyPos.x < waypoints[CurrentWaypointIndex + 1].position.x)
                 {
                     CurrentWaypointIndex++;
                 }
-                else if(MyPos.x < waypoints[CurrentWaypointIndex].position.x && MyPos.x > waypoints[CurrentWaypointIndex + 1].position.x)
+                else if (MyPos.x < waypoints[CurrentWaypointIndex].position.x &&
+                         MyPos.x > waypoints[CurrentWaypointIndex + 1].position.x)
                 {
                     CurrentWaypointIndex++;
                 }
             }
-           if (CurrentWaypointIndex >= waypoints.Length) // agent has reached the last waypoint
+
+            if (CurrentWaypointIndex >= waypoints.Length) // agent has reached the last waypoint
             {
                 minion.ReachEnemyCamp();
-                return NodeState.Running; 
+                return NodeState.Running;
             }
-           
-           Vector3 pos = waypoints[CurrentWaypointIndex].position;
-           pos.y = MyPos.y;
-           minion.lastCheckpoint = MyPos;
-           if (Vector3.Distance(MyPos, pos) < 0.3f)
+
+            Vector3 pos = waypoints[CurrentWaypointIndex].position;
+            pos.y = MyPos.y;
+            minion.lastCheckpoint = MyPos;
+            if (Vector3.Distance(MyPos, pos) < 0.3f)
             {
                 waitCounter = 0f;
                 waiting = true;
                 CurrentWaypointIndex++;
                 //animator.SetBool("Walking", false);
             }
+
             agent.SetDestination(pos);
         }
 

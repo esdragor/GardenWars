@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Entities.Champion;
 using Photon.Pun;
 using UnityEngine;
@@ -248,6 +249,12 @@ namespace GameStates
         public Texture2D[] GetPlayerEmotes(int actorNumber)
         {
             return playerDataDict[actorNumber].emotesTextures;
+        }
+
+        public IEnumerable<Champion> GetAllChampions()
+        {
+            return playerDataDict.Where((kvp) => kvp.Value.team != Enums.Team.Neutral)
+                .Select(kvp => kvp.Value.champion);
         }
         
         #endregion
