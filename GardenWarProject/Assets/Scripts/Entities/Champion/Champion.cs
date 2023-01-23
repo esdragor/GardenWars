@@ -178,11 +178,13 @@ namespace Entities.Champion
 
             cooldownReduction = 0;
             
+            currentCandy = 0;
+            upgradeCount = 0;
             
-            currentCandy = 100;
-            upgradeCount = isFighter ? 0 : 3;
+            if(!GameSettingsManager.isDebug) return;
             
-            
+            currentCandy = GameSettingsManager.candy;
+            upgradeCount = GameSettingsManager.upgrades;
         }
 
         public void SetupSpawn()

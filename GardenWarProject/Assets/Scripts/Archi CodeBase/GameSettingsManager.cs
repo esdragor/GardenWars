@@ -9,6 +9,14 @@ public class GameSettingsManager : MonoBehaviour
     public static bool IgnoreEmotes => instance.ignoreEmotes;
     [SerializeField] private int maxImageSize = 512;
     public static int maxFileSize => instance.maxImageSize*instance.maxImageSize*4;
+
+    [Header("Debug")]
+    [SerializeField] private bool debugMode;
+    [SerializeField] private int startingSweets;
+    [SerializeField] private int startingUpgrades;
+    public static bool isDebug => instance.debugMode;
+    public static int candy => instance.startingSweets;
+    public static int upgrades => instance.startingUpgrades;
     
     
     private string pName;
