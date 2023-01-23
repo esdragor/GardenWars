@@ -2,7 +2,6 @@ using System;
 using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Entities
 {
@@ -210,7 +209,7 @@ namespace Entities
             
             currentFeeder = champion;
             
-            cam.DOFieldOfView(deZoomFov,deZoomDuration);
+            if(gsm.GetPlayerChampion() == currentFeeder) cam.DOFieldOfView(deZoomFov,deZoomDuration);
 
             var pos = champion.position;
             pos.y = transform.position.y;
