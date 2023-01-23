@@ -70,10 +70,10 @@ public class CheckEnemyInPOVRange : Node
                     if (!deadable.IsAlive()) continue;
                     if (entity.IsInsideBush) continue;
                     
-                    Minion minion = MyEntity as Minion;
-                    
-                    if (minion && 
-                        Vector3.Distance(minion.lastCheckpoint, entity.transform.position) > maxRangeOfLane) continue;
+                    // Minion minion = MyEntity as Minion;
+                    //
+                    // if (minion && 
+                    //     Vector3.Distance(minion.lastCheckpoint, entity.transform.position) > maxRangeOfLane) continue;
 
                     Root.getOrigin().SetDataInBlackboard("target", entity);
                     state = NodeState.Success;
@@ -85,8 +85,8 @@ public class CheckEnemyInPOVRange : Node
         }
         
         if ((t != null && !(((IDeadable)t).IsAlive())) ||
-            t != null && t.IsInsideBush || 
-             t != null && MyEntity is Minion &&  Vector3.Distance((MyEntity as Minion).lastCheckpoint, MyTransform.position) > maxRangeOfLane
+            t != null && t.IsInsideBush //|| 
+            // t != null && MyEntity is Minion &&  Vector3.Distance((MyEntity as Minion).lastCheckpoint, MyTransform.position) > maxRangeOfLane
             )
         {
             Root.getOrigin().ClearData("target");
