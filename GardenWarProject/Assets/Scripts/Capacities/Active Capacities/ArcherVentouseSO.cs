@@ -73,13 +73,14 @@ namespace Entities.Capacities
 
             var projectileSpawnPos = casterPos + shotDirection * 0.5f;
             
-            var projectile = LocalPoolManager.PoolInstantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection));
+            var projectile = LocalPoolManager.PoolInstantiate(so.projectile,projectileSpawnPos,Quaternion.LookRotation(shotDirection*1));
             var grabcs = projectile.GetComponent<Grab>();
             grabcs.StartGrab(caster.transform);
             
             var targetPos = projectileSpawnPos + (shotDirection * so.maxRange);
             
             var projectileTr = projectile.transform;
+            projectileTr.forward = champion.forward * -1;
 
             projectile.OnEntityCollide += EntityCollide;
             projectile.OnEntityCollideFeedback += EntityCollideFeedback;
