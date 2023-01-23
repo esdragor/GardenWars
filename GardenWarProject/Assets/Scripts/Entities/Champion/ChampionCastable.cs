@@ -5,6 +5,7 @@ using Entities.Capacities;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using Random = UnityEngine.Random;
 
 namespace Entities.Champion
 {
@@ -432,7 +433,47 @@ namespace Entities.Champion
         {
             cooldownReduction = amount;
         }
-        
+
+        [SerializeField] private ProjectileOnCollideEffect candyProjectile;
+        private List<Transform> currentCandyOnMap = new List<Transform>();
+        public void SpawnCandy(int amount,List<Transform> transforms)
+        {
+            var tr = transforms[Random.Range(0, transforms.Count)];
+            while (currentCandyOnMap.Contains(tr))
+            {
+                transforms.Remove(tr);
+                if (transforms.Count <= 0) return;
+
+                tr = transforms[Random.Range(0, transforms.Count)];
+            }
+            
+            photonView.RPC("SyncSpawnCandyRPC", RpcTarget.All, amount,tr.position);
+        }
+
+        [PunRPC]
+        private void SyncSpawnCandyRPC(int amount, Vector3 pos)
+        {
+            var projectile = LocalPoolManager.PoolInstantiate(candyProjectile, pos, Quaternion.identity);
+            var projectileTr = projectile.transform;
+            currentCandyOnMap.Add(projectileTr);
+
+            projectile.OnEntityCollideFeedback += GiveCandy;
+
+            void GiveCandy(Entity entity)
+            {
+                if (!(entity is Champion champ)) return;
+
+                if (isMaster)
+                {
+                    currentCandyOnMap.Remove(projectileTr);
+                    champ.IncreaseCurrentCandyRPC(amount);
+                }
+
+                projectile.OnEntityCollideFeedback -= GiveCandy;
+                    
+                projectile.DestroyProjectile(true);
+            }
+        }
         
     }
 }

@@ -63,6 +63,8 @@ namespace Entities.Champion
             HideSkillShotIndicator();
             HideTextIndicator();
             
+            currentCandyOnMap.Clear();
+            
             cam = Camera.main;
 
             path = new NavMeshPath();
