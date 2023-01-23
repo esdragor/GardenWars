@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BehaviourTree;
@@ -5,6 +6,7 @@ using Entities;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class RespawnPinata
 {
@@ -21,7 +23,7 @@ public class SpawnAIs : MonoBehaviourPun
     public double timeBetweenMinionSpawn = 0.3;
     public double timeBetweenWaves = 30;
     [SerializeField] private double timeBeforeFirstWave = 5;
-    [SerializeField] private List<Transform> SpawnPoints;
+    [SerializeField] private List<Transform> SpawnPoints = new List<Transform>();
     [SerializeField] private int minionLevel;
     
     [Header("Minions")]
@@ -34,16 +36,32 @@ public class SpawnAIs : MonoBehaviourPun
     [Header("Towers")]
     [SerializeField] private Transform[] towerSpawnPoints;
 
+    [Serializable]
+    public struct OtherSpawnPoints
+    {
+        public Transform pinataSpawn;
+        public List<Transform> candySpawn;
+    }
+
+    [SerializeField] private List<OtherSpawnPoints> spawnPoints = new List<OtherSpawnPoints>();
+    private Dictionary<Transform, List<Transform>> candySpawnDict = new Dictionary<Transform, List<Transform>>();
+
     [Header("Pinata")]
     [SerializeField] private Transform[] pinataSpawnPoints;
     [SerializeField] private float timeBeforeSpawnPinata = 4;
     [SerializeField] private float timeBeforeRespawnPinata = 5;
     [SerializeField] private float timeBetweenPinataLevelUp = 30;
     [SerializeField] private int pinataLevel;
-    
+
+    [Header("Candy")]
+    [SerializeField] private int candyPerBag = 20;
+    [SerializeField] private float timeBeforeSpawnCandy = 4;
+    [SerializeField] private float timeBetweenCandies = 5;
+
     [Header("Timers")]
     [SerializeField] private double minionTimer;
     [SerializeField] private double pinataTimer;
+    [SerializeField] private double candyTimer;
     
     private Pinata currentPinata;
     private Transform previousSpawnPos;
@@ -73,10 +91,14 @@ public class SpawnAIs : MonoBehaviourPun
         pinataTimer = 0;
         pinataLevel = 0;
         minionLevel = -1;
+
+        if (!PhotonNetwork.IsMasterClient) return;
         
-        if (PhotonNetwork.IsMasterClient)
+        InitTowers();
+
+        foreach (var other in spawnPoints)
         {
-            InitTowers();
+            candySpawnDict.Add(other.pinataSpawn,other.candySpawn);
         }
     }
 
@@ -94,6 +116,7 @@ public class SpawnAIs : MonoBehaviourPun
 
         minionTimer = timeBetweenWaves - timeBeforeFirstWave;
         pinataTimer = timeBetweenPinataLevelUp - timeBeforeSpawnPinata;
+        candyTimer = timeBetweenCandies - timeBeforeSpawnCandy;
 
         currentPinata = null;
         
@@ -104,10 +127,13 @@ public class SpawnAIs : MonoBehaviourPun
     {
         minionTimer += gsm.increasePerTick;
         pinataTimer += gsm.increasePerTick;
+        candyTimer += gsm.increasePerTick;
         
         SpawnMinionWaves();
         
         SpawnPinatas();
+
+        SpawnCandies();
     }
     
     #region Minions
@@ -169,7 +195,7 @@ public class SpawnAIs : MonoBehaviourPun
         
         pinataTimer = 0;
         
-        SpawnPinata(NextSpawnPoint());
+        SpawnPinata(NextPinataSpawnPoint());
     }
     
     private void SpawnPinata(Transform tr)
@@ -191,7 +217,7 @@ public class SpawnAIs : MonoBehaviourPun
         
     }
 
-    private Transform NextSpawnPoint()
+    private Transform NextPinataSpawnPoint()
     {
         if (currentPinata == null)
         {
@@ -216,7 +242,19 @@ public class SpawnAIs : MonoBehaviourPun
 
     #endregion
 
+    #region Candy
 
+    private void SpawnCandies()
+    {
+        if(candyTimer < timeBetweenCandies) return;
+        
+        candyTimer = 0;
+        
+        gsm.GetPlayerChampion().SpawnCandy(candyPerBag,candySpawnDict[previousSpawnPos]);
+    }
+
+    #endregion
+    
     #region Towers
 
     private void InitTowers()
