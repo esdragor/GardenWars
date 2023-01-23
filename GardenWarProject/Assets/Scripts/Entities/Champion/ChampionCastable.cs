@@ -443,7 +443,7 @@ namespace Entities.Champion
             while (currentCandyOnMap.Contains(tr.position))
             {
                 list.Remove(tr);
-                if (transforms.Count <= 0) return;
+                if (list.Count <= 0) return;
 
                 tr = transforms[Random.Range(0, transforms.Count)];
             }
