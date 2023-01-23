@@ -251,7 +251,7 @@ namespace Entities.Champion
             amount *= (1 - actualDef / 100f);
             
             currentHp -= amount;
-            
+
             OnDecreaseCurrentHp?.Invoke(amount,killerId);
             
             if (isOffline)
@@ -266,13 +266,15 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
         {
+            var current = currentHp;
             currentHp = amount;
+            var lost = current - currentHp;
             if (currentHp <= 0)
             {
                 currentHp = 0;
                 RequestDie(killerId);
             }
-            OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
+            OnDecreaseCurrentHpFeedback?.Invoke(lost,killerId);
         }
         
         public event Action<float,int> OnDecreaseCurrentHp;

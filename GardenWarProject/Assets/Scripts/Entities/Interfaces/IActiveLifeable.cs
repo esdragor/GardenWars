@@ -10,7 +10,7 @@ namespace Entities
         public float GetCurrentHp();
         /// <returns>The percentage of currentHp on maxHp of the entity</returns>
         public float GetCurrentHpPercent();
-        
+
         /// /// <summary>
         /// Sends an RPC to the master to set the entity's maxHp.
         /// </summary>

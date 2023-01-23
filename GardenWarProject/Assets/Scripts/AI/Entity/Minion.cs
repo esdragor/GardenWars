@@ -606,6 +606,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
     {
+        var lost = currentHp - amount;
         currentHp = amount;
         if (currentHp <= 0)
         {
@@ -623,7 +624,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             HitFX.Play();
         }
 
-        OnDecreaseCurrentHpFeedback?.Invoke(amount, killerId);
+        OnDecreaseCurrentHpFeedback?.Invoke(lost, killerId);
     }
 
     async void HideMinionDieFx(GameObject fxGo, int delay)
