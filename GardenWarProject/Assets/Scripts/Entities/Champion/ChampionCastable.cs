@@ -435,11 +435,11 @@ namespace Entities.Champion
         }
 
         [SerializeField] private ProjectileOnCollideEffect candyProjectile;
-        private List<Transform> currentCandyOnMap = new List<Transform>();
+        private List<Vector3> currentCandyOnMap = new List<Vector3>();
         public void SpawnCandy(int amount,List<Transform> transforms)
         {
             var tr = transforms[Random.Range(0, transforms.Count)];
-            while (currentCandyOnMap.Contains(tr))
+            while (currentCandyOnMap.Contains(tr.position))
             {
                 transforms.Remove(tr);
                 if (transforms.Count <= 0) return;
@@ -454,8 +454,7 @@ namespace Entities.Champion
         private void SyncSpawnCandyRPC(int amount, Vector3 pos)
         {
             var projectile = LocalPoolManager.PoolInstantiate(candyProjectile, pos, Quaternion.identity);
-            var projectileTr = projectile.transform;
-            currentCandyOnMap.Add(projectileTr);
+            currentCandyOnMap.Add(pos);
 
             projectile.OnEntityCollideFeedback += GiveCandy;
 
@@ -465,7 +464,7 @@ namespace Entities.Champion
 
                 if (isMaster)
                 {
-                    currentCandyOnMap.Remove(projectileTr);
+                    if(currentCandyOnMap.Contains(pos)) currentCandyOnMap.Remove(pos);
                     champ.IncreaseCurrentCandyRPC(amount);
                 }
 

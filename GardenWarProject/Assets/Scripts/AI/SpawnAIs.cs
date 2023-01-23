@@ -47,7 +47,6 @@ public class SpawnAIs : MonoBehaviourPun
     private Dictionary<Transform, List<Transform>> candySpawnDict = new Dictionary<Transform, List<Transform>>();
 
     [Header("Pinata")]
-    [SerializeField] private Transform[] pinataSpawnPoints;
     [SerializeField] private float timeBeforeSpawnPinata = 4;
     [SerializeField] private float timeBeforeRespawnPinata = 5;
     [SerializeField] private float timeBetweenPinataLevelUp = 30;
@@ -221,14 +220,14 @@ public class SpawnAIs : MonoBehaviourPun
     {
         if (currentPinata == null)
         {
-            previousSpawnPos = pinataSpawnPoints[0];
+            previousSpawnPos = spawnPoints[0].pinataSpawn;
             return previousSpawnPos;
         }
         
         var tr = previousSpawnPos;
         while (tr == previousSpawnPos)
         {
-            tr = pinataSpawnPoints[Random.Range(0, pinataSpawnPoints.Length)];
+            tr = spawnPoints[Random.Range(0, spawnPoints.Count)].pinataSpawn;
         }
 
         previousSpawnPos = tr;
@@ -249,7 +248,13 @@ public class SpawnAIs : MonoBehaviourPun
         if(candyTimer < timeBetweenCandies) return;
         
         candyTimer = 0;
-        
+
+
+        if (previousSpawnPos == null)
+        {
+            gsm.GetPlayerChampion().SpawnCandy(candyPerBag,candySpawnDict[spawnPoints[0].pinataSpawn]);
+            return;
+        }
         gsm.GetPlayerChampion().SpawnCandy(candyPerBag,candySpawnDict[previousSpawnPos]);
     }
 

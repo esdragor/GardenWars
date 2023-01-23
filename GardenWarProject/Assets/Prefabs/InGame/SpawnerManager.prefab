@@ -648,14 +648,17 @@ MonoBehaviour:
   towerSpawnPoints:
   - {fileID: 0}
   - {fileID: 0}
-  pinataSpawnPoints:
-  - {fileID: 5146283350326915587}
+  spawnPoints: []
   timeBeforeSpawnPinata: 5
   timeBeforeRespawnPinata: 10
-  timeBetweenPinataLevelUp: 6000
+  timeBetweenPinataLevelUp: 60
   pinataLevel: 0
+  candyPerBag: 20
+  timeBeforeSpawnCandy: 4
+  timeBetweenCandies: 10
   minionTimer: 0
   pinataTimer: 0
+  candyTimer: 0
 --- !u!114 &7151993561122712228
 MonoBehaviour:
   m_ObjectHideFlags: 0
