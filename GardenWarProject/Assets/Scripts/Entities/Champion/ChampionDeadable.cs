@@ -158,6 +158,7 @@ namespace Entities.Champion
             rotateParent.gameObject.SetActive(true);
             uiTransform.gameObject.SetActive(true);
             OnReviveFeedback?.Invoke();
+            SetAnimatorTrigger("Respawn");
         }
 
         private void Revive()
