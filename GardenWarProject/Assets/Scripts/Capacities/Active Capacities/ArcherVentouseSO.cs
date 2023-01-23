@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -81,12 +82,14 @@ namespace Entities.Capacities
             
             var projectileTr = projectile.transform;
             projectileTr.forward = champion.forward * -1;
+            
+            var hit = false;
 
             projectile.OnEntityCollide += EntityCollide;
             projectile.OnEntityCollideFeedback += EntityCollideFeedback;
 
             gsm.OnUpdateFeedback += MoveProjectile;
-            
+
             void MoveProjectile()
             {
                 projectileTr.position = Vector3.MoveTowards(projectileTr.position, targetPos, so.projectileSpeed * Time.deltaTime);
@@ -94,7 +97,7 @@ namespace Entities.Capacities
                 {
                     gsm.OnUpdateFeedback -= MoveProjectile;
                     
-                    projectile.DestroyProjectile(false);
+                    if(!hit) projectile.DestroyProjectile(true);
                 }
             }
 
@@ -116,6 +119,15 @@ namespace Entities.Capacities
                 var displacementDestination = champion.position + champion.forward * so.dragDistance;
                 
                 displaceable?.DisplaceRPC(displacementDestination,so.dragTime);
+
+                LateDestroy();
+            }
+
+            async void LateDestroy()
+            {
+                await Task.Delay((int)(so.dragTime * 1000));
+                
+                projectile.DestroyProjectile(true);
             }
             
             void EntityCollide(Entity entity)
@@ -136,6 +148,10 @@ namespace Entities.Capacities
             void EntityCollideFeedback(Entity entity)
             {
                 if (!caster.GetEnemyTeams().Contains(entity.team)) return;
+                
+                hit = true;
+                
+                projectileTr.SetParent(entity.transform);
 
                 gsm.OnUpdateFeedback -= MoveProjectile;
                 

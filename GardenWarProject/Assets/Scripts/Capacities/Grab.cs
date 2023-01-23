@@ -6,7 +6,7 @@ public class Grab : MonoBehaviour
 {
     [SerializeField] private LineGenerate liner;
     [SerializeField] private ParticleSystem catchFX;
-
+    
     public void StartGrab(Transform tr)
     {
         liner.startPoint = tr;
