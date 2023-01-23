@@ -18,7 +18,7 @@ public class MinionBT : Tree
     [SerializeField] private float FOVRange;
     [SerializeField] private float atkDelay = 15;
     [SerializeField] private Transform Model;
-    [SerializeField] private float maxRangeOfLane;
+    [SerializeField] private float maxRangeOfLane = 7f;
     
     protected override Node InitTree()
     {
