@@ -62,7 +62,7 @@ public class TaskAttack : Node
         if (PreviousTarget != target)
         {
             PreviousTarget = target;
-            CurrentAtkTime = 0f;
+            CurrentAtkTime = attackSpeed;
         }
 
         //CurrentAtkTime += 1.0f / sm.tickRate;
