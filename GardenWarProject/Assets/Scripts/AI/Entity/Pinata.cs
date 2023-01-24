@@ -20,7 +20,9 @@ namespace Entities
         [SerializeField] private float deZoomDuration = 1f;
 
         [Header("Bonbon Gaming")]
-        public float fillRange = 2;
+        [SerializeField] private CandyFollow candyFollow;
+        private GameObject candyFollowGo;
+         public float fillRange = 2;
         public static int level;
         private int maxBonbon => 30 + 10 * (level-1 + (level-1)%2);
         [SerializeField] private int currentBonbon;
@@ -53,11 +55,13 @@ namespace Entities
         {
             OnInstantiated();
             animators = Myanimators;
-            //rotatorGo = rotator.gameObject;
-            //rotatorGo.SetActive(false);
+            
             playerIsFigher = gsm.GetPlayerChampion().isFighter;
             
             indicator.gameObject.SetActive(false);
+
+            candyFollowGo = candyFollow.gameObject;
+            candyFollowGo.SetActive(false);
 
             SetupLine();
         }
@@ -247,6 +251,13 @@ namespace Entities
             void DrainCandy(int candy)
             {
                 if (currentFeeder.currentCandy - candy <= 0) candy = currentFeeder.currentCandy;
+
+                if (currentFeeder == gsm.GetPlayerChampion())
+                {
+                    candyFollowGo.SetActive(true);
+                    candyFollow.transform.position = currentFeeder.position;
+                    candyFollow.SetTarget(this,2,candy,false);
+                }
                 
                 IncreaseCurrentCandy(candy);
             }
@@ -289,6 +300,8 @@ namespace Entities
         
             void StopChanneling()
             {
+                candyFollowGo.SetActive(false);
+                
                 gsm.OnTick -= ChannelDrain;
 
                 currentFeeder.OnDecreaseCurrentHp -= CancelOnDamage;

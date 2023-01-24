@@ -10,6 +10,7 @@ public class CandyFollow : MonoBehaviour
     private float timer = 0;
     private bool master;
     [SerializeField] private GameObject trail;
+    [SerializeField] private TrailRenderer trailRenderer;
 
     public void SetTarget(Entity target, float duration,int candyCount, bool master)
     {
@@ -19,6 +20,7 @@ public class CandyFollow : MonoBehaviour
         timer = duration;
         this.candyCount = candyCount;
         this.master = master;
+        trailRenderer.Clear();
         trail.SetActive(!master);
     }
     
@@ -33,7 +35,7 @@ public class CandyFollow : MonoBehaviour
         if(timer > 0 && Vector3.Distance(transform.position,target.position) > 0.2f) return;
         
         if(target is Champion champion && master) champion.IncreaseCurrentCandyRPC(candyCount);
-        
+
         gameObject.SetActive(false);
     }
 
