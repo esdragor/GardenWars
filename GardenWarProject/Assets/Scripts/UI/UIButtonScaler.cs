@@ -9,7 +9,7 @@ namespace UIComponents
         public void OnPointerEnter(PointerEventData eventData)
         {
             transform.DOKill();
-            transform.DOScale(1.1f, 0.1f);
+            transform.DOScale(1.05f, 0.1f);
         }
 
         public void OnPointerExit(PointerEventData eventData)
