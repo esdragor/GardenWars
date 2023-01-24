@@ -15,11 +15,11 @@ public class RebindKeys : MonoBehaviour
     [Range(0, 10)]
     [SerializeField]
     private int selectedBinding;
-    [SerializeField]
-    private InputBinding.DisplayStringOptions displayStringOptions;
-    [Header("Binding Info - DO NOT EDIT")]
-    [SerializeField]
-    private InputBinding inputBinding;
+    // [SerializeField]
+    // private InputBinding.DisplayStringOptions displayStringOptions;
+    // [Header("Binding Info - DO NOT EDIT")]
+    // [SerializeField]
+    //private InputBinding inputBinding;
     private int bindingIndex;
 
     private string actionName;
@@ -37,8 +37,8 @@ public class RebindKeys : MonoBehaviour
 
         if(inputActionReference != null)
         {
-            InputManager.LoadBindingOverride(actionName);
             GetBindingInfo();
+            InputManager.LoadBindingOverride(actionName);
             UpdateUI();
         }
 
@@ -68,7 +68,7 @@ public class RebindKeys : MonoBehaviour
 
         if(inputActionReference.action.bindings.Count > selectedBinding)
         {
-            inputBinding = inputActionReference.action.bindings[selectedBinding];
+            //inputBinding = inputActionReference.action.bindings[selectedBinding];
             bindingIndex = selectedBinding;
         }
     }

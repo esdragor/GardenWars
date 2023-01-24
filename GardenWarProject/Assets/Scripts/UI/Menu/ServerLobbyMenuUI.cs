@@ -49,7 +49,7 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
     private void AddListeners()
     {
         joinLobbyPopUpGo.SetActive(false);
-        settingsCanvasGo.SetActive(false);
+        if(settingsCanvasGo != null) settingsCanvasGo.SetActive(false);
         
         createLobbyButton.onClick.AddListener(CreateRoom);
         joinLobbyButton.onClick.AddListener(JoinRoom);
@@ -63,7 +63,7 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
         
         quitButton.onClick.AddListener(QuitGame);
         
-        playerNameField.onEndEdit.AddListener(ApplyPlayerName);
+        if(playerNameField != null) playerNameField.onEndEdit.AddListener(ApplyPlayerName);
     }
 
     private void ApplyPlayerName(string newName)
