@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DG.Tweening;
 using Entities;
 using Entities.Capacities;
 using Entities.Champion;
@@ -41,6 +42,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [SerializeField] private MinionBT BT;
 
     [Header("Candy")]
+    [SerializeField] private CandyFollow candyPrefab;
     [SerializeField] private float candyDropRange = 5.5f;
     [SerializeField] private int NbCandyDropOnDeath = 5;
     
@@ -696,11 +698,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void DieRPC(int killerId)
     {
-        foreach (var champion in gsm.GetAllChampions().Where(champion => GetEnemyTeams().Contains(champion.team) && champion.isFighter))
-        {
-            if(Vector3.Distance(champion.transform.position,transform.position) <= candyDropRange) champion.IncreaseCurrentCandyRPC(NbCandyDropOnDeath+level);
-        }
-        
         if (isOffline)
         {
             SyncDieRPC(killerId);
@@ -714,6 +711,23 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void SyncDieRPC(int killerId)
     {
+        foreach (var champion in gsm.GetAllChampions().Where(champion => GetEnemyTeams().Contains(champion.team) && champion.isFighter))
+        {
+            if (!(Vector3.Distance(champion.transform.position, transform.position) <= candyDropRange)) continue;
+            
+            if (champion == gsm.GetPlayerChampion())
+            {
+                var localCandy = LocalPoolManager.PoolInstantiate(candyPrefab, position, Quaternion.identity);
+                localCandy.SetTarget(champion,3f,NbCandyDropOnDeath+level,false);
+            }
+
+            if (isMaster)
+            {
+                var masterCandy = LocalPoolManager.PoolInstantiate(candyPrefab, position, Quaternion.identity);
+                masterCandy.SetTarget(champion,3f,NbCandyDropOnDeath+level,true);
+            }
+        }
+        
         isAlive = false;
         FogOfWarManager.Instance.RemoveFOWViewable(this);
 
