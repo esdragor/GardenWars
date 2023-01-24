@@ -78,7 +78,7 @@ namespace Entities.Capacities
         {
             passive ??= champion.GetPassiveCapacity<SharkPassive>();
             
-            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXShot);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXShot, champion.transform.position);
 
             if (!isResetCdSetup)
             {
