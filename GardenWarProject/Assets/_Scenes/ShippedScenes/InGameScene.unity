@@ -17717,8 +17717,16 @@ PrefabInstance:
       value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 712090770751642931, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
+      propertyPath: timeBeforeSpawnCandy
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 712090770751642931, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
       propertyPath: BasketGoal.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 712090770751642931, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
+      propertyPath: timeBeforeSpawnPinata
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 712090770751642931, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
       propertyPath: spawnPoints.Array.size
@@ -17727,6 +17735,10 @@ PrefabInstance:
     - target: {fileID: 712090770751642931, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
       propertyPath: timeBetweenMinionSpawn
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 712090770751642931, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
+      propertyPath: timeBeforeRespawnPinata
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 712090770751642931, guid: a5b651a90892b6941a58a5452db6a602, type: 3}
       propertyPath: BasketGoal.Array.data[0]
