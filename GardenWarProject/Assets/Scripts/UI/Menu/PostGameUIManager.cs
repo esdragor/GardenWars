@@ -1,3 +1,4 @@
+using System;
 using GameStates;
 using TMPro;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class PostGameUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI winningTeamText;
     [SerializeField] private TextMeshProUGUI resultText;
 
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject losePanel;
+    
     [SerializeField] private Button rematchButton;
     
     private void Awake()
@@ -22,6 +26,15 @@ public class PostGameUIManager : MonoBehaviour
         }
 
         Instance = this;
+        
+    }
+
+    private void Start()
+    {
+        rematchButton.onClick.AddListener(Application.Quit);
+        
+        winPanel.SetActive(false);
+        losePanel.SetActive(!false);
     }
 
     public void DisplayPostGame(Enums.Team winner)
@@ -29,8 +42,13 @@ public class PostGameUIManager : MonoBehaviour
         postGameCanvas.SetActive(true);
         winningTeamText.text = $"{winner} has won!";
 
-        var playerTeam = GameStateMachine.Instance.GetPlayerTeam();
-        resultText.text = playerTeam == winner ? "You won!" : "You lost!";
+        // var playerTeam = GameStateMachine.Instance.GetPlayerTeam();
+        // resultText.text = playerTeam == winner ? "You won!" : "You lost!";
+
+        var win = GameStateMachine.Instance.GetPlayerTeam() == winner;
+        
+        winPanel.SetActive(win);
+        losePanel.SetActive(!win);
     }
 
     public void OnRematchClick()

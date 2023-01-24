@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -70,7 +71,7 @@ public class InputManager : MonoBehaviour
         }
     }
     
-    public static void StartRebind(string actionName, int bindingIndex, Text statusText, bool excludeMouse)
+    public static void StartRebind(string actionName, int bindingIndex, TextMeshProUGUI statusText, bool excludeMouse)
     {
         if (allKeys.Count == 0)
         {
@@ -93,7 +94,7 @@ public class InputManager : MonoBehaviour
             DoRebind(action, bindingIndex, statusText, false, excludeMouse);
     }
 
-    private static void DoRebind(InputAction actionToRebind, int bindingIndex, Text statusText, bool allCompositeParts, bool excludeMouse)
+    private static void DoRebind(InputAction actionToRebind, int bindingIndex, TextMeshProUGUI statusText, bool allCompositeParts, bool excludeMouse)
     {
         if (actionToRebind == null || bindingIndex < 0)
             return;
@@ -110,6 +111,8 @@ public class InputManager : MonoBehaviour
             {
                 Debug.Log("ERROR");
                 actionToRebind.RemoveBindingOverride(bindingIndex);
+                actionToRebind.Enable();
+                operation.Dispose();
                 return;
             }
             actionToRebind.Enable();

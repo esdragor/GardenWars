@@ -126,16 +126,16 @@ namespace UIComponents
             
             var inputMap = InputManager.PlayerMap;
             
-            ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Capacity0.controls[0]);
-            ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Capacity1.controls[0]);
-            ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Capacity2.controls[0]);
+            ChangeAbilityIcon(0,champ.capacityDict[champ.abilitiesIndexes[0]].capacity,inputMap.Capacity.Sort1.controls[0]);
+            ChangeAbilityIcon(1,champ.capacityDict[champ.abilitiesIndexes[1]].capacity,inputMap.Capacity.Sort2.controls[0]);
+            ChangeAbilityIcon(2,champ.capacityDict[champ.abilitiesIndexes[2]].capacity,inputMap.Capacity.Sort3.controls[0]);
             
-            recallActiveIcon.SetCapacity(champ.capacityDict[champ.recallAbilityIndex].capacity,inputMap.Capacity.RecalCapacity.controls[0]);
-            throwIcon.SetCapacity(champ.capacityDict[champ.throwAbilityIndex].capacity,inputMap.Capacity.ThrowCapacity.controls[0]);
+            recallActiveIcon.SetCapacity(champ.capacityDict[champ.recallAbilityIndex].capacity,inputMap.Capacity.SortdeRappel.controls[0]);
+            throwIcon.SetCapacity(champ.capacityDict[champ.throwAbilityIndex].capacity,inputMap.Capacity.SortdePartage.controls[0]);
             
             consumeCandyIcon.gameObject.SetActive(!champion.isFighter);
             
-            if(!champion.isFighter) consumeCandyIcon.SetCapacity(champ.capacityDict[champ.consumeAbilityIndex].capacity,inputMap.Capacity.EatCapacity.controls[0]);
+            if(!champion.isFighter) consumeCandyIcon.SetCapacity(champ.capacityDict[champ.consumeAbilityIndex].capacity,inputMap.Capacity.SortdeDegustation.controls[0]);
             
             upgradeHolder.SetActive(false);
         }

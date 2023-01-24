@@ -40,13 +40,13 @@ namespace Controllers
         public void LinkCamera(Transform target)
         {
             player = target;
-            InputManager.PlayerMap.Camera.LockToggle.performed += OnToggleCameraLock;
+            InputManager.PlayerMap.Camera.VerrouillerlaCamera.performed += OnToggleCameraLock;
         }
 
         public void UnLinkCamera()
         {
             player = null;
-            InputManager.PlayerMap.Camera.LockToggle.performed -= OnToggleCameraLock;
+            InputManager.PlayerMap.Camera.VerrouillerlaCamera.performed -= OnToggleCameraLock;
         }
 
         /// <summary>

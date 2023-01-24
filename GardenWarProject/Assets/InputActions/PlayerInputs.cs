@@ -28,7 +28,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""id"": ""2b795710-b287-4812-ae8b-43eb8f73991b"",
             ""actions"": [
                 {
-                    ""name"": ""CancelMove"",
+                    ""name"": ""Stop Movement"",
                     ""type"": ""Button"",
                     ""id"": ""ca7f4080-26b9-4377-8429-685d79c3fa0a"",
                     ""expectedControlType"": ""Button"",
@@ -45,7 +45,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CancelMove"",
+                    ""action"": ""Stop Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -72,7 +72,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""id"": ""698439f3-8087-4c51-8d99-5115fa6e1253"",
             ""actions"": [
                 {
-                    ""name"": ""Capacity0"",
+                    ""name"": ""Sort 1"",
                     ""type"": ""Button"",
                     ""id"": ""3dd9532a-e0fc-4369-91a1-ada3d048afb9"",
                     ""expectedControlType"": ""Button"",
@@ -81,7 +81,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Capacity1"",
+                    ""name"": ""Sort 2"",
                     ""type"": ""Button"",
                     ""id"": ""f0ec7891-2904-4b4a-b410-426f3efbc135"",
                     ""expectedControlType"": ""Button"",
@@ -90,7 +90,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Capacity2"",
+                    ""name"": ""Sort 3"",
                     ""type"": ""Button"",
                     ""id"": ""5149e613-eee6-4a62-8048-6e49faf4b9eb"",
                     ""expectedControlType"": ""Button"",
@@ -99,7 +99,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ThrowCapacity"",
+                    ""name"": ""Sort de Partage"",
                     ""type"": ""Button"",
                     ""id"": ""7c5a1cf3-1914-46b2-adff-2076fd1d6558"",
                     ""expectedControlType"": ""Button"",
@@ -108,7 +108,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""EatCapacity"",
+                    ""name"": ""Sort de Degustation"",
                     ""type"": ""Button"",
                     ""id"": ""48996e2e-b3aa-453c-8f70-d381365910dc"",
                     ""expectedControlType"": ""Button"",
@@ -117,7 +117,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RecalCapacity"",
+                    ""name"": ""Sort de Rappel"",
                     ""type"": ""Button"",
                     ""id"": ""c127f5b8-4e5b-495a-a883-273461b1f71c"",
                     ""expectedControlType"": ""Button"",
@@ -126,7 +126,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ShowMaxRangeIndicator"",
+                    ""name"": ""Indicateur de portee"",
                     ""type"": ""Button"",
                     ""id"": ""e1b44cbe-5eb7-4046-9d05-8cfedf8ec8ef"",
                     ""expectedControlType"": ""Button"",
@@ -135,7 +135,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""UpgradeCapacity"",
+                    ""name"": ""Amelioration de Sort"",
                     ""type"": ""Button"",
                     ""id"": ""ba44bf19-27de-4214-89ff-00ae981af087"",
                     ""expectedControlType"": ""Button"",
@@ -152,7 +152,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Capacity0"",
+                    ""action"": ""Sort 1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -163,7 +163,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Capacity1"",
+                    ""action"": ""Sort 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -174,7 +174,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Capacity2"",
+                    ""action"": ""Sort 3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -185,7 +185,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThrowCapacity"",
+                    ""action"": ""Sort de Partage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -196,7 +196,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""RecalCapacity"",
+                    ""action"": ""Sort de Rappel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -207,7 +207,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ShowMaxRangeIndicator"",
+                    ""action"": ""Indicateur de portee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -218,7 +218,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""UpgradeCapacity"",
+                    ""action"": ""Amelioration de Sort"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -229,7 +229,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""EatCapacity"",
+                    ""action"": ""Sort de Degustation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -348,7 +348,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""id"": ""745bed8a-cfc0-4f8a-a3ae-b70cfb354251"",
             ""actions"": [
                 {
-                    ""name"": ""LockToggle"",
+                    ""name"": ""Verrouiller la Camera"",
                     ""type"": ""Button"",
                     ""id"": ""54a45e78-fe95-4f9d-bf31-b0edcdd20b4b"",
                     ""expectedControlType"": ""Button"",
@@ -365,7 +365,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LockToggle"",
+                    ""action"": ""Verrouiller la Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -464,7 +464,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""id"": ""14323f0b-b440-4d20-b63e-e4231fd5429d"",
             ""actions"": [
                 {
-                    ""name"": ""EmoteWheel"",
+                    ""name"": ""Roue d'Emote"",
                     ""type"": ""Button"",
                     ""id"": ""dac54b6b-bfd1-4508-819e-098363e1b0ce"",
                     ""expectedControlType"": ""Button"",
@@ -481,7 +481,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""EmoteWheel"",
+                    ""action"": ""Roue d'Emote"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -492,20 +492,20 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
 }");
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-        m_Movement_CancelMove = m_Movement.FindAction("CancelMove", throwIfNotFound: true);
+        m_Movement_StopMovement = m_Movement.FindAction("Stop Movement", throwIfNotFound: true);
         // Attack
         m_Attack = asset.FindActionMap("Attack", throwIfNotFound: true);
         m_Attack_Attack = m_Attack.FindAction("Attack", throwIfNotFound: true);
         // Capacity
         m_Capacity = asset.FindActionMap("Capacity", throwIfNotFound: true);
-        m_Capacity_Capacity0 = m_Capacity.FindAction("Capacity0", throwIfNotFound: true);
-        m_Capacity_Capacity1 = m_Capacity.FindAction("Capacity1", throwIfNotFound: true);
-        m_Capacity_Capacity2 = m_Capacity.FindAction("Capacity2", throwIfNotFound: true);
-        m_Capacity_ThrowCapacity = m_Capacity.FindAction("ThrowCapacity", throwIfNotFound: true);
-        m_Capacity_EatCapacity = m_Capacity.FindAction("EatCapacity", throwIfNotFound: true);
-        m_Capacity_RecalCapacity = m_Capacity.FindAction("RecalCapacity", throwIfNotFound: true);
-        m_Capacity_ShowMaxRangeIndicator = m_Capacity.FindAction("ShowMaxRangeIndicator", throwIfNotFound: true);
-        m_Capacity_UpgradeCapacity = m_Capacity.FindAction("UpgradeCapacity", throwIfNotFound: true);
+        m_Capacity_Sort1 = m_Capacity.FindAction("Sort 1", throwIfNotFound: true);
+        m_Capacity_Sort2 = m_Capacity.FindAction("Sort 2", throwIfNotFound: true);
+        m_Capacity_Sort3 = m_Capacity.FindAction("Sort 3", throwIfNotFound: true);
+        m_Capacity_SortdePartage = m_Capacity.FindAction("Sort de Partage", throwIfNotFound: true);
+        m_Capacity_SortdeDegustation = m_Capacity.FindAction("Sort de Degustation", throwIfNotFound: true);
+        m_Capacity_SortdeRappel = m_Capacity.FindAction("Sort de Rappel", throwIfNotFound: true);
+        m_Capacity_Indicateurdeportee = m_Capacity.FindAction("Indicateur de portee", throwIfNotFound: true);
+        m_Capacity_AmeliorationdeSort = m_Capacity.FindAction("Amelioration de Sort", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_ActivateItem0 = m_Inventory.FindAction("ActivateItem0", throwIfNotFound: true);
@@ -515,7 +515,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Inventory_ShowHideShop = m_Inventory.FindAction("ShowHideShop", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
-        m_Camera_LockToggle = m_Camera.FindAction("LockToggle", throwIfNotFound: true);
+        m_Camera_VerrouillerlaCamera = m_Camera.FindAction("Verrouiller la Camera", throwIfNotFound: true);
         // MoveMouse
         m_MoveMouse = asset.FindActionMap("MoveMouse", throwIfNotFound: true);
         m_MoveMouse_MousePos = m_MoveMouse.FindAction("MousePos", throwIfNotFound: true);
@@ -524,7 +524,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_MoveMouse_HoldRightClick = m_MoveMouse.FindAction("HoldRightClick", throwIfNotFound: true);
         // Emotes
         m_Emotes = asset.FindActionMap("Emotes", throwIfNotFound: true);
-        m_Emotes_EmoteWheel = m_Emotes.FindAction("EmoteWheel", throwIfNotFound: true);
+        m_Emotes_RouedEmote = m_Emotes.FindAction("Roue d'Emote", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -584,12 +584,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // Movement
     private readonly InputActionMap m_Movement;
     private IMovementActions m_MovementActionsCallbackInterface;
-    private readonly InputAction m_Movement_CancelMove;
+    private readonly InputAction m_Movement_StopMovement;
     public struct MovementActions
     {
         private @PlayerInputs m_Wrapper;
         public MovementActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @CancelMove => m_Wrapper.m_Movement_CancelMove;
+        public InputAction @StopMovement => m_Wrapper.m_Movement_StopMovement;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -599,16 +599,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_MovementActionsCallbackInterface != null)
             {
-                @CancelMove.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
-                @CancelMove.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
-                @CancelMove.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnCancelMove;
+                @StopMovement.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnStopMovement;
+                @StopMovement.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnStopMovement;
+                @StopMovement.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnStopMovement;
             }
             m_Wrapper.m_MovementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @CancelMove.started += instance.OnCancelMove;
-                @CancelMove.performed += instance.OnCancelMove;
-                @CancelMove.canceled += instance.OnCancelMove;
+                @StopMovement.started += instance.OnStopMovement;
+                @StopMovement.performed += instance.OnStopMovement;
+                @StopMovement.canceled += instance.OnStopMovement;
             }
         }
     }
@@ -650,26 +650,26 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // Capacity
     private readonly InputActionMap m_Capacity;
     private ICapacityActions m_CapacityActionsCallbackInterface;
-    private readonly InputAction m_Capacity_Capacity0;
-    private readonly InputAction m_Capacity_Capacity1;
-    private readonly InputAction m_Capacity_Capacity2;
-    private readonly InputAction m_Capacity_ThrowCapacity;
-    private readonly InputAction m_Capacity_EatCapacity;
-    private readonly InputAction m_Capacity_RecalCapacity;
-    private readonly InputAction m_Capacity_ShowMaxRangeIndicator;
-    private readonly InputAction m_Capacity_UpgradeCapacity;
+    private readonly InputAction m_Capacity_Sort1;
+    private readonly InputAction m_Capacity_Sort2;
+    private readonly InputAction m_Capacity_Sort3;
+    private readonly InputAction m_Capacity_SortdePartage;
+    private readonly InputAction m_Capacity_SortdeDegustation;
+    private readonly InputAction m_Capacity_SortdeRappel;
+    private readonly InputAction m_Capacity_Indicateurdeportee;
+    private readonly InputAction m_Capacity_AmeliorationdeSort;
     public struct CapacityActions
     {
         private @PlayerInputs m_Wrapper;
         public CapacityActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Capacity0 => m_Wrapper.m_Capacity_Capacity0;
-        public InputAction @Capacity1 => m_Wrapper.m_Capacity_Capacity1;
-        public InputAction @Capacity2 => m_Wrapper.m_Capacity_Capacity2;
-        public InputAction @ThrowCapacity => m_Wrapper.m_Capacity_ThrowCapacity;
-        public InputAction @EatCapacity => m_Wrapper.m_Capacity_EatCapacity;
-        public InputAction @RecalCapacity => m_Wrapper.m_Capacity_RecalCapacity;
-        public InputAction @ShowMaxRangeIndicator => m_Wrapper.m_Capacity_ShowMaxRangeIndicator;
-        public InputAction @UpgradeCapacity => m_Wrapper.m_Capacity_UpgradeCapacity;
+        public InputAction @Sort1 => m_Wrapper.m_Capacity_Sort1;
+        public InputAction @Sort2 => m_Wrapper.m_Capacity_Sort2;
+        public InputAction @Sort3 => m_Wrapper.m_Capacity_Sort3;
+        public InputAction @SortdePartage => m_Wrapper.m_Capacity_SortdePartage;
+        public InputAction @SortdeDegustation => m_Wrapper.m_Capacity_SortdeDegustation;
+        public InputAction @SortdeRappel => m_Wrapper.m_Capacity_SortdeRappel;
+        public InputAction @Indicateurdeportee => m_Wrapper.m_Capacity_Indicateurdeportee;
+        public InputAction @AmeliorationdeSort => m_Wrapper.m_Capacity_AmeliorationdeSort;
         public InputActionMap Get() { return m_Wrapper.m_Capacity; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -679,58 +679,58 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_CapacityActionsCallbackInterface != null)
             {
-                @Capacity0.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity0;
-                @Capacity0.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity0;
-                @Capacity0.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity0;
-                @Capacity1.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity1;
-                @Capacity1.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity1;
-                @Capacity1.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity1;
-                @Capacity2.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity2;
-                @Capacity2.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity2;
-                @Capacity2.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnCapacity2;
-                @ThrowCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnThrowCapacity;
-                @ThrowCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnThrowCapacity;
-                @ThrowCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnThrowCapacity;
-                @EatCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnEatCapacity;
-                @EatCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnEatCapacity;
-                @EatCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnEatCapacity;
-                @RecalCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
-                @RecalCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
-                @RecalCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnRecalCapacity;
-                @ShowMaxRangeIndicator.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnShowMaxRangeIndicator;
-                @ShowMaxRangeIndicator.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnShowMaxRangeIndicator;
-                @ShowMaxRangeIndicator.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnShowMaxRangeIndicator;
-                @UpgradeCapacity.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnUpgradeCapacity;
-                @UpgradeCapacity.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnUpgradeCapacity;
-                @UpgradeCapacity.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnUpgradeCapacity;
+                @Sort1.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort1;
+                @Sort1.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort1;
+                @Sort1.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort1;
+                @Sort2.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort2;
+                @Sort2.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort2;
+                @Sort2.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort2;
+                @Sort3.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort3;
+                @Sort3.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort3;
+                @Sort3.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSort3;
+                @SortdePartage.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdePartage;
+                @SortdePartage.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdePartage;
+                @SortdePartage.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdePartage;
+                @SortdeDegustation.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdeDegustation;
+                @SortdeDegustation.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdeDegustation;
+                @SortdeDegustation.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdeDegustation;
+                @SortdeRappel.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdeRappel;
+                @SortdeRappel.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdeRappel;
+                @SortdeRappel.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnSortdeRappel;
+                @Indicateurdeportee.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnIndicateurdeportee;
+                @Indicateurdeportee.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnIndicateurdeportee;
+                @Indicateurdeportee.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnIndicateurdeportee;
+                @AmeliorationdeSort.started -= m_Wrapper.m_CapacityActionsCallbackInterface.OnAmeliorationdeSort;
+                @AmeliorationdeSort.performed -= m_Wrapper.m_CapacityActionsCallbackInterface.OnAmeliorationdeSort;
+                @AmeliorationdeSort.canceled -= m_Wrapper.m_CapacityActionsCallbackInterface.OnAmeliorationdeSort;
             }
             m_Wrapper.m_CapacityActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Capacity0.started += instance.OnCapacity0;
-                @Capacity0.performed += instance.OnCapacity0;
-                @Capacity0.canceled += instance.OnCapacity0;
-                @Capacity1.started += instance.OnCapacity1;
-                @Capacity1.performed += instance.OnCapacity1;
-                @Capacity1.canceled += instance.OnCapacity1;
-                @Capacity2.started += instance.OnCapacity2;
-                @Capacity2.performed += instance.OnCapacity2;
-                @Capacity2.canceled += instance.OnCapacity2;
-                @ThrowCapacity.started += instance.OnThrowCapacity;
-                @ThrowCapacity.performed += instance.OnThrowCapacity;
-                @ThrowCapacity.canceled += instance.OnThrowCapacity;
-                @EatCapacity.started += instance.OnEatCapacity;
-                @EatCapacity.performed += instance.OnEatCapacity;
-                @EatCapacity.canceled += instance.OnEatCapacity;
-                @RecalCapacity.started += instance.OnRecalCapacity;
-                @RecalCapacity.performed += instance.OnRecalCapacity;
-                @RecalCapacity.canceled += instance.OnRecalCapacity;
-                @ShowMaxRangeIndicator.started += instance.OnShowMaxRangeIndicator;
-                @ShowMaxRangeIndicator.performed += instance.OnShowMaxRangeIndicator;
-                @ShowMaxRangeIndicator.canceled += instance.OnShowMaxRangeIndicator;
-                @UpgradeCapacity.started += instance.OnUpgradeCapacity;
-                @UpgradeCapacity.performed += instance.OnUpgradeCapacity;
-                @UpgradeCapacity.canceled += instance.OnUpgradeCapacity;
+                @Sort1.started += instance.OnSort1;
+                @Sort1.performed += instance.OnSort1;
+                @Sort1.canceled += instance.OnSort1;
+                @Sort2.started += instance.OnSort2;
+                @Sort2.performed += instance.OnSort2;
+                @Sort2.canceled += instance.OnSort2;
+                @Sort3.started += instance.OnSort3;
+                @Sort3.performed += instance.OnSort3;
+                @Sort3.canceled += instance.OnSort3;
+                @SortdePartage.started += instance.OnSortdePartage;
+                @SortdePartage.performed += instance.OnSortdePartage;
+                @SortdePartage.canceled += instance.OnSortdePartage;
+                @SortdeDegustation.started += instance.OnSortdeDegustation;
+                @SortdeDegustation.performed += instance.OnSortdeDegustation;
+                @SortdeDegustation.canceled += instance.OnSortdeDegustation;
+                @SortdeRappel.started += instance.OnSortdeRappel;
+                @SortdeRappel.performed += instance.OnSortdeRappel;
+                @SortdeRappel.canceled += instance.OnSortdeRappel;
+                @Indicateurdeportee.started += instance.OnIndicateurdeportee;
+                @Indicateurdeportee.performed += instance.OnIndicateurdeportee;
+                @Indicateurdeportee.canceled += instance.OnIndicateurdeportee;
+                @AmeliorationdeSort.started += instance.OnAmeliorationdeSort;
+                @AmeliorationdeSort.performed += instance.OnAmeliorationdeSort;
+                @AmeliorationdeSort.canceled += instance.OnAmeliorationdeSort;
             }
         }
     }
@@ -804,12 +804,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // Camera
     private readonly InputActionMap m_Camera;
     private ICameraActions m_CameraActionsCallbackInterface;
-    private readonly InputAction m_Camera_LockToggle;
+    private readonly InputAction m_Camera_VerrouillerlaCamera;
     public struct CameraActions
     {
         private @PlayerInputs m_Wrapper;
         public CameraActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @LockToggle => m_Wrapper.m_Camera_LockToggle;
+        public InputAction @VerrouillerlaCamera => m_Wrapper.m_Camera_VerrouillerlaCamera;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -819,16 +819,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_CameraActionsCallbackInterface != null)
             {
-                @LockToggle.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLockToggle;
-                @LockToggle.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLockToggle;
-                @LockToggle.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLockToggle;
+                @VerrouillerlaCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnVerrouillerlaCamera;
+                @VerrouillerlaCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnVerrouillerlaCamera;
+                @VerrouillerlaCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnVerrouillerlaCamera;
             }
             m_Wrapper.m_CameraActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @LockToggle.started += instance.OnLockToggle;
-                @LockToggle.performed += instance.OnLockToggle;
-                @LockToggle.canceled += instance.OnLockToggle;
+                @VerrouillerlaCamera.started += instance.OnVerrouillerlaCamera;
+                @VerrouillerlaCamera.performed += instance.OnVerrouillerlaCamera;
+                @VerrouillerlaCamera.canceled += instance.OnVerrouillerlaCamera;
             }
         }
     }
@@ -894,12 +894,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // Emotes
     private readonly InputActionMap m_Emotes;
     private IEmotesActions m_EmotesActionsCallbackInterface;
-    private readonly InputAction m_Emotes_EmoteWheel;
+    private readonly InputAction m_Emotes_RouedEmote;
     public struct EmotesActions
     {
         private @PlayerInputs m_Wrapper;
         public EmotesActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @EmoteWheel => m_Wrapper.m_Emotes_EmoteWheel;
+        public InputAction @RouedEmote => m_Wrapper.m_Emotes_RouedEmote;
         public InputActionMap Get() { return m_Wrapper.m_Emotes; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -909,23 +909,23 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_EmotesActionsCallbackInterface != null)
             {
-                @EmoteWheel.started -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmoteWheel;
-                @EmoteWheel.performed -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmoteWheel;
-                @EmoteWheel.canceled -= m_Wrapper.m_EmotesActionsCallbackInterface.OnEmoteWheel;
+                @RouedEmote.started -= m_Wrapper.m_EmotesActionsCallbackInterface.OnRouedEmote;
+                @RouedEmote.performed -= m_Wrapper.m_EmotesActionsCallbackInterface.OnRouedEmote;
+                @RouedEmote.canceled -= m_Wrapper.m_EmotesActionsCallbackInterface.OnRouedEmote;
             }
             m_Wrapper.m_EmotesActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @EmoteWheel.started += instance.OnEmoteWheel;
-                @EmoteWheel.performed += instance.OnEmoteWheel;
-                @EmoteWheel.canceled += instance.OnEmoteWheel;
+                @RouedEmote.started += instance.OnRouedEmote;
+                @RouedEmote.performed += instance.OnRouedEmote;
+                @RouedEmote.canceled += instance.OnRouedEmote;
             }
         }
     }
     public EmotesActions @Emotes => new EmotesActions(this);
     public interface IMovementActions
     {
-        void OnCancelMove(InputAction.CallbackContext context);
+        void OnStopMovement(InputAction.CallbackContext context);
     }
     public interface IAttackActions
     {
@@ -933,14 +933,14 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     }
     public interface ICapacityActions
     {
-        void OnCapacity0(InputAction.CallbackContext context);
-        void OnCapacity1(InputAction.CallbackContext context);
-        void OnCapacity2(InputAction.CallbackContext context);
-        void OnThrowCapacity(InputAction.CallbackContext context);
-        void OnEatCapacity(InputAction.CallbackContext context);
-        void OnRecalCapacity(InputAction.CallbackContext context);
-        void OnShowMaxRangeIndicator(InputAction.CallbackContext context);
-        void OnUpgradeCapacity(InputAction.CallbackContext context);
+        void OnSort1(InputAction.CallbackContext context);
+        void OnSort2(InputAction.CallbackContext context);
+        void OnSort3(InputAction.CallbackContext context);
+        void OnSortdePartage(InputAction.CallbackContext context);
+        void OnSortdeDegustation(InputAction.CallbackContext context);
+        void OnSortdeRappel(InputAction.CallbackContext context);
+        void OnIndicateurdeportee(InputAction.CallbackContext context);
+        void OnAmeliorationdeSort(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {
@@ -952,7 +952,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     }
     public interface ICameraActions
     {
-        void OnLockToggle(InputAction.CallbackContext context);
+        void OnVerrouillerlaCamera(InputAction.CallbackContext context);
     }
     public interface IMoveMouseActions
     {
@@ -963,6 +963,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     }
     public interface IEmotesActions
     {
-        void OnEmoteWheel(InputAction.CallbackContext context);
+        void OnRouedEmote(InputAction.CallbackContext context);
     }
 }

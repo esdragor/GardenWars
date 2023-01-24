@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -25,9 +26,9 @@ public class RebindKeys : MonoBehaviour
     private string actionName;
 
     [Header("UI Fields")]
-    [SerializeField] private Text actionText;
+    [SerializeField] private TextMeshProUGUI actionText;
     [SerializeField] private Button rebindButton;
-    [SerializeField] private Text rebindText;
+    [SerializeField] private TextMeshProUGUI rebindText;
     [SerializeField] private Button resetButton;
 
     private void OnEnable()

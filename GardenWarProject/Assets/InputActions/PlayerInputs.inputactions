@@ -6,7 +6,7 @@
             "id": "2b795710-b287-4812-ae8b-43eb8f73991b",
             "actions": [
                 {
-                    "name": "CancelMove",
+                    "name": "Stop Movement",
                     "type": "Button",
                     "id": "ca7f4080-26b9-4377-8429-685d79c3fa0a",
                     "expectedControlType": "Button",
@@ -23,7 +23,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CancelMove",
+                    "action": "Stop Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -50,7 +50,7 @@
             "id": "698439f3-8087-4c51-8d99-5115fa6e1253",
             "actions": [
                 {
-                    "name": "Capacity0",
+                    "name": "Sort 1",
                     "type": "Button",
                     "id": "3dd9532a-e0fc-4369-91a1-ada3d048afb9",
                     "expectedControlType": "Button",
@@ -59,7 +59,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Capacity1",
+                    "name": "Sort 2",
                     "type": "Button",
                     "id": "f0ec7891-2904-4b4a-b410-426f3efbc135",
                     "expectedControlType": "Button",
@@ -68,7 +68,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Capacity2",
+                    "name": "Sort 3",
                     "type": "Button",
                     "id": "5149e613-eee6-4a62-8048-6e49faf4b9eb",
                     "expectedControlType": "Button",
@@ -77,7 +77,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ThrowCapacity",
+                    "name": "Sort de Partage",
                     "type": "Button",
                     "id": "7c5a1cf3-1914-46b2-adff-2076fd1d6558",
                     "expectedControlType": "Button",
@@ -86,7 +86,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EatCapacity",
+                    "name": "Sort de Degustation",
                     "type": "Button",
                     "id": "48996e2e-b3aa-453c-8f70-d381365910dc",
                     "expectedControlType": "Button",
@@ -95,7 +95,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RecalCapacity",
+                    "name": "Sort de Rappel",
                     "type": "Button",
                     "id": "c127f5b8-4e5b-495a-a883-273461b1f71c",
                     "expectedControlType": "Button",
@@ -104,7 +104,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShowMaxRangeIndicator",
+                    "name": "Indicateur de portee",
                     "type": "Button",
                     "id": "e1b44cbe-5eb7-4046-9d05-8cfedf8ec8ef",
                     "expectedControlType": "Button",
@@ -113,7 +113,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UpgradeCapacity",
+                    "name": "Amelioration de Sort",
                     "type": "Button",
                     "id": "ba44bf19-27de-4214-89ff-00ae981af087",
                     "expectedControlType": "Button",
@@ -130,7 +130,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Capacity0",
+                    "action": "Sort 1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -141,7 +141,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Capacity1",
+                    "action": "Sort 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -152,7 +152,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Capacity2",
+                    "action": "Sort 3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -163,7 +163,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ThrowCapacity",
+                    "action": "Sort de Partage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -174,7 +174,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RecalCapacity",
+                    "action": "Sort de Rappel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -185,7 +185,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ShowMaxRangeIndicator",
+                    "action": "Indicateur de portee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -196,7 +196,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "UpgradeCapacity",
+                    "action": "Amelioration de Sort",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -207,7 +207,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EatCapacity",
+                    "action": "Sort de Degustation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -326,7 +326,7 @@
             "id": "745bed8a-cfc0-4f8a-a3ae-b70cfb354251",
             "actions": [
                 {
-                    "name": "LockToggle",
+                    "name": "Verrouiller la Camera",
                     "type": "Button",
                     "id": "54a45e78-fe95-4f9d-bf31-b0edcdd20b4b",
                     "expectedControlType": "Button",
@@ -343,7 +343,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LockToggle",
+                    "action": "Verrouiller la Camera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -442,7 +442,7 @@
             "id": "14323f0b-b440-4d20-b63e-e4231fd5429d",
             "actions": [
                 {
-                    "name": "EmoteWheel",
+                    "name": "Roue d'Emote",
                     "type": "Button",
                     "id": "dac54b6b-bfd1-4508-819e-098363e1b0ce",
                     "expectedControlType": "Button",
@@ -459,7 +459,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EmoteWheel",
+                    "action": "Roue d'Emote",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

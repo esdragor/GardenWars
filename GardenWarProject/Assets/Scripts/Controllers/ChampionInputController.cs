@@ -349,27 +349,27 @@ namespace Controllers.Inputs
 
             inputs.Attack.Attack.performed += OnAttack;
 
-            inputs.Capacity.Capacity0.performed += OnPressCapacity0;
-            inputs.Capacity.Capacity1.performed += OnPressCapacity1;
-            inputs.Capacity.Capacity2.performed += OnPressCapacity2;
-            inputs.Capacity.Capacity0.canceled += OnReleaseCapacity0;
-            inputs.Capacity.Capacity1.canceled += OnReleaseCapacity1;
-            inputs.Capacity.Capacity2.canceled += OnReleaseCapacity2;
+            inputs.Capacity.Sort1.performed += OnPressCapacity0;
+            inputs.Capacity.Sort2.performed += OnPressCapacity1;
+            inputs.Capacity.Sort3.performed += OnPressCapacity2;
+            inputs.Capacity.Sort1.canceled += OnReleaseCapacity0;
+            inputs.Capacity.Sort2.canceled += OnReleaseCapacity1;
+            inputs.Capacity.Sort3.canceled += OnReleaseCapacity2;
             
-            inputs.Capacity.RecalCapacity.performed += OnPressRecallCapacity;
-            inputs.Capacity.RecalCapacity.canceled += OnReleaseRecallCapacity;
+            inputs.Capacity.SortdeRappel.performed += OnPressRecallCapacity;
+            inputs.Capacity.SortdeRappel.canceled += OnReleaseRecallCapacity;
             
-            inputs.Capacity.EatCapacity.performed += OnPressConsumeCapacity;
-            inputs.Capacity.EatCapacity.canceled += OnReleaseConsumeCapacity;
+            inputs.Capacity.SortdeDegustation.performed += OnPressConsumeCapacity;
+            inputs.Capacity.SortdeDegustation.canceled += OnReleaseConsumeCapacity;
 
-            inputs.Capacity.ThrowCapacity.performed += OnPressThrowCapacity;
-            inputs.Capacity.ThrowCapacity.canceled += OnReleaseThrowCapacity;
+            inputs.Capacity.SortdePartage.performed += OnPressThrowCapacity;
+            inputs.Capacity.SortdePartage.canceled += OnReleaseThrowCapacity;
             
-            inputs.Capacity.UpgradeCapacity.performed += OnPressUpgrade;
-            inputs.Capacity.UpgradeCapacity.canceled += OnReleaseUpgrade;
+            inputs.Capacity.AmeliorationdeSort.performed += OnPressUpgrade;
+            inputs.Capacity.AmeliorationdeSort.canceled += OnReleaseUpgrade;
             
-            inputs.Capacity.ShowMaxRangeIndicator.performed += OnPressShowRange;
-            inputs.Capacity.ShowMaxRangeIndicator.canceled += OnReleaseShowRange;
+            inputs.Capacity.Indicateurdeportee.performed += OnPressShowRange;
+            inputs.Capacity.Indicateurdeportee.canceled += OnReleaseShowRange;
 
             inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
             
@@ -389,37 +389,37 @@ namespace Controllers.Inputs
             inputs.MoveMouse.HoldRightClick.performed += OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled += OnReleaseRightClick;
             
-            inputs.Movement.CancelMove.canceled += CancelMovement;
+            inputs.Movement.StopMovement.canceled += CancelMovement;
 
-            inputs.Emotes.EmoteWheel.performed += OnPressEmote;
-            inputs.Emotes.EmoteWheel.canceled += OnReleaseEmote;
+            inputs.Emotes.RouedEmote.performed += OnPressEmote;
+            inputs.Emotes.RouedEmote.canceled += OnReleaseEmote;
         }
         
         protected override void Unlink()
         {
             inputs.Attack.Attack.performed -= OnAttack;
 
-            inputs.Capacity.Capacity0.performed -= OnPressCapacity0;
-            inputs.Capacity.Capacity1.performed -= OnPressCapacity1;
-            inputs.Capacity.Capacity2.performed -= OnPressCapacity2;
-            inputs.Capacity.Capacity0.canceled -= OnReleaseCapacity0;
-            inputs.Capacity.Capacity1.canceled -= OnReleaseCapacity1;
-            inputs.Capacity.Capacity2.canceled -= OnReleaseCapacity2;
+            inputs.Capacity.Sort1.performed -= OnPressCapacity0;
+            inputs.Capacity.Sort2.performed -= OnPressCapacity1;
+            inputs.Capacity.Sort3.performed -= OnPressCapacity2;
+            inputs.Capacity.Sort1.canceled -= OnReleaseCapacity0;
+            inputs.Capacity.Sort2.canceled -= OnReleaseCapacity1;
+            inputs.Capacity.Sort3.canceled -= OnReleaseCapacity2;
             
-            inputs.Capacity.RecalCapacity.performed -= OnPressRecallCapacity;
-            inputs.Capacity.RecalCapacity.canceled -= OnReleaseRecallCapacity;
+            inputs.Capacity.SortdeRappel.performed -= OnPressRecallCapacity;
+            inputs.Capacity.SortdeRappel.canceled -= OnReleaseRecallCapacity;
             
-            inputs.Capacity.EatCapacity.performed -= OnPressConsumeCapacity;
-            inputs.Capacity.EatCapacity.canceled -= OnReleaseConsumeCapacity;
+            inputs.Capacity.SortdeDegustation.performed -= OnPressConsumeCapacity;
+            inputs.Capacity.SortdeDegustation.canceled -= OnReleaseConsumeCapacity;
 
-            inputs.Capacity.ThrowCapacity.performed -= OnPressThrowCapacity;
-            inputs.Capacity.ThrowCapacity.canceled -= OnReleaseThrowCapacity;
+            inputs.Capacity.SortdePartage.performed -= OnPressThrowCapacity;
+            inputs.Capacity.SortdePartage.canceled -= OnReleaseThrowCapacity;
             
-            inputs.Capacity.UpgradeCapacity.performed -= OnPressUpgrade;
-            inputs.Capacity.UpgradeCapacity.canceled -= OnReleaseUpgrade;
+            inputs.Capacity.AmeliorationdeSort.performed -= OnPressUpgrade;
+            inputs.Capacity.AmeliorationdeSort.canceled -= OnReleaseUpgrade;
             
-            inputs.Capacity.ShowMaxRangeIndicator.performed -= OnPressShowRange;
-            inputs.Capacity.ShowMaxRangeIndicator.canceled -= OnReleaseShowRange;
+            inputs.Capacity.Indicateurdeportee.performed -= OnPressShowRange;
+            inputs.Capacity.Indicateurdeportee.canceled -= OnReleaseShowRange;
 
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
             
@@ -439,10 +439,10 @@ namespace Controllers.Inputs
             inputs.MoveMouse.HoldRightClick.performed -= OnPressRightClick;
             inputs.MoveMouse.HoldRightClick.canceled -= OnReleaseRightClick;
             
-            inputs.Movement.CancelMove.canceled -= CancelMovement;
+            inputs.Movement.StopMovement.canceled -= CancelMovement;
 
-            inputs.Emotes.EmoteWheel.performed -= OnPressEmote;
-            inputs.Emotes.EmoteWheel.canceled -= OnReleaseEmote;
+            inputs.Emotes.RouedEmote.performed -= OnPressEmote;
+            inputs.Emotes.RouedEmote.canceled -= OnReleaseEmote;
 
             CameraController.Instance.UnLinkCamera();
 
