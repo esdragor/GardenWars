@@ -25,11 +25,6 @@ namespace UIComponents
 
         [SerializeField] private Transform championButtonParent;
 
-        [Header("Role Selection")] [SerializeField]
-        private RoleButton roleButtonPrefab;
-
-        [SerializeField] private Transform roleButtonParent;
-
         [Header("Ready Button")]
         [SerializeField] private Button readyButton;
         [SerializeField] private TextMeshProUGUI readyButtonText;
@@ -152,12 +147,7 @@ namespace UIComponents
 
         private void InitializeRoleButtons()
         {
-            foreach (var role in gameStateMachine.roles)
-            {
-                var roleButton = Instantiate(roleButtonPrefab, Vector3.zero, Quaternion.identity,
-                    roleButtonParent);
-                roleButton.InitButton(role.role, role.sprite,this);
-            }
+
         }
 
         private void SetupReadyButton()
@@ -174,8 +164,7 @@ namespace UIComponents
             readyButtonText.text = isReady ? "Unlock" : "Lock";
             
             championButtonParent.gameObject.SetActive(!isReady);
-            roleButtonParent.gameObject.SetActive(!isReady);
-            
+
             gameStateMachine.RequestSetReady(isReady);
         }
 

@@ -15,7 +15,6 @@ namespace UIComponents.Lobby
         [SerializeField] private GameObject showWhenReady;
         [SerializeField] private RectTransform championNameTransform;
         [SerializeField] private RectTransform playerNameTransform;
-        [SerializeField] private RectTransform roleImageTransform;
         [SerializeField] private RectTransform championImageTransform;
 
         [Header("Components")]
@@ -24,7 +23,6 @@ namespace UIComponents.Lobby
         [SerializeField] private Image championImage;
         [SerializeField] private TextMeshProUGUI championNameText;
         [SerializeField] private TextMeshProUGUI playerNameText;
-        [SerializeField] private Image roleImage;
 
         private GameStateMachine gameStateMachine;
         private Enums.Team assignedTeam;
@@ -42,14 +40,11 @@ namespace UIComponents.Lobby
             var side = team == 2 ? -1 : 1;
             joinButtonObj.transform.localScale = new Vector3(side, 1, 1);
             transform.localScale = new Vector3(side, 1, 1);
-            roleImageTransform.localScale = new Vector3(side, 1, 1);
             championImageTransform.localScale = new Vector3(side, 1, 1);
             championNameTransform.localScale = new Vector3(side, 1, 1);
             championNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
             playerNameTransform.localPosition = new Vector3(side*4, -25, 1);
             playerNameText.alignment = side == 1 ? TextAlignmentOptions.Left : TextAlignmentOptions.Right;
-            
-            backgroundImage.color = Color.gray;
             
             UpdateSlot(null,false);
             
@@ -82,7 +77,6 @@ namespace UIComponents.Lobby
             }
             playerNameText.text = $"{data.name}";
             playerNameText.color = local ? Color.yellow : Color.black;
-            roleImage.sprite = gameStateMachine.roles[(byte)data.role].sprite;
 
         }
 
