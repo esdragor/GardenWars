@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Entities
 {
@@ -36,15 +37,13 @@ namespace Entities
         
         [Header("Indicator")]
         [SerializeField] private RectTransform indicator;
-        //[SerializeField] private RectTransform rotator;
+        [SerializeField] private Image indicatorImage;
         [SerializeField] private float offset;
         [SerializeField] private float margin;
         
         //private GameObject rotatorGo;
         private Vector3 iconPos;
         private Camera cam;
-        
-       
         
         private bool isAlive = true;
         private bool canDie = true;
@@ -74,6 +73,8 @@ namespace Entities
             cam = Camera.main;
             
             currentBonbon = 0;
+
+            indicatorImage.fillAmount = 0;
 
             currentFeeder = null;
             
@@ -203,7 +204,7 @@ namespace Entities
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
         public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
-
+        
         public void StartChanneling(Champion.Champion champion)
         {
             if (currentFeeder != null)
@@ -213,7 +214,7 @@ namespace Entities
             
             currentFeeder = champion;
             
-            if(gsm.GetPlayerChampion() == currentFeeder) cam.DOFieldOfView(deZoomFov,deZoomDuration);
+            photonView.RPC("SyncZoomRPC",RpcTarget.All,currentFeeder.entityIndex,true);
 
             var pos = champion.position;
             pos.y = transform.position.y;
@@ -252,13 +253,8 @@ namespace Entities
             {
                 if (currentFeeder.currentCandy - candy <= 0) candy = currentFeeder.currentCandy;
 
-                if (currentFeeder == gsm.GetPlayerChampion())
-                {
-                    candyFollowGo.SetActive(true);
-                    candyFollow.transform.position = currentFeeder.position;
-                    candyFollow.SetTarget(this,2,candy,false);
-                }
-                
+                photonView.RPC("SyncShootCandyRPC",RpcTarget.All,currentFeeder.entityIndex);
+
                 IncreaseCurrentCandy(candy);
             }
 
@@ -270,6 +266,8 @@ namespace Entities
 
                 transform.localScale = new Vector3(Mathf.Lerp(1, maxSize.x, (float) currentBonbon / maxBonbon), 1,
                     Mathf.Lerp(1, maxSize.z, (float) currentBonbon / maxBonbon));
+
+                photonView.RPC("SyncImageFillRPC",RpcTarget.All,(float)currentBonbon/maxBonbon);
 
                 if (currentBonbon < maxBonbon) return;
                 
@@ -300,6 +298,8 @@ namespace Entities
         
             void StopChanneling()
             {
+                photonView.RPC("SyncZoomRPC",RpcTarget.All,currentFeeder.entityIndex,false);
+                
                 candyFollowGo.SetActive(false);
                 
                 gsm.OnTick -= ChannelDrain;
@@ -311,14 +311,38 @@ namespace Entities
                 currentFeeder.OnDie -= CancelOnDie;
                 
                 currentFeeder = null;
-
-                cam.DOFieldOfView(60, 1);
             }
+        }
+        
+        [PunRPC]
+        private void SyncZoomRPC(int championIndex,bool value)
+        {
+            if (championIndex != gsm.GetPlayerChampion().entityIndex) return;
+
+            var zoomFov = value ? deZoomFov : 60;
+            
+            cam.DOFieldOfView(zoomFov,deZoomDuration);
+        }
+        
+        [PunRPC]
+        private void SyncShootCandyRPC(int championIndex)
+        {
+            if (championIndex != gsm.GetPlayerChampion().entityIndex) return;
+            
+            candyFollowGo.SetActive(true);
+            candyFollow.transform.position = currentFeeder.position;
+            candyFollow.SetTarget(this,2,0,false);
+        }
+
+        [PunRPC]
+        private void SyncImageFillRPC(float value)
+        {
+            indicatorImage.fillAmount = value;
         }
 
         private void DropUpgrade()
         {
-            var projectile = LocalPoolManager.PoolInstantiate(upgradeProjectile, transform.position, Quaternion.identity);
+            var projectile = LocalPoolManager.PoolInstantiate(upgradeProjectile, transform.position+Vector3.up*0.5f, Quaternion.identity);
 
             projectile.OnEntityCollideFeedback += GiveUpgrade;
             
