@@ -71,7 +71,14 @@ namespace Entities.Capacities
 
         protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            champion.ShowAreaIndicator(targetPositions,2);
+            if (Vector3.Distance(targetPositions, casterPos) > so.maxRange)
+            {
+                var shotDirection = (targetPositions - casterPos).normalized;
+                targetPositions = casterPos + shotDirection * so.maxRange;
+            }
+                
+            champion.ShowAreaIndicator(GetClosestValidPoint(targetPositions),2);
+            
             champion.ShowMaxRangeIndicator(so.maxRange);
         }
 
@@ -154,14 +161,14 @@ namespace Entities.Capacities
             {
                 timer += Time.deltaTime;
 
-                var pos = GetClosestValidPoint(PlayerInputController.CursorWorldPos);
+                var pos = PlayerInputController.CursorWorldPos;
                 if (Vector3.Distance(pos, casterPos) > so.maxRange)
                 {
                     var shotDirection = (pos - casterPos).normalized;
                     pos = casterPos + shotDirection * so.maxRange;
                 }
                 
-                champion.ShowAreaIndicator(pos,2);
+                champion.ShowAreaIndicator(GetClosestValidPoint(pos),2);
                 champion.ShowMaxRangeIndicator(so.maxRange);
                 
                 if(timer <= so.borrowDuration) return;
