@@ -13,6 +13,7 @@ namespace Entities.Champion
         public bool canDie;
         
         public float respawnDuration = 5;
+        public float respawnDurationIncreasePerMinute = 2;
         private double respawnTimer;
 
         public bool IsAlive()
@@ -163,9 +164,10 @@ namespace Entities.Champion
 
         private void Revive()
         {
-            respawnTimer += 1 / GameStateMachine.Instance.tickRate;
+            respawnTimer += 1 / gsm.tickRate;
 
-            if (!(respawnTimer >= respawnDuration)) return;
+            if (respawnTimer < respawnDuration + ((UIManager.currentTime - gsm.startTime)%60) * respawnDurationIncreasePerMinute) return;
+            
             GameStateMachine.Instance.OnTick -= Revive;
             respawnTimer = 0f;
             RequestRevive();

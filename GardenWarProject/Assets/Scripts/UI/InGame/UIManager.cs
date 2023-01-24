@@ -7,7 +7,7 @@ using Button = UnityEngine.UI.Button;
 public partial class UIManager : MonoBehaviour
 {
     public GameStateMachine gsm => GameStateMachine.Instance;
-    private double currentTime => GameStateMachine.isOffline ? Time.timeAsDouble : PhotonNetwork.Time;
+    public static double currentTime => GameStateMachine.isOffline ? Time.timeAsDouble : PhotonNetwork.Time;
     public static UIManager Instance;
 
     [Header("Top Bar")]
