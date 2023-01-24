@@ -221,7 +221,8 @@ namespace Entities
             transform.LookAt(pos);
             
             double drainTimer = -timeBeforeDrain;
-            var drainTime = 1;
+            var quarterSeconds = 0;
+            var secondspassed = 0;
 
             gsm.OnTick += ChannelDrain;
             
@@ -235,10 +236,15 @@ namespace Entities
             {
                 drainTimer += gsm.increasePerTick;
                 
-                if(drainTimer < 1) return;
+                if(drainTimer < 0.25) return;
                 
                 drainTimer = 0;
-                drainTime++;
+                quarterSeconds++;
+                if (quarterSeconds == 4)
+                {
+                    secondspassed++;
+                    quarterSeconds = 0;
+                }
 
                 if (champion.currentCandy <= 0)
                 {
@@ -246,7 +252,7 @@ namespace Entities
                     return;
                 }
                 
-                DrainCandy(drainTime);
+                DrainCandy(secondspassed + 1);
             }
             
             void DrainCandy(int candy)
