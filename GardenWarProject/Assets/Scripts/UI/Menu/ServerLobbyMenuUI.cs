@@ -38,10 +38,13 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
         Debug.Log($"Player Name is {GameSettingsManager.playerName}");
         
         playerNameField.text = GameSettingsManager.playerName;
+
+        connectionStatusText.text = string.Empty;
     }
     
     private void Update()
     {
+        if(!GameSettingsManager.isDebug) return;
         connectionStatusText.text = $"Is connected and ready : {PhotonNetwork.IsConnectedAndReady}" +
                                     $"\nStatus : {PhotonNetwork.NetworkClientState}";
     }
