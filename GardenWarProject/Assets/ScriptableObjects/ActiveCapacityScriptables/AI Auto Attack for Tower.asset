@@ -12,13 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e1f1358689f63c4490af7bc88feb8a8, type: 3}
   m_Name: AI Auto Attack for Tower
   m_EditorClassIdentifier: 
-  abilityName: 
+  capacityName: 
   icon: {fileID: 0}
   description: 
+  description1: 
+  description2: 
+  maxLevel: 3
   cooldown: 0
+  castTime: 0
   maxRange: 15
   types: 
   shootType: 2
-  indexInCollection: 5
+  showMaxRangeIfSkillShot: 0
+  overrideDefaultIndicator: 0
+  indexInCollection: 2
   projectile: {fileID: 4689079691940470199, guid: 66ca67ab79fd6214a8d2ebaecb86cbb3, type: 3}
-  speedFire: 0.6
+  speedFire: 0.1
+  SFXName: 
