@@ -166,7 +166,7 @@ namespace Entities.Champion
         {
             respawnTimer += 1 / gsm.tickRate;
 
-            if (respawnTimer < respawnDuration + ((UIManager.currentTime - gsm.startTime)%60) * respawnDurationIncreasePerMinute) return;
+            if (respawnTimer < respawnDuration + ((UIManager.currentTime - gsm.startTime)/60) * respawnDurationIncreasePerMinute) return;
             
             GameStateMachine.Instance.OnTick -= Revive;
             respawnTimer = 0f;
