@@ -64,14 +64,11 @@ namespace Controllers.Inputs
             if (ent == null && entityHit.transform.parent != null) entityHit.transform.parent.GetComponent<Entity>();
             if (ent == null) return;
             selectedEntity = ent;
-            //cursorWorldPos = ent.transform.position;
-            //CursorWorldPos = cursorWorldPos;
         }
 
         private void CastCamRay(out RaycastHit entityHit,out RaycastHit worldHit)
         {
             var mousePos = Input.mousePosition;
-            if(RectTransformUtility.RectangleContainsScreenPoint(minimapRect, mousePos)) Debug.Log("On Minimap");
             var mouseRay = RectTransformUtility.RectangleContainsScreenPoint(minimapRect, mousePos)
                 ? UIManager.Instance.MiniMapCamRay(mousePos) : mainCam.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(mouseRay, out entityHit, Mathf.Infinity, entityLayers);

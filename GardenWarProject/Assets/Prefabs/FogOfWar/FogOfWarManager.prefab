@@ -63,7 +63,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2147483648
+    m_Bits: 2684354560
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 6190b3d1728e5ad48a95e080f11805b5, type: 2}
   m_TargetDisplay: 0
@@ -171,7 +171,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1610614288
+    m_Bits: 512
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 1702650019f12874c919c7dba9a360c6, type: 2}
   m_TargetDisplay: 0
@@ -284,7 +284,6 @@ MonoBehaviour:
   allShowables: []
   cameraFog: {fileID: 1126480335}
   cameraMinimap: {fileID: 1386218574700053261}
-  cameraMinimapLevel: {fileID: 0}
   sceneToRenderFog:
   - InGameScene
   fogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
