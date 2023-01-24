@@ -134,6 +134,8 @@ namespace Entities.Capacities
             champion.SetAnimatorBool("Borrowed",borrowed);
             
             aileronGo.SetActive(true);
+            aileron.OnEntityCollide += EntityCollide;
+            
             aileronGo.GetComponent<SharkPassiveManager>().EnableFXShot(champion.team);
         }
 

@@ -95,8 +95,6 @@ namespace Entities.Capacities
                 damageArea.transform.localPosition = Vector3.zero;
                 damageAreaGo = damageArea.gameObject;
                 damageAreaGo.SetActive(false);
-
-                damageArea.OnEntityCollide += DamageAndStun;
             }
             
             if (ultBorrowed)
@@ -128,8 +126,8 @@ namespace Entities.Capacities
 
                 if (!damageAreaGo.activeSelf)
                 {
-                    Debug.Log("Damage Zone");
                     damageAreaGo.SetActive(true);
+                    damageArea.OnEntityCollide += DamageAndStun;
                 }
 
                 if (timer <= so.animationDuration) return;
@@ -206,8 +204,8 @@ namespace Entities.Capacities
 
                 if (!damageAreaGo.activeSelf)
                 {
-                    Debug.Log("Damage Zone");
                     damageAreaGo.SetActive(true);
+                    damageArea.OnEntityCollide += DamageAndStun;
                 }
 
                 if (timer <= so.animationDuration) return;
@@ -226,10 +224,13 @@ namespace Entities.Capacities
                 }
 
                 gsm.OnUpdateFeedback -= IncreaseTimerPart3;
+                
             }
 
             void DamageAndStun(Entity entity)
             {
+                Debug.Log($"Hit : {entity}");
+                
                 if (!caster.GetEnemyTeams().Contains(entity.team)) return;
                 
                 entity.AddPassiveCapacityRPC(so.stun.indexInCollection);
