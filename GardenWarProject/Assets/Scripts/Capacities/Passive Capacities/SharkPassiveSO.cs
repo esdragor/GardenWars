@@ -111,9 +111,9 @@ namespace Entities.Capacities
             if(borrowed) return;
             
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXSharkPassive, champion.transform.position);
-            (entity as Champion.Champion).CurrentSFXMove.Stop();
-            (entity as Champion.Champion).CurrentSFXMove = (entity as Champion.Champion).SFXMoves[1];
-            (entity as Champion.Champion).CurrentSFXMove.Play();           
+            champion.CurrentSFXMove.Stop();
+            champion.CurrentSFXMove = champion.SFXMoves[1];
+            champion.CurrentSFXMove.Play();           
             //champion.rotateParent.localPosition = Vector3.up * -0.75f;
 
             if (Entity.isMaster)
@@ -157,9 +157,9 @@ namespace Entities.Capacities
             if(target == null) return;
             if(!champion.GetEnemyTeams().Contains(target.team)) return;
             
-            (entity as Champion.Champion).CurrentSFXMove.Stop();
-            (entity as Champion.Champion).CurrentSFXMove = (entity as Champion.Champion).SFXMoves[0];
-            (entity as Champion.Champion).CurrentSFXMove.Play();  
+            champion.CurrentSFXMove.Stop();
+            champion.CurrentSFXMove = champion.SFXMoves[0];
+            champion.CurrentSFXMove.Play();  
 
             ForceUnBorrow();
         }
