@@ -76,6 +76,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             t += Time.deltaTime * SpeedAnimationGoal;
             if (t < 1f) return;
             gsm.IncreaseScore(team);
+            var fxGo = LocalPoolManager.PoolInstantiate(MinionDieFX, transform.position, Quaternion.identity);
+            HideMinionDieFx(fxGo, 2000);
             DieRPC(entityIndex);
             gsm.OnUpdate -= AnimationGoal;
         }

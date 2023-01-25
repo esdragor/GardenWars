@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using Controllers.Inputs;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -37,6 +38,7 @@ namespace Entities.Capacities
         [Header("Feedback")]
         public ParticleSystem ThrowDestFx;
         public ParticleSystem pickUpFx;
+        public ParticleSystem CandyBagOnGroundFx;
         public string SFXCataLaunch;
         public string dropCandySFX;
 
@@ -218,7 +220,10 @@ namespace Entities.Capacities
                                 projectileTr.position.z);
                             if(canPickup) projectile.OnEntityCollideFeedback -= DealDamage;
                             fxGo.SetActive(false);
-                            
+                            var fxGround = LocalPoolManager.PoolInstantiate(so.CandyBagOnGroundFx, projectileTr.position, Quaternion.Euler(-90, 0, 0))
+                                .gameObject;
+                            HideFx(fxGround, 2000);
+                            fxGround.SetActive(true);
                             return;
                         }
                     }
@@ -227,6 +232,12 @@ namespace Entities.Capacities
                     progress = (timer / timeToDestination);
 
                     projectileTr.position = ParabolaClass.Parabola(startPosition, endPosition, height, progress);
+                }
+                
+                async void HideFx(GameObject fxGo, int delay)
+                {
+                    await Task.Delay(delay);
+                    if (fxGo != null) fxGo.SetActive(false);
                 }
 
                 void GiveCandy(Entity entity)
