@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dde311ad2745fe47bffefc44c802ccf, type: 3}
   m_Name: Shark Champion
   m_EditorClassIdentifier: 
-  portrait: {fileID: 21300000, guid: bb35b17d9f3f4d7448700b2124b76d7f, type: 3}
+  portrait: {fileID: 21300000, guid: cef4fdde015ff9d4b93bddfea66bb650, type: 3}
   SpriteSelection: {fileID: 21300000, guid: 681914c382be2934baf74140971e3173, type: 3}
   championMeshPrefab: {fileID: 6389646249965025388, guid: 6c0ec95c1d8c319438ec2caf277c4f67, type: 3}
-  canvasIndex: 0
   materialsRedTeam:
   - {fileID: 2100000, guid: 491cceb53a19caf49bd22d493237b8f8, type: 2}
   materialsBlueTeam:
@@ -30,8 +29,6 @@ MonoBehaviour:
   attackDamage: 9.1
   attackSpeed: 0.69
   attackRange: 1.5
-  baseArmorPenetration: 0
-  baseLifesteal: 0
   attackAbility: {fileID: 11400000, guid: 39aa558a85db888408bae906e7c338fa, type: 2}
   attackAbilityIndex: 9
   passiveCapacities:
