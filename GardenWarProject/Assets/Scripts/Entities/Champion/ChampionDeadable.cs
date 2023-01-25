@@ -94,6 +94,8 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC(int killerId)
         {
+            SetAnimatorBool("IsAlive", false);
+            SetAnimatorTrigger("Death");
             if (photonView.IsMine)
             {
                 InputManager.PlayerMap.Movement.Disable();
@@ -102,14 +104,14 @@ namespace Entities.Champion
                 InputManager.PlayerMap.Inventory.Disable();
                 agent.isStopped = true;
                 agent.ResetPath();
-                agent.ResetPath();
-                
+
                 HideMaxRangeIndicator();
             }
             isAlive = false;
-            SetAnimatorTrigger("Death");
             uiTransform.gameObject.SetActive(false);
             FogOfWarManager.Instance.RemoveFOWViewable(this);
+            
+            coll.enabled = false;
 
             OnDieFeedback?.Invoke(killerId);
         }
@@ -144,7 +146,8 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
-            transform.position = respawnPosition;
+            agent.enabled = true;
+            agent.Warp(respawnPosition);
             if (photonView.IsMine)
             {
                 InputManager.PlayerMap.Movement.Enable();
@@ -155,11 +158,13 @@ namespace Entities.Champion
                 agent.destination = transform.position;
             }
             isAlive = true;
+            SetAnimatorBool("ISAlive", true);
             FogOfWarManager.Instance.AddFOWViewable(this);
             rotateParent.gameObject.SetActive(true);
             uiTransform.gameObject.SetActive(true);
             OnReviveFeedback?.Invoke();
             SetAnimatorTrigger("Respawn");
+            coll.enabled = true;
         }
 
         private void Revive()
