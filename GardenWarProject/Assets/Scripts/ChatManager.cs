@@ -15,10 +15,12 @@ public class ChatManager : MonoBehaviour
     public static ChatManager Instance;
 
     [SerializeField] private MarkdownRenderer chatPanel;
+    [SerializeField] private GameObject chatPanelCanvas;
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Color allyColor = Color.cyan;
     [SerializeField] private Color enemyColor = Color.red;
+    [SerializeField] private Button QuitButton;
 
     private Champion champion = null;
     private bool isChatting = false;
@@ -35,6 +37,7 @@ public class ChatManager : MonoBehaviour
         inputField.onEndEdit.AddListener(OnAddMessage);
         inputField.onSelect.AddListener((string s) => { InputManager.DisableInput(); });
         inputField.onDeselect.AddListener((string s) => { InputManager.EnableInput(); });
+        QuitButton.onClick.AddListener(ToggleChat);
     }
 
     private void OnAddMessage(string message)
@@ -82,5 +85,10 @@ public class ChatManager : MonoBehaviour
     {
         await Task.Delay(20);
         scrollRect.verticalNormalizedPosition = 0;
+    }
+
+    public void ToggleChat()
+    {
+        chatPanelCanvas.SetActive(!chatPanelCanvas.activeSelf);
     }
 }

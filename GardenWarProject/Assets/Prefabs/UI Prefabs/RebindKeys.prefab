@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c82dcbed57c121846be36beed2f77442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: -7636128208424489261, guid: 25dc963c87025994ca11bdf6d0cec3af, type: 3}
+  inputActionReference: {fileID: -8730810432499134771, guid: 25dc963c87025994ca11bdf6d0cec3af, type: 3}
   excludeMouse: 1
   selectedBinding: 0
   actionText: {fileID: 7613636030473033244}
@@ -65,11 +65,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 639016526610850799, guid: f25dcd618d3acd64795bf8bb32edb6c9, type: 3}
       propertyPath: m_text
-      value: Alt
+      value: T
       objectReference: {fileID: 0}
     - target: {fileID: 2646393163374994887, guid: f25dcd618d3acd64795bf8bb32edb6c9, type: 3}
       propertyPath: m_text
-      value: EmoteWheel
+      value: Toggle Chat
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646393163374994887, guid: f25dcd618d3acd64795bf8bb32edb6c9, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278321666
       objectReference: {fileID: 0}
     - target: {fileID: 2646393163374994887, guid: f25dcd618d3acd64795bf8bb32edb6c9, type: 3}
       propertyPath: m_HorizontalAlignment

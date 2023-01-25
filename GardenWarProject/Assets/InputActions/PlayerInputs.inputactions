@@ -464,6 +464,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Chat",
+            "id": "cd384f21-e1ce-445b-bad5-bfadb9bb5312",
+            "actions": [
+                {
+                    "name": "Toggle Chat",
+                    "type": "Button",
+                    "id": "1853aa15-b768-405c-b2a4-b88525e273d0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "af323057-7ff0-458f-9a85-addcc2f9d38c",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Chat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
