@@ -18,7 +18,7 @@ namespace UIComponents.Lobby
         [SerializeField] private RectTransform championImageTransform;
 
         [Header("Components")]
-        [SerializeField] private Image backgroundImage;
+        [SerializeField] private Sprite transParentImage;
         [SerializeField] private Button joinButton;
         [SerializeField] private Image championImage;
         [SerializeField] private TextMeshProUGUI championNameText;
@@ -75,7 +75,7 @@ namespace UIComponents.Lobby
             }
             else
             {
-                championImage.sprite = null;
+                championImage.sprite = transParentImage;
                 championNameText.text = string.Empty;
             }
             playerNameText.text = $"{data.name}";
