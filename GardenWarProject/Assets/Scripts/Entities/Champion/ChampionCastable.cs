@@ -54,6 +54,7 @@ namespace Entities.Champion
 
         [Header("Upgrades")]
         [SerializeField] private int upgradeCount;
+        [SerializeField] private GameObject upgradeFx;
         public int upgrades => upgradeCount;
 
         public byte throwAbilityIndex { get; private set; }
@@ -308,6 +309,9 @@ namespace Entities.Champion
         private void SyncIncreaseUpgradeCountRPC(int value)
         {
             upgradeCount = value;
+            
+            upgradeFx.SetActive(upgradeCount > 0);
+            
             OnUpgradeCountIncreased?.Invoke();
         }
 
@@ -332,6 +336,9 @@ namespace Entities.Champion
         private void SyncDecreaseUpgradeCountRPC(int value)
         {
             upgradeCount = value;
+            
+            upgradeFx.SetActive(upgradeCount > 0);
+            
             OnUpgradeCountDecreased?.Invoke();
         }
 
