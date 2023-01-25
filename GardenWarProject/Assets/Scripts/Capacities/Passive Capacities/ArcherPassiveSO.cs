@@ -1,4 +1,5 @@
 using System;
+using Controllers;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -39,6 +40,8 @@ namespace Entities.Capacities
         private GameObject FXPassiveGO;
 
         public bool holdStacks;
+        
+        private GameObject FXPassiveCamera = null; 
 
         protected override void OnAddedEffects(Entity target)
         {
@@ -130,6 +133,7 @@ namespace Entities.Capacities
             if (currentStacks <= 0)
             {
                 FXPassiveGO.SetActive(false);
+                FXPassiveCamera.SetActive(false);
             }
             champion.RequestRemovePassiveCapacityByIndex(so.attackSpeedBuffSOIndex);
         }
@@ -145,6 +149,9 @@ namespace Entities.Capacities
                 FXPassive = champion.team == gsm.GetPlayerTeam() ? so.FXBlue : so.FXRed;
                 FXPassiveGO = LocalPoolManager.PoolInstantiate(FXPassive,champion.position, Quaternion.Euler(-90f, 0, 0), champion.championMesh.transform).gameObject;
             }
+            if (!FXPassiveCamera)
+                FXPassiveCamera = Camera.main.GetComponent<CameraController>().PassiveReindeer;
+            FXPassiveCamera.SetActive(true);
             FXPassiveGO.SetActive(true);
             
             currentStacks++;
