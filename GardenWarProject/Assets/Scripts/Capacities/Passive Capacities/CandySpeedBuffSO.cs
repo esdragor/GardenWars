@@ -8,6 +8,7 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO/CandySpeedBuff", fileName = "CandySpeedBuff")]
     public class CandySpeedBuffSO : PassiveCapacitySO
     {
+        public ParticleSystem fx;
         public float moveSpeedIncrease = 0.5f;
         public float cooldownReduction = 0.3f;
         public float attackSpeedBonus = 0.25f;
@@ -21,7 +22,7 @@ namespace Entities.Capacities
     public class CandySpeedBuff : PassiveCapacity
     {
         private CandySpeedBuffSO so => (CandySpeedBuffSO) AssociatedPassiveCapacitySO();
-
+        
         private float msIncrease;
         private float attackSpeedIncrease;
         private float cdDecrease;
@@ -41,7 +42,9 @@ namespace Entities.Capacities
 
         protected override void OnAddedFeedbackEffects(Entity target)
         {
-            
+            var fx =LocalPoolManager.PoolInstantiate(so.fx, champion.position + Vector3.up, Quaternion.Euler(-90, 0, 0)).gameObject;
+            fx.SetActive(false);
+            fx.SetActive(true);
         }
 
         protected override void OnAddedLocalEffects(Entity target)
