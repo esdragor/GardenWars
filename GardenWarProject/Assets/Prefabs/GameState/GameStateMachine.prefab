@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431e36483c01e7f4f934d8411b83d654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadingWidgetTr: {fileID: 0}
   loadingCanvas: {fileID: 615575538139965151}
   loadingBarImage: {fileID: 6769780262342853887}
   maxBytePackSize: 75000
@@ -118,8 +119,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 5045196382772480966}
   - {fileID: 2686840263966858165}
+  - {fileID: 5045196382772480966}
   m_Father: {fileID: 166142745878382479}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -354,7 +355,7 @@ RectTransform:
   m_Children:
   - {fileID: 2104100345579628446}
   m_Father: {fileID: 4183922190352487582}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -430,7 +431,7 @@ RectTransform:
   m_Children:
   - {fileID: 4367275348753117618}
   m_Father: {fileID: 4183922190352487582}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
