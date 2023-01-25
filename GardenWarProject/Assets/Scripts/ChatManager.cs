@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities;
 using Entities.Champion;
 using GameStates;
@@ -51,13 +52,25 @@ public class ChatManager : MonoBehaviour
     public void UpdateMessageBox(string message, int entityIndex)
     {
         if (message.Length == 0) return;
+
+        string text;
+        if (entityIndex <= -1)
+        {
+            text = $"<color=#{ColorUtility.ToHtmlStringRGB(GameStateMachine.messageColor)}>[{GameStateMachine.messageAuthor}]: {message}</color>";
+            
+            chatPanel.Source += text;
+            
+            GoToBot();
+            return;
+        }
+        
         if(!champion) champion = GameStateMachine.Instance.GetPlayerChampion();
         
         var code = !champion.GetEnemyTeams().Contains(EntityCollectionManager.GetEntityByIndex(entityIndex).team)
             ? ColorUtility.ToHtmlStringRGB(allyColor)
             : ColorUtility.ToHtmlStringRGB(enemyColor);
 
-        var text = message.Replace("[|@@@@|", $"[<color=#{code}>");
+        text = message.Replace("[|@@@@|", $"[<color=#{code}>");
         text = text.Replace("|@@@|]:", $"</color>]:");
         
         chatPanel.Source += text;
@@ -65,8 +78,9 @@ public class ChatManager : MonoBehaviour
         GoToBot();
     }
 
-    private void GoToBot()
+    private async void GoToBot()
     {
+        await Task.Delay(1000);
         scrollRect.verticalNormalizedPosition = 0;
     }
 }

@@ -18,18 +18,32 @@ namespace GameStates
         private GameState currentState;
         private GameState[] gamesStates;
 
-        [Header("Debug")] [SerializeField] private string gameSceneName;
+        [Header("Debug")]
+        [SerializeField] private string gameSceneName;
         public bool isInDebugMode = false;
 
-        [Header("InGameSettings")] [SerializeField]
+        [Header("InGameSettings")]
+        [SerializeField]
         private double ticksPerSecond = 1;
+        [SerializeField] private Color globalMessageColor;
+        [SerializeField] private string globalMessageName;
+        public List<InGameMessage> messages = new List<InGameMessage>();
+        public static Color messageColor => Instance.globalMessageColor;
+        public static string messageAuthor => Instance.globalMessageName;
+
+        [Serializable]
+        public class InGameMessage
+        {
+            public float timeToDisplay;
+            [TextArea(4,4)] public string textToDisplay;
+        }
 
         public double tickRate => ticksPerSecond > 0 ? ticksPerSecond : 1;
         public double increasePerTick => 1 / tickRate;
         public uint expectedPlayerCount = 4;
 
-        [Header("Collections")] public ChampionSO[] allChampionsSo;
-        public Role[] roles;
+        [Header("Collections")]
+        public ChampionSO[] allChampionsSo;
         public List<int> allPlayersIDs = new List<int>();
 
         private readonly Dictionary<int, PlayerData> playerDataDict =
@@ -39,15 +53,8 @@ namespace GameStates
         public Enums.Team winner = Enums.Team.Neutral;
         private List<int> scores = new List<int>();
         [SerializeField] private int scoreToWin = 10;
-        [HideInInspector] public double startTime;
-
-        [Serializable]
-        public struct Role
-        {
-            public Enums.ChampionRole role;
-            public Sprite sprite;
-        }
-
+        public double startTime;
+        
         [Serializable]
         public class PlayerData
         {
@@ -310,5 +317,10 @@ namespace GameStates
         
         public event Action<byte> OnTeamIncreaseScore;
         public event Action<byte> OnTeamIncreaseScoreFeedBack;
+
+        public void DisplayMessage(string message)
+        {
+            GetPlayerChampion().OnAddMessage($"{message}\n",-1);
+        }
     }
 }

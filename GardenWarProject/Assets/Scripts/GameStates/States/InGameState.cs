@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using UnityEngine;
@@ -12,6 +14,9 @@ namespace GameStates.States
         private double lastTickTime;
         private double timer;
 
+        private Queue<GameStateMachine.InGameMessage> messages = new Queue<GameStateMachine.InGameMessage>();
+        private GameStateMachine.InGameMessage currentMessage;
+
         public override void StartState()
         {
             InputManager.EnablePlayerMap(true);
@@ -23,6 +28,15 @@ namespace GameStates.States
             sm.StartEntitySpawner();
 
             sm.ShowLoadingCanvas(false);
+            
+            messages.Clear();
+
+            foreach (var message in sm.messages)
+            {
+                messages.Enqueue(message);
+            }
+
+            currentMessage = null;
         }
 
         public override void UpdateState()
@@ -38,12 +52,29 @@ namespace GameStates.States
             sm.UpdateEventFeedback();
             
             timer = currentTime - lastTickTime;
+            
+            SendMessages();
 
             if (!(timer >= 1.0 / sm.tickRate)) return;
             lastTickTime = currentTime;
             
             if (GameStateMachine.isMaster) sm.Tick();
             sm.TickFeedback();
+        }
+
+        private void SendMessages()
+        {
+            if(currentMessage == null && messages.Count > 0) currentMessage = messages.Dequeue();
+            
+            if(currentMessage == null) return;
+            
+            Debug.Log($"Messages left : {messages.Count}, next message plays at {currentMessage.timeToDisplay} (now {currentTime - sm.startTime})and is {currentMessage.textToDisplay}");
+
+            if(currentTime - sm.startTime < currentMessage.timeToDisplay) return;
+
+            sm.DisplayMessage(currentMessage.textToDisplay);
+
+            currentMessage = null;
         }
 
         public override void ExitState() { }
