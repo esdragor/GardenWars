@@ -24,11 +24,9 @@ namespace Entities.Champion
 
         public RawImage emotesImage;
 
-        private Vector3 respawnPos;
-
         public override Transform parent => nonRotateParent;
 
-        public Vector3 respawnPosition => respawnPos;
+        public Vector3 respawnPosition;
         public Rigidbody rb;
         public Camera cam { get; private set; }
 
@@ -198,7 +196,7 @@ namespace Entities.Champion
             var mlm = MapLoaderManager.Instance;
             if (mlm == null)
             {
-                respawnPos = transform.position = pos.position;
+                transform.position = respawnPosition = pos.position;
                 rb.velocity = Vector3.zero;
                 return;
             }
@@ -239,7 +237,7 @@ namespace Entities.Champion
                     break;
             }
 
-            respawnPos = transform.position = pos.position;
+            transform.position = respawnPosition = pos.position;
             rb.velocity = Vector3.zero;
         }
 

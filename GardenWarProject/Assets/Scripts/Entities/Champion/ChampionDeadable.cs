@@ -144,7 +144,7 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
-            transform.position = respawnPos;
+            transform.position = respawnPosition;
             if (photonView.IsMine)
             {
                 InputManager.PlayerMap.Movement.Enable();
