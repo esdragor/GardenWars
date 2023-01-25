@@ -324,7 +324,7 @@ namespace Entities
         {
             if (championIndex != gsm.GetPlayerChampion().entityIndex) return;
             
-            var fx = LocalPoolManager.PoolInstantiate(HitFX, currentFeeder.position+Vector3.up+currentFeeder.forward, Quaternion.identity).gameObject;
+            var fx = LocalPoolManager.PoolInstantiate(HitFX, currentFeeder.position+Vector3.up+currentFeeder.forward, Quaternion.Euler(-90,0,0)).gameObject;
             fx.SetActive(false);
             fx.SetActive(true);
             
