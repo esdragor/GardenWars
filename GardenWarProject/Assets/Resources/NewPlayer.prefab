@@ -404,6 +404,7 @@ MonoBehaviour:
   targetedPositions: {x: 0, y: 0, z: 0}
   upgradeCount: 10
   upgradeFx: {fileID: 2037089581420152428}
+  candyPickUpFx: {fileID: 687316260822352787, guid: 2ab67db7e5846584084e5f9bc91ae5c0, type: 3}
   canCast: 0
   candyProjectile: {fileID: 2395444416476895822, guid: 2519e5667bed12d45a06c24258a61524, type: 3}
   isAlive: 0
@@ -678,6 +679,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: prefab_blueDash
       objectReference: {fileID: 0}
+    - target: {fileID: 1316701774755326580, guid: 24d10fc53a1acc6468a66e318364aed8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1482173253988463115, guid: 24d10fc53a1acc6468a66e318364aed8, type: 3}
       propertyPath: playOnAwake
       value: 0
@@ -819,6 +824,10 @@ PrefabInstance:
     - target: {fileID: 6942147659973872591, guid: 6ec844cdb342bc944ba8bc956b20ccaf, type: 3}
       propertyPath: m_Name
       value: prefab_redDash
+      objectReference: {fileID: 0}
+    - target: {fileID: 6942147659973872591, guid: 6ec844cdb342bc944ba8bc956b20ccaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7204413402062035628, guid: 6ec844cdb342bc944ba8bc956b20ccaf, type: 3}
       propertyPath: playOnAwake

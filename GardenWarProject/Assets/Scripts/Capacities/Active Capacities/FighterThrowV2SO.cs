@@ -34,8 +34,9 @@ namespace Entities.Capacities
         public int baseDamage = 20;
         public int minimumCandyForDamage = 1;
 
+        [Header("Feedback")]
         public ParticleSystem ThrowDestFx;
-
+        public ParticleSystem pickUpFx;
         public string SFXCataLaunch;
         public string dropCandySFX;
 
@@ -235,6 +236,11 @@ namespace Entities.Capacities
                     if (isMaster) champ.IncreaseCurrentCandyRPC(thrownCandy);
 
                     projectile.OnEntityCollideFeedback -= GiveCandy;
+
+                    var go = LocalPoolManager.PoolInstantiate(so.pickUpFx, projectileTr.position, Quaternion.Euler(-90, 0, 0))
+                        .gameObject;
+                    go.SetActive(false);
+                    go.SetActive(entity.isVisible);
                     
                     projectile.DestroyProjectile(true);
                 }

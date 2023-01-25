@@ -506,12 +506,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426802868383092972}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6485396597009246884}
   - {fileID: 4241474909274527824}
+  - {fileID: 6485396597009246884}
   m_Father: {fileID: 2096020742298909576}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1560,11 +1560,11 @@ RectTransform:
   m_Children:
   - {fileID: 7459311643416295363}
   m_Father: {fileID: 2173124839697313124}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.5, y: -4.200012}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8952322608447982769
@@ -3304,11 +3304,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2173124839697313124}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.5, y: -4.2}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9204926915976378336
@@ -3827,7 +3827,7 @@ MonoBehaviour:
   ShopCanvas: {fileID: 3861491843798938436}
   miniMapRenderImage: {fileID: 116490038906050957}
   miniMapCoverImage: {fileID: 4859243875973911564}
-  playerIconsParent: {fileID: 2096020742298909576}
+  playerIconsParent: {fileID: 2173124839697313124}
   playerIconPrefab: {fileID: 4743340618753663025, guid: eb5b4a673c6744c4d804b6d3062399bd, type: 3}
   minimapCamera: {fileID: 0}
   resourceBarPrefab: {fileID: 7673529661679636681, guid: 005e9dc584e3abd4db884d636a71c910, type: 3}

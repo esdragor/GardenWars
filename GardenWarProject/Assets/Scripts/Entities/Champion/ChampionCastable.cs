@@ -55,6 +55,9 @@ namespace Entities.Champion
         [Header("Upgrades")]
         [SerializeField] private int upgradeCount;
         [SerializeField] private GameObject upgradeFx;
+
+        [Header("Candy")]
+        [SerializeField] private GameObject candyPickUpFx;
         public int upgrades => upgradeCount;
 
         public byte throwAbilityIndex { get; private set; }
@@ -477,6 +480,10 @@ namespace Entities.Champion
                 }
 
                 projectile.OnEntityCollideFeedback -= GiveCandy;
+                
+                var go = LocalPoolManager.PoolInstantiate(candyPickUpFx, projectile.transform.position, Quaternion.Euler(-90, 0, 0));
+                go.SetActive(false);
+                go.SetActive(entity.isVisible);
                     
                 projectile.DestroyProjectile(true);
             }
