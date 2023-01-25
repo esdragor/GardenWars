@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3273324151711664838}
   - component: {fileID: 3672530515319045822}
   - component: {fileID: 3253977203672278628}
+  - component: {fileID: 5812139700972996289}
   m_Layer: 5
   m_Name: Champion Selection Button
   m_TagString: Untagged
@@ -135,3 +136,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   championPortraitImage: {fileID: 3273324151711664838}
   button: {fileID: 3672530515319045822}
+--- !u!114 &5812139700972996289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5060122511112065745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c66dd358b4a22784cbbcf859603fbc8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

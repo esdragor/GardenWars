@@ -24,6 +24,9 @@ namespace UIComponents.Lobby
         [SerializeField] private TextMeshProUGUI championNameText;
         [SerializeField] private TextMeshProUGUI playerNameText;
 
+        [Header("UI")]
+        [SerializeField] private Color localPlayerColor = Color.white;
+
         private GameStateMachine gameStateMachine;
         private Enums.Team assignedTeam;
         private LobbyUI assignedLobby;
@@ -76,7 +79,7 @@ namespace UIComponents.Lobby
                 championNameText.text = string.Empty;
             }
             playerNameText.text = $"{data.name}";
-            playerNameText.color = local ? Color.yellow : Color.black;
+            playerNameText.color = local ? localPlayerColor : Color.black;
 
         }
 
