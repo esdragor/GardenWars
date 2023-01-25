@@ -20,6 +20,9 @@ namespace Controllers
         [SerializeField] private Vector3 offset;
         [SerializeField] private Vector3 rotation;
         [SerializeField] private float lerpSpeed;
+        
+        [Header("Camera FX")]
+        public GameObject PassiveReindeer;
         public void Awake()
         {
             if (Instance != null && Instance != this)
