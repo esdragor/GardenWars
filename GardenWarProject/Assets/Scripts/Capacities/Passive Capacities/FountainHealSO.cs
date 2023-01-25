@@ -72,7 +72,7 @@ namespace Entities.Capacities
             if(timer < 1) return;
             timer = 0;
             
-            champion.IncreaseCurrentHpRPC(so.healthPerSecond,champion.entityIndex);
+            if(isMaster) champion.IncreaseCurrentHpRPC(so.healthPerSecond,champion.entityIndex);
         }
     }
 }

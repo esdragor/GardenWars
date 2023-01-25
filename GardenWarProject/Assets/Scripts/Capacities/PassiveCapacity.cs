@@ -7,6 +7,7 @@ namespace Entities.Capacities
     public abstract class PassiveCapacity
     {
         protected GameStateMachine gsm => GameStateMachine.Instance;
+        protected bool isMaster => !PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient;
         
         public byte indexOfSo; //Index Reference in CapacitySOCollectionManager
 
