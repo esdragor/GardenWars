@@ -72,8 +72,6 @@ namespace GameStates.States
             
             if(currentMessage == null) return;
             
-            Debug.Log($"Messages left : {messages.Count}, next message plays at {currentMessage.timeToDisplay} (now {GameStateMachine.gameTime})and is {currentMessage.textToDisplay}");
-
             if(GameStateMachine.gameTime < currentMessage.timeToDisplay) return;
 
             sm.DisplayMessage(currentMessage.textToDisplay);

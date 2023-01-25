@@ -188,12 +188,21 @@ public class SpawnAIs : MonoBehaviourPun
     #endregion
 
     #region Pinata
+
+    private bool sentMessage = false;
     
     private void SpawnPinatas()
     {
+        if (!sentMessage && pinataTimer >= timeBetweenPinataLevelUp - gsm.pinataSpawnMessageDelay)
+        {
+            sentMessage = true;
+            gsm.DisplayMessage(gsm.messagePrePinataSpawn);
+        }
+        
         if(pinataTimer < timeBetweenPinataLevelUp) return;
         
         pinataTimer = 0;
+        sentMessage = false;
         
         SpawnPinata(NextPinataSpawnPoint());
     }
