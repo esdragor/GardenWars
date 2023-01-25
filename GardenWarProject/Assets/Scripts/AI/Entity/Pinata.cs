@@ -212,6 +212,8 @@ namespace Entities
             double drainTimer = -timeBeforeDrain;
             var quarterSeconds = 0;
             var secondspassed = 0;
+            
+            bool sentMessage = false;
 
             gsm.OnTick += ChannelDrain;
             
@@ -220,7 +222,7 @@ namespace Entities
             currentFeeder.OnCast += CancelOnCast;
             currentFeeder.OnAttack += CancelOnCast;
             currentFeeder.OnDie += CancelOnDie;
-            
+
             void ChannelDrain()
             {
                 drainTimer += gsm.increasePerTick;
@@ -228,6 +230,13 @@ namespace Entities
                 if(drainTimer < 0.25) return;
                 
                 drainTimer = 0;
+
+                if (!sentMessage)
+                {
+                    gsm.DisplayMessage(gsm.messageFeedingPinata);
+                    sentMessage = true;
+                }
+                
                 quarterSeconds++;
                 if (quarterSeconds == 4)
                 {
@@ -265,6 +274,8 @@ namespace Entities
                 photonView.RPC("SyncImageFillRPC",RpcTarget.All,(float)currentBonbon/maxBonbon);
 
                 if (currentBonbon < maxBonbon) return;
+                
+                gsm.DisplayMessage(gsm.messageFedPinata);
                 
                 DieRPC(currentFeeder.entityIndex);
                 

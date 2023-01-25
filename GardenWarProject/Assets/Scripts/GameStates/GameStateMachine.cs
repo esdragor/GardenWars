@@ -24,13 +24,15 @@ namespace GameStates
         
         [Header("Text")]
         public List<InGameMessage> messages = new List<InGameMessage>();
-
         public string messagePrePinataSpawn;
+        public float pinataSpawnMessageDelay = 3;
         public string messageFeedingPinata;
         public string messageFedPinata;
         public string messageLowTurret;
+        public float turretHpMessageThreshold = 50;
         public string messageDestroyedTurret;
         public string messageMinionsAtBase;
+        public int minionAtBaseMessageThreshold = 10;
         
         [Header("InGameSettings")]
         [SerializeField]
@@ -307,6 +309,9 @@ namespace GameStates
         {
             if (!isMaster || isOffline) return;
             scores[(int)team]++;
+            
+            if(scores[(int)team] == minionAtBaseMessageThreshold) DisplayMessage(messageMinionsAtBase); 
+            
             OnTeamIncreaseScore?.Invoke((byte)team);
             for (var i = 0; i < scores.Count; i++)
             {

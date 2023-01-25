@@ -348,6 +348,21 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount, killerId);
     }
 
+    private bool sent = false;
+    
+    [PunRPC]
+    public void DecreaseCurrentHpRPC(float amount, int killerId)
+    {
+        CurrentHP -= amount;
+        if (CurrentHP <= gsm.turretHpMessageThreshold && !sent)
+        {
+            gsm.DisplayMessage(gsm.messageLowTurret);
+            sent = true;
+        }
+        OnDecreaseCurrentHp?.Invoke(amount,killerId);
+        photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, CurrentHP, killerId);
+    }
+
     [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
     {
@@ -369,14 +384,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         }
 
         OnDecreaseCurrentHpFeedback?.Invoke(amount,killerId);
-    }
-
-    [PunRPC]
-    public void DecreaseCurrentHpRPC(float amount, int killerId)
-    {
-        CurrentHP -= amount;
-        OnDecreaseCurrentHp?.Invoke(amount,killerId);
-        photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, CurrentHP, killerId);
     }
 
     public event Action<float,int> OnDecreaseCurrentHp;
@@ -417,6 +424,14 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         photonView.RPC("DieRPC", RpcTarget.MasterClient, killerId);
     }
+    
+    [PunRPC]
+    public void DieRPC(int killerId)
+    {
+        gsm.DisplayMessage(gsm.messageDestroyedTurret);
+        photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
+        OnDie?.Invoke(killerId);
+    }
 
     [PunRPC]
     public void SyncDieRPC(int killerId)
@@ -430,14 +445,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         HairDryer.SetActive(false);
         FMODUnity.RuntimeManager.PlayOneShot("event:/" + SFXDieTower, transform.position);
         OnDieFeedback?.Invoke(killerId);
-    }
-
-    [PunRPC]
-    public void DieRPC(int killerId)
-
-    {
-        photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
-        OnDie?.Invoke(killerId);
     }
 
     public event Action<int> OnDie;
