@@ -29,7 +29,7 @@ namespace Entities.Champion
         public Vector3 respawnPosition;
         public Rigidbody rb;
         [SerializeField] private CapsuleCollider coll;
-        public Camera cam { get; private set; }
+        public Camera cam => GameStateMachine.mainCam;
 
         [HideInInspector] public GameObject championMesh;
 
@@ -67,8 +67,6 @@ namespace Entities.Champion
             
             currentCandyOnMap.Clear();
             
-            cam = Camera.main;
-
             path = new NavMeshPath();
         }
 

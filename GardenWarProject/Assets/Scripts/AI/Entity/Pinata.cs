@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using GameStates;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
@@ -72,7 +73,7 @@ namespace Entities
             isAlive = true;
             canDie = true;
             
-            cam = Camera.main;
+            cam = GameStateMachine.mainCam;
             
             currentBonbon = 0;
 

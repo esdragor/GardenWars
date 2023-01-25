@@ -12,6 +12,7 @@ namespace GameStates
 
         public ChampionSpawner[] firstTeamBasePoint;
         public ChampionSpawner[] secondTeamBasePoint;
+        public Camera cam;
 
         private void Awake()
         {

@@ -24,6 +24,9 @@ namespace GameStates
         [SerializeField] private Renderer crossbowMeshRenderer;
         [SerializeField] private Image loadingBarImage;
         [SerializeField] private int maxBytePackSize = 75000;
+
+        private Camera cam;
+        public static Camera mainCam => Instance.cam;
         
         private int expectedEmotes;
         private int receivedEmotes;
@@ -240,6 +243,8 @@ namespace GameStates
         /// </summary>
         public void LateLoad()
         {
+            cam = MapLoaderManager.Instance.cam;
+            
             foreach (var playerData in playerDataDict.Values)
             {
                 ApplyChampionSoData(playerData);

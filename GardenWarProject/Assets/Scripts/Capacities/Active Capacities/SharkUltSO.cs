@@ -264,8 +264,6 @@ namespace Entities.Capacities
 
             void DamageAndStun(Entity entity)
             {
-                Debug.Log($"Hit : {entity}");
-                
                 if (!caster.GetEnemyTeams().Contains(entity.team)) return;
                 
                 entity.AddPassiveCapacityRPC(so.stun.indexInCollection);

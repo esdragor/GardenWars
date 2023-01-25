@@ -52,7 +52,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     private bool isAlive = true;
     private bool canDie = true;
     private double cooldownHide = 0.2f;
-    private Camera cam;
+    private Camera cam => GameStateMachine.mainCam;
     public float currentVelocity => agent.velocity.magnitude;
 
     public string SFXTrampoline;
@@ -93,7 +93,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         currentHp = MaxHP;
         OnAddItem += ItemAdded;
         OnRemoveItem += ItemRemoved;
-        cam = Camera.main;
         animators = Myanimators;
     }
 

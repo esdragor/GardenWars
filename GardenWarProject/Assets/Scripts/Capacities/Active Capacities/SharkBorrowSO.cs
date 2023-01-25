@@ -64,7 +64,6 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
-            Debug.Log("Trying to Borrow");
             sharkPassive.Borrow();
         }
 

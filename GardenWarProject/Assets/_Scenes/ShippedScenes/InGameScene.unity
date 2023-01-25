@@ -4444,6 +4444,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 173603508, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 1991350101}
+    - target: {fileID: 173603508, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: firstTeamBasePoint
       value: 
       objectReference: {fileID: 1025802885}
@@ -17158,6 +17162,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: add9d7216c4a4214fbde4237c0554a88, type: 3}
+--- !u!20 &1991350101 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 406496230661703898, guid: add9d7216c4a4214fbde4237c0554a88, type: 3}
+  m_PrefabInstance: {fileID: 1991350100}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2016886842
 GameObject:
   m_ObjectHideFlags: 0

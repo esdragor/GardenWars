@@ -1,4 +1,5 @@
 using Entities;
+using GameStates;
 using UnityEngine;
 
 namespace Controllers.Inputs
@@ -11,7 +12,7 @@ namespace Controllers.Inputs
 
         protected LayerMask entityLayers;
         protected LayerMask worldLayers;
-        protected Camera mainCam;
+        protected Camera mainCam => GameStateMachine.mainCam;
         
         protected Vector3 cursorWorldPos;
         public static Vector3 CursorWorldPos { get; protected set; }
@@ -40,7 +41,6 @@ namespace Controllers.Inputs
             if (!controlledEntity.photonView.IsMine) return;
             SetupInputMap();
             minimapRect = UIManager.Instance.GetMinimapRect();
-            mainCam = Camera.main;
             Link(controlledEntity);
         }
 
