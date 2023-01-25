@@ -76,8 +76,9 @@ namespace UIComponents
             upgradeDescription.capacity = capacity;
             iconImage.sprite = capacity.AssociatedActiveCapacitySO().icon;
             cooldownOverlayImage.fillAmount = 0;
-            keyBindText.text = control.name.Length > 1 ? control.name : control.name.ToUpper();
-
+            var keyName = Keyboard.current.FindKeyOnCurrentKeyboardLayout(control.name).name;
+            keyBindText.text = keyName.Length > 1 ? keyName : keyName.ToUpper();
+            
             capacity.OnCooldownEnded += ResetFill;
         }
 

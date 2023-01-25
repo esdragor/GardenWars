@@ -35,6 +35,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     private bool isAlive = true;
     private bool canDie = true;
+    private static readonly int Color6Ae890784E7B441783F03Cdec0Acb7Be = Shader.PropertyToID("Color_6ae890784e7b441783f03cdec0acb7be");
+
     public float GetAttackSpeed()
     {
         return attackSpeed;
@@ -44,24 +46,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
     {
         CurrentHP = MaxHP;
         animators = MyAnimators;
-        if (gsm.GetPlayerChampion().team == team)
-        {
-            renderTowerAndChick[0].material = towersMaterials[0];
-            renderTowerAndChick[1].material = chickMaterials[0];
-            renderTowerAndChick[2].material = dryerMaterials[0];
-        }
-        else
-        {
-            TowerModel.transform.Rotate(Vector3.back, 90);
-            renderTowerAndChick[0].material = towersMaterials[1];
-            renderTowerAndChick[1].material = chickMaterials[1];
-            renderTowerAndChick[2].material = dryerMaterials[1];
-
-            var mat = renderAttackArea.material;
-            mat.SetColor("Color_6ae890784e7b441783f03cdec0acb7be",Color.red);
-            renderAttackArea.material = mat;
-
-        }
         UIManager.Instance.InstantiateHealthBarForEntity(this);
     }
     
@@ -80,7 +64,34 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public override void OnInstantiated()
     {
+        
+    }
+
+    public override void OnInstantiatedFeedback()
+    {
         gameObject.SetActive(true);
+
+        var player = gsm.GetPlayerChampion();
+        Debug.Log($"On Player Team ({player.name} ({player.team}))? {gsm.GetPlayerChampion().team == team} (in {team})");
+        
+        if (gsm.GetPlayerChampion().team == team)
+        {
+            renderTowerAndChick[0].material = towersMaterials[0];
+            renderTowerAndChick[1].material = chickMaterials[0];
+            renderTowerAndChick[2].material = dryerMaterials[0];
+        }
+        else
+        {
+            TowerModel.transform.Rotate(Vector3.back, 90);
+            renderTowerAndChick[0].material = towersMaterials[1];
+            renderTowerAndChick[1].material = chickMaterials[1];
+            renderTowerAndChick[2].material = dryerMaterials[1];
+
+            var mat = renderAttackArea.material;
+            mat.SetColor(Color6Ae890784E7B441783F03Cdec0Acb7Be,Color.red);
+            renderAttackArea.material = mat;
+
+        }
     }
 
     public bool CanAttack()
