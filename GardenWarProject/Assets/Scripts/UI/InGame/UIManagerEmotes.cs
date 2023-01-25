@@ -1,4 +1,5 @@
 using Entities.Champion;
+using GameStates;
 using UIComponents;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,7 +39,6 @@ public partial class UIManager
     
     public void InstantiateEmoteForEntity(Champion entity)
     {
-        cam = Camera.main;
         if (entity == null) return;
         var panel = Instantiate(emotesPanelPrefab, entity.uiTransform.position + entity.uiOffset + Vector3.up * 2f,
             Quaternion.identity, emotesParent);
@@ -52,7 +52,7 @@ public partial class UIManager
         void UpdateEmotesPosition()
         {
             if(panelTransform == null || entityTr == null) return;
-            panelTransform.position = cam.WorldToScreenPoint(entityTr.position) + offset;
+            panelTransform.position = GameStateMachine.mainCam.WorldToScreenPoint(entityTr.position) + offset;
         }
     }
 

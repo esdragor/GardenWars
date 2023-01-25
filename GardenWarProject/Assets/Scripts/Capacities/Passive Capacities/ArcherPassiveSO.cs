@@ -153,7 +153,7 @@ namespace Entities.Capacities
 
             if (FXPassiveCamera == null)
             {
-                //FXPassiveCamera = GameStateMachine.mainCam.GetComponent<CameraController>().PassiveReindeer;
+                FXPassiveCamera = GameStateMachine.mainCam.transform.parent.parent.GetComponent<CameraController>().PassiveReindeer;
             }
             if(FXPassiveCamera != null) FXPassiveCamera.SetActive(true);
             FXPassiveGO.SetActive(true);
