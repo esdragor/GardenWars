@@ -265,6 +265,13 @@ namespace Controllers.Inputs
             uim.HideWheel();
             champion.RequestPressEmote(uim.emoteIndex);
         }
+        
+        private void OnToggleChat(InputAction.CallbackContext ctx)
+        {
+            ChatManager instance = ChatManager.Instance;
+            if (instance == null) return;
+            instance.ToggleChat();
+        }
 
         private void StartMoveAttack()
         {
@@ -395,6 +402,8 @@ namespace Controllers.Inputs
 
             inputs.Emotes.RouedEmote.performed += OnPressEmote;
             inputs.Emotes.RouedEmote.canceled += OnReleaseEmote;
+            
+            inputs.Chat.ToggleChat.performed += OnToggleChat;
         }
         
         protected override void Unlink()
@@ -445,6 +454,8 @@ namespace Controllers.Inputs
 
             inputs.Emotes.RouedEmote.performed -= OnPressEmote;
             inputs.Emotes.RouedEmote.canceled -= OnReleaseEmote;
+            
+            inputs.Chat.ToggleChat.performed -= OnToggleChat;
 
             CameraController.Instance.UnLinkCamera();
 

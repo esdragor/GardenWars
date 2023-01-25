@@ -69,9 +69,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
 
     public void SetOutlineColor()
     {
-        var player = gsm.GetPlayerChampion();
-        Debug.Log($"On Player Team ({player.name} ({player.team}))? {gsm.GetPlayerChampion().team == team} (in {team})");
-        
         if (gsm.GetPlayerChampion().team == team)
         {
             renderTowerAndChick[0].material = towersMaterials[0];
@@ -88,7 +85,6 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
             var mat = renderAttackArea.material;
             mat.SetColor(Color6Ae890784E7B441783F03Cdec0Acb7Be,Color.red);
             renderAttackArea.material = mat;
-
         }
     }
 
