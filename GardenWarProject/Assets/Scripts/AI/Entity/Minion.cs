@@ -57,7 +57,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
 
     public string SFXTrampoline;
     
-    public Vector3 lastCheckpoint;
+    public int lastCheckpoint;
 
 
     public void ReachEnemyCamp()
