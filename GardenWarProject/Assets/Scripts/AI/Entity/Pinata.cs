@@ -251,10 +251,6 @@ namespace Entities
                 photonView.RPC("SyncShootCandyRPC",RpcTarget.All,currentFeeder.entityIndex);
 
                 IncreaseCurrentCandy(candy);
-
-                var fx = LocalPoolManager.PoolInstantiate(HitFX, transform.position, Quaternion.identity).gameObject;
-                fx.SetActive(false);
-                fx.SetActive(true);
             }
 
             void IncreaseCurrentCandy(int candy)
@@ -327,6 +323,10 @@ namespace Entities
         private void SyncShootCandyRPC(int championIndex)
         {
             if (championIndex != gsm.GetPlayerChampion().entityIndex) return;
+            
+            var fx = LocalPoolManager.PoolInstantiate(HitFX, currentFeeder.position+Vector3.up+currentFeeder.forward, Quaternion.identity).gameObject;
+            fx.SetActive(false);
+            fx.SetActive(true);
             
             candyFollowGo.SetActive(true);
             candyFollow.transform.position = currentFeeder.position;

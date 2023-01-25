@@ -74,6 +74,7 @@ namespace Entities.Capacities
             time_Pressed += Time.deltaTime * so.chargeRate;
             throwDistance += time_Pressed;
             if (throwDistance < so.minDistance) throwDistance = so.minDistance;
+            if (throwDistance > so.maxRange) throwDistance = so.maxRange;
         }
 
         protected override void HoldLocal(int targetsEntityIndexes, Vector3 targetPositions)
