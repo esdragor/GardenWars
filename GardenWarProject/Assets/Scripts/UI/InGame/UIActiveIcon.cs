@@ -51,6 +51,7 @@ namespace UIComponents
             if (capacity != null)
             {
                 capacity.OnCooldownEnded -= ResetFill;
+                capacity.OnUsable -= UpdateIconOpacity;
             }
 
             if(newControl != null) control = newControl;
@@ -80,6 +81,17 @@ namespace UIComponents
             keyBindText.text = keyName.Length > 1 ? keyName : keyName.ToUpper();
             
             capacity.OnCooldownEnded += ResetFill;
+
+            capacity.OnUsable += UpdateIconOpacity;
+            
+            Debug.Log($"Capacity {capacity.AssociatedActiveCapacitySO().capacityName} is of type {capacity.GetType()}");
+            
+            capacity.Init();
+        }
+
+        private void UpdateIconOpacity(bool value)
+        {
+            iconImage.color = value ? Color.white : Color.grey;
         }
 
         private void UpdateUpgradeActive()

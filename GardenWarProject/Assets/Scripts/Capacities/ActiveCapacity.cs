@@ -33,6 +33,8 @@ namespace Entities.Capacities
         protected Vector3 targetedPosition;
 
         public int level;
+        public bool isUnusable { get; protected set; } = false;
+
         public bool canBeUpgraded => level < AssociatedActiveCapacitySO().maxLevel;
 
         protected GameStateMachine gsm => GameStateMachine.Instance;
@@ -42,6 +44,17 @@ namespace Entities.Capacities
         public ActiveCapacitySO AssociatedActiveCapacitySO()
         {
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
+        }
+
+        public void Initialize()
+        {
+            Init();
+        }
+
+        public virtual void Init()
+        {
+            isUnusable = false;
+            OnUsable?.Invoke(!isUnusable);
         }
 
         public bool CanCast(int targetsEntityIndex, Vector3 targetPosition)
@@ -267,6 +280,7 @@ namespace Entities.Capacities
         }
 
         public event Action<int> OnUpgraded;
+        public Action<bool> OnUsable;
     }
     
     

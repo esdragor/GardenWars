@@ -31,7 +31,13 @@ namespace Entities.Capacities
         private GameObject FXLaunchGo;
         private GameObject FXLaunchBurst;
         private Transform burstTr;
-
+        
+        public override void Init()
+        {
+            isUnusable = true;
+            OnUsable?.Invoke(!isUnusable);
+        }
+        
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return level > 1;
@@ -40,7 +46,6 @@ namespace Entities.Capacities
         protected override void Press(int targetsEntityIndexes, Vector3 targetPositions)
         {
         }
-
         protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
         }
