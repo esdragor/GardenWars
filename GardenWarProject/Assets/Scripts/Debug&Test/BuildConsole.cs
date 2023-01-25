@@ -9,7 +9,7 @@ namespace DebugStuff
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.P)) show = !show;
+            if (Input.GetKeyDown(KeyCode.P) && GameSettingsManager.isDebug) show = !show;
         }
 
 #if !UNITY_EDITOR
