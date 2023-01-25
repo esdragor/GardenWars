@@ -16,7 +16,12 @@ namespace GameStates
     public partial class GameStateMachine
     {
         [Header("Loading")]
+        [SerializeField] private GameObject loadingCameraGo;
+        [SerializeField] private GameObject LobbyGo;
         [SerializeField] private GameObject loadingCanvas;
+        [SerializeField] private Renderer loadingSpinRender;
+        [SerializeField] private Renderer meshRenderer;
+        [SerializeField] private Renderer crossbowMeshRenderer;
         [SerializeField] private Image loadingBarImage;
         [SerializeField] private int maxBytePackSize = 75000;
         
@@ -28,7 +33,20 @@ namespace GameStates
 
         public void ShowLoadingCanvas(bool value)
         {
-            loadingCanvas.SetActive(value);
+            //loadingCanvas.SetActive(value);
+            loadingCameraGo.SetActive(value);
+            if(LobbyGo != null) LobbyGo.SetActive(!value);
+        }
+
+        private void UpdatePercent(float value)
+        {
+            var mat = loadingSpinRender.material;
+            mat.SetFloat("_Fill",value);
+            loadingSpinRender.material = mat;
+            mat = meshRenderer.material;
+            mat.SetFloat("_Fill",value);
+            meshRenderer.material = mat;
+            crossbowMeshRenderer.material = mat;
         }
 
         public void LoadEmotes()
@@ -53,6 +71,7 @@ namespace GameStates
             sentEmotes = 0;
             
             loadingBarImage.fillAmount = 0;
+            UpdatePercent(0);
             ShowLoadingCanvas(true);
 
             emoteLoadingDict.Clear();
@@ -144,7 +163,8 @@ namespace GameStates
         private void OnReceivedEmote()
         {
             loadingBarImage.fillAmount = ((float)receivedEmotes / (float)expectedEmotes);
-            
+            UpdatePercent(((float)receivedEmotes / (float)expectedEmotes));
+
             if(receivedEmotes < expectedEmotes) return;
             
             OnAllEmoteReceived();
