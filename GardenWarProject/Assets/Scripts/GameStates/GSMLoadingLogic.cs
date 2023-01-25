@@ -220,12 +220,12 @@ namespace GameStates
         /// </summary>
         public void LateLoad()
         {
-            SyncEntitySpawner();
-            
             foreach (var playerData in playerDataDict.Values)
             {
                 ApplyChampionSoData(playerData);
             }
+            
+            SyncEntitySpawner();
             
             SetupUI();
 
@@ -234,7 +234,7 @@ namespace GameStates
                 SetupChampion(champion);
                 UIManager.Instance.InitPlayerIcon(champion);
             }
-            
+
             FogOfWarManager.RunFog();
         }
 

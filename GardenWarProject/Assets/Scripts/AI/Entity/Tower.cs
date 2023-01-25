@@ -67,10 +67,8 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
         
     }
 
-    public override void OnInstantiatedFeedback()
+    public void SetOutlineColor()
     {
-        gameObject.SetActive(true);
-
         var player = gsm.GetPlayerChampion();
         Debug.Log($"On Player Team ({player.name} ({player.team}))? {gsm.GetPlayerChampion().team == team} (in {team})");
         
@@ -92,6 +90,11 @@ public class Tower : Entity, IAttackable, IActiveLifeable, IDeadable
             renderAttackArea.material = mat;
 
         }
+    }
+
+    public override void OnInstantiatedFeedback()
+    {
+        gameObject.SetActive(true);
     }
 
     public bool CanAttack()
