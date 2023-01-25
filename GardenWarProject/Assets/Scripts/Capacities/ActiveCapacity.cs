@@ -46,11 +46,6 @@ namespace Entities.Capacities
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }
 
-        public void Initialize()
-        {
-            Init();
-        }
-
         public virtual void Init()
         {
             isUnusable = false;
@@ -276,7 +271,13 @@ namespace Entities.Capacities
         public void Upgrade()
         {
             level++;
+            OnUpgrade();
             OnUpgraded?.Invoke(level);
+        }
+
+        protected virtual void OnUpgrade()
+        {
+            
         }
 
         public event Action<int> OnUpgraded;
