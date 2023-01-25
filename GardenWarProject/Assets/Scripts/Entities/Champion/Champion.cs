@@ -28,6 +28,7 @@ namespace Entities.Champion
 
         public Vector3 respawnPosition;
         public Rigidbody rb;
+        [SerializeField] private CapsuleCollider coll;
         public Camera cam { get; private set; }
 
         [HideInInspector] public GameObject championMesh;
@@ -197,6 +198,7 @@ namespace Entities.Champion
             if (mlm == null)
             {
                 transform.position = respawnPosition = pos.position;
+                
                 rb.velocity = Vector3.zero;
                 return;
             }
