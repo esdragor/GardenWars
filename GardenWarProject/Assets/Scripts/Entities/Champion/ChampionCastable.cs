@@ -267,8 +267,6 @@ namespace Entities.Champion
         {
             if(upgradeCount <= 0) return;
             
-            Debug.Log($"Trying to upgrade capacity at index {index}");
-            Debug.Log($"It's {capacityDict[abilitiesIndexes[index]].capacity}");
             if(!capacityDict[abilitiesIndexes[index]].capacity.canBeUpgraded) return;
             
             DecreaseUpgradeCount();

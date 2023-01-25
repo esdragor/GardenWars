@@ -307,8 +307,6 @@ public class SpawnAIs : MonoBehaviourPun
             }
         }
         
-        Debug.Log("Max Range Gaming");
-
         foreach (var entity in towers)
         {
             if(entity is Tower tower) tower.SetOutlineColor();
