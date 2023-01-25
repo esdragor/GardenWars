@@ -1,4 +1,5 @@
 using System;
+using GameStates;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -7,7 +8,8 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/Ranged Auto Attack", fileName = "new Ranged Auto Attack")]
     public class RangedAACapacitySO : ActiveCapacitySO
     {
-        public ProjectileOnCollideEffect projectile;
+        public ProjectileOnCollideEffect projectileBlue;
+        public ProjectileOnCollideEffect projectileRed;
         public float speedFire = 0.1f;
         
         public string SFXName;
@@ -94,8 +96,10 @@ namespace Entities.Capacities
                 spawnPos = casterPos + castChamp.forward * 0.5f;
                 rotation = Quaternion.LookRotation(castChamp.forward);
             }
+
+            ProjectileOnCollideEffect Arrow = caster.GetEnemyTeams().Contains(GameStateMachine.Instance.GetPlayerTeam()) ? so.projectileRed : so.projectileBlue;
             
-            var projectile = LocalPoolManager.PoolInstantiate(so.projectile,spawnPos,rotation);
+            var projectile = LocalPoolManager.PoolInstantiate(Arrow,spawnPos,rotation);
 
             var projectileTr = projectile.transform;
             
