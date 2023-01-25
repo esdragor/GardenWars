@@ -131,7 +131,7 @@ namespace Entities.Capacities
                 
                 projectileTr.LookAt(targetPos);
 
-                if (Vector3.Distance(projectileTr.position, targetPos) <= 0.01f)
+                if (Vector3.Distance(projectileTr.position, targetPos) <= 0.05f)
                 {
                     RemoveProjectile();
                     
