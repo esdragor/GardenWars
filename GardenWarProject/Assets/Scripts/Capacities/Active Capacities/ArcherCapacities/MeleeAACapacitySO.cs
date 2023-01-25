@@ -85,6 +85,7 @@ namespace Entities.Capacities
 
                 FXAttack.SetActive(false);
                 FXAttack.SetActive(true);
+                FXAttack.transform.position = champion.championMesh.transform.position + champion.forward;
                 if (so.SFX != null)
                     FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFX, champion.position);
             }
