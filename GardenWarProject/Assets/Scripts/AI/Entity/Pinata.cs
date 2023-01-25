@@ -22,10 +22,12 @@ namespace Entities
 
         [Header("Bonbon Gaming")]
         [SerializeField] private CandyFollow candyFollow;
+        [SerializeField] private int maxCandyToFeed = 110;
         private GameObject candyFollowGo;
-         public float fillRange = 2;
+        public float fillRange = 2;
         public static int level;
-        private int maxBonbon => 30 + 10 * (level-1 + (level-1)%2);
+        private int maxBonbon => bonbonFormule > maxCandyToFeed ? maxCandyToFeed : bonbonFormule;
+        private int bonbonFormule => 30 + 10 * (level - 1 + (level - 1) % 2);
         [SerializeField] private int currentBonbon;
         [SerializeField] private float timeBeforeDrain = 0.5f;
         [SerializeField] private Vector3 maxSize;
@@ -103,20 +105,6 @@ namespace Entities
                            (iconPos.y + totalSize.y > Screen.height) || (iconPos.y - totalSize.y < 0));
             
             indicator.gameObject.SetActive(isOnScreen);
-            
-            /*
-            if (iconPos.x + totalSize.x > Screen.width ) iconPos.x = Screen.width - totalSize.x;
-            if (iconPos.x - totalSize.x < 0) iconPos.x = 0 + totalSize.x;
-            if (iconPos.y + totalSize.y > Screen.height) iconPos.y = Screen.height - totalSize.y;
-            if (iconPos.y - totalSize.y < 0) iconPos.y = 0 + totalSize.y;
-
-            rotatorGo.SetActive(entityPos.x + margin > Screen.width || entityPos.y + margin > Screen.height || entityPos.x - margin < 0 || entityPos.y - margin < 0);
-            
-            if(actualPos == iconPos) return;
-            
-            var targetDir = cam.WorldToScreenPoint(transform.position) - rotator.position;
-            rotator.up = targetDir;
-            */
         }
 
         public bool IsAlive()
@@ -172,13 +160,14 @@ namespace Entities
         public void SyncDieRPC(int killerId)
         {
             isAlive = false;
+            
             FogOfWarManager.Instance.RemoveFOWViewable(this);
 
             Destroy(LocalPoolManager.PoolInstantiate(PinataDieFX, transform.position, Quaternion.identity), 2f);
 
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + SFXPinataDie, transform.position);
             
-            DropUpgrade();
+            if(killerId != entityIndex) DropUpgrade();
             
             SetAnimatorTrigger("Death");
 
@@ -262,6 +251,10 @@ namespace Entities
                 photonView.RPC("SyncShootCandyRPC",RpcTarget.All,currentFeeder.entityIndex);
 
                 IncreaseCurrentCandy(candy);
+
+                var fx = LocalPoolManager.PoolInstantiate(HitFX, transform.position, Quaternion.identity).gameObject;
+                fx.SetActive(false);
+                fx.SetActive(true);
             }
 
             void IncreaseCurrentCandy(int candy)
