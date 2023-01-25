@@ -131,7 +131,7 @@ namespace Entities.Capacities
             
             borrowed = true;
             
-            champion.SetAnimatorBool("Borrowed",borrowed);
+            champion.SetAnimatorBool("Borrowed",true);
             
             aileronGo.SetActive(true);
             aileron.OnEntityCollide += EntityCollide;
@@ -184,7 +184,7 @@ namespace Entities.Capacities
             //champion.rotateParent.localPosition = Vector3.zero;
 
             borrowed = false;
-            champion.SetAnimatorBool("Borrowed",borrowed);
+            champion.SetAnimatorBool("Borrowed",false);
             
             if (!Unborrow)
             {

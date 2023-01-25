@@ -317,7 +317,6 @@ namespace Entities
 
         public void SetAnimatorTrigger(string trigger)
         {
-            if (!photonView.IsMine) return; 
             foreach(var animator in animators)
             {
                 animator.SetTrigger(trigger);
