@@ -80,7 +80,7 @@ public class ChatManager : MonoBehaviour
 
     private async void GoToBot()
     {
-        await Task.Delay(1000);
+        await Task.Delay(20);
         scrollRect.verticalNormalizedPosition = 0;
     }
 }
