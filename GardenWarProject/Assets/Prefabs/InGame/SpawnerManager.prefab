@@ -627,9 +627,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minionsPerWave: 10
-  timeBetweenMinionSpawn: 0.3
+  timeBetweenMinionSpawn: 0.5
   timeBetweenWaves: 30
-  timeBeforeFirstWave: 5
+  timeBeforeFirstWave: 30
   SpawnPoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -649,16 +649,16 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   spawnPoints: []
-  timeBeforeSpawnPinata: 5
-  timeBeforeRespawnPinata: 10
+  timeBeforeSpawnPinata: 30
+  timeBeforeRespawnPinata: 30
   timeBetweenPinataLevelUp: 60
   pinataLevel: 0
   candyPerBag: 20
-  timeBeforeSpawnCandy: 4
-  timeBetweenCandies: 10
-  minionTimer: 0
-  pinataTimer: 0
-  candyTimer: 0
+  timeBeforeSpawnCandy: 20
+  timeBetweenCandies: 45
+  minionTimer: 30
+  pinataTimer: 30
+  candyTimer: 25
 --- !u!114 &7151993561122712228
 MonoBehaviour:
   m_ObjectHideFlags: 0
