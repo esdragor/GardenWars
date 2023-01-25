@@ -13,8 +13,7 @@ namespace Entities.Champion
     public partial class Champion : Entity
     {
         public bool isPlayerChampion => isOffline || gsm.GetPlayerChampion() == this;
-
-
+        
         [HideInInspector] public ChampionSO currentSo;
         public Enums.ChampionRole role;
         public bool isFighter => role == Enums.ChampionRole.Fighter;

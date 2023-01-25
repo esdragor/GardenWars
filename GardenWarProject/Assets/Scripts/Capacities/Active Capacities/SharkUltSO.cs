@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers.Inputs;
+using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -10,9 +11,7 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/SharkUlt", fileName = "new Shark Ult")]
     public class SharkUltSO : ActiveCapacitySO
     {
-        public ProjectileOnCollideEffect impactArea;
-        public StunPassiveSO stun;
-
+        [Header("Values")]
         public float animationDuration = 1f;
         public float impactZoneAppearance = 0.9f;
         public float sizeMultiplier = 1.5f;
@@ -20,6 +19,19 @@ namespace Entities.Capacities
         public float borrowDuration = 1f;
         
         public float damage = 50f;
+
+        [Header("Fx")]
+        public ParticleSystem leapStart;
+        public ParticleSystem leapStartR;
+        public ParticleSystem leapLand;
+        public ParticleSystem leapLandR;
+        public ParticleSystem leapIndicator;
+        public ParticleSystem leapIndicatorR;
+
+        public ProjectileOnCollideEffect impactArea;
+        public StunPassiveSO stun;
+
+        
 
         public override Type AssociatedType()
         {
@@ -32,6 +44,11 @@ namespace Entities.Capacities
         private SharkUltSO so => (SharkUltSO) AssociatedActiveCapacitySO();
         private float timer;
         private GameObject damageAreaGo;
+        
+        private GameObject leapStartGo;
+        private GameObject leapEndGo;
+        private GameObject leapMarkerGo;
+        
         private ProjectileOnCollideEffect damageArea;
         
         private SharkPassive passive;
@@ -89,14 +106,8 @@ namespace Entities.Capacities
 
         protected override void ReleaseFeedback(int targetEntityIndex, Vector3 targetPositions)
         {
-            if (damageArea == null)
-            {
-                damageArea = LocalPoolManager.PoolInstantiate(so.impactArea,champion.rotateParent);
-                damageArea.transform.localPosition = Vector3.zero;
-                damageAreaGo = damageArea.gameObject;
-                damageAreaGo.SetActive(false);
-            }
-            
+            InstantiateFx();
+
             if (ultBorrowed)
             {
                 ExitUltBorrow();
@@ -126,6 +137,12 @@ namespace Entities.Capacities
 
                 if (!damageAreaGo.activeSelf)
                 {
+                    if (champion.isVisible)
+                    {
+                        leapEndGo.transform.position = champion.position;
+                        leapEndGo.SetActive(true);
+                    }
+                    
                     damageAreaGo.SetActive(true);
                     damageArea.OnEntityCollide += DamageAndStun;
                 }
@@ -150,6 +167,9 @@ namespace Entities.Capacities
                     champion.SetCanMoveRPC(true);
                 }
                 
+                leapMarkerGo.SetActive(false);
+                leapStartGo.SetActive(false);
+
                 sharkPassive.Borrow(true);
                 
                 ultBorrowed = true;
@@ -165,14 +185,21 @@ namespace Entities.Capacities
                     var shotDirection = (pos - casterPos).normalized;
                     pos = casterPos + shotDirection * so.maxRange;
                 }
-                
-                champion.ShowAreaIndicator(GetClosestValidPoint(pos),2);
-                champion.ShowMaxRangeIndicator(so.maxRange);
+
+                if (champion.isLocal)
+                {
+                    champion.ShowAreaIndicator(GetClosestValidPoint(pos),2);
+                    champion.ShowMaxRangeIndicator(so.maxRange);
+                }
                 
                 if(timer <= so.borrowDuration) return;
                 
-                champion.HideAreaIndicator();
-                champion.HideMaxRangeIndicator();
+                
+                if (champion.isLocal)
+                {
+                    champion.HideAreaIndicator();
+                    champion.HideMaxRangeIndicator();
+                }
                 
                 ExitUltBorrow();
             }
@@ -204,6 +231,14 @@ namespace Entities.Capacities
 
                 if (!damageAreaGo.activeSelf)
                 {
+                    if (champion.isVisible)
+                    {
+                        leapEndGo.SetActive(false);
+                        leapEndGo.transform.position = champion.position;
+                        leapEndGo.SetActive(true);
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/" + ((SharkPassiveSO)passive.AssociatedPassiveCapacitySO()).SFXSharkPassive, champion.position);
+                    }
+                    
                     damageAreaGo.SetActive(true);
                     damageArea.OnEntityCollide += DamageAndStun;
                 }
@@ -244,15 +279,23 @@ namespace Entities.Capacities
         {
             sharkPassive.ForceUnBorrow();
             
-            destination = GetClosestValidPoint(destination);
-
+            if (champion.isVisible)
+            {
+                leapStartGo.transform.position = champion.position;
+                leapStartGo.SetActive(true);
+            }
+            
             if (Vector3.Distance(champion.position, destination) > so.maxRange)
             {
                 var dir = destination - champion.position;
                 dir = dir.normalized * so.maxRange;
                 destination = champion.position + dir;
-                destination = GetClosestValidPoint(destination);
             }
+            
+            destination = GetClosestValidPoint(destination);
+            
+            leapMarkerGo.transform.position = destination;
+            leapMarkerGo.SetActive(true);
             
             champion.SetAnimatorTrigger("Ability3");
             champion.rotateParent.localScale = Vector3.one * so.sizeMultiplier;
@@ -268,6 +311,44 @@ namespace Entities.Capacities
         protected override void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions)
         {
             champion.HideAreaIndicator();
+        }
+
+        private void InstantiateFx()
+        {
+            if (damageArea == null)
+            {
+                damageArea = LocalPoolManager.PoolInstantiate(so.impactArea,champion.rotateParent);
+                damageArea.transform.localPosition = Vector3.zero;
+                damageAreaGo = damageArea.gameObject;
+                damageAreaGo.SetActive(false);
+            }
+
+            var isAlly = gsm.GetPlayerChampion().team == champion.team;
+            var startFx = isAlly ? so.leapStart : so.leapStartR;
+            var endFx = isAlly ? so.leapLand : so.leapLandR;
+            var markerFx = isAlly ? so.leapIndicator : so.leapIndicatorR;
+
+            if (leapStartGo == null)
+            {
+                leapStartGo = Object.Instantiate(startFx).gameObject;
+                leapStartGo.transform.localScale = Vector3.one * 2f;
+            }
+            
+            if (leapEndGo == null)
+            {
+                leapEndGo = Object.Instantiate(endFx).gameObject;
+                leapEndGo.transform.localScale = Vector3.one * 2f;
+            }
+
+            if (leapMarkerGo == null)
+            {
+                leapMarkerGo = Object.Instantiate(markerFx).gameObject;
+                leapMarkerGo.transform.localScale = Vector3.one * 3f;
+            }
+            
+            leapStartGo.SetActive(false);
+            leapMarkerGo.SetActive(false);
+            leapEndGo.SetActive(false);
         }
     }
     
