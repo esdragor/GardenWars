@@ -21,13 +21,22 @@ namespace GameStates
         [Header("Debug")]
         [SerializeField] private string gameSceneName;
         public bool isInDebugMode = false;
+        
+        [Header("Text")]
+        public List<InGameMessage> messages = new List<InGameMessage>();
 
+        public string messagePrePinataSpawn;
+        public string messageFeedingPinata;
+        public string messageFedPinata;
+        public string messageLowTurret;
+        public string messageDestroyedTurret;
+        public string messageMinionsAtBase;
+        
         [Header("InGameSettings")]
         [SerializeField]
         private double ticksPerSecond = 1;
         [SerializeField] private Color globalMessageColor;
         [SerializeField] private string globalMessageName;
-        public List<InGameMessage> messages = new List<InGameMessage>();
         public static Color messageColor => Instance.globalMessageColor;
         public static string messageAuthor => Instance.globalMessageName;
 
@@ -53,7 +62,9 @@ namespace GameStates
         public Enums.Team winner = Enums.Team.Neutral;
         private List<int> scores = new List<int>();
         [SerializeField] private int scoreToWin = 10;
-        public double startTime;
+        [HideInInspector] public double startTime;
+        [HideInInspector] public double currentTime;
+        public static double gameTime => Instance.currentTime - Instance.startTime;
         
         [Serializable]
         public class PlayerData

@@ -24,7 +24,7 @@ namespace GameStates.States
             lastTickTime = currentTime;
 
             sm.startTime = currentTime;
-            
+
             sm.StartEntitySpawner();
 
             sm.ShowLoadingCanvas(false);
@@ -47,14 +47,18 @@ namespace GameStates.States
                 sm.SwitchState(3);
                 return;
             }
-            
-            if (GameStateMachine.isMaster) sm.UpdateEvent();
+
+            if (GameStateMachine.isMaster)
+            {
+                SendMessages();
+                sm.UpdateEvent();
+            }
             sm.UpdateEventFeedback();
             
             timer = currentTime - lastTickTime;
-            
-            SendMessages();
 
+            sm.currentTime = currentTime;
+            
             if (!(timer >= 1.0 / sm.tickRate)) return;
             lastTickTime = currentTime;
             
@@ -68,9 +72,9 @@ namespace GameStates.States
             
             if(currentMessage == null) return;
             
-            Debug.Log($"Messages left : {messages.Count}, next message plays at {currentMessage.timeToDisplay} (now {currentTime - sm.startTime})and is {currentMessage.textToDisplay}");
+            Debug.Log($"Messages left : {messages.Count}, next message plays at {currentMessage.timeToDisplay} (now {GameStateMachine.gameTime})and is {currentMessage.textToDisplay}");
 
-            if(currentTime - sm.startTime < currentMessage.timeToDisplay) return;
+            if(GameStateMachine.gameTime < currentMessage.timeToDisplay) return;
 
             sm.DisplayMessage(currentMessage.textToDisplay);
 

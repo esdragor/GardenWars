@@ -56,9 +56,9 @@ public class ChatManager : MonoBehaviour
         string text;
         if (entityIndex <= -1)
         {
-            text = $"<color=#{ColorUtility.ToHtmlStringRGB(GameStateMachine.messageColor)}>[{GameStateMachine.messageAuthor}]: {message}</color>";
-            
-            chatPanel.Source += text;
+            text = $"<color=#{ColorUtility.ToHtmlStringRGB(GameStateMachine.messageColor)}>{GameStateMachine.messageAuthor} : {message}</color>";
+
+            chatPanel.Source += $"[{((int)GameStateMachine.gameTime/60):00}:{GameStateMachine.gameTime%60:00}] {text}";
             
             GoToBot();
             return;
@@ -70,10 +70,10 @@ public class ChatManager : MonoBehaviour
             ? ColorUtility.ToHtmlStringRGB(allyColor)
             : ColorUtility.ToHtmlStringRGB(enemyColor);
 
-        text = message.Replace("[|@@@@|", $"[<color=#{code}>");
-        text = text.Replace("|@@@|]:", $"</color>]:");
+        text = message.Replace("[|@@@@|", $"<color=#{code}>");
+        text = text.Replace("|@@@|]:", $" :</color>");
         
-        chatPanel.Source += text;
+        chatPanel.Source += $"[{((int)GameStateMachine.gameTime/60):00}:{GameStateMachine.gameTime%60:00}] {text}";
         
         GoToBot();
     }
