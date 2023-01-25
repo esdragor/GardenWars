@@ -10,7 +10,9 @@ namespace Entities.Champion
     [RequireComponent(typeof(NavMeshAgent))]
     public partial class Champion : IMoveable
     {
-        [Header("Movable")] public float baseMoveSpeed;
+        [Header("Movable")]
+        [SerializeField] private GameObject moveFx;
+        public float baseMoveSpeed;
         public float bonusMoveSpeed;
         public float moveSpeed => baseMoveSpeed + bonusMoveSpeed;
         public bool canMove;
@@ -275,12 +277,11 @@ namespace Entities.Champion
             {
                 CurrentSFXMove.Play();
                 isMoving = true;
-                //FMODUnity.RuntimeManager.PlayOneShot("event:/" + CurrentSFXMove, transform.position);
                 foreach (var animator in animators)
                 {
                     animator.SetBool("IsMoving", isMoving);
                 }
-                if(!isOffline) photonView.RPC("SyncIsMovingRPC", RpcTarget.All, entityIndex, isMoving);
+                if(!isOffline) photonView.RPC("SyncIsMovingRPC", RpcTarget.All, isMoving);
             }
             else if (currentVelocity < 0.1f && isMoving)
             {
@@ -290,7 +291,7 @@ namespace Entities.Champion
                 {
                     animator.SetBool("IsMoving", isMoving);
                 }
-                if(!isOffline) photonView.RPC("SyncIsMovingRPC", RpcTarget.All, entityIndex, isMoving);
+                if(!isOffline) photonView.RPC("SyncIsMovingRPC", RpcTarget.All, isMoving);
             }
         }
 
@@ -308,9 +309,14 @@ namespace Entities.Champion
         public event Action<bool> OnMovingFeedback;
 
         [PunRPC]
-        private void SyncIsMovingRPC(int actorNumber, bool isMoving)
+        private void SyncIsMovingRPC(bool isMoving)
         {
-            (EntityCollectionManager.GetEntityByIndex(actorNumber) as Champion)?.ModifyMoving(isMoving);
+            ModifyMoving(isMoving);
+            moveFx.SetActive(false);
+            if (isMoving && isVisible)
+            {
+                moveFx.SetActive(true);
+            }
         }
 
         private void TryMoveToTarget()
