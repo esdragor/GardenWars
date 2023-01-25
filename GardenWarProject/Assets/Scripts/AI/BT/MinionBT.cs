@@ -26,6 +26,7 @@ public class MinionBT : Tree
         {
             new Sequence(new List<Node>
             {
+                new IsLastCheckpoint(entity, waypoints.Length),
                 new CheckEnemyInPOVRange(this, entity,enemyMask, maxRangeOfLane, FOVRange),
                 new Selector(new List<Node>
                 {

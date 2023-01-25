@@ -158,7 +158,7 @@ namespace Entities.Champion
                 agent.destination = transform.position;
             }
             isAlive = true;
-            SetAnimatorBool("ISAlive", true);
+            SetAnimatorBool("IsAlive", true);
             FogOfWarManager.Instance.AddFOWViewable(this);
             rotateParent.gameObject.SetActive(true);
             uiTransform.gameObject.SetActive(true);
