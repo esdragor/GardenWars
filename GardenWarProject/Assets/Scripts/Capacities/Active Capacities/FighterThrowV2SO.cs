@@ -39,6 +39,7 @@ namespace Entities.Capacities
         public ParticleSystem ThrowDestFx;
         public ParticleSystem pickUpFx;
         public ParticleSystem CandyBagOnGroundFx;
+        public ParticleSystem CandyBagOnGroundWaitFx;
         public string SFXCataLaunch;
         public string dropCandySFX;
 
@@ -57,6 +58,8 @@ namespace Entities.Capacities
 
         private double acceleration = 0.1;
         private float distanceCandy = 10f;
+
+        private GameObject FXWaitBag = null;
 
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
@@ -167,6 +170,8 @@ namespace Entities.Capacities
 
 
                 gsm.OnUpdateFeedback += MoveBag;
+                FXWaitBag = projectile.transform.GetChild(2).gameObject;
+                FXWaitBag.SetActive(false);
 
                 void MoveBag()
                 {
@@ -224,6 +229,7 @@ namespace Entities.Capacities
                                 .gameObject;
                             HideFx(fxGround, 2000);
                             fxGround.SetActive(true);
+                            FXWaitBag.SetActive(true);
                             return;
                         }
                     }
