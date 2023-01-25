@@ -94,6 +94,8 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC(int killerId)
         {
+            SetAnimatorBool("IsAlive", false);
+            SetAnimatorTrigger("Death");
             if (photonView.IsMine)
             {
                 InputManager.PlayerMap.Movement.Disable();
@@ -106,7 +108,6 @@ namespace Entities.Champion
                 HideMaxRangeIndicator();
             }
             isAlive = false;
-            SetAnimatorBool("IsAlive", false);
             uiTransform.gameObject.SetActive(false);
             FogOfWarManager.Instance.RemoveFOWViewable(this);
             
