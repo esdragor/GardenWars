@@ -374,7 +374,9 @@ MonoBehaviour:
   rotateParent: {fileID: 3480681341152264625}
   nonRotateParent: {fileID: 7461798829813543066}
   emotesImage: {fileID: 0}
+  respawnPosition: {x: 0, y: 0, z: 0}
   rb: {fileID: 6530865356692434526}
+  coll: {fileID: 2263356599250850540}
   championMesh: {fileID: 0}
   blocker: {fileID: 3711244289653556686}
   selectedItemIndex: 0
@@ -408,7 +410,7 @@ MonoBehaviour:
   candyPickUpFx: {fileID: 687316260822352787, guid: 2ab67db7e5846584084e5f9bc91ae5c0, type: 3}
   canCast: 0
   candyProjectile: {fileID: 2395444416476895822, guid: 2519e5667bed12d45a06c24258a61524, type: 3}
-  isAlive: 0
+  isAlive: 1
   canDie: 0
   respawnDuration: 5
   respawnDurationIncreasePerMinute: 2
