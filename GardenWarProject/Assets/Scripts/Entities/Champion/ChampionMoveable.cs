@@ -260,6 +260,8 @@ namespace Entities.Champion
             
             NavMesh.CalculatePath(position,path.corners[path.corners.Length-1],NavMesh.AllAreas,path);
             
+            if(path.corners.Length <= 2) return;
+            
             var lookAtPoint = path.corners[1];
             
             lookAtPoint.y = rotateParent.position.y;
