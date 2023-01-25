@@ -84,8 +84,6 @@ namespace UIComponents
 
             capacity.OnUsable += UpdateIconOpacity;
             
-            Debug.Log($"Capacity {capacity.AssociatedActiveCapacitySO().capacityName} is of type {capacity.GetType()}");
-            
             capacity.Init();
         }
 

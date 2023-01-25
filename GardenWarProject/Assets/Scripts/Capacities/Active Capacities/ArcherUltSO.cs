@@ -37,7 +37,13 @@ namespace Entities.Capacities
             isUnusable = true;
             OnUsable?.Invoke(!isUnusable);
         }
-        
+
+        protected override void OnUpgrade()
+        {
+            isUnusable = false;
+            OnUsable?.Invoke(!isUnusable);
+        }
+
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return level > 1;
