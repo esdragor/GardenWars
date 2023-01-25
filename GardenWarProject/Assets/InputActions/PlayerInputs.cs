@@ -486,6 +486,34 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Chat"",
+            ""id"": ""cd384f21-e1ce-445b-bad5-bfadb9bb5312"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Chat"",
+                    ""type"": ""Button"",
+                    ""id"": ""1853aa15-b768-405c-b2a4-b88525e273d0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""af323057-7ff0-458f-9a85-addcc2f9d38c"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Chat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -525,6 +553,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // Emotes
         m_Emotes = asset.FindActionMap("Emotes", throwIfNotFound: true);
         m_Emotes_RouedEmote = m_Emotes.FindAction("Roue d'Emote", throwIfNotFound: true);
+        // Chat
+        m_Chat = asset.FindActionMap("Chat", throwIfNotFound: true);
+        m_Chat_ToggleChat = m_Chat.FindAction("Toggle Chat", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -923,6 +954,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public EmotesActions @Emotes => new EmotesActions(this);
+
+    // Chat
+    private readonly InputActionMap m_Chat;
+    private IChatActions m_ChatActionsCallbackInterface;
+    private readonly InputAction m_Chat_ToggleChat;
+    public struct ChatActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public ChatActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleChat => m_Wrapper.m_Chat_ToggleChat;
+        public InputActionMap Get() { return m_Wrapper.m_Chat; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ChatActions set) { return set.Get(); }
+        public void SetCallbacks(IChatActions instance)
+        {
+            if (m_Wrapper.m_ChatActionsCallbackInterface != null)
+            {
+                @ToggleChat.started -= m_Wrapper.m_ChatActionsCallbackInterface.OnToggleChat;
+                @ToggleChat.performed -= m_Wrapper.m_ChatActionsCallbackInterface.OnToggleChat;
+                @ToggleChat.canceled -= m_Wrapper.m_ChatActionsCallbackInterface.OnToggleChat;
+            }
+            m_Wrapper.m_ChatActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleChat.started += instance.OnToggleChat;
+                @ToggleChat.performed += instance.OnToggleChat;
+                @ToggleChat.canceled += instance.OnToggleChat;
+            }
+        }
+    }
+    public ChatActions @Chat => new ChatActions(this);
     public interface IMovementActions
     {
         void OnStopMovement(InputAction.CallbackContext context);
@@ -964,5 +1028,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IEmotesActions
     {
         void OnRouedEmote(InputAction.CallbackContext context);
+    }
+    public interface IChatActions
+    {
+        void OnToggleChat(InputAction.CallbackContext context);
     }
 }
