@@ -72,14 +72,42 @@ MonoBehaviour:
   maxBytePackSize: 75000
   gameSceneName: InGameScene
   isInDebugMode: 0
+  messages:
+  - timeToDisplay: 0
+    textToDisplay: "Bienvenue dans Little Heroes !\nDans Little Heroes, vous incarnez
+      quatres petits garnements, bien decides a avoir un grand jardin, rien que pour
+      eux. Chaque equipe de deux joueurs commence la partie dans son coin de jardin,
+      et doit prendre le controle du coin de jardin adverse, en faisant passer ses
+      jouets jusque la.\nLes jouets, c'est ces petits renards que vous allez voir
+      partir dans quelques secondes depuis votre coin. Pour proteger votre coin,
+      vous disposez d'une tour, que seul les jouets adverses peuvent detruire.\nVous
+      disposez chacun d'un personnage aux capacites et \xE0 la fonction differentes.
+      Si vous avez un doute sur ce que fait un capacite, vous pouvez simplement passer
+      votre souris sur son icone. Les icones de capacites se trouvent sur la barre
+      en bois a cote du portrait de votre personnage. \nBonne chance !"
+  - timeToDisplay: 15
+    textToDisplay: Des sucreries sauvages sont tombees dans le jardin. Sucrez-les
+      avant votre adversaire !
+  - timeToDisplay: 30
+    textToDisplay: Vos vaillant soldats ont quitte la cabane. Que le pestacle commence
+      !
+  messagePrePinataSpawn: Quelqu'un a accroche une petite surprise. Vite, Bubulle,
+    attrape la !
+  pinataSpawnMessageDelay: 3
+  messageFeedingPinata: Quelqu'un est en train d'essayer de soudoyer la pinata avec
+    des bonbons !
+  messageFedPinata: Il y avait des joujous dans la pinatas ! Envoyez-les a Reinbow
+    !
+  messageLowTurret: La tour est en train de se faire casser les oeufs !
+  turretHpMessageThreshold: 50
+  messageDestroyedTurret: Le seche-cheveux de maman est casse ! Vite, mobilisez vous
+    !
+  messageMinionsAtBase: Pouah, il y a les jouets de l'autre equipe partout. Ca sent
+    la chaussette pour nous !
+  minionAtBaseMessageThreshold: 10
   ticksPerSecond: 10
   globalMessageColor: {r: 0.931669, g: 1, b: 0, a: 1}
   globalMessageName: Game
-  messages:
-  - timeToDisplay: 0
-    textToDisplay: Welcome to Little Heroes !
-  - timeToDisplay: 10
-    textToDisplay: C l'heure de la bagarre la !
   expectedPlayerCount: 4
   allChampionsSo:
   - {fileID: 11400000, guid: 2c32bd83db976c344a82bd0dbb225626, type: 2}
@@ -88,6 +116,7 @@ MonoBehaviour:
   winner: 0
   scoreToWin: 15
   startTime: 0
+  currentTime: 0
 --- !u!1 &615575538139965151
 GameObject:
   m_ObjectHideFlags: 0
