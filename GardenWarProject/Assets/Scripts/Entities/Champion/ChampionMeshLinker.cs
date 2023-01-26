@@ -14,7 +14,7 @@ namespace Entities.Champion
         {
             if (teamColorfulParts.Length <= 0) return;
 
-            for (int i = 0; i < teamColorfulParts.Length; i++)
+            for (int i = 0; i < mats.Length; i++)
             {
                 teamColorfulParts[i].material = mats[i];
             }

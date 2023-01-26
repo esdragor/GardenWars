@@ -249,8 +249,6 @@ namespace Entities.Champion
         public void DecreaseCurrentHpRPC(float amount, int killerId)
         {
             amount *= (1 - actualDef / 100f);
-            
-            currentHp -= amount;
 
             OnDecreaseCurrentHp?.Invoke(amount,killerId);
             
@@ -260,7 +258,7 @@ namespace Entities.Champion
                 return;
             }
 
-            photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHp, killerId);
+            photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHp - amount, killerId);
         }
 
         [PunRPC]
