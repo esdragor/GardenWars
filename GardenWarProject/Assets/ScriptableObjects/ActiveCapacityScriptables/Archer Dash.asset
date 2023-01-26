@@ -12,29 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8302b8cf8d7944ba990f0d6c70efdc, type: 3}
   m_Name: Archer Dash
   m_EditorClassIdentifier: 
-  capacityName: Roller-dash
+  capacityName: Scooter-Dash
   icon: {fileID: 21300000, guid: a276f6a80b5012f489779d081d382342, type: 3}
-  description: 'Reindeer <color=yellow>**dashes**</color> in the target direction.
-
-
-    *Reindeer
-    doesn''t lose stacks of <color=green>**Precision**</color> while using <color=green>Roller-dash</color>*.'
-  description1: 'Reindeer <color=yellow>**dashes**</color> in the target direction,
-    *ignoring any obstacles*.
-
-
-    *Reindeer doesn''t lose stacks of <color=green>**Precision**</color>
-    while using <color=green>Roller-dash</color>*.'
-  description2: 'Reindeer <color=yellow>**dashes**</color> in the target direction,
-    *ignoring any obstacles*.
-
-
-    Reindeer periodically stocks a <color=green>**Roller-dash**</color>
-    charge, up to a maximum of **3**.
-
-
-    *Reindeer doesn''t lose stacks of <color=green>**Precision**</color>
-    while using <color=green>Roller-dash</color>*.'
+  description: "Reinbow <color=yellow>**se propulse**</color> en ligne droite.\n\n*Reinbow
+    ne perd pas de charges de <color=green>**Pr\xE9cision**</color> lorsqu'il utilise
+    Scooter-dash.*\n"
+  description1: "Reinbow <color=yellow>**se propulse**</color> en ligne droite, ignorant
+    *tout obstacle* sur son passage.\n\n*Reinbow ne perd pas de charges de <color=green>**Pr\xE9cision**</color>
+    lorsqu'il utilise Scooter-dash.*"
+  description2: "Reinbow <color=yellow>**se propulse**</color> en ligne droite, ignorant
+    *tout obstacle* sur son passage.\n\nReinbow accumule \xE0 intervalles r\xE9guliers
+    des charges de. <color=green>**Scooter-dash**</color>, jusqu'\xE0 un maximum
+    de **3** charges\n\n*Reinbow ne perd pas de charges de <color=green>**Pr\xE9cision**</color>
+    lorsqu'il utilise Scooter-dash.*\n\n\n"
   maxLevel: 3
   cooldown: 7
   castTime: 0
