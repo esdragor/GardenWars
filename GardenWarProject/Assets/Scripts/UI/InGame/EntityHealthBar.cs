@@ -21,7 +21,6 @@ namespace UIComponents
         [SerializeField] private Sprite[] AllyColor;
         [SerializeField] private Sprite[] EnemyColor;
         [SerializeField] private Sprite[] EnemyChampionColor;
-        [SerializeField] private TMP_Text textDamage;
         [SerializeField] private float championHeight = 2.5f;
         [SerializeField] private float minionHeight = 2.5f;
         [SerializeField] private Vector2 championSize;
@@ -29,9 +28,18 @@ namespace UIComponents
 
         [Header("Damage Indicator")]
         [SerializeField] private float hpLerpSpeed = 0.25f;
+        [SerializeField] private Transform damageParent;
+        [SerializeField] private TextMeshProUGUI damageTextPrefab;
         
+        [SerializeField] private float damageDuration;
+        [SerializeField] private Vector3 damageOffset;
+        [SerializeField] private Vector3 damageDirection;
+        [SerializeField] private Color damageColor;
+        [SerializeField] private Color healColor;
+
 
         private bool isLocalPlayerAndChampion;
+        private int localPlayerIndex;
         private bool isChampion;
         
         private IActiveLifeable lifeable;
@@ -49,6 +57,7 @@ namespace UIComponents
             if(lifeable == null) return;
             
             backHealthTr.position = cam.WorldToScreenPoint(entity.position + Vector3.up * (isChampion ? championHeight : minionHeight));
+            damageParent.position = cam.WorldToScreenPoint(entity.position + Vector3.up * (isChampion ? championHeight : minionHeight)/2 + damageOffset);
         }
 
         public void InitHealthBar(Entity ent)
@@ -56,8 +65,12 @@ namespace UIComponents
             entity = ent;
             
             isChampion = entity is Champion;
+
+            localPlayerIndex = GameStateMachine.Instance.GetPlayerChampion().entityIndex;
             
-            isLocalPlayerAndChampion = isChampion && ent.entityIndex == GameStateMachine.Instance.GetPlayerChampion().entityIndex;
+            isLocalPlayerAndChampion = isChampion && ent.entityIndex == localPlayerIndex;
+            
+            Debug.Log($"Entiy is {ent.GetType()}");
 
             lifeable = (IActiveLifeable)ent;
 
@@ -67,7 +80,6 @@ namespace UIComponents
             lifeable.OnIncreaseCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseCurrentHpFeedback += PrintDamage;
-            lifeable.OnDecreaseCurrentHp += PrintDamage;
             lifeable.OnIncreaseMaxHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseMaxHpFeedback += UpdateFillPercent;
 
@@ -118,22 +130,33 @@ namespace UIComponents
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
         }
-
-        private async void PrintDamage(float damage, int killerID)
+        
+        private void PrintDamage(float damage, int killerID)
         {
-            if (damage < 1) return;
-            if (isLocalPlayerAndChampion ||
-                killerID == GameStateMachine.Instance.GetPlayerChampion().entityIndex)
-            {
-                textDamage.text = (-(int)damage).ToString();
-                textDamage.gameObject.SetActive(true);
-                index++;
-                Debug.Log("PrintDamage to Champion");
-                await Task.Delay(1000);
-                index--;
-                if (index <= 0)
-                    textDamage.gameObject.SetActive(false);
-            }
+            if(damage < 0 ) return;
+
+            if (!isLocalPlayerAndChampion && localPlayerIndex != killerID) return;
+            
+            var damageText = LocalPoolManager.PoolInstantiate(damageTextPrefab, damageParent);
+            
+            var damageTr = damageText.rectTransform;
+            
+            damageTr.SetParent(damageParent);
+            damageText.gameObject.SetActive(true);
+            
+            damageTr.localPosition = Vector3.zero;
+            
+            damageText.color = damageColor;
+            damageText.text = $"-{damage:0}";
+
+            damageText.gameObject.SetActive(true);
+            
+            
+            damageTr.DOKill();
+            damageTr.DOMove(damageTr.position + damageDirection, damageDuration).OnComplete(()=>damageTr.gameObject.SetActive(false));
+            damageText.DOColor(Color.clear, damageDuration);
+
+
         }
 
         private void UpdateFillPercent(float value, int _)
@@ -159,7 +182,6 @@ namespace UIComponents
             lifeable.OnIncreaseCurrentHpFeedback -= UpdateFillPercent;
             lifeable.OnDecreaseCurrentHpFeedback -= UpdateFillPercent;
             lifeable.OnDecreaseCurrentHpFeedback -= PrintDamage;
-            lifeable.OnDecreaseCurrentHp -= PrintDamage;
             lifeable.OnIncreaseMaxHpFeedback -= UpdateFillPercent;
             lifeable.OnDecreaseMaxHpFeedback -= UpdateFillPercent;
 

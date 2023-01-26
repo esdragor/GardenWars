@@ -1,5 +1,6 @@
 using System;
 using Photon.Pun;
+using UnityEngine;
 
 namespace Entities.Champion
 {
@@ -264,6 +265,7 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDecreaseCurrentHpRPC(float amount, int killerId)
         {
+            Debug.Log($"CurrentHp : {currentHp} ");
             var current = currentHp;
             currentHp = amount;
             var lost = current - currentHp;

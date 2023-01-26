@@ -244,7 +244,6 @@ namespace Entities.Champion
         {
             if (uiManager == null) return;
             uiManager.InstantiateHealthBarForEntity(this);
-            uiManager.InstantiateResourceBarForEntity(this);
             uiManager.InstantiateEmoteForEntity(this);
         }
 
