@@ -60,6 +60,8 @@ namespace GameStates
 
         private readonly Dictionary<int, PlayerData> playerDataDict =
             new Dictionary<int, PlayerData>();
+        
+        public static int GetplayerCount => Instance.playerDataDict.Count(kvp => kvp.Value.team != Enums.Team.Neutral);
 
         [Header("InGameData")]
         public Enums.Team winner = Enums.Team.Neutral;

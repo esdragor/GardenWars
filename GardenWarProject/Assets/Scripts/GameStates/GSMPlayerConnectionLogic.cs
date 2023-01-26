@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Entities.Champion;
 using Photon.Pun;
@@ -61,8 +62,12 @@ namespace GameStates
                 
                 playerDataDict.Add(actorNumber, playerData);
                 allPlayersIDs.Add(actorNumber);
+                
+                OnPlayerAdded?.Invoke();
             }
         }
+        
+        public static event Action OnPlayerAdded;
 
         public static void AddOfflinePlayer(Champion champion, Enums.Team team, Enums.ChampionRole role)
         {
@@ -109,6 +114,7 @@ namespace GameStates
             playerDataDict.Remove(actorNumber);
             allPlayersIDs.Remove(actorNumber);
             OnDataDictUpdated?.Invoke(actorNumber, null);
+            OnPlayerAdded?.Invoke();
         }
     }
 }
