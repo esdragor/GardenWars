@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Timers;
 using Entities;
 using Entities.Champion;
 using GameStates;
@@ -24,6 +25,7 @@ public class ChatManager : MonoBehaviour
 
     private Champion champion = null;
     private bool isChatting = false;
+    private float delayTimer = 0f;
 
     private void Awake()
     {
@@ -38,6 +40,8 @@ public class ChatManager : MonoBehaviour
         inputField.onSelect.AddListener((string s) => { InputManager.DisableInput(); });
         inputField.onDeselect.AddListener((string s) => { InputManager.EnableInput(); });
         QuitButton.onClick.AddListener(ToggleChat);
+        
+        GameStateMachine.Instance.OnTick += OnTick;
     }
 
     private void OnAddMessage(string message)
@@ -51,11 +55,24 @@ public class ChatManager : MonoBehaviour
         
         InputManager.EnableInput();
     }
+    
+    private void OnTick()
+    {
+        delayTimer -= Time.deltaTime;
+        if (delayTimer < 0f)
+        {
+            delayTimer = -1.0f;
+        }
+    }
 
     public void UpdateMessageBox(string message, int entityIndex)
     {
         if (message.Length == 0) return;
-
+        if (delayTimer < 0f)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + GameStateMachine.Instance.SFXChatMessage);
+            delayTimer = 4.0f;
+        }
         string text;
         if (entityIndex <= -1)
         {
@@ -77,7 +94,6 @@ public class ChatManager : MonoBehaviour
         text = text.Replace("|@@@|]:", $" :</color>");
         
         chatPanel.Source += $"[{((int)GameStateMachine.gameTime/60):00}:{GameStateMachine.gameTime%60:00}] {text}";
-        
         GoToBot();
     }
 

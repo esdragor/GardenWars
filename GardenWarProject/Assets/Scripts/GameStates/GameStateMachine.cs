@@ -67,6 +67,8 @@ namespace GameStates
         [HideInInspector] public double startTime;
         [HideInInspector] public double currentTime;
         public static double gameTime => Instance.currentTime - Instance.startTime;
+
+        public string SFXChatMessage = "";
         
         [Serializable]
         public class PlayerData

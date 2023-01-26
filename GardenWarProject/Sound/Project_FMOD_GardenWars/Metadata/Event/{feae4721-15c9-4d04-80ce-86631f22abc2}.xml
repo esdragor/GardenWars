@@ -2,10 +2,10 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{feae4721-15c9-4d04-80ce-86631f22abc2}">
 		<property name="name">
-			<value>Son Message</value>
+			<value>Msg</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{66513fe5-a18c-4fad-892c-701ec7c558c5}</destination>
@@ -30,6 +30,9 @@
 		</relationship>
 		<relationship name="timeline">
 			<destination>{f8cbb0d5-4ed2-4d8e-94c1-09e0a769d955}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{f0298d0e-0731-4b4b-9f4c-eae92451ef5f}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{8384c592-b98e-4cb0-b658-0d3a43996897}">
@@ -70,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{35d06e78-ea06-4f54-9c8a-08cf251028f2}">
 		<property name="volume">
-			<value>-10</value>
+			<value>2.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{0c3c3fd9-31a5-426c-b44e-dab4b12a72b9}</destination>
@@ -97,6 +100,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{7ae24864-8b79-4a85-8f3c-79eeec351219}">
+		<property name="volume">
+			<value>5.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -113,7 +119,6 @@
 	<object class="MixerBusEffectChain" id="{0c3c3fd9-31a5-426c-b44e-dab4b12a72b9}">
 		<relationship name="effects">
 			<destination>{c1ff45f8-8b91-4541-87a0-73e84de7d027}</destination>
-			<destination>{6f487873-90f2-449f-beca-0954a2724600}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{31e429b6-fac5-49e6-aefc-d2e3918f637a}" />
@@ -125,6 +130,5 @@
 	</object>
 	<object class="MixerBusPanner" id="{754163b9-239f-445c-88f6-a24daece33ce}" />
 	<object class="MixerBusFader" id="{c1ff45f8-8b91-4541-87a0-73e84de7d027}" />
-	<object class="SpatialiserEffect" id="{6f487873-90f2-449f-beca-0954a2724600}" />
 	<object class="MixerBusFader" id="{0f4282cb-2a77-481a-89a9-33e162f6607a}" />
 </objects>
