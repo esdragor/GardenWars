@@ -32,7 +32,7 @@ public class PostGameUIManager : MonoBehaviour
     private void Start()
     {
         rematchButton.onClick.AddListener(Application.Quit);
-        
+        postGameCanvas.SetActive(false);
         winPanel.SetActive(false);
         losePanel.SetActive(!false);
     }
