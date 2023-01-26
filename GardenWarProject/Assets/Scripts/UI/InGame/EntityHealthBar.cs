@@ -44,7 +44,7 @@ namespace UIComponents
         
         private IActiveLifeable lifeable;
         private Entity entity;
-        private Camera cam;
+        private Camera cam => GameStateMachine.mainCam;
         private byte index = 0;
 
         private void Start()
@@ -62,6 +62,8 @@ namespace UIComponents
 
         public void InitHealthBar(Entity ent)
         {
+            Debug.Log($"Linking to {ent} ({ent.GetType()})");
+            
             entity = ent;
             
             isChampion = entity is Champion;
@@ -81,8 +83,6 @@ namespace UIComponents
             lifeable.OnIncreaseMaxHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseMaxHpFeedback += UpdateFillPercent;
 
-            cam = GameStateMachine.mainCam;
-            
             healthBar.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
             healthBar2.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
             backHealthBar.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
@@ -175,6 +175,8 @@ namespace UIComponents
 
         public void Unlink()
         {
+            Debug.Log($"Unlink from {entity} ({entity.GetType()})");
+            
             lifeable.OnSetCurrentHpFeedback -= UpdateFillPercent;
             lifeable.OnSetCurrentHpPercentFeedback -= UpdateFillPercentByPercent;
             lifeable.OnIncreaseCurrentHpFeedback -= UpdateFillPercent;
