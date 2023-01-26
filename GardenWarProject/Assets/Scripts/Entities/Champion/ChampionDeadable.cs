@@ -15,6 +15,9 @@ namespace Entities.Champion
         public float respawnDuration = 5;
         public float respawnDurationIncreasePerMinute = 2;
         private double respawnTimer;
+        
+        [SerializeField] private GameObject DeadCanvas;
+        private GameObject deadCanvasGO = null;
 
         public bool IsAlive()
         {
@@ -63,6 +66,9 @@ namespace Entities.Champion
 
         public void RequestDie(int killerId)
         {
+            if (!deadCanvasGO)
+                deadCanvasGO = Instantiate(DeadCanvas);
+            deadCanvasGO.SetActive(true);
             photonView.RPC("DieRPC", RpcTarget.MasterClient, killerId);
             Debug.Log("Request to die");
         }
@@ -121,6 +127,7 @@ namespace Entities.Champion
 
         public void RequestRevive()
         {
+            deadCanvasGO.SetActive(false);
             photonView.RPC("ReviveRPC", RpcTarget.MasterClient);
         }
         
