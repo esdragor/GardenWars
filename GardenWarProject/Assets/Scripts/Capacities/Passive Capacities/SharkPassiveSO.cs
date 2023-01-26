@@ -138,7 +138,7 @@ namespace Entities.Capacities
             aileronGo.SetActive(true);
             aileron.OnEntityCollide += EntityCollide;
 
-            ult?.UpdateUsable();
+            ult?.UpdateUsable(true);
 
             aileronGo.GetComponent<SharkPassiveManager>().EnableFXShot(champion.team);
         }
@@ -190,7 +190,7 @@ namespace Entities.Capacities
             borrowed = false;
             champion.SetAnimatorBool("Borrowed",false);
             
-            ult?.UpdateUsable();
+            ult?.UpdateUsable(false);
             
             if (!Unborrow)
             {

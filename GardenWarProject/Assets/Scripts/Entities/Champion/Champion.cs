@@ -125,26 +125,12 @@ namespace Entities.Champion
 
             if (!agent) agent = GetComponent<NavMeshAgent>();
             agent.speed = moveSpeed;
-
-            attackAbilityIndex = currentSo.attackAbilityIndex;
-
-            abilitiesIndexes = new byte[3];
             
-            for (byte i = 0; i < currentSo.activeCapacitiesIndexes.Length; i++)
-            {
-                ChangeActiveAbility(i, currentSo.activeCapacitiesIndexes[i]);
-            }
-
-            SetupAbility(recallAbilityIndex);
-            SetupAbility(consumeAbilityIndex);
-
             championMesh = Instantiate(currentSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
             championMesh.transform.localEulerAngles = Vector3.zero;
 
             throwAbilityIndex = CapacitySOCollectionManager.GetThrowAbilityIndex(role);
-
-            SetupAbility(throwAbilityIndex);
 
             var linker = championMesh.GetComponent<ChampionMeshLinker>();
             var teamMat = team == gsm.GetPlayerTeam() ? currentSo.materialsBlueTeam : currentSo.materialsRedTeam;
@@ -165,6 +151,19 @@ namespace Entities.Champion
             {
                 AddPassiveCapacityRPC(index);
             }
+            
+            attackAbilityIndex = currentSo.attackAbilityIndex;
+
+            abilitiesIndexes = new byte[3];
+            
+            for (byte i = 0; i < currentSo.activeCapacitiesIndexes.Length; i++)
+            {
+                ChangeActiveAbility(i, currentSo.activeCapacitiesIndexes[i]);
+            }
+
+            SetupAbility(recallAbilityIndex);
+            SetupAbility(consumeAbilityIndex);
+            SetupAbility(throwAbilityIndex);
 
             if (!isOffline)
             {

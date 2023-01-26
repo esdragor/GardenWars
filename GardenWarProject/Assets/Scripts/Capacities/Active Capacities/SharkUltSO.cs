@@ -59,18 +59,19 @@ namespace Entities.Capacities
         public override void Init()
         {
             isUnusable = true;
+            sharkPassive.ult = this;
             OnUsable?.Invoke(!isUnusable);
         }
 
-        public void UpdateUsable()
+        public void UpdateUsable(bool value)
         {
-            isUnusable = !sharkPassive.borrowed;
+            isUnusable = !value;
+            Debug.Log($"Usuable : {!isUnusable}");
             OnUsable?.Invoke(!isUnusable);
         }
         
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            sharkPassive.ult = this;
             return sharkPassive.borrowed;
         }
 

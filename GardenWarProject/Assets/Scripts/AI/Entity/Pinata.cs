@@ -43,6 +43,8 @@ namespace Entities
         [SerializeField] private Image indicatorImage;
         [SerializeField] private float offset;
         [SerializeField] private float margin;
+        [SerializeField] private Transform canvas;
+        private GameObject canvasGo;
         
         //private GameObject rotatorGo;
         private Vector3 iconPos;
@@ -65,6 +67,8 @@ namespace Entities
             candyFollowGo = candyFollow.gameObject;
             candyFollowGo.SetActive(false);
 
+            canvasGo = canvas.gameObject;
+
             SetupLine();
         }
 
@@ -82,8 +86,8 @@ namespace Entities
             currentFeeder = null;
             
             transform.localScale = Vector3.one;
-
-            //UIManager.Instance.InstantiateHealthBarForEntity(this);
+            
+            canvas.SetParent(null);
         }
 
         protected override void OnUpdate()
@@ -369,5 +373,16 @@ namespace Entities
             }
         }
 
+        private void OnDisable()
+        {
+            if(canvasGo == null) return;
+            canvasGo.SetActive(false);
+        }
+
+        private void OnEnable()
+        {
+            if(canvasGo == null) return;
+            canvasGo.SetActive(true);
+        }
     }
 }
