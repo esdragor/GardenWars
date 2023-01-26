@@ -192,7 +192,7 @@ namespace Entities.Capacities
             
             ult?.UpdateUsable(false);
             
-            if (!Unborrow)
+            if (!UnborrowGO)
             {
                 Unborrow = champion.team == gsm.GetPlayerTeam() ? so.UnborrowBlue : so.UnborrowRed;
                 UnborrowGO = LocalPoolManager.PoolInstantiate(Unborrow, champion.championMesh.transform).gameObject;
