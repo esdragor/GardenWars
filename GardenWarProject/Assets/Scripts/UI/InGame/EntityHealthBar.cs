@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using DG.Tweening;
 using Entities;
 using Entities.Champion;
 using GameStates;
@@ -11,7 +12,9 @@ namespace UIComponents
 {
     public class EntityHealthBar : MonoBehaviour
     {
+        [Header("Health Bar")]
         [SerializeField] private Image healthBar;
+        [SerializeField] private Image healthBar2;
         private Transform backHealthTr;
         [SerializeField] private Image backHealthBar;
         [SerializeField] private Sprite[] ChampionColor;
@@ -23,6 +26,9 @@ namespace UIComponents
         [SerializeField] private float minionHeight = 2.5f;
         [SerializeField] private Vector2 championSize;
         [SerializeField] private Vector2 minionSize;
+
+        [Header("Damage Indicator")]
+        [SerializeField] private float hpLerpSpeed = 0.25f;
         
 
         private bool isLocalPlayerAndChampion;
@@ -68,6 +74,7 @@ namespace UIComponents
             cam = GameStateMachine.mainCam;
             
             healthBar.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
+            healthBar2.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
             backHealthBar.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
             if (isChampion)
             {
@@ -75,11 +82,13 @@ namespace UIComponents
                 if (GameStateMachine.Instance.GetPlayerTeam() == ent.GetTeam())
                 {
                     healthBar.sprite = ChampionColor[0];
+                    healthBar2.sprite = ChampionColor[0];
                     backHealthBar.sprite = ChampionColor[1];
                 }
                 else
                 {
                     healthBar.sprite = EnemyChampionColor[0];
+                    healthBar2.sprite = EnemyChampionColor[0];
                     backHealthBar.sprite = EnemyChampionColor[1];
                 }
             }
@@ -88,11 +97,13 @@ namespace UIComponents
                 if (GameStateMachine.Instance.GetPlayerTeam() == ent.GetTeam())
                 {
                     healthBar.sprite = AllyColor[0];
+                    healthBar2.sprite = AllyColor[0];
                     backHealthBar.sprite = AllyColor[1];
                 }
                 else
                 {
                     healthBar.sprite = EnemyColor[0];
+                    healthBar2.sprite = EnemyColor[0];
                     backHealthBar.sprite = EnemyColor[1];
                 }
             }
@@ -128,6 +139,17 @@ namespace UIComponents
         private void UpdateFillPercent(float value, int _)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
+            healthBar2.DOKill();
+            if (healthBar.fillAmount > healthBar2.fillAmount)
+            {
+                healthBar2.fillAmount = healthBar.fillAmount;
+            }
+            else
+            {
+                healthBar2.DOFillAmount(healthBar.fillAmount, hpLerpSpeed);
+            }
+            
+            
         }
 
         public void Unlink()
