@@ -14,7 +14,7 @@ public partial class UIManager
     {
         if (entity == null) return;
         if (entity.GetComponent<IActiveLifeable>() == null) return;
-        var canvasHealth = LocalPoolManager.PoolInstantiate(healthBarPrefab, entity.uiTransform.position + entity.uiOffset, Quaternion.identity,null,(entity is Minion));
+        var canvasHealth = Instantiate(healthBarPrefab, entity.uiTransform.position + entity.uiOffset, Quaternion.identity,null);
         var canvasGo = canvasHealth.gameObject;
         entity.elementsToShow.Add(canvasGo);
         
@@ -23,8 +23,6 @@ public partial class UIManager
         {
             canvasGo.SetActive(false);
         }
-        
-        Debug.Log($"Init for {entity} ({entity.GetType()})");
         
         canvasHealth.InitHealthBar(entity);
 
@@ -49,10 +47,12 @@ public partial class UIManager
         {
             canvasGo.SetActive(false);
             
-            if(!(entity is Champion)) deadable.OnDieFeedback -= Unlink;
             entity.OnShowElementFeedback -= ShowBar;
             entity.OnHideElementFeedback -= HideBar;
             canvasHealth.Unlink();
+            if(!(entity is Champion)) deadable.OnDieFeedback -= Unlink;
+            entity.elementsToShow.Remove(canvasGo);
+            Destroy(canvasGo);
         }
         
     }

@@ -143,7 +143,7 @@ namespace UIComponents
             damageText.gameObject.SetActive(true);
             
             damageTr.localPosition = Vector3.zero;
-            
+
             damageText.color = damageColor;
             damageText.text = $"-{damage:0}";
 
@@ -151,10 +151,14 @@ namespace UIComponents
             
             
             damageTr.DOKill();
-            damageTr.DOMove(damageTr.position + damageDirection, damageDuration).OnComplete(()=>damageTr.gameObject.SetActive(false));
+            damageTr.DOMove(damageTr.position + damageDirection, damageDuration).OnComplete(ReturnDamage);
             damageText.DOColor(Color.clear, damageDuration);
 
-
+            void ReturnDamage()
+            {
+                damageTr.SetParent(null);
+                damageTr.gameObject.SetActive(false);
+            }
         }
 
         private void UpdateFillPercent(float value, int _)
@@ -175,8 +179,6 @@ namespace UIComponents
 
         public void Unlink()
         {
-            Debug.Log($"Unlink from {entity} ({entity.GetType()})");
-            
             lifeable.OnSetCurrentHpFeedback -= UpdateFillPercent;
             lifeable.OnSetCurrentHpPercentFeedback -= UpdateFillPercentByPercent;
             lifeable.OnIncreaseCurrentHpFeedback -= UpdateFillPercent;
