@@ -1,4 +1,5 @@
 using Entities;
+using ExitGames.Client.Photon;
 using GameStates;
 using UnityEngine;
 using UIComponents;
@@ -6,19 +7,43 @@ using UIComponents;
 public partial class UIManager
 {
     [Header("HealthBar Elements")]
-    [SerializeField] private GameObject healthBarPrefab;
+    [SerializeField] private EntityHealthBar healthBarPrefab;
 
     public void InstantiateHealthBarForEntity(Entity entity)
     {
         if (entity == null) return;
         if (entity.GetComponent<IActiveLifeable>() == null) return;
-        var canvasHealth = Instantiate(healthBarPrefab, entity.uiTransform.position + entity.uiOffset, Quaternion.identity, entity.uiTransform);
-        entity.elementsToShow.Add(canvasHealth);
+        var canvasHealth = LocalPoolManager.PoolInstantiate(healthBarPrefab, entity.uiTransform.position + entity.uiOffset, Quaternion.identity);
+        var canvasGo = canvasHealth.gameObject;
+        entity.elementsToShow.Add(canvasGo);
+        
+        canvasGo.SetActive(true);
         if (entity.team != gsm.GetPlayerTeam() && entity.team != Enums.Team.Neutral)
         {
-            canvasHealth.SetActive(false);
+            canvasGo.SetActive(false);
         }
-        canvasHealth.GetComponent<EntityHealthBar>().InitHealthBar(entity);
-      
+        canvasHealth.InitHealthBar(entity);
+
+        entity.OnShowElementFeedback += ShowBar;
+        entity.OnHideElementFeedback += HideBar;
+        
+        var deadable = entity.GetComponent<IDeadable>();
+        if(deadable != null) deadable.OnDieFeedback += Unlink;
+        
+        void ShowBar()
+        {
+            canvasGo.SetActive(true);
+        }
+
+        void HideBar()
+        {
+            canvasGo.SetActive(false);
+        }
+
+        void Unlink(int _)
+        {
+            canvasHealth.Unlink();
+        }
+        
     }
 }
