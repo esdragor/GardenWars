@@ -272,7 +272,7 @@ namespace Entities.Champion
             if (currentHp <= 0)
             {
                 currentHp = 0;
-                RequestDie(killerId);
+                if(isPlayerChampion) RequestDie(killerId);
             }
             OnDecreaseCurrentHpFeedback?.Invoke(lost,killerId);
         }

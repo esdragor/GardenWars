@@ -69,6 +69,7 @@ public class ChatManager : MonoBehaviour
     {
         if (message.Length == 0) return;
         chatPanelCanvas.SetActive(true);
+        QuitButton.gameObject.SetActive(true);
         if (delayTimer < 0f)
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + GameStateMachine.Instance.SFXChatMessage);

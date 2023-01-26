@@ -36,6 +36,7 @@ namespace GameStates
 
         public void RequestSetTeam(byte team)
         {
+            
             photonView.RPC("SetTeamRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, team);
         }
 
@@ -56,6 +57,7 @@ namespace GameStates
 
             playerDataDict[actorNumber].team = (Enums.Team) team;
             OnDataDictUpdated?.Invoke(actorNumber, playerDataDict[actorNumber]);
+            OnPlayerAdded?.Invoke();
         }
 
         public void RequestSetRole(byte role)

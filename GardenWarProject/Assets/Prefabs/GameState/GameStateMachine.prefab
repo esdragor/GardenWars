@@ -74,7 +74,7 @@ MonoBehaviour:
   meshRenderer: {fileID: 0}
   crossbowMeshRenderer: {fileID: 0}
   loadingBarImage: {fileID: 6769780262342853887}
-  maxBytePackSize: 75000
+  maxBytePackSize: 16000
   gameSceneName: InGameScene
   isInDebugMode: 0
   messages:
@@ -113,6 +113,7 @@ MonoBehaviour:
   messagePrePinataSpawn: Quelqu'un a accroche une petite surprise. Vite, Bubulle,
     attrape la !
   pinataSpawnMessageDelay: 3
+  pinataGettingBiggerMessage: 
   messageFeedingPinata: Quelqu'un est en train d'essayer de soudoyer la pinata avec
     des bonbons !
   messageFedPinata: Il y avait des joujous dans la pinatas ! Envoyez-les a Reinbow
