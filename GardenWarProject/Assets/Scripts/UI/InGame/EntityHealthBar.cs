@@ -70,8 +70,6 @@ namespace UIComponents
             
             isLocalPlayerAndChampion = isChampion && ent.entityIndex == localPlayerIndex;
             
-            Debug.Log($"Entiy is {ent.GetType()}");
-
             lifeable = (IActiveLifeable)ent;
 
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();

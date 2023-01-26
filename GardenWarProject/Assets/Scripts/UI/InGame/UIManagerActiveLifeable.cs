@@ -42,8 +42,6 @@ public partial class UIManager
 
         void Unlink(int _)
         {
-            Debug.Log("Entity Dead, Unlinking");
-            
             canvasGo.SetActive(false);
             
             deadable.OnDieFeedback -= Unlink;
