@@ -42,6 +42,7 @@ public partial class UIManager
 
         void Unlink(int _)
         {
+            canvasGo.SetActive(false);
             canvasHealth.Unlink();
         }
         
