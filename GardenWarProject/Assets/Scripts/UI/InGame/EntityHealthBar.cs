@@ -88,7 +88,7 @@ namespace UIComponents
             backHealthBar.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
             if (isChampion)
             {
-                
+                GetComponent<Canvas>().sortingOrder = 10;
                 if (GameStateMachine.Instance.GetPlayerTeam() == ent.GetTeam())
                 {
                     healthBar.sprite = ChampionColor[0];
