@@ -68,6 +68,7 @@ namespace UIComponents
             cam = GameStateMachine.mainCam;
             
             healthBar.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
+            backHealthBar.GetComponent<RectTransform>().sizeDelta = isChampion ? championSize : minionSize;
             if (isChampion)
             {
                 
