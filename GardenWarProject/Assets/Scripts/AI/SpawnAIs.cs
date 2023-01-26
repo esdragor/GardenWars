@@ -146,7 +146,7 @@ public class SpawnAIs : MonoBehaviourPun
         minionLevel++;
         Minion.level = minionLevel;
         
-        for (var i = 0; i < minionsPerWave; i++)
+        for (var i = 0; i < 0; i++)
         {
             var spawnTimer = i * timeBetweenMinionSpawn;
 

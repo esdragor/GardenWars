@@ -10,6 +10,7 @@ namespace Entities.Capacities
     {
         public ProjectileOnCollideEffect projectileBlue;
         public ProjectileOnCollideEffect projectileRed;
+        public ProjectileOnCollideEffect defaultProjectile;
         public float speedFire = 0.1f;
         
         public string SFXName;
@@ -97,7 +98,8 @@ namespace Entities.Capacities
                 rotation = Quaternion.LookRotation(castChamp.forward);
             }
 
-            ProjectileOnCollideEffect Arrow = caster.GetEnemyTeams().Contains(GameStateMachine.Instance.GetPlayerTeam()) ? so.projectileRed : so.projectileBlue;
+            ProjectileOnCollideEffect Arrow = (so.projectileRed && so.projectileBlue) ?
+             (caster.GetEnemyTeams().Contains(GameStateMachine.Instance.GetPlayerTeam()) ? so.projectileRed : so.projectileBlue) : so.defaultProjectile;
             
             var projectile = LocalPoolManager.PoolInstantiate(Arrow,spawnPos,rotation);
 
