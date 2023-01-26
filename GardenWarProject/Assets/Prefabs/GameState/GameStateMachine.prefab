@@ -67,26 +67,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431e36483c01e7f4f934d8411b83d654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingWidgetTr: {fileID: 0}
+  loadingCameraGo: {fileID: 0}
+  LobbyGo: {fileID: 0}
   loadingCanvas: {fileID: 615575538139965151}
+  loadingSpinRender: {fileID: 0}
+  meshRenderer: {fileID: 0}
+  crossbowMeshRenderer: {fileID: 0}
   loadingBarImage: {fileID: 6769780262342853887}
   maxBytePackSize: 75000
   gameSceneName: InGameScene
   isInDebugMode: 0
   messages:
   - timeToDisplay: 0
-    textToDisplay: "Bienvenue dans Little Heroes !\nDans Little Heroes, vous incarnez
-      quatres petits garnements, bien decides a avoir un grand jardin, rien que pour
-      eux. Chaque equipe de deux joueurs commence la partie dans son coin de jardin,
-      et doit prendre le controle du coin de jardin adverse, en faisant passer ses
-      jouets jusque la.\nLes jouets, c'est ces petits renards que vous allez voir
-      partir dans quelques secondes depuis votre coin. Pour proteger votre coin,
-      vous disposez d'une tour, que seul les jouets adverses peuvent detruire.\nVous
-      disposez chacun d'un personnage aux capacites et \xE0 la fonction differentes.
-      Si vous avez un doute sur ce que fait un capacite, vous pouvez simplement passer
-      votre souris sur son icone. Les icones de capacites se trouvent sur la barre
-      en bois a cote du portrait de votre personnage. \nBonne chance !"
-  - timeToDisplay: 15
+    textToDisplay: Bienvenue dans Little Heroes !
+  - timeToDisplay: 2
+    textToDisplay: 'Dans Little Heroes, vous incarnez quatres petits garnements,
+      bien decides a avoir un grand jardin, rien que pour eux. '
+  - timeToDisplay: 6
+    textToDisplay: Chaque equipe de deux joueurs commence la partie dans son coin
+      de jardin, et doit prendre le controle du coin de jardin adverse, en faisant
+      passer ses jouets jusque la.
+  - timeToDisplay: 10
+    textToDisplay: 'Les jouets, c''est ces petits renards que vous allez voir partir
+      dans quelques secondes depuis votre coin. '
+  - timeToDisplay: 14
+    textToDisplay: ' Pour proteger votre coin, vous disposez d''une tour, que seul
+      les jouets adverses peuvent detruire.'
+  - timeToDisplay: 18
+    textToDisplay: 'Vous disposez chacun d''un personnage aux capacites et a la fonction
+      differentes. '
+  - timeToDisplay: 21
+    textToDisplay: Si vous avez un doute sur ce que fait un capacite, vous pouvez
+      simplement passer votre souris sur son icone.
+  - timeToDisplay: 23
+    textToDisplay: 'Les icones de capacites se trouvent sur la barre en bois a cote
+      du portrait de votre personnage. '
+  - timeToDisplay: 24
+    textToDisplay: Bonne chance !
+  - timeToDisplay: 25
     textToDisplay: Des sucreries sauvages sont tombees dans le jardin. Sucrez-les
       avant votre adversaire !
   - timeToDisplay: 30
