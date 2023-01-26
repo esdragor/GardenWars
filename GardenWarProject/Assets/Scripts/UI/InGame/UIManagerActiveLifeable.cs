@@ -1,4 +1,5 @@
 using Entities;
+using Entities.Champion;
 using ExitGames.Client.Photon;
 using GameStates;
 using UnityEngine;
@@ -27,6 +28,7 @@ public partial class UIManager
         entity.OnShowElementFeedback += ShowBar;
         entity.OnHideElementFeedback += HideBar;
         
+        if((entity is Champion)) return;
         var deadable = entity.GetComponent<IDeadable>();
         if(deadable != null) deadable.OnDieFeedback += Unlink;
         
@@ -44,7 +46,7 @@ public partial class UIManager
         {
             canvasGo.SetActive(false);
             
-            deadable.OnDieFeedback -= Unlink;
+            if(!(entity is Champion)) deadable.OnDieFeedback -= Unlink;
             entity.OnShowElementFeedback -= ShowBar;
             entity.OnHideElementFeedback -= HideBar;
             canvasHealth.Unlink();

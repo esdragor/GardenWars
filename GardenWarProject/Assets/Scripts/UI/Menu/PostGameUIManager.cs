@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GameStates;
 using TMPro;
 using UnityEngine;
@@ -53,6 +54,7 @@ public class PostGameUIManager : MonoBehaviour
 
     public void OnRematchClick()
     {
-        Debug.Log("Does not work yet");
+        Process.Start(Application.dataPath + @"\..\LittleHeroes.exe");
+        Application.Quit();
     }
 }
