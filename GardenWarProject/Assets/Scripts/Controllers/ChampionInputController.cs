@@ -35,12 +35,6 @@ namespace Controllers.Inputs
             champion.targetedEntities = (selectedEntity) ? selectedEntity.entityIndex : -1;
             champion.targetedPositions = cursorWorldPos;
             
-            /* AUTO AIM
-            if(selectedEntity != null)
-                if (champion.GetEnemyTeams().Contains(selectedEntity.team) && selectedEntity.isVisible)
-                    champion.targetedPositions = selectedEntity.position;
-            */
-            
             if (isRightClicking) OnRightClick(nullCtx);
         }
 

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using DG.Tweening;
 using Entities.Capacities;
 using Entities.Inventory;
 using GameStates;
@@ -272,18 +273,16 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncDisplayEmoteRPC(int actorNumber,byte indexOfEmote)
         {
+
+            
             emotesImage.texture = gsm.GetPlayerEmotes(actorNumber)[indexOfEmote];
+            emotesImage.color = Color.clear;
             emotesImage.gameObject.SetActive(true);
 
-           HideEmote(); // TODO - emote animation
+            emotesImage.DOKill();
+            emotesImage.DOColor(Color.white, 0.25f).OnComplete(() => emotesImage.DOColor(Color.white, 2f).OnComplete(()=>emotesImage.DOColor(Color.clear, 1f)));
         }
-
-        private async void HideEmote()
-        {
-            await Task.Delay(3000);
-
-            emotesImage.gameObject.SetActive(false);
-        }
+        
 
         public void RequestPressItem(byte itemIndexInInventory, int selectedEntities, Vector3 positions)
         {
