@@ -136,7 +136,7 @@ namespace Entities.Champion
         {
             if (isAlive) return;
             
-            isAlive = true;
+            //isAlive = true;
             canDie = true;
             canMove = true;
             canAttack = true;
