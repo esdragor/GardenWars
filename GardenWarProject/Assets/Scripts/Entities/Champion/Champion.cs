@@ -273,8 +273,6 @@ namespace Entities.Champion
         [PunRPC]
         private void SyncDisplayEmoteRPC(int actorNumber,byte indexOfEmote)
         {
-
-            
             emotesImage.texture = gsm.GetPlayerEmotes(actorNumber)[indexOfEmote];
             emotesImage.color = Color.clear;
             emotesImage.gameObject.SetActive(true);
