@@ -145,11 +145,6 @@ namespace UIComponents
             }
         }
 
-        private void InitializeRoleButtons()
-        {
-
-        }
-
         private void SetupReadyButton()
         {
             isReady = false;
@@ -157,7 +152,7 @@ namespace UIComponents
             readyButton.interactable = false;
             readyButton.onClick.AddListener(ToggleReady);
             readyButton.onClick.AddListener(() => {FMODUnity.RuntimeManager.PlayOneShot("event:/GameLaunch");});
-            GameStateMachine.OnPlayerAdded += () => { readyButton.interactable = GameStateMachine.GetplayerCount == 4; };
+            GameStateMachine.OnPlayerAdded += () => { readyButton.interactable = GameStateMachine.GetplayerCount == 4 || gameStateMachine.isInDebugMode; };
         }
 
         private void ToggleReady()
