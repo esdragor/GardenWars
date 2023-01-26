@@ -131,6 +131,9 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         currentMoveSpeed = referenceMoveSpeed;
         agent.speed = referenceMoveSpeed;
 
+        canShow = true;
+        isAlive = true;
+
         UIManager.Instance.InstantiateHealthBarForEntity(this);
         Mesh.GetComponent<Renderer>().material = team == gsm.GetPlayerTeam() ? BlueMaterial : RedMaterial;
     }
@@ -729,6 +732,8 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
         }
         
         isAlive = false;
+        canShow = false;
+        
         FogOfWarManager.Instance.RemoveFOWViewable(this);
 
         gameObject.SetActive(false);
