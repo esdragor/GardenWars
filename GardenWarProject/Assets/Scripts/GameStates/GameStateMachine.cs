@@ -26,6 +26,7 @@ namespace GameStates
         public List<InGameMessage> messages = new List<InGameMessage>();
         public string messagePrePinataSpawn;
         public float pinataSpawnMessageDelay = 3;
+        public string pinataGettingBiggerMessage;
         public string messageFeedingPinata;
         public string messageFedPinata;
         public string messageLowTurret;

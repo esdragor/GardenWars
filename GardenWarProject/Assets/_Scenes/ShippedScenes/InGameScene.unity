@@ -4500,17 +4500,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3248323131726062708, guid: 9365fdce127720748a1a73011482ddeb, type: 3}
     - target: {fileID: 579670119315938393, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: settingsPanel
-      value: 
-      objectReference: {fileID: 1291151553}
-    - target: {fileID: 579670119315938393, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: settingsButton
       value: 
       objectReference: {fileID: 5135827}
-    - target: {fileID: 579670119315938393, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: settingsToHideInGame.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 835053568365048107, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: sceneViewId
       value: 1
@@ -4519,9 +4511,13 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1894252846924540296, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1981727053604950417, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
+      value: -0.00063510897
       objectReference: {fileID: 0}
     - target: {fileID: 2830865266659636503, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4825,6 +4821,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5180287656143444081, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5180287656143444081, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6439172362144562507, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
@@ -14123,11 +14123,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6865769013909858317, guid: 2dfb5b14a26f67042ac94936f9f4c557, type: 3}
---- !u!1 &1291151553 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3339803679217172205, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-  m_PrefabInstance: {fileID: 1084139259}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1303291898
 GameObject:
   m_ObjectHideFlags: 0
