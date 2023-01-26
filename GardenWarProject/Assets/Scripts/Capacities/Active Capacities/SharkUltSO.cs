@@ -66,7 +66,6 @@ namespace Entities.Capacities
         public void UpdateUsable(bool value)
         {
             isUnusable = !value;
-            Debug.Log($"Usuable : {!isUnusable}");
             OnUsable?.Invoke(!isUnusable);
         }
         

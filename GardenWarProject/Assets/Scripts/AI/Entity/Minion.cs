@@ -646,7 +646,6 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
     [PunRPC]
     public void DecreaseCurrentHpRPC(float amount, int killerId)
     {
-        currentHp -= amount;
         OnDecreaseCurrentHp?.Invoke(amount, killerId);
         if (isOffline)
         {
@@ -654,7 +653,7 @@ public class Minion : Entity, IMoveable, IAttackable, IActiveLifeable, IDeadable
             return;
         }
 
-        photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHp, killerId);
+        photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHp - amount, killerId);
     }
 
     public event Action<float, int> OnDecreaseCurrentHp;

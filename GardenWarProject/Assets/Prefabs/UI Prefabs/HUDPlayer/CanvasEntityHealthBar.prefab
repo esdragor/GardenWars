@@ -128,12 +128,18 @@ MonoBehaviour:
   EnemyChampionColor:
   - {fileID: 21300000, guid: cf624d41fef17b54292223efe1952f6a, type: 3}
   - {fileID: 21300000, guid: dc4d0086f51bf844d8681acda1a32e4d, type: 3}
-  textDamage: {fileID: 7559760836470195293}
   championHeight: 2.5
   minionHeight: 1.5
   championSize: {x: 150, y: 150}
   minionSize: {x: 100, y: 100}
-  hpLerpSpeed: 0.33
+  hpLerpSpeed: 0.25
+  damageParent: {fileID: 696238442382326691}
+  damageTextPrefab: {fileID: 4244857398019864879, guid: 30efcb2c1e84fe54fafc0da356b82ad5, type: 3}
+  damageDuration: 2
+  damageOffset: {x: 0, y: 0, z: 0}
+  damageDirection: {x: 0, y: 100, z: 0}
+  damageColor: {r: 1, g: 0.7848822, b: 0, a: 1}
+  healColor: {r: 0.47789896, g: 1, b: 0, a: 1}
 --- !u!1001 &3237964773002462236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -233,7 +239,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7036725021603546541, guid: 69b3b0638a03d9f4fa2c21b965339298, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 69b3b0638a03d9f4fa2c21b965339298, type: 3}
 --- !u!224 &6318691844701393244 stripped
 RectTransform:
@@ -273,14 +280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7559760836470195293 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4901646627904487489, guid: 69b3b0638a03d9f4fa2c21b965339298, type: 3}
+--- !u!224 &696238442382326691 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2685841798040993727, guid: 69b3b0638a03d9f4fa2c21b965339298, type: 3}
   m_PrefabInstance: {fileID: 3237964773002462236}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
