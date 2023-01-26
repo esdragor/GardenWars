@@ -54,7 +54,7 @@ namespace UIComponents
 
         private void Update()
         {
-            if(lifeable == null) return;
+            if(lifeable == null || cam == null) return;
             
             backHealthTr.position = cam.WorldToScreenPoint(entity.position + Vector3.up * (isChampion ? championHeight : minionHeight));
             damageParent.position = cam.WorldToScreenPoint(entity.position + Vector3.up * (isChampion ? championHeight : minionHeight)/2 + damageOffset);
