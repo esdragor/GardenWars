@@ -34,7 +34,7 @@ namespace UIComponents
             lifeable = (IActiveLifeable)entity;
 
             transform.LookAt(transform.position + GameStateMachine.mainCam.transform.rotation * Vector3.forward,
-                Camera.main.transform.rotation * Vector3.up);
+                GameStateMachine.mainCam.transform.rotation * Vector3.up);
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
             lifeable.OnSetCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnSetCurrentHpPercentFeedback += UpdateFillPercentByPercent;

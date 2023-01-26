@@ -85,10 +85,7 @@ public class TaskAttack : Node
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
         CurrentAtkTime = 0f;
-
-        // if (MyEntity is Tower)
-        //     MyEntity.GetComponent<IActiveLifeable>().RequestDecreaseCurrentHp(1000, target.entityIndex);
-
+        
         if (soundAttack != null)
         {
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, model.GetComponent<Transform>(), model.GetComponent<Rigidbody>());

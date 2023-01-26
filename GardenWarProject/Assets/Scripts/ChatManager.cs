@@ -89,6 +89,8 @@ public class ChatManager : MonoBehaviour
 
     public void ToggleChat()
     {
-        chatPanelCanvas.SetActive(!chatPanelCanvas.activeSelf);
+        var value = !chatPanelCanvas.activeSelf;
+        chatPanelCanvas.SetActive(value);
+        QuitButton.gameObject.SetActive(value);
     }
 }
