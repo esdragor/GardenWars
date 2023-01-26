@@ -17,9 +17,11 @@ public class UIEmoteFileExplorer : MonoBehaviour
 
     public void Init(byte newIndex)
     {
-        this.index = newIndex;
+        index = newIndex;
         image.texture = manager.EmotesTexture2Ds[index];
 
+        button.interactable = !GameSettingsManager.IgnoreCustomEmotes;
+        
         button.onClick.AddListener(OpenExplorer);
         
         // Set filters (optional)

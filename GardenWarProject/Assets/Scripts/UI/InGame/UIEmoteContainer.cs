@@ -23,7 +23,7 @@ namespace UIComponents
         {
             this.wheel = wheel;
             index = (byte)i;
-            if(GameSettingsManager.IgnoreEmotes) return;
+            if(GameSettingsManager.IgnoreCustomEmotes) return;
             image.texture = GameStateMachine.Instance.GetPlayerEmotes()[i];
         }
 

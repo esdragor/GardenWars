@@ -268,12 +268,12 @@ namespace GameStates
 
         public Texture2D[] GetPlayerEmotes()
         {
-            return GameSettingsManager.IgnoreEmotes ? EmotesManager.instance.EmotesTexture2Ds : playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].emotesTextures;
+            return GameSettingsManager.IgnoreCustomEmotes ? EmotesManager.instance.EmotesTexture2Ds : playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].emotesTextures;
         }
         
         public Texture2D[] GetPlayerEmotes(int actorNumber)
         {
-            return GameSettingsManager.IgnoreEmotes ? EmotesManager.instance.EmotesTexture2Ds : playerDataDict[actorNumber].emotesTextures;
+            return GameSettingsManager.IgnoreCustomEmotes ? EmotesManager.instance.EmotesTexture2Ds : playerDataDict[actorNumber].emotesTextures;
         }
 
         public IEnumerable<Champion> GetAllChampions()

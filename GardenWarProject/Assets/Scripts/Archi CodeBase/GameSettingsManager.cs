@@ -5,8 +5,8 @@ public class GameSettingsManager : MonoBehaviour
     private static GameSettingsManager instance;
 
     [Header("Emotes")]
-    [SerializeField] private bool ignoreEmotes;
-    public static bool IgnoreEmotes => instance.ignoreEmotes;
+    [SerializeField] private bool ignoreCustomEmotes;
+    public static bool IgnoreCustomEmotes => instance.ignoreCustomEmotes;
     [SerializeField] private int maxImageSize = 512;
     public static int maxFileSize => instance.maxImageSize*instance.maxImageSize*4;
 

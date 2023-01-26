@@ -56,7 +56,7 @@ namespace GameStates
         {
             if (!isMaster) return;
             
-            if (GameSettingsManager.IgnoreEmotes)
+            if (GameSettingsManager.IgnoreCustomEmotes)
             {
                 Debug.Log("Ignoring Emotes");
                 StartLoadingMap();
