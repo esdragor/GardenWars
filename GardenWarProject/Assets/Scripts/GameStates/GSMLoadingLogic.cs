@@ -133,7 +133,7 @@ namespace GameStates
                     photonView.RPC("SyncSendEmoteRPC", RpcTarget.All, buff,(byte)1,actorNumber,index);
                 }
                 
-                await Task.Delay(1000);
+                await Task.Delay(500);
             }
         }
         
