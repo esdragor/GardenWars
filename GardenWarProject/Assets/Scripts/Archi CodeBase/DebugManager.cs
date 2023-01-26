@@ -7,6 +7,7 @@ public class DebugManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI masterText;
     [SerializeField] private TextMeshProUGUI frameDataText;
+
     private GameStateMachine gsm => GameStateMachine.Instance;
     
     private double timer;
@@ -15,6 +16,13 @@ public class DebugManager : MonoBehaviour
 
     private void Start()
     {
+        if (!GameSettingsManager.isDebug)
+        {
+            masterText.gameObject.SetActive(false);
+            frameDataText.gameObject.SetActive(false);
+            return;
+        }
+        
         var id = PhotonNetwork.LocalPlayer.ActorNumber;
         masterText.text = ($"Client {id} / {GameStateMachine.Instance.GetPlayerTeam()}") + (PhotonNetwork.IsMasterClient ? " (Master)" : ""); 
         gsm.OnTick += (() => tickCount++);

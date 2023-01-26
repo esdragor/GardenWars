@@ -26,7 +26,6 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
     [SerializeField] private TMP_InputField playerNameField;
     
     [Header("Debug")]
-    [SerializeField] private TMP_InputField createRoomTMPInputField;
     [SerializeField] private TextMeshProUGUI connectionStatusText;
 
     private List<string> unavailableRooms = new List<string>();
@@ -38,7 +37,7 @@ public class ServerLobbyMenuUI : MonoBehaviour, ILobbyCallbacks
         Debug.Log($"Player Name is {GameSettingsManager.playerName}");
         
         playerNameField.text = GameSettingsManager.playerName;
-
+        
         connectionStatusText.text = string.Empty;
     }
     

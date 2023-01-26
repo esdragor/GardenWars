@@ -210,6 +210,7 @@ public class SpawnAIs : MonoBehaviourPun
     private void SpawnPinata(Transform tr)
     {
         pinataLevel++;
+        if(pinataLevel != 1 && pinataLevel % 2 == 1) gsm.DisplayMessage(gsm.pinataGettingBiggerMessage);
         Pinata.level = pinataLevel;
         
         if (currentPinata != null)
