@@ -88,7 +88,6 @@ public class TaskAttack : Node
         
         if (soundAttack != null)
         {
-            FMODUnity
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, model.GetComponent<Transform>(), model.GetComponent<Rigidbody>());
             instance.start();
         }
