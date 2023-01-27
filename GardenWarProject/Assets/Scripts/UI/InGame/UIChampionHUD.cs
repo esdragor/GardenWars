@@ -143,20 +143,20 @@ namespace UIComponents
         private void UpdateFillPercentByPercentHealth(float value)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
-            healthBarText.text = $"{lifeable.GetCurrentHp()}/{lifeable.GetMaxHp()}";
+            healthBarText.text = $"{(int)lifeable.GetCurrentHp()}/{(int)lifeable.GetMaxHp()}";
         }
 
         private void UpdateFillPercentHealth(float value)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
-            healthBarText.text = $"{lifeable.GetCurrentHp()}/{lifeable.GetMaxHp()}";
+            healthBarText.text = $"{(int)lifeable.GetCurrentHp()}/{(int)lifeable.GetMaxHp()}";
 
         }
         
         private void UpdateFillPercentHealth(float value,int _)
         {
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
-            healthBarText.text = $"{lifeable.GetCurrentHp()}/{lifeable.GetMaxHp()}";
+            healthBarText.text = $"{(int)lifeable.GetCurrentHp()}/{(int)lifeable.GetMaxHp()}";
 
         }
 
