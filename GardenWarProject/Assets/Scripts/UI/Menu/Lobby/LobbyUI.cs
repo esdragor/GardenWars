@@ -185,6 +185,8 @@ namespace UIComponents
 
         private void SetupForceStartButton()
         {
+            forceStartButton.gameObject.SetActive(GameSettingsManager.isDebug); 
+            
             forceStartButton.onClick.AddListener(ToggleForceStart);
         }
 
