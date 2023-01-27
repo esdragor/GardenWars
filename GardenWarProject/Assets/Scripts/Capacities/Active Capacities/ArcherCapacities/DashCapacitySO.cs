@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -118,13 +119,21 @@ namespace Entities.Capacities
                 FXDashGO = LocalPoolManager.PoolInstantiate(FXDash, champion.championMesh.transform).gameObject;
                 FXDashGO.transform.localPosition = Vector3.zero;
                 FXDashGO.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
-                champion.OnHideElementFeedback += (() => FXDashGO.SetActive(false));
             }
             FXDashGO.SetActive(false);
+            
+            Debug.Log($"Is visible ? {champion.isVisible}");
+            
             FXDashGO.SetActive(champion.isVisible);
-            champion.championMesh.transform.LookAt(destination);
             
             StartDash(casterPos, destination);
+        }
+
+        private async void HideFx()
+        {
+            await Task.Delay(3000);
+            if(FXDashGO == null) return;
+            FXDashGO.SetActive(false);
         }
 
         protected override void ReleaseLocal(int targetEntityIndex, Vector3 targetPositions)
@@ -141,7 +150,8 @@ namespace Entities.Capacities
                 champion.canMove = true;
             }
             
-
+            HideFx();
+            
             if(level <3) return;
             
             charges--;
