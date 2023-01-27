@@ -146,12 +146,14 @@ namespace UIComponents
             damageText.text = $"-{damage:0}";
 
             damageText.gameObject.SetActive(true);
-            
-            
-            damageTr.DOKill();
-            damageTr.DOMove(damageTr.position + damageDirection, damageDuration).OnComplete(ReturnDamage);
-            damageText.DOColor(Color.clear, damageDuration);
 
+            if (damageText != null && damageTr != null)
+            {
+                damageTr.DOKill();
+                damageTr.DOMove(damageTr.position + damageDirection, damageDuration).OnComplete(ReturnDamage);
+                damageText.DOColor(Color.clear, damageDuration);
+            }
+            
             void ReturnDamage()
             {
                 damageTr.SetParent(null);

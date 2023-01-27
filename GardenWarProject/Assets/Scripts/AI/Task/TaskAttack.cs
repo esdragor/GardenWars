@@ -23,7 +23,6 @@ public class TaskAttack : Node
     private Transform model;
     private NavMeshAgent agent;
     private string soundAttack = null;
-    private FMOD.Studio.EventInstance instance;
 
 
 
@@ -38,9 +37,6 @@ public class TaskAttack : Node
         model = _model;
         agent = _agent;
         soundAttack = _soundAttack;
-        if (soundAttack == null) return;
-        instance = FMODUnity.RuntimeManager.CreateInstance("event:/" + soundAttack);
-
     }
 
     public override NodeState Evaluate(Node root)
@@ -64,8 +60,7 @@ public class TaskAttack : Node
             PreviousTarget = target;
             CurrentAtkTime = attackSpeed;
         }
-
-        //CurrentAtkTime += 1.0f / sm.tickRate;
+        
         CurrentAtkTime += Time.deltaTime;
         if (Previouspos != target.transform.position)
         {
@@ -79,8 +74,7 @@ public class TaskAttack : Node
         }
 
 
-        if (agent)
-            agent.SetDestination(MyEntity.transform.position);
+        if (agent) agent.SetDestination(MyEntity.transform.position);
 
         if (CurrentAtkTime < attackSpeed) return NodeState.Running;
 
@@ -88,10 +82,10 @@ public class TaskAttack : Node
         
         if (soundAttack != null)
         {
-            FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, model.GetComponent<Transform>(), model.GetComponent<Rigidbody>());
-            instance.start();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/" + soundAttack,model.position);
         }
         attackable.RequestAttack(capacityIndex, target.entityIndex, target.position);
+        
         MyEntity.SetAnimatorTrigger("Fire");
 
         return NodeState.Success;

@@ -34,13 +34,8 @@ public class GoToTarget : Node
         if (Vector3.Distance(MyPos, pos) > agent.radius)
         {
             agent.SetDestination(pos);
-            //Vector3.MoveTowards(MyPos, pos, agent.speed * Time.deltaTime));
-            //MyTransform.LookAt(model);
-            
-            if (!entity)
-                entity = MyTransform.GetComponent<Entity>();
-            if(entity is Minion)
-            entity.SetAnimatorTrigger("Move");
+
+            if (!entity) entity = MyTransform.GetComponent<Entity>();
             state = NodeState.Running;
             return state;
         }
