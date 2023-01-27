@@ -32,6 +32,7 @@ namespace GameStates
         private int receivedEmotes;
         private int sentEmotes;
         private Dictionary<int, bool> emoteLoadingDict = new Dictionary<int, bool>();
+        private static readonly int Fill = Shader.PropertyToID("_Fill");
 
 
         public void ShowLoadingCanvas(bool value)
@@ -44,10 +45,10 @@ namespace GameStates
         private void UpdatePercent(float value)
         {
             var mat = loadingSpinRender.material;
-            mat.SetFloat("_Fill",value);
+            mat.SetFloat(Fill,value);
             loadingSpinRender.material = mat;
             mat = meshRenderer.material;
-            mat.SetFloat("_Fill",value);
+            mat.SetFloat(Fill,value);
             meshRenderer.material = mat;
             crossbowMeshRenderer.material = mat;
         }

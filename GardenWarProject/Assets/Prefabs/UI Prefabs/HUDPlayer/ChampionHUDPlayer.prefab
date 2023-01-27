@@ -581,16 +581,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28782be3dc3aacb41a6778a9b6af6260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fighterText: 'Each time Reindeer <color=yellow>**breaks a minion**</color>, he
-    gains <color=#FF66E3>**Candy_Count candies**</color>.
-
-    Reindeer can <color=yellow>**throw
-    the</color> <color=#FF66E3>candies**</color> to give them to <color=orange>**another
-    Kid**</color>.'
-  scavengerText: "Bubulle can use <color=#FF66E3>**candies**</color> to feed the
-    <color=orange>Pi\xF1ata</color>.\nWhen the <color=orange>Pi\xF1ata</color> is
-    fed enough, it will <color=yellow>**explode**</color>, leaving an <color=#af04d1>**Upgrade**</color>
-    behind."
+  fighterText: "Chaque fois qu\u2019un <color=yellow>**jouet est cass\xE9 autour
+    de Reibow**</color>, il gagne <color=#FF66E3>**Candy_Count bonbons**</color>.\r\nReindeer
+    peut <color=yellow>**lancer les</color> <color=#FF66E3>Bonbons**</color>  pour
+    les donner aux <color=orange>**autres Enfants**</color>.\r"
+  scavengerText: "Bubulle peux utiliser les <color=#FF66E3>**bonbons**</color> pour
+    nourrir la <color=orange>Pi\xF1ata</color>.\r\nQuand la <color=orange>Pi\xF1ata</color>
+    est compl\xE8tement nourrie, elle <color=yellow>**Explose**</color>, laissant
+    derri\xE8re elle une <color=#af04d1>**Am\xE9lioration**</color>. \r"
 --- !u!1 &984633521604861806
 GameObject:
   m_ObjectHideFlags: 0
@@ -2057,21 +2055,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44aa781edd4767c4a8957f46a6107bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fighterTextNoUpgrade: 'Reindeer can <color=yellow>**consume the</color> <color=#af04d1>Upgrade**</color>
-    to <color=yellow>**upgrade one of his abilities**</color>.
-
-
-    *You have no
-    upgrades*'
-  fighterTextUpgrade: Reindeer can <color=yellow>**consume the</color> <color=#af04d1>Upgrade**</color>
-    to <color=yellow>**upgrade one of his abilities**</color>.
-  scavengerTextNoUpgrade: 'Bubulle can <color=yellow>**throw the Upgrade**</color>
-    to give it to <color=orange>**another Kid**</color>.
-
-
-    *You have no upgrades*'
-  scavengerTextUpgrade: Bubulle can <color=yellow>**throw the Upgrade**</color> to
-    give it to <color=orange>**another Kid**</color>.
+  fighterTextNoUpgrade: "Reinbow peut <color=yellow>**consommer </color> <color=#af04d1>l\u2019Am\xE9lioration**</color> 
+    pour <color=yellow>**am\xE9liorer l\u2019une de ses comp\xE9tences**</color>.\r\n\r\n*Vous
+    n\u2019avez pas l\u2019Am\xE9lioration*\r"
+  fighterTextUpgrade: "Reinbow peut <color=yellow>**consommer </color> <color=#af04d1>l\u2019Am\xE9lioration**</color> 
+    pour <color=yellow>**am\xE9liorer l\u2019une de ses comp\xE9tences**</color>.\r"
+  scavengerTextNoUpgrade: "Bubulle peut <color=yellow>**lancer</color> <color=#af04d1>l\u2019Am\xE9lioration**</color> 
+    \xE0 un <color=orange>**autre Enfant**</color>.\r\n\r\n*Vous n\u2019avez pas
+    l\u2019Am\xE9lioration*\r"
+  scavengerTextUpgrade: "Bubulle peut <color=yellow>**lancer</color> <color=#af04d1>l\u2019Am\xE9lioration**</color> 
+    \xE0 un <color=orange>**autre Enfant**</color>."
 --- !u!1 &4069329356804835062
 GameObject:
   m_ObjectHideFlags: 0
