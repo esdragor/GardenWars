@@ -37,7 +37,7 @@ namespace GameStates
 
         public void ShowLoadingCanvas(bool value)
         {
-            if(GameSettingsManager.IgnoreCustomEmotes) loadingCanvas.SetActive(value);
+            //if(GameSettingsManager.IgnoreCustomEmotes) loadingCanvas.SetActive(value);
             loadingCameraGo.SetActive(value);
             if(LobbyGo != null) LobbyGo.SetActive(!value);
         }
@@ -55,6 +55,8 @@ namespace GameStates
 
         public void LoadEmotes()
         {
+            ShowLoadingCanvas(true);
+            
             if (!isMaster) return;
             
             if (GameSettingsManager.IgnoreCustomEmotes)
@@ -215,6 +217,8 @@ namespace GameStates
         /// </summary>
         public void LoadMap()
         {
+            ShowLoadingCanvas(true);
+            
             CapacitySOCollectionManager.Instance.SetIndexes();
             
             UIManager.Instance.SetupEmoteWheel();
@@ -262,6 +266,8 @@ namespace GameStates
             }
 
             FogOfWarManager.RunFog();
+            
+            ShowLoadingCanvas(false);
         }
 
         public static void SetupChampion(Champion champion)

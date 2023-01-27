@@ -36,7 +36,6 @@ namespace GameStates
 
         public void RequestSetTeam(byte team)
         {
-            
             photonView.RPC("SetTeamRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, team);
         }
 
@@ -77,7 +76,7 @@ namespace GameStates
             if (!playerDataDict.ContainsKey(actorNumber)) return;
 
             playerDataDict[actorNumber].role = (Enums.ChampionRole) role;
-            
+
             OnDataDictUpdated?.Invoke(actorNumber, playerDataDict[actorNumber]);
         }
 
@@ -101,7 +100,7 @@ namespace GameStates
             playerDataDict[actorNumber].championSOIndex = index;
             OnDataDictUpdated?.Invoke(actorNumber, playerDataDict[actorNumber]);
         }
-        
+
         public void RequestSendDataDictionary()
         {
             photonView.RPC("SendDataDictionaryRPC", RpcTarget.MasterClient);
@@ -114,8 +113,8 @@ namespace GameStates
             {
                 var values = kvp.Value;
                 photonView.RPC("SyncDataDictionaryRPC", RpcTarget.Others, kvp.Key, values.name, values.isReady,
-                    (byte)values.team,
-                    (byte)values.role, values.championSOIndex);
+                    (byte) values.team,
+                    (byte) values.role, values.championSOIndex);
             }
         }
 
@@ -127,28 +126,28 @@ namespace GameStates
             {
                 name = playerName,
                 isReady = isReady,
-                team = (Enums.Team)team,
-                role = (Enums.ChampionRole)role,
+                team = (Enums.Team) team,
+                role = (Enums.ChampionRole) role,
                 championSOIndex = championSOindex,
-                    
+
                 emoteByteBuffer = new List<byte>[6],
                 emotesTextures = new Texture2D[6]
             };
-            
+
             for (var index = 0; index < 6; index++)
             {
                 data.emoteByteBuffer[index] = new List<byte>();
             }
-            
+
             if (!playerDataDict.ContainsKey(actorNumber)) playerDataDict.Add(actorNumber, data);
             else playerDataDict[actorNumber] = data;
-            if(!allPlayersIDs.Contains(actorNumber)) allPlayersIDs.Add(actorNumber);
+            if (!allPlayersIDs.Contains(actorNumber)) allPlayersIDs.Add(actorNumber);
             OnDataDictUpdated?.Invoke(actorNumber, data);
         }
 
         public event GlobalDelegates.IntPlayerDataDelegate OnDataDictUpdated;
-        
-                #region OnPlayerSetReady
+
+        #region OnPlayerSetReady
 
         private void OnPlayerSetReady()
         {
@@ -170,13 +169,14 @@ namespace GameStates
                 return false;
             }
 
-            var neutralPlayersIds = playerDataDict.Where(kvp => kvp.Value.team == Enums.Team.Neutral).Select(kvp => kvp.Key);
+            var neutralPlayersIds =
+                playerDataDict.Where(kvp => kvp.Value.team == Enums.Team.Neutral).Select(kvp => kvp.Key);
             foreach (var key in neutralPlayersIds)
             {
                 playerDataDict.Remove(key);
                 allPlayersIDs.Remove(key);
             }
-            
+
             if (isInDebugMode)
             {
                 foreach (var data in playerDataDict.Values)
@@ -260,6 +260,5 @@ namespace GameStates
         }
 
         #endregion
-
     }
 }

@@ -20,6 +20,8 @@ namespace GameStates.States
         public override void ExitState()
         {
             sm.ResetPlayerReady();
+            
+            sm.ShowLoadingCanvas(true);
 
             InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(false);
