@@ -1,4 +1,5 @@
 using System;
+using Entities.Capacities;
 using Photon.Pun;
 using UnityEngine;
 
@@ -294,16 +295,28 @@ namespace Entities.Champion
         }
 
         [PunRPC]
-        public void ChannelPinataRPC(int pinataIndex)
+        private void ChannelPinataRPC(int pinataIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(pinataIndex);
             if (!(entity is Pinata pinata)) return;
             
             pinata.StartChanneling(this);
             
-            OnStartChannelPinata?.Invoke();
+            photonView.RPC("SyncChannelPinataRPC", RpcTarget.All);
         }
 
-        public event Action OnStartChannelPinata;
+        [PunRPC]
+        private void SyncChannelPinataRPC()
+        {
+            Debug.Log("Syncing Pinata");
+            if (role == Enums.ChampionRole.Scavenger)
+            {
+                var passive = GetPassiveCapacity<SharkPassive>();
+                passive.ForceUnBorrow();
+            }
+            OnStartChannelPinataFeedback?.Invoke();
+        }
+
+        public event Action OnStartChannelPinataFeedback;
     }
 }

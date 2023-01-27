@@ -325,27 +325,25 @@ namespace Entities
         
         public void SetAnimatorBool(string trigger,bool value)
         {
-            foreach(var animator in animators)
+            if (isVisible)
             {
-                animator.SetBool(trigger,value);
+                foreach(var animator in animators)
+                {
+                    animator.SetBool(trigger,value);
+                }
             }
-        }
-        
-        public void SetAnimatorBool(int id,bool value)
-        {
-            if (!photonView.IsMine) return; 
-            foreach(var animator in animators)
+            else
             {
-                animator.SetBool(id,value);
+                OnShowElementFeedback += LateBool;
             }
-        }
 
-        public void SetAnimatorTrigger(int id)
-        {
-            if (!photonView.IsMine) return;
-            foreach (var animator in animators)
+            void LateBool()
             {
-                animator.SetTrigger(id);
+                foreach(var animator in animators)
+                {
+                    animator.SetBool(trigger,value);
+                }
+                OnShowElementFeedback -= LateBool;
             }
         }
 

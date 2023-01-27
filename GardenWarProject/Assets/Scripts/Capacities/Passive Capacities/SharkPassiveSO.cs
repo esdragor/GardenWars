@@ -46,39 +46,24 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            timeUnBorrowed = 0;
-            borrowed = false;
-            bonusDamage = 0;
-
-            aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position, champion.rotation,
-                champion.rotateParent);
-            aileronGo = aileron.gameObject;
-            aileronGo.SetActive(false);
-
-            aileron.OnEntityCollide += EntityCollide;
-            
-            gsm.OnUpdate += IncreaseTimeUnBorrowed;
-            
-            champion.OnAttack += ResetTimer;
-            champion.OnAttack += UnBorrow;
-            
-            champion.OnDie += UnBorrow;
-            champion.OnDie += ResetTimer;
-
-            champion.OnStartChannelPinata += ResetTimer;
-            champion.OnStartChannelPinata += ForceUnBorrow;
             
         }
 
         protected override void OnAddedFeedbackEffects(Entity target)
         {
-            if (Entity.isMaster) return;
-
             aileron = LocalPoolManager.PoolInstantiate(so.aileron, champion.rotateParent.position, champion.rotation,
                 champion.rotateParent);
             aileronGo = aileron.gameObject;
             aileronGo.SetActive(false);
-
+            
+            if (Entity.isMaster)
+            {
+                timeUnBorrowed = 0;
+                borrowed = false;
+                bonusDamage = 0;
+                
+                aileron.OnEntityCollide += EntityCollide;
+            }
             
             timeUnBorrowed = 0;
             borrowed = false;
@@ -89,6 +74,9 @@ namespace Entities.Capacities
             champion.OnAttackFeedback += UnBorrow;
             
             champion.OnDieFeedback += ResetTimer;
+            
+            champion.OnStartChannelPinataFeedback += ResetTimer;
+            champion.OnStartChannelPinataFeedback += ForceUnBorrow;
         }
 
         protected override void OnAddedLocalEffects(Entity target)
@@ -116,8 +104,9 @@ namespace Entities.Capacities
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXSharkPassive, champion.transform.position);
             champion.CurrentSFXMove.Stop();
             champion.CurrentSFXMove = champion.SFXMoves[1];
-            //champion.CurrentSFXMove.Play();           
-            //champion.rotateParent.localPosition = Vector3.up * -0.75f;
+
+            champion.elementsToShow.Add(aileronGo);
+            if(champion.elementsToShow.Contains(champion.championMesh)) champion.elementsToShow.Remove(champion.championMesh);
 
             if (Entity.isMaster)
             {
@@ -167,7 +156,6 @@ namespace Entities.Capacities
             
             champion.CurrentSFXMove.Stop();
             champion.CurrentSFXMove = champion.SFXMoves[0];
-            //champion.CurrentSFXMove.Play();  
 
             ForceUnBorrow();
         }
@@ -177,6 +165,10 @@ namespace Entities.Capacities
             if(!borrowed) return;
             
             champion.SetCanBeTargetedRPC(true);
+            
+            if(champion.elementsToShow.Contains(aileronGo)) champion.elementsToShow.Remove(aileronGo);
+            champion.elementsToShow.Add(champion.championMesh);
+            champion.championMesh.SetActive(true);
 
             if (Entity.isMaster)
             {
@@ -188,8 +180,9 @@ namespace Entities.Capacities
             }
             
             borrowed = false;
+
             champion.SetAnimatorBool("Borrowed",false);
-            
+
             ult?.UpdateUsable(false);
             burrow?.UpdateUsable(true);
             
@@ -204,7 +197,7 @@ namespace Entities.Capacities
 
             aileronGo.SetActive(false);
         }
-
+        
         public event Action OnUnBurrow;
         
         private void UnBorrow(int _)
@@ -249,8 +242,8 @@ namespace Entities.Capacities
             champion.OnDie -= UnBorrow;
             champion.OnDie -= ResetTimer;
             
-            champion.OnStartChannelPinata -= ResetTimer;
-            champion.OnStartChannelPinata -= ForceUnBorrow;
+            champion.OnStartChannelPinataFeedback -= ResetTimer;
+            champion.OnStartChannelPinataFeedback -= ForceUnBorrow;
         }
 
         protected override void OnRemovedFeedbackEffects(Entity target)
