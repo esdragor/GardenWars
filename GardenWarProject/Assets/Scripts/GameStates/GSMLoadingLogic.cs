@@ -36,7 +36,7 @@ namespace GameStates
 
         public void ShowLoadingCanvas(bool value)
         {
-            //loadingCanvas.SetActive(value);
+            if(GameSettingsManager.IgnoreCustomEmotes) loadingCanvas.SetActive(value);
             loadingCameraGo.SetActive(value);
             if(LobbyGo != null) LobbyGo.SetActive(!value);
         }

@@ -62,8 +62,6 @@ namespace UIComponents
 
         public void InitHealthBar(Entity ent)
         {
-            Debug.Log($"Linking to {ent} ({ent.GetType()})");
-            
             entity = ent;
             
             isChampion = entity is Champion;

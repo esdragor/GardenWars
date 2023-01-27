@@ -35,7 +35,6 @@ namespace Entities.Champion
         [HideInInspector] public GameObject championMesh;
 
         public CollisionBlocker blocker;
-        private static readonly int Speed = Animator.StringToHash("Speed");
 
         protected override void OnStart()
         {
@@ -76,18 +75,8 @@ namespace Entities.Champion
             ChangingStateMoving();
             CastHeldCapacities();
             CastHeldItems();
-            UpdateAnimators();
             TryMoveToTarget();
             LookAtDestination();
-        }
-
-        private void UpdateAnimators()
-        {
-            if (!photonView.IsMine) return;
-            foreach (var animator in animators)
-            {
-                animator.SetFloat(Speed, currentVelocity);
-            }
         }
 
         protected override void OnFixedUpdate()
