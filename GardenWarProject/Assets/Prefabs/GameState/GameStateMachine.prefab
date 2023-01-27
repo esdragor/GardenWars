@@ -86,27 +86,24 @@ MonoBehaviour:
   - timeToDisplay: 5
     textToDisplay: "Chaque \xE9quipe de deux joueurs commence la partie dans son
       coin de jardin, et doit prendre le contr\xF4le du coin de jardin adverse, en
-      faisant passer ses jouets jusque l\xE0."
+      escortant leur jouets jusqu'\xE0 l\xE0-bas."
   - timeToDisplay: 10
     textToDisplay: 'Les jouets, c''est ces petits renards que vous allez voir partir
       dans quelques secondes depuis votre coin. '
   - timeToDisplay: 14
-    textToDisplay: " Pour prot\xE9ger votre coin, vous disposez d'une tour, que seul
+    textToDisplay: "Pour prot\xE9ger votre coin, vous disposez d'une tour, que seul
       les jouets adverses peuvent d\xE9truire."
   - timeToDisplay: 18
     textToDisplay: "Vous disposez chacun d'un personnage aux capacit\xE9s et \xE0
       la fonction diff\xE9rentes. "
   - timeToDisplay: 21
-    textToDisplay: "Si vous avez un doute sur ce que fait une capacit\xE9, vous pouvez
-      simplement passer votre souris sur son icone."
-  - timeToDisplay: 23
-    textToDisplay: "Les icones de capacit\xE9 se trouvent sur la barre en bois a
-      cote du portrait de votre personnage. "
+    textToDisplay: "Si vous avez un doute sur ce que fait une capacit\xE9, placer
+      votre curseur sur l'icone de cette capacit\xE9."
   - timeToDisplay: 24
     textToDisplay: Bonne chance !
   - timeToDisplay: 25
     textToDisplay: "Des sucreries sauvages sont tomb\xE9es dans le jardin. Sucrez-les
-      avant votre adversaire !"
+      avant vos adversaires !"
   - timeToDisplay: 30
     textToDisplay: "Vos vaillant soldats ont quitt\xE9s la cabane. Que le pestacle
       commence !"
@@ -114,15 +111,15 @@ MonoBehaviour:
     attrape la !"
   pinataSpawnMessageDelay: 3
   pinataGettingBiggerMessage: "La pinata est plus affam\xE9e que jamais."
-  messageFeedingPinata: Quelqu'un est en train d'essayer de soudoyer la pinata avec
-    des bonbons !
-  messageFedPinata: "Il y avait des joujous dans la pinatas ! Envoyez-les \xE0 Reinbow
-    !"
+  messageFeedingPinata: "Quelqu'un est en train d'essayer de soudoyer la pi\xF1ata
+    avec des bonbons !"
+  messageFedPinata: "Il y avait des joujous dans la pi\xF1atas ! Envoyez-les \xE0
+    Reinbow !"
   messageLowTurret: La tour est en train de se faire casser les oeufs !
   turretHpMessageThreshold: 50
-  messageDestroyedTurret: "Le s\xE8che-cheveux de maman est cass\xE9 ! Vite, mobilisez
-    vous !"
-  messageMinionsAtBase: "Pouah, il y a les jouets de l'autre \xE9quipe partout. Ca
+  messageDestroyedTurret: "Le s\xE8che-cheveux de maman est cass\xE9 ! Vite, mobilisez-vous
+    !"
+  messageMinionsAtBase: "Pouah, il y a les jouets de l'autre \xE9quipe partout. \xC7a
     sent la chaussette pour nous !"
   minionAtBaseMessageThreshold: 10
   ticksPerSecond: 10
