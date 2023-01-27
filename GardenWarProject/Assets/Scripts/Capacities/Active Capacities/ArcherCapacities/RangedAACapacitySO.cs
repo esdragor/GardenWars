@@ -38,7 +38,6 @@ namespace Entities.Capacities
                     return false;
                 }
             }
-            
             if (!caster.GetEnemyTeams().Contains(targetedEntity.team))
             {
                 return false;
@@ -141,7 +140,7 @@ namespace Entities.Capacities
                 {
                     RemoveProjectile();
                     
-                    DealDamage(target);
+                    if(isMaster)DealDamage(target);
                 }
             }
 
