@@ -14,9 +14,11 @@ namespace Entities.Champion
         
         public float respawnDuration = 5;
         public float respawnDurationIncreasePerMinute = 2;
+        
         private double respawnTimer;
         
-        [SerializeField] private GameObject DeadCanvas;
+        [SerializeField] private UIDeathTimer DeadCanvas;
+        private UIDeathTimer deathTimer;
         private GameObject deadCanvasGO = null;
 
         public bool IsAlive()
@@ -58,16 +60,17 @@ namespace Entities.Champion
             canDie = value;
             OnSetCanDieFeedback?.Invoke(value);
         }
-
         
-
         public event GlobalDelegates.BoolDelegate OnSetCanDie;
         public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
 
         public void RequestDie(int killerId)
         {
             if (!deadCanvasGO)
-                deadCanvasGO = Instantiate(DeadCanvas);
+            {
+                deathTimer = Instantiate(DeadCanvas);
+                deadCanvasGO = deathTimer.gameObject;
+            }
             deadCanvasGO.SetActive(true);
             photonView.RPC("DieRPC", RpcTarget.MasterClient, killerId);
             Debug.Log("Request to die");
@@ -89,11 +92,43 @@ namespace Entities.Champion
             canAttack = false;
             canCast = false;
             
-            // TODO - Disable collision, etc...
+            var totalRespawnDuration = respawnDuration + ((UIManager.currentTime - gsm.startTime) / 60) * respawnDurationIncreasePerMinute;
+            double secondsCounter = 0;
+            int secondsPassed = 0;
+            
+            photonView.RPC("UpdateDeathTimerRPC",RpcTarget.All,(int)totalRespawnDuration);
 
             OnDie?.Invoke(killerId);
             GameStateMachine.Instance.OnTick += Revive;
             photonView.RPC("SyncDieRPC", RpcTarget.All, killerId);
+            
+            void Revive()
+            {
+                respawnTimer += 1 / gsm.tickRate;
+                secondsCounter += 1 / gsm.tickRate;
+
+                if (secondsCounter >= 1)
+                {
+                    secondsCounter = 0;
+                    secondsPassed += 1;
+                    int timeLeft = (int)totalRespawnDuration - secondsPassed;
+                    photonView.RPC("UpdateDeathTimerRPC",RpcTarget.All,timeLeft);
+                }
+                
+
+                if (respawnTimer < totalRespawnDuration) return;
+            
+                photonView.RPC("UpdateDeathTimerRPC",RpcTarget.All,-1);
+                GameStateMachine.Instance.OnTick -= Revive;
+                respawnTimer = 0f;
+                RequestRevive();
+            }
+        }
+        
+        [PunRPC]
+        private void UpdateDeathTimerRPC(int value)
+        {
+            deathTimer.UpdateTextTimer(value);
         }
         
         
@@ -172,17 +207,6 @@ namespace Entities.Champion
             OnReviveFeedback?.Invoke();
             SetAnimatorTrigger("Respawn");
             coll.enabled = true;
-        }
-
-        private void Revive()
-        {
-            respawnTimer += 1 / gsm.tickRate;
-
-            if (respawnTimer < respawnDuration + ((UIManager.currentTime - gsm.startTime)/60) * respawnDurationIncreasePerMinute) return;
-            
-            GameStateMachine.Instance.OnTick -= Revive;
-            respawnTimer = 0f;
-            RequestRevive();
         }
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
