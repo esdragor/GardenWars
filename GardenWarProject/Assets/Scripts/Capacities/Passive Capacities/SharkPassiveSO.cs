@@ -29,6 +29,7 @@ namespace Entities.Capacities
     public class SharkPassive : PassiveCapacity
     {
         public bool borrowed;
+        public bool Swimming = false;
         public float bonusDamage = 0;
         private bool playedAnim;
         
@@ -43,6 +44,11 @@ namespace Entities.Capacities
 
         public SharkUlt ult;
 
+        public void ShowAileron()
+        {
+            aileronGo.SetActive(true);
+        }
+        
         protected override void OnAddedEffects(Entity target)
         {
             timeUnBorrowed = 0;
@@ -57,7 +63,7 @@ namespace Entities.Capacities
             aileron.OnEntityCollide += EntityCollide;
             
             gsm.OnUpdate += IncreaseTimeUnBorrowed;
-            
+
             champion.OnAttack += ResetTimer;
             champion.OnAttack += UnBorrow;
             
@@ -82,12 +88,14 @@ namespace Entities.Capacities
             timeUnBorrowed = 0;
             borrowed = false;
 
-            gsm.OnUpdateFeedback += IncreaseTimeUnBorrowed;
+            gsm.OnTickFeedback += IncreaseTimeUnBorrowed;
             
             champion.OnAttackFeedback += ResetTimer;
             champion.OnAttackFeedback += UnBorrow;
             
             champion.OnDieFeedback += ResetTimer;
+            
+
         }
 
         protected override void OnAddedLocalEffects(Entity target)
@@ -108,6 +116,12 @@ namespace Entities.Capacities
             }
         }
 
+        public void ReplicateBorrow()
+        {
+            champion.SetAnimatorBool("Borrowed", true);
+            Debug.Log(entity.name + " is borrowing");
+        }
+        
         public void Borrow(bool untargetable = false)
         {
             if(borrowed) return;
@@ -132,8 +146,12 @@ namespace Entities.Capacities
             OnBurrowFeedback?.Invoke();
             
             borrowed = true;
+
+            ReplicateBorrow();
             
-            champion.SetAnimatorBool("Borrowed",true);
+            champion.SetAnimatorTrigger("GoSwim");
+            
+            champion.OnShowElementFeedback += ShowAileron;
             
             aileronGo.SetActive(true);
             aileron.OnEntityCollide += EntityCollide;
@@ -165,7 +183,9 @@ namespace Entities.Capacities
             
             champion.CurrentSFXMove.Stop();
             champion.CurrentSFXMove = champion.SFXMoves[0];
-            //champion.CurrentSFXMove.Play();  
+            //champion.CurrentSFXMove.Play();
+            
+            //gsm.OnTick -= ReplicateBorrow;
 
             ForceUnBorrow();
         }
@@ -188,7 +208,12 @@ namespace Entities.Capacities
             //champion.rotateParent.localPosition = Vector3.zero;
 
             borrowed = false;
-            champion.SetAnimatorBool("Borrowed",false);
+            champion.SetAnimatorBool("Borrowed", false);
+            Debug.Log(entity.name + " is not borrowing");
+            
+            champion.OnShowElementFeedback -= ShowAileron;
+            
+            champion.SetAnimatorTrigger("StopSwim");
             
             ult?.UpdateUsable(false);
             
