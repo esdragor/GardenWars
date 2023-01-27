@@ -45,11 +45,13 @@ namespace UIComponents
         private IActiveLifeable lifeable;
         private Entity entity;
         private Camera cam => GameStateMachine.mainCam;
-        private byte index = 0;
+
+        private bool destroy;
 
         private void Start()
         {
             backHealthTr = backHealthBar.transform;
+            destroy = false;
         }
 
         private void Update()
@@ -119,23 +121,33 @@ namespace UIComponents
 
         private void UpdateFillPercentByPercent(float value)
         {
+            if(lifeable.GetCurrentHp() <= 0) return;
+            
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
         }
 
         private void UpdateFillPercent(float value)
         {
+            if(lifeable.GetCurrentHp() <= 0) return;
+            
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
         }
         
         private void PrintDamage(float damage, int killerID)
         {
-            if(damage < 0 ) return;
+            if(damage < 0 || lifeable.GetCurrentHp() <= 0) return;
 
-            if (!isLocalPlayerAndChampion && localPlayerIndex != killerID) return;
+            if (!isLocalPlayerAndChampion && localPlayerIndex != killerID)
+            {
+                if(destroy) Destroy(gameObject);
+                return;
+            }
             
-            var damageText = LocalPoolManager.PoolInstantiate(damageTextPrefab, damageParent);
+            var damageText = Instantiate(damageTextPrefab, damageParent);
             
             var damageTr = damageText.rectTransform;
+
+            OnUnlink += KillTweens;
             
             damageTr.SetParent(damageParent);
             damageText.gameObject.SetActive(true);
@@ -156,13 +168,21 @@ namespace UIComponents
             
             void ReturnDamage()
             {
-                damageTr.SetParent(null);
-                damageTr.gameObject.SetActive(false);
+                OnUnlink -= KillTweens;
+                if (destroy) Destroy(gameObject);
+            }
+
+            void KillTweens()
+            {
+                damageTr.DOKill();
+                damageText.DOKill();
             }
         }
 
         private void UpdateFillPercent(float value, int _)
         {
+            if(lifeable.GetCurrentHp() <= 0) return;
+
             healthBar.fillAmount = lifeable.GetCurrentHp() / lifeable.GetMaxHp();
             healthBar2.DOKill();
             if (healthBar.fillAmount > healthBar2.fillAmount)
@@ -179,6 +199,10 @@ namespace UIComponents
 
         public void Unlink()
         {
+            destroy = true;
+            
+            OnUnlink?.Invoke();
+            
             lifeable.OnSetCurrentHpFeedback -= UpdateFillPercent;
             lifeable.OnSetCurrentHpPercentFeedback -= UpdateFillPercentByPercent;
             lifeable.OnIncreaseCurrentHpFeedback -= UpdateFillPercent;
@@ -189,6 +213,16 @@ namespace UIComponents
 
             entity = null;
             lifeable = null;
+            
+            LateDestroy();
+        }
+
+        private Action OnUnlink;
+        
+        private async void LateDestroy()
+        {
+            await Task.Delay((int)(1000 * damageDuration));
+            if(gameObject != null) Destroy(gameObject);
         }
     }
 }

@@ -49,10 +49,11 @@ public partial class UIManager
             
             entity.OnShowElementFeedback -= ShowBar;
             entity.OnHideElementFeedback -= HideBar;
-            canvasHealth.Unlink();
             if(!(entity is Champion)) deadable.OnDieFeedback -= Unlink;
             entity.elementsToShow.Remove(canvasGo);
-            Destroy(canvasGo);
+            canvasGo.SetActive(false);
+            
+            canvasHealth.Unlink();
         }
         
     }

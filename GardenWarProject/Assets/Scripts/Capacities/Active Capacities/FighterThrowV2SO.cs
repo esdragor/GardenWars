@@ -52,12 +52,10 @@ namespace Entities.Capacities
     public class FighterThrowV2 : ActiveCapacity
     {
         private FighterThrowV2SO so => (FighterThrowV2SO)AssociatedActiveCapacitySO();
-
-        private float time_Pressed = 0f;
+        
         private int nbCandyStocked = 0;
 
         private double acceleration = 0.1;
-        private float distanceCandy = 10f;
 
         private GameObject FXWaitBag = null;
 
@@ -72,7 +70,6 @@ namespace Entities.Capacities
 
         protected override void PressFeedback(int targetsEntityIndexes, Vector3 targetPositions)
         {
-            time_Pressed = 0;
             nbCandyStocked = so.minCandy;
             acceleration = 0;
         }
@@ -135,8 +132,7 @@ namespace Entities.Capacities
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.dropCandySFX, projectile.transform.position);
 
             Throw();
-
-            time_Pressed = 0;
+            
             nbCandyStocked = so.minCandy;
             acceleration = 0;
             

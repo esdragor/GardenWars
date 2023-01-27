@@ -5,9 +5,6 @@ namespace BehaviourTree
 {
     public class Sequence : Node
     {
-        
-        private bool BoolTrue = true;
-
         public Sequence(List<Node> children) : base(children)
         {
         }

@@ -24,9 +24,7 @@ public class FieldOfViewLocal : MonoBehaviour
 	Mesh viewMesh;
 
 	[SerializeField] fowType myType;
-
-	bool enemyIsSeen = false;
-
+	
 	private void OnDisable ()
 	{
 		visibleTargets.Clear();

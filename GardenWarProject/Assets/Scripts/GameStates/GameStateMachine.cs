@@ -333,7 +333,6 @@ namespace GameStates
         {
             if (!isMaster) scores[team]++;
             OnTeamIncreaseScoreFeedBack?.Invoke(team);
-            Debug.Log($"increase score of team {team} ({scores[team]})");
         }
         
         public event Action<byte> OnTeamIncreaseScore;

@@ -24,7 +24,6 @@ public class ChatManager : MonoBehaviour
     [SerializeField] private Button QuitButton;
 
     private Champion champion = null;
-    private bool isChatting = false;
     private float delayTimer = 0f;
 
     private void Awake()
@@ -41,7 +40,7 @@ public class ChatManager : MonoBehaviour
         inputField.onDeselect.AddListener((string s) => { InputManager.EnableInput(); });
         QuitButton.onClick.AddListener(ToggleChat);
         
-        GameStateMachine.Instance.OnTick += OnTick;
+        GameStateMachine.Instance.OnUpdateFeedback += DecreaseTimer;
     }
 
     private void OnAddMessage(string message)
@@ -56,7 +55,7 @@ public class ChatManager : MonoBehaviour
         InputManager.EnableInput();
     }
     
-    private void OnTick()
+    private void DecreaseTimer()
     {
         delayTimer -= Time.deltaTime;
         if (delayTimer < 0f)
@@ -73,7 +72,7 @@ public class ChatManager : MonoBehaviour
         if (delayTimer < 0f)
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + GameStateMachine.Instance.SFXChatMessage);
-            delayTimer = 4.0f;
+            delayTimer = 3.5f;
         }
         string text;
         if (entityIndex <= -1)
