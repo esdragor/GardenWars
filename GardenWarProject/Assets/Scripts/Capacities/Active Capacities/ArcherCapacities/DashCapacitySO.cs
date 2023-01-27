@@ -118,9 +118,10 @@ namespace Entities.Capacities
                 FXDashGO = LocalPoolManager.PoolInstantiate(FXDash, champion.championMesh.transform).gameObject;
                 FXDashGO.transform.localPosition = Vector3.zero;
                 FXDashGO.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
+                champion.OnHideElementFeedback += (() => FXDashGO.SetActive(false));
             }
             FXDashGO.SetActive(false);
-            FXDashGO.SetActive(true);
+            FXDashGO.SetActive(champion.isVisible);
             champion.championMesh.transform.LookAt(destination);
             
             StartDash(casterPos, destination);

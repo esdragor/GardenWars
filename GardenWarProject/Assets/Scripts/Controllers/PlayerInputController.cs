@@ -53,6 +53,7 @@ namespace Controllers.Inputs
         protected void UpdateTargets()
         {
             CastCamRay(out var entityHit,out var worldHit);
+            if(worldHit.transform == null) return;
             cursorWorldPos = worldHit.point;
             CursorWorldPos = cursorWorldPos;
             selectedEntity = null;
@@ -69,6 +70,12 @@ namespace Controllers.Inputs
         private void CastCamRay(out RaycastHit entityHit,out RaycastHit worldHit)
         {
             var mousePos = Input.mousePosition;
+            if (minimapRect == null || UIManager.Instance == null)
+            {
+                entityHit = new RaycastHit();
+                worldHit = new RaycastHit();
+                return;
+            }
             var mouseRay = RectTransformUtility.RectangleContainsScreenPoint(minimapRect, mousePos)
                 ? UIManager.Instance.MiniMapCamRay(mousePos) : mainCam.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(mouseRay, out entityHit, Mathf.Infinity, entityLayers);

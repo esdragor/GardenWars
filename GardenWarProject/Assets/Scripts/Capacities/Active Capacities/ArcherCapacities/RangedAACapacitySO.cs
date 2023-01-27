@@ -33,6 +33,7 @@ namespace Entities.Capacities
 
             if (deadableEntity != null)
             {
+                Debug.Log($"Deadable : {deadableEntity} (isAlive {deadableEntity.IsAlive()})");
                 if (!deadableEntity.IsAlive())
                 {
                     return false;

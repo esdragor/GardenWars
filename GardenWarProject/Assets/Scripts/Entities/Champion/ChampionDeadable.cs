@@ -66,14 +66,7 @@ namespace Entities.Champion
 
         public void RequestDie(int killerId)
         {
-            if (!deadCanvasGO)
-            {
-                deathTimer = Instantiate(DeadCanvas);
-                deadCanvasGO = deathTimer.gameObject;
-            }
-            deadCanvasGO.SetActive(true);
             photonView.RPC("DieRPC", RpcTarget.MasterClient, killerId);
-            Debug.Log("Request to die");
         }
 
         [PunRPC]
@@ -121,13 +114,20 @@ namespace Entities.Champion
                 photonView.RPC("UpdateDeathTimerRPC",RpcTarget.All,-1);
                 GameStateMachine.Instance.OnTick -= Revive;
                 respawnTimer = 0f;
-                RequestRevive();
+                ReviveRPC();
             }
         }
         
         [PunRPC]
         private void UpdateDeathTimerRPC(int value)
         {
+            if(gsm.GetPlayerChampion() != this) return;
+            if (!deadCanvasGO || deathTimer == null)
+            {
+                deathTimer = Instantiate(DeadCanvas);
+                deadCanvasGO = deathTimer.gameObject;
+            }
+            deadCanvasGO.SetActive(true);
             deathTimer.UpdateTextTimer(value);
         }
         
@@ -135,6 +135,16 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC(int killerId)
         {
+            Debug.Log($"{gameObject.name} is Dying");
+            
+            isAlive = false;
+            canDie = false;
+            canMove = false;
+            canAttack = false;
+            canCast = false;
+            canBeDisplaced = false;
+            coll.enabled = false;
+            
             SetAnimatorBool("IsAlive", false);
             SetAnimatorTrigger("Death");
             if (photonView.IsMine)
@@ -148,11 +158,16 @@ namespace Entities.Champion
 
                 HideMaxRangeIndicator();
             }
-            isAlive = false;
+            
+            agent.enabled = false;
+
             uiTransform.gameObject.SetActive(false);
             FogOfWarManager.Instance.RemoveFOWViewable(this);
-            
-            coll.enabled = false;
+
+            if (gsm.GetPlayerChampion() == this)
+            {
+                
+            }
 
             OnDieFeedback?.Invoke(killerId);
         }
@@ -162,13 +177,13 @@ namespace Entities.Champion
 
         public void RequestRevive()
         {
-            deadCanvasGO.SetActive(false);
             photonView.RPC("ReviveRPC", RpcTarget.MasterClient);
         }
         
         [PunRPC]
         public void ReviveRPC()
         {
+            Debug.Log($"Reviving (is Alive : {isAlive}))");
             if (isAlive) return;
             
             //isAlive = true;
@@ -188,8 +203,16 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
+            isAlive = true;
+            canDie = true;
+            canMove = true;
+            canAttack = true;
+            canCast = true;
+            canBeDisplaced = true;
             agent.enabled = true;
+            coll.enabled = true;
             agent.Warp(respawnPosition);
+            
             if (photonView.IsMine)
             {
                 InputManager.PlayerMap.Movement.Enable();
@@ -199,14 +222,16 @@ namespace Entities.Champion
                 agent.isStopped = false;
                 agent.destination = transform.position;
             }
-            isAlive = true;
+            
             SetAnimatorBool("IsAlive", true);
+            
             FogOfWarManager.Instance.AddFOWViewable(this);
             rotateParent.gameObject.SetActive(true);
             uiTransform.gameObject.SetActive(true);
+            
             OnReviveFeedback?.Invoke();
             SetAnimatorTrigger("Respawn");
-            coll.enabled = true;
+            
         }
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;

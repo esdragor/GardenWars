@@ -44,6 +44,7 @@ namespace UIComponents
         
         private IActiveLifeable lifeable;
         private Entity entity;
+        private Champion champion => entity as Champion;
         private Camera cam => GameStateMachine.mainCam;
 
         private bool destroy;
@@ -89,6 +90,10 @@ namespace UIComponents
             if (isChampion)
             {
                 GetComponent<Canvas>().sortingOrder = 10;
+
+                champion.OnDieFeedback += (_) => gameObject.SetActive(false);
+                champion.OnReviveFeedback += () => gameObject.SetActive(true);
+                
                 if (GameStateMachine.Instance.GetPlayerTeam() == ent.GetTeam())
                 {
                     healthBar.sprite = ChampionColor[0];

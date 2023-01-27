@@ -187,8 +187,6 @@ namespace Entities.Capacities
                 OnUnBurrow?.Invoke();
             }
             
-            //champion.rotateParent.localPosition = Vector3.zero;
-
             borrowed = false;
             champion.SetAnimatorBool("Borrowed",false);
             

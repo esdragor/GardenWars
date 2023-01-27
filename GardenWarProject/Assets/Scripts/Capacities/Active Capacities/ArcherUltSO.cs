@@ -86,6 +86,7 @@ namespace Entities.Capacities
                 FXLaunchGo = LocalPoolManager.PoolInstantiate(so.FXLaunch, champion.rotateParent.transform).gameObject;
                 FXLaunchGo.transform.localPosition = new Vector3(0f, 1, shotDirection.z);
                 FXLaunchGo.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                champion.OnHideElementFeedback += () => FXLaunchGo.SetActive(false);
             }
             
             FMODUnity.RuntimeManager.PlayOneShot("event:/" + so.SFXArcherUlt, casterPos);
@@ -99,7 +100,7 @@ namespace Entities.Capacities
             FXLaunchBurst.SetActive(false);
 
             FXLaunchGo.SetActive(false);
-            FXLaunchGo.SetActive(true);
+            FXLaunchGo.SetActive(champion.isVisible);
 
 
             champion.LookAt(targetPositions);
