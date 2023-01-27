@@ -42,6 +42,7 @@ namespace Entities.Capacities
         private GameObject UnborrowGO;
 
         public SharkUlt ult;
+        public SharkBorrow burrow;
 
         protected override void OnAddedEffects(Entity target)
         {
@@ -139,6 +140,7 @@ namespace Entities.Capacities
             aileron.OnEntityCollide += EntityCollide;
 
             ult?.UpdateUsable(true);
+            burrow?.UpdateUsable(false);
 
             aileronGo.GetComponent<SharkPassiveManager>().EnableFXShot(champion.team);
         }
@@ -191,6 +193,7 @@ namespace Entities.Capacities
             champion.SetAnimatorBool("Borrowed",false);
             
             ult?.UpdateUsable(false);
+            burrow?.UpdateUsable(true);
             
             if (!UnborrowGO)
             {

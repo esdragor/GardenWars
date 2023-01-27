@@ -23,6 +23,19 @@ namespace Entities.Capacities
         private SharkPassive _sharkPassive;
         private SharkPassive sharkPassive => _sharkPassive ??= champion.GetPassiveCapacityBySOIndex<SharkPassive>(so.sharkPassive.indexInCollection);
 
+        public override void Init()
+        {
+            isUnusable = true;
+            sharkPassive.burrow = this;
+            OnUsable?.Invoke(isUnusable);
+        }
+        
+        public void UpdateUsable(bool value)
+        {
+            isUnusable = !value;
+            OnUsable?.Invoke(!isUnusable);
+        }
+
         protected override bool AdditionalCastConditions(int targetsEntityIndexes, Vector3 targetPositions)
         {
             return !sharkPassive.borrowed;
